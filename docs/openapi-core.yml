@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Java Cinema API Challenge - Core Criteria
+  title: C# Cinema API Challenge - Core Criteria
   description: |-
   version: 0.2.2
 
