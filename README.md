@@ -24,7 +24,7 @@ Pay close attention to the details of each endpoint. How you choose to implement
 
 ## Extensions
 
-[Here is an extension API spec.](https://boolean-uk.github.io/java-api-cinema-challenge/extensions)
+[Here is an extension API spec.](https://boolean-uk.github.io/csharp-api-cinema-challenge/extensions)
 
 It contains a few new routes, different approaches to data mutation and, most importantly, an entirely different response format for each request.
 
