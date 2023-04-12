@@ -15,12 +15,13 @@ It's time to use everything you've learned up to this point! Your task is to bui
     - Create a new PostgreSQL database for this exercise, a cloud database such as ElephantSQL is fine
     - Replace the `DATABASE_URL`, `PORT`, `DATABASE_USERNAME` and `DATABASE_PASSWORD` sections in the .json file with your real database information.
 4. Open the api-cinema-challenge solution with Visual Studio
-5. Create the ERD to describe the model of your data and the relationships between each entity 
-6. It would be a good direction to use different namespaces for consistency. Ex.:
+5. Create the ERD to describe the model of your data and the relationships between each entity
+6. Check the Program.cs and do any changes needed before starting. They are marked with @TODO comments
+7. It would be a good direction to use different namespaces for consistency. Ex.:
    1. Controllers: api_cinema_challenge.CSharp.Main.Controller
    2. Models: api_cinema_challenge.CSharp.Main.Model
    3. Everything else: api_cinema_challenge.CSharp.Main
-7. Finally your task is to develop the API that [satisfies this API spec](https://boolean-uk.github.io/csharp-api-cinema-challenge/)
+8. Finally your task is to develop the API that [satisfies this API spec](https://boolean-uk.github.io/csharp-api-cinema-challenge/)
 
 
 Pay close attention to the details of each endpoint. How you choose to implement the solution is up to you, there are no wrong answers, but the inputs and outputs must match the provided API documentation exactly.
