@@ -1,0 +1,12 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "CinemaDBConnection": "Server=DATABASE_URL;Port=PORT;User Id=DATABASE_USERNAME;Password=DATABASE_PWD;Database=DATABASE_USERNAME;"
+  }
+}
