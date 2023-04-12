@@ -7,7 +7,7 @@
 
 ## Instructions
 
-It's time to use everything you've learned up to this point! Your task is to build a complete API in Java using Spring Boot, Spring Data JPA and Hibernate. Treat this challenge like a real project, not just an exercise to complete. Take time to read documentation, experiment & discuss ideas with your peers and teachers.
+It's time to use everything you've learned up to this point! Your task is to build a complete API in C# using ASP.NET and Entity Framework. Treat this challenge like a real project, not just an exercise to complete. Take time to read documentation, experiment & discuss ideas with your peers and teachers.
 
 1. Fork this repository
 2. Clone your fork to your machine
