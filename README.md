@@ -11,12 +11,11 @@ It's time to use everything you've learned up to this point! Your task is to bui
 
 1. Fork this repository
 2. Clone your fork to your machine
-3. Before opening the solution: Copy the file `example.appsettings.json` and rename it to `appsettings.json`. Open the appsettings.json file and change the fields to match your database credentials
-    - Create a new PostgreSQL database for this exercise, a cloud database such as ElephantSQL is fine
-    - Replace the `DATABASE_URL`, `PORT`, `DATABASE_USERNAME` and `DATABASE_PASSWORD` sections in the .json file with your real database information.
-4. Open the api-cinema-challenge solution with Visual Studio
+3. Open the api-cinema-challenge solution with Visual Studio
+4. Update appsettings.json with your own credentials.  Note that the Data folder already contains a CinemaContext which you   
+   can use to add your DbSets.
 5. Create the ERD to describe the model of your data and the relationships between each entity
-6. Check the Program.cs and do any changes needed before starting. They are marked with @TODO comments
+6. Check the Program.cs and do any changes needed before starting. They are marked with //TODO: comments (remember VIEW menu and TASK LIST to see these)
 7. It would be a good direction to use different namespaces for consistency. Ex.:
    1. Controllers: api_cinema_challenge.CSharp.Main.Controller
    2. Models: api_cinema_challenge.CSharp.Main.Model

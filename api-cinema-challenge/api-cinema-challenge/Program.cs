@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using api_cinema_challenge.EndPoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-// @TODO change the capitalized strings in the options to match your api and contact details
+//TODO: change the capitalized strings in the options to match your api and contact details
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -24,9 +25,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// @TODO Uncomment next 2 lines and add your context class here
-//builder.Services.AddDbContext<DB_CONTEXT_NAME_HERE>(
-//    o => o.UseNpgsql(builder.Configuration.GetConnectionString("CinemaDBConnection")));
 
 var app = builder.Build();
 
@@ -36,6 +34,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.ConfigureTestAPI();
 
 app.UseHttpsRedirection();
 
