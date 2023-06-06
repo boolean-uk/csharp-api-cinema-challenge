@@ -12,8 +12,7 @@ It's time to use everything you've learned up to this point! Your task is to bui
 1. Fork this repository
 2. Clone your fork to your machine
 3. Open the api-cinema-challenge solution with Visual Studio
-4. Update appsettings.json with your own credentials.  Note that the Data folder already contains a CinemaContext which you   
-   can use to add your DbSets.
+4. Update appsettings.json with your own credentials.  Note that the Data folder already contains a CinemaContext which you may use to add your DbSets.
 5. Create the ERD to describe the model of your data and the relationships between each entity
 6. Check the Program.cs and do any changes needed before starting. They are marked with //TODO: comments (remember VIEW menu and TASK LIST to see these)
 7. It would be a good direction to use different namespaces for consistency. Ex.:
