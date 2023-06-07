@@ -64,5 +64,6 @@ namespace api_cinema_challenge.EndPoints
                 return Results.Problem(ex.Message);
             }
         }
+
     }
 }

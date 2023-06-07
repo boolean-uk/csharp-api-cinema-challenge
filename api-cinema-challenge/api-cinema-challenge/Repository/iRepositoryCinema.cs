@@ -16,5 +16,8 @@ namespace api_cinema_challenge.Repository
 
         IEnumerable<Screening> GetScreenings(int id);
         Screening AddScreening(Screening screening);
+
+        IEnumerable<Ticket> GetTickets();
+        Ticket AddTicket(Ticket ticket);
     }
 }

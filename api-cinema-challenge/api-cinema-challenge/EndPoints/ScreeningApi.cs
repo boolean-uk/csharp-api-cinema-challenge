@@ -7,8 +7,8 @@ namespace api_cinema_challenge.EndPoints
     {
         public static void ConfigureScreeningApi(this WebApplication app)
         {
-            app.MapGet("/screenings/{id}", GetScreenings);
-            app.MapPost("/screenings", AddScreening);
+            app.MapGet("/movies/{id}/screenings", GetScreenings);
+            app.MapPost("/movies/{id}/screenings", AddScreening);
         }
 
         public static async Task<IResult> GetScreenings(iRepositoryCinema repository, int id)
@@ -38,3 +38,4 @@ namespace api_cinema_challenge.EndPoints
         }
     }
 }
+

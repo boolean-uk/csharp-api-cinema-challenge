@@ -13,7 +13,10 @@ namespace api_cinema_challenge.Models
         public int MovieId { get; set; }
 
         public DateTime StartedAt { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
         public DateTime CreatedAt { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
         public DateTime UpdatedAt { get; set; }
 
     }

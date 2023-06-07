@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
 {
@@ -11,8 +12,8 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
-                customer.CreatedAt = DateTime.Now;
-                customer.UpdatedAt = DateTime.Now;
+                customer.CreatedAt = DateTime.UtcNow;
+                customer.UpdatedAt = DateTime.UtcNow;
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 return customer;
@@ -23,6 +24,8 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
+                movie.CreatedAt = DateTime.UtcNow;
+                movie.UpdatedAt = DateTime.UtcNow;
                 db.Movies.Add(movie);
                 db.SaveChanges();
                 return movie;
@@ -33,9 +36,24 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
+                screening.CreatedAt = DateTime.UtcNow;
+                screening.UpdatedAt = DateTime.UtcNow;
+                db.Movies.Find(screening.MovieId).screenings.Add(screening);
                 db.Screenings.Add(screening);
                 db.SaveChanges();
                 return screening;
+            }
+        }
+
+        public Ticket AddTicket(Ticket ticket)
+        {
+            using (var db = new CinemaContext())
+            {
+                ticket.CreatedAt = DateTime.UtcNow;
+                ticket.UpdatedAt = DateTime.UtcNow;
+                db.Tickets.Add(ticket);
+                db.SaveChanges();
+                return ticket;
             }
         }
 
@@ -73,7 +91,7 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
-                return db.Movies.ToList();
+                return db.Movies.Include(a => a.screenings).ToList();
             }
         }
 
@@ -93,10 +111,19 @@ namespace api_cinema_challenge.Repository
             }
         }
 
+        public IEnumerable<Ticket> GetTickets()
+        {
+            using (var db = new CinemaContext())
+            {
+                return db.Tickets.ToList();
+            }
+        }
+
         public Customer UpdateCustomer(Customer customer)
         {
             using (var db = new CinemaContext())
             {
+                customer.UpdatedAt = DateTime.UtcNow;
                 db.Customers.Update(customer);
                 db.SaveChanges();
                 return customer;
@@ -107,6 +134,7 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
+                movie.UpdatedAt = DateTime.UtcNow;
                 db.Movies.Update(movie);
                 db.SaveChanges();
                 return movie;
