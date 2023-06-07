@@ -18,11 +18,11 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "TITLE_OF_PROJECT_API",
-        Description = "DESCRIPTION_OF_API",
+        Title = "CinemaApi",
+        Description = "CinemaApi",
         Contact = new OpenApiContact
         {
-            Name = "YOUR_NAME",
+            Name = "Thanasis Andritsios",
         }
     });
 });
@@ -37,7 +37,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureTestAPI();
+app.ConfigureCustomerAPI();
+app.ConfigureMovieAPI();
+app.ConfigureScreeningAPI();
+
+
 
 app.UseHttpsRedirection();
 

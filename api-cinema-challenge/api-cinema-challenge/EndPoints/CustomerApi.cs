@@ -5,7 +5,7 @@ namespace api_cinema_challenge.EndPoints
 {
     public static class CustomerApi
     {
-        public static void ConfigureTestAPI(this WebApplication app)
+        public static void ConfigureCustomerAPI(this WebApplication app)
         {
             app.MapGet("/Customers", GetCustomers);
             app.MapPost("/Customers", AddCustomer);
