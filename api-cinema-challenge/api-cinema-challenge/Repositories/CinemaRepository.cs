@@ -17,6 +17,7 @@ namespace api_cinema_challenge.Repositories
             using (var db = new CinemaContext())
             {
                 customer.CreatedAt = DateTime.UtcNow;
+                customer.UpdatedAt = null;
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 return customer;
@@ -28,6 +29,7 @@ namespace api_cinema_challenge.Repositories
             using (var db = new CinemaContext())
             {
                 movie.CreatedAt = DateTime.UtcNow;
+                movie.UpdatedAt = null;
                 db.Movies.Add(movie);
                 db.SaveChanges();
                 return movie;
@@ -39,11 +41,27 @@ namespace api_cinema_challenge.Repositories
             using (var db = new CinemaContext())
             {
                 screening.CreatedAt = DateTime.UtcNow;
+                screening.UpdatedAt = null;
                 screening.MovieId = movieId;
                 screening.Movie = db.Movies.FirstOrDefault(x => x.Id == movieId);
                 db.Screenings.Add(screening);
                 db.SaveChanges();
                 return screening;
+            }
+        }
+
+        public Ticket AddTicket(Ticket ticket, int screeningId)
+        {
+            using (var db = new CinemaContext())
+            {
+                ticket.CreatedAt = DateTime.UtcNow;
+                ticket.UpdatedAt = null;
+                ticket.ScreeningId = screeningId;
+                ticket.Screening = db.Screenings.FirstOrDefault(x => x.Id == screeningId);
+                ticket.Screening.Movie = db.Movies.FirstOrDefault(x => x.Id == ticket.Screening.MovieId);
+                db.Tickets.Add(ticket);
+                db.SaveChanges();
+                return ticket;
             }
         }
 
@@ -113,6 +131,14 @@ namespace api_cinema_challenge.Repositories
             using (var db = new CinemaContext())
             {
                 return db.Screenings.Include(s => s.Movie).ToList();
+            }
+        }
+
+        public IEnumerable<Ticket> GetTickets()
+        {
+            using (var db = new CinemaContext())
+            {
+                return db.Tickets.Include(t => t.Screening).ToList();
             }
         }
 

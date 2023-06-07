@@ -46,6 +46,8 @@ app.ConfigureMovieApi();
 
 app.ConfigureScreeningApi();
 
+app.ConfigureTicketApi();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
