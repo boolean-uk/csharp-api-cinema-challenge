@@ -1,6 +1,8 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using api_cinema_challenge.EndPoints;
+using api_cinema_challenge.Repositories;
+using api_cinema_challenge.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+builder.Services.AddDbContext<CinemaContext>();
 
 //TODO: change the capitalized strings in the options to match your api and contact details
 builder.Services.AddSwaggerGen(options =>
@@ -35,7 +40,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureTestAPI();
+app.ConfigureCustomerApi();
+
+app.ConfigureMovieApi();
+
+app.ConfigureScreeningApi();
 
 app.UseHttpsRedirection();
 
