@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace api_cinema_challenge.Data
@@ -15,5 +16,7 @@ namespace api_cinema_challenge.Data
         {
             optionsBuilder.UseNpgsql(GetConnectionString());
         }
+
+       public DbSet<Customer> Customers { get; set; }
     }
 }
