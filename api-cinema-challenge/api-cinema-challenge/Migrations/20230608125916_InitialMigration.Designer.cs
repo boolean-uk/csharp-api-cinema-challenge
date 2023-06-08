@@ -12,7 +12,7 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20230608091656_InitialMigration")]
+    [Migration("20230608125916_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -48,15 +48,10 @@ namespace api_cinema_challenge.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("TicketId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TicketId");
 
                     b.ToTable("Customers");
                 });
@@ -173,17 +168,6 @@ namespace api_cinema_challenge.Migrations
                     b.HasIndex("ScreeningId");
 
                     b.ToTable("Tickets");
-                });
-
-            modelBuilder.Entity("api_cinema_challenge.Models.Customer", b =>
-                {
-                    b.HasOne("api_cinema_challenge.Models.Ticket", "Ticket")
-                        .WithMany()
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>

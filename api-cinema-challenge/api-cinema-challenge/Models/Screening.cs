@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
@@ -6,10 +7,12 @@ namespace api_cinema_challenge.Models
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Movie is required")]
         [ForeignKey("Movie")]
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
 
+        [Required(ErrorMessage = "Screen is required")]
         [ForeignKey("Screen")]
         public int ScreenId { get; set; }
         public Screen Screen { get; set; }
