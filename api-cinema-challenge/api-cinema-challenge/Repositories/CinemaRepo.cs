@@ -169,7 +169,7 @@ namespace api_cinema_challenge.Repositories
         {
             using (var db = new CinemaContext())
             {
-                var screen = db.Screenings.FirstOrDefault(c => c.Id == id);
+                var screen = db.Screenings.Include(x=>x.movie).FirstOrDefault(c => c.Id == id);
                 if (screen != null)
                 {
 
@@ -208,12 +208,13 @@ namespace api_cinema_challenge.Repositories
                 var updatedMovie = db.Movies.FirstOrDefault(c => c.Id == id);
                 if (updatedMovie != null)
                 {
-                    updatedMovie.Id = id;
-                    updatedMovie.runtime = movie.runtime;
-                    updatedMovie.description = movie.description;
-                    updatedMovie.tittle = movie.tittle;
-                    updatedMovie.UpdatedAt = DateTime.UtcNow;
-                    updatedMovie.rating = movie.rating;
+                    updatedMovie = movie;
+                    //updatedMovie.Id = id;
+                    //updatedMovie.runtime = movie.runtime;
+                    //updatedMovie.description = movie.description;
+                    //updatedMovie.tittle = movie.tittle;
+                    //updatedMovie.UpdatedAt = DateTime.UtcNow;
+                   // updatedMovie.rating = movie.rating;
                     db.SaveChanges();
                     return updatedMovie;
 
@@ -227,14 +228,16 @@ namespace api_cinema_challenge.Repositories
         {
             using (var db = new CinemaContext())
             {
-                var updatedScreen = db.Screenings.FirstOrDefault(c => c.Id == id);
+                var updatedScreen = db.Screenings.Include(x=> x.movie).FirstOrDefault(c => c.Id == id);
                 if (updatedScreen != null)
                 {
-                    updatedScreen.Id = id;
-                    updatedScreen.capacity = screen.capacity;
-                    updatedScreen.screenNumber = screen.screenNumber;
-                   updatedScreen.startsAt = screen.startsAt;
-                    updatedScreen.UpdatedAt = DateTime.UtcNow;
+                    updatedScreen = screen;
+                   // updatedScreen.Id = id;
+                   // updatedScreen.capacity = screen.capacity;
+
+                   // updatedScreen.screenNumber = screen.screenNumber;
+                   //updatedScreen.startsAt = screen.startsAt;
+                   // updatedScreen.UpdatedAt = DateTime.UtcNow;
                     
                     db.SaveChanges();
                     return updatedScreen;
