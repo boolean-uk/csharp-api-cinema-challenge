@@ -45,7 +45,7 @@ namespace api_cinema_challenge.EndPoints
         {
             try
             {
-                var UpdatedMovie = repo.AddMovie(movie);
+                var UpdatedMovie = repo.UpdateMovie(movie);
                 return UpdatedMovie != null ? Results.Ok(UpdatedMovie) : Results.NotFound();
             }
             catch (Exception ex)

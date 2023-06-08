@@ -43,6 +43,7 @@ if (app.Environment.IsDevelopment())
 app.ConfigureCustomerApi();
 app.ConfigureMovieApi();
 app.ConfigureScreeningApi();
+app.ConfigureTicketApi();
 
 app.UseHttpsRedirection();
 

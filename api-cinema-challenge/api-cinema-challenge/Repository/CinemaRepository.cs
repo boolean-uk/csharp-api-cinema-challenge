@@ -93,7 +93,7 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
-                return db.Screenings.Include(i => i.MovieId).ToList();
+                return db.Screenings.ToList();
             }
         }
 
@@ -101,10 +101,17 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
-                customer.UpdatedAt = DateTime.UtcNow;
-                db.Customers.Update(customer);
+                var targetCustomer = db.Customers.FirstOrDefault(i => i.Id == customer.Id);
+                if (targetCustomer != null)
+                {
+                    targetCustomer.Phone = string.IsNullOrEmpty(customer.Phone) ? targetCustomer.Phone : customer.Phone;
+                    targetCustomer.Name = string.IsNullOrEmpty(customer.Name) ? targetCustomer.Name : customer.Name;
+                    targetCustomer.Email = string.IsNullOrEmpty(customer.Email) ? targetCustomer.Email : customer.Email;
+                }
+                targetCustomer.UpdatedAt = DateTime.UtcNow;
+                db.Customers.Update(targetCustomer);
                 db.SaveChanges();
-                return customer;
+                return targetCustomer;
             }
         }
 
@@ -123,10 +130,19 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
-                movie.UpdatedAt = DateTime.UtcNow;
-                db.Movies.Update(movie);
+                var targetMovie = db.Movies.FirstOrDefault(i => i.Id == movie.Id);
+                if (targetMovie != null)
+                {
+                    targetMovie.RuntimeMins = movie.RuntimeMins == 0 ? targetMovie.RuntimeMins : movie.RuntimeMins;
+                    targetMovie.Title = string.IsNullOrEmpty(movie.Title) ? targetMovie.Title : movie.Title;
+                    targetMovie.Description = string.IsNullOrEmpty(movie.Description) ? targetMovie.Description : movie.Description;
+                    targetMovie.Rating = string.IsNullOrEmpty(movie.Rating) ? targetMovie.Rating : movie.Rating;
+                }
+                
+                targetMovie.UpdatedAt = DateTime.UtcNow;
+                db.Movies.Update(targetMovie);
                 db.SaveChanges();
-                return movie;
+                return targetMovie;
             }
         }
 
@@ -143,6 +159,24 @@ namespace api_cinema_challenge.Repository
                         screeningsWithMovie.Add(screening);
                 }
                 return screeningsWithMovie; 
+            }
+        }
+
+        public IEnumerable<Ticket> GetTickets()
+        {
+            using(var db = new CinemaContext())
+            {
+                return db.Tickets;
+            }
+        }
+
+        public Ticket AddTicket(Ticket ticket)
+        {
+            using(var db = new CinemaContext())
+            {
+                db.Tickets.Add(ticket);
+                db.SaveChanges();
+                return ticket;
             }
         }
     }
