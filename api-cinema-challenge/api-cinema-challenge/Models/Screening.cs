@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace api_cinema_challenge.Models
 {
@@ -15,10 +17,14 @@ namespace api_cinema_challenge.Models
         public Movie movie { get; set; }
         public int capacity { get; set; }
 
-
+        //private DateTime _startsAt;
         public DateTime startsAt { get; set; }
 
+        [JsonIgnore]
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [JsonIgnore]
+
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
 

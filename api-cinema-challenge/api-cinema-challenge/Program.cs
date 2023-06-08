@@ -40,6 +40,7 @@ if (app.Environment.IsDevelopment())
 app.ConfigureCustomerAPI();
 app.ConfigureMovieAPI();
 app.ConfigureScreeningAPI();
+app.ConfigureTicketAPI();
 
 
 

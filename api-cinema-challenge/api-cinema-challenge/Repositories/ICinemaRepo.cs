@@ -33,6 +33,10 @@ namespace api_cinema_challenge.Repositories
 
         Screening DeleteScreening(int id);
 
+        IEnumerable<Ticket> GetallTicket();
+
+        Ticket CreateTicket(Ticket ticket);
+
 
 
     }

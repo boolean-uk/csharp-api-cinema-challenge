@@ -38,6 +38,16 @@ namespace api_cinema_challenge.Repositories
             }
         }
 
+        public Ticket CreateTicket(Ticket ticket)
+        {
+            using (var db = new CinemaContext())
+            {
+                db.Tickets.Add(ticket);
+                db.SaveChanges();
+                return ticket;
+            }
+        }
+
         public Customer DeleteCustomer(int id)
         {
             using (var db = new CinemaContext())
@@ -90,7 +100,7 @@ namespace api_cinema_challenge.Repositories
         {
             using(var db = new CinemaContext())
             {
-                return db.Customers.ToList();
+                return db.Customers.Include(x=> x.Ticket).ThenInclude(x=>x.screening).ThenInclude(x => x.movie).ToList();
             }
         }
 
@@ -117,11 +127,19 @@ namespace api_cinema_challenge.Repositories
 
         }
 
+        public IEnumerable<Ticket> GetallTicket()
+        {
+            using (var db = new CinemaContext())
+            {
+                return db.Tickets.Include(t => t.screening).ThenInclude(e => e.movie).ToList();
+            }
+        }
+
         public Customer GetCustomerById(int id)
         {
             using (var db = new CinemaContext())
             {
-                var customer = db.Customers.FirstOrDefault(c => c.Id == id);
+                var customer = db.Customers.Include(x => x.Ticket).ThenInclude(x => x.screening).ThenInclude(x => x.movie).FirstOrDefault(c => c.Id == id);
                 if (customer != null)
                 {
                     
@@ -166,14 +184,15 @@ namespace api_cinema_challenge.Repositories
         {
             using (var db = new CinemaContext())
             {
-                var updatedCustomer = db.Customers.FirstOrDefault(c => c.Id == id);
+                var updatedCustomer = db.Customers.Include(x => x.Ticket).ThenInclude(x => x.screening).ThenInclude(x => x.movie).FirstOrDefault(c => c.Id == id);
                 if (updatedCustomer != null)
                 {
-                    updatedCustomer.Id = id;
-                    updatedCustomer.Name = customer.Name;
-                    updatedCustomer.Email = customer.Email;
-                    updatedCustomer.Phone = customer.Phone;
-                    updatedCustomer.UpdatedDate = DateTime.UtcNow;
+                    updatedCustomer = customer;
+                   // updatedCustomer.Id = id;
+                   // updatedCustomer.Name = customer.Name;
+                   // updatedCustomer.Email = customer.Email;
+                   // updatedCustomer.Phone = customer.Phone;
+                   // updatedCustomer.UpdatedDate = DateTime.UtcNow;
                     db.SaveChanges();
                     return updatedCustomer;
 

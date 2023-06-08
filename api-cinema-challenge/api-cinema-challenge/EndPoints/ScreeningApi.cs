@@ -7,7 +7,7 @@ namespace api_cinema_challenge.EndPoints
     {
         public static void ConfigureScreeningAPI(this WebApplication app)
         {
-            app.MapGet("/Screenings", GetScreenings);
+            app.MapGet("/movies/{id}/screenings", GetScreenings);
             app.MapPost("/Screenings", AddScreenings);
             app.MapGet("/Screenings/{id}", GetScreening);
             app.MapDelete("/Screenings/{id}", DeleteScreenings);
