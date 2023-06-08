@@ -7,7 +7,7 @@
         public string Rating { get; set; }
         public string Description { get; set; }
         public int RunTimeMins { get; set; }
-        public DateTime CreatedAt = DateTime.Now;
-        public DateTime UpdatedAt = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace api_cinema_challenge.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace api_cinema_challenge.Models
 {
     public class Customer
     {
@@ -6,7 +8,7 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public DateTime CreatedAt = DateTime.Now;
-        public DateTime UpdatedAt = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -4,25 +4,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
 {
-    public class ScreeningRepository : IScreeningRepository
+    public class TicketRepository : ITicketRepository
     {
-        public bool AddScreening(Screening screening)
+        public bool AddTicket(Ticket ticket)
         {
             using (var db = new CinemaContext())
             {
-                screening.CreatedAt = DateTime.UtcNow;
-                db.Screenings.Add(screening);
+                ticket.CreatedAt = DateTime.UtcNow;
+                db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Screening> GetScreenings()
+        public IEnumerable<Ticket> GetTickets()
         {
             using (var db = new CinemaContext())
             {
-                return db.Screenings.Include(e => e.Movie).Include(e => e.Screen).ToList();
+                return db.Tickets.Include(e => e.Screening).ThenInclude(s => s.Movie).Include(e => e.Screening).ThenInclude(s => s.Screen).Include(e => e.Customer).ToList();
             }
             return null;
         }

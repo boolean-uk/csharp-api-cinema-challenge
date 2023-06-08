@@ -13,6 +13,7 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IScreeningRepository, ScreeningRepository>();
 builder.Services.AddScoped<IScreenRepository, ScreenRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -45,6 +46,7 @@ app.ConfigureCustomerAPI();
 app.ConfigureMovieAPI();
 app.ConfigureScreeningAPI();
 app.ConfigureScreenAPI();
+app.ConfigureTicketAPI();
 
 app.UseHttpsRedirection();
 

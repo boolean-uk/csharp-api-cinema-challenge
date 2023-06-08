@@ -13,8 +13,8 @@ namespace api_cinema_challenge.Models
         [ForeignKey("Screen")]
         public int ScreenId { get; set; }
         public Screen Screen { get; set; }
-        public DateTime StartsAt = DateTime.Now;
-        public DateTime CreatedAt = DateTime.Now;
-        public DateTime UpdatedAt = DateTime.Now;
+        public DateTime StartsAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

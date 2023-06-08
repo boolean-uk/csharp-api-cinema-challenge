@@ -9,6 +9,7 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
+                movie.CreatedAt = DateTime.UtcNow;
                 db.Movies.Add(movie);
                 db.SaveChanges();
                 return true;
@@ -52,6 +53,7 @@ namespace api_cinema_challenge.Repository
         {
             using (var db = new CinemaContext())
             {
+                movie.UpdatedAt = DateTime.UtcNow;
                 db.Update(movie);
                 db.SaveChanges();
                 return true;
