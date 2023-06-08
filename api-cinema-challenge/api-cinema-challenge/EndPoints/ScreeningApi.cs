@@ -8,8 +8,9 @@ namespace api_cinema_challenge.EndPoints
         public static void ConfigureScreeningApi(this WebApplication app)
         {
             app.MapGet("/screenings", GetScreenings);
+            app.MapGet("/movies/{id}/screenings", GetScreeningsForMovie);
             app.MapPost("/sceenings", AddScreening);
-            app.MapPut("/screenings", UpdateScreening);
+            app.MapPut("/screenings{id}", UpdateScreening);
             app.MapDelete("/screening/{id}", DeleteScreening);
         }
 
@@ -19,6 +20,19 @@ namespace api_cinema_challenge.EndPoints
             {
                 var screenings = repository.GetScreenings();
                 return screenings != null ? Results.Ok(screenings) : Results.Problem("There are no screenings yet");
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        public static async Task<IResult> GetScreeningsForMovie(int movieId, ICinemaRepository repository)
+        {
+            try
+            {
+                var screenings = repository.GetScreeningsForMovie(movieId);
+                return screenings != null ? Results.Ok(screenings) : Results.Problem($"There are no screenings for the movie with id of {movieId} yet");
             }
             catch (Exception ex)
             {

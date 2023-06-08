@@ -7,7 +7,7 @@ namespace api_cinema_challenge.EndPoints
     {
         public static void ConfigureTicketApi(this WebApplication app)
         {
-            app.MapGet("/tickets", GetTickets);
+            app.MapGet("/ticekts", GetTickets);
             app.MapPost("/tickets", AddTicket);
         }
 

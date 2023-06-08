@@ -16,6 +16,7 @@ namespace api_cinema_challenge.Repositories
 
         Screening AddScreening(Screening screening, int movieId);
         IEnumerable<Screening> GetScreenings();
+        IEnumerable<Screening> GetScreeningsForMovie(int movieId);
         Screening UpdateScreening(Screening screening);
         Screening DeleteScreening(int id);
 

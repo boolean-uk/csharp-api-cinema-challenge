@@ -9,7 +9,7 @@ namespace api_cinema_challenge.EndPoints
         {
             app.MapGet("/movies", GetMovies);
             app.MapPost("/movies", AddMovie);
-            app.MapPut("/movies", UpdateMovie);
+            app.MapPut("/movies{id}", UpdateMovie);
             app.MapDelete("/movies/{id}", DeleteMovie);
         }
 

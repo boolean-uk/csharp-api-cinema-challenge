@@ -10,7 +10,7 @@ namespace api_cinema_challenge.EndPoints
         {
             app.MapGet("/customers", GetCustomers);
             app.MapPost("/customers", AddCustomer);
-            app.MapPut("/customers", UpdateCustomer);
+            app.MapPut("/customers{id}", UpdateCustomer);
             app.MapDelete("/customers{id}", DeleteCustomer);
         }
 

@@ -134,6 +134,14 @@ namespace api_cinema_challenge.Repositories
             }
         }
 
+        public IEnumerable<Screening> GetScreeningsForMovie(int movieId)
+        {
+            using (var db = new CinemaContext())
+            {
+                return db.Screenings.Where(s => s.MovieId == movieId).ToList();
+            }
+        }
+
         public IEnumerable<Ticket> GetTickets()
         {
             using (var db = new CinemaContext())
