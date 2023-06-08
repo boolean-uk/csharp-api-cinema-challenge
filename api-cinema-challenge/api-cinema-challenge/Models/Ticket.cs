@@ -20,7 +20,9 @@ namespace api_cinema_challenge.Models
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
+        [JsonIgnore]
         public DateTime CreatedAt { get; set; }
+        [JsonIgnore]
         public DateTime UpdatedAt { get; set; }
     }
 }

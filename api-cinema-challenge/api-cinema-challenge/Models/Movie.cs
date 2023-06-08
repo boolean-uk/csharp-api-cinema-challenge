@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace api_cinema_challenge.Models
 {
@@ -13,7 +14,10 @@ namespace api_cinema_challenge.Models
         public string Description { get; set; }
         [Required(ErrorMessage = "RunTimeMins is required")]
         public int RunTimeMins { get; set; }
+
+        [JsonIgnore]
         public DateTime CreatedAt { get; set; }
+        [JsonIgnore]
         public DateTime UpdatedAt { get; set; }
     }
 }

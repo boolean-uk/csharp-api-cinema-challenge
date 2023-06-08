@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace api_cinema_challenge.Models
 {
@@ -17,7 +18,10 @@ namespace api_cinema_challenge.Models
         public int ScreenId { get; set; }
         public Screen Screen { get; set; }
         public DateTime StartsAt { get; set; }
+
+        [JsonIgnore]
         public DateTime CreatedAt { get; set; }
+        [JsonIgnore]
         public DateTime UpdatedAt { get; set; }
     }
 }
