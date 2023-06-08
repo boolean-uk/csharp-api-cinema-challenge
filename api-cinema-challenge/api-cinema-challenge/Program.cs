@@ -1,6 +1,8 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using api_cinema_challenge.EndPoints;
+using api_cinema_challenge.Repository;
+using api_cinema_challenge.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 //TODO: change the capitalized strings in the options to match your api and contact details
+builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+builder.Services.AddDbContext<CinemaContext>();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -35,7 +40,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureTestAPI();
+app.ConfigureCustomerApi();
+app.ConfigureMovieApi();
+app.ConfigureScreeningApi();
+app.ConfigureTicketApi();
 
 app.UseHttpsRedirection();
 
