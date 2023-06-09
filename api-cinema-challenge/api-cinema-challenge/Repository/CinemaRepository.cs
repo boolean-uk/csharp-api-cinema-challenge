@@ -1,130 +1,102 @@
 ﻿using api_cinema_challenge.Context;
 using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
 {
     public class CinemaRepository : ICinemaRepository
     {
+        private readonly CinemaContext _context;
+        public CinemaRepository(CinemaContext context)
+        {
+            _context = context;
+        }
         public bool AddCustomer(Customers customer)
         {
-            using(var db = new CinemaContext())
-            {
-                db.Customers.Add(customer);
-                db.SaveChanges();
+            
+                _context.Customers.Add(customer);
+                _context.SaveChanges();
                 return true;
-            }
+            
         }
 
-        public bool AddMovie(Movies movie)
+        public Movies AddMovie(Movies movie)
         {
-            using(var db = new CinemaContext())
-            {
-                db.Movies.Add(movie);
-                db.SaveChanges();
-                return true;
-            }
+                _context.Movies.Add(movie);
+                _context.SaveChanges();
+                return movie;
         }
 
         public bool AddScreening(Screenings screenings)
         {
-            using( var db = new CinemaContext())
-            {
-                db.Screenings.Add(screenings);
-                db.SaveChanges();
+                _context.Screenings.Add(screenings);
+                _context.SaveChanges();
                 return true;
-            }
         }
 
         public bool AddTicket(Tickets tickets)
         {
-            using(var db = new CinemaContext())
-            {
-                db.Tickets.Add(tickets);
-                db.SaveChanges();
+                _context.Tickets.Add(tickets);
+                _context.SaveChanges();
                 return true;
-            }
         }
 
         public bool DeleteCustomer(int id)
         {
-            using (var db = new CinemaContext())
-            {
-                var customer = db.Customers.FirstOrDefault(x => x.Id == id);
+                var customer = _context.Customers.FirstOrDefault(x => x.Id == id);
                 if (customer != null)
                 {
-                    db.Customers.Remove(customer);
-                    db.SaveChanges();
+                    _context.Customers.Remove(customer);
+                    _context.SaveChanges();
                     return true;
                 }
-            }
-            return false;
+                return false;
         }
 
         public bool DeleteMovie(int id)
         {
-            using (var db = new CinemaContext())
-            {
-                var movie = db.Movies.FirstOrDefault(x => x.Id == id);
+                var movie = _context.Movies.FirstOrDefault(x => x.Id == id);
                 if (movie != null)
                 {
-                    db.Movies.Remove(movie);
-                    db.SaveChanges();
+                    _context.Movies.Remove(movie);
+                    _context.SaveChanges();
                     return true;
                 }
-            }
             return false;
         }
 
         public IEnumerable<Customers> GetCustomers()
         {
-            using(var db = new CinemaContext())
-            {
-                return db.Customers.ToList();
-            }
+                return _context.Customers.ToList();
         }
 
         public IEnumerable<Movies> GetMovies()
         {
-            using(var db = new CinemaContext())
-            {
-                return db.Movies.ToList();
-            }
+                return _context.Movies.Include(x => x.Screenings).ToList();
         }
 
         public IEnumerable<Screenings> GetScreenings()
         {
-            using(var db = new CinemaContext())
-            {
-                return db.Screenings.ToList();
-            }
+                return _context.Screenings.ToList();
         }
 
         public IEnumerable<Tickets> GetTickets()
         {
-            using (var db = new CinemaContext())
-            {
-                return db.Tickets.ToList();
-            }
+                return _context.Tickets.ToList();
         }
 
         public bool UpdateCustomer(Customers customer)
         {
-            using (var db = new CinemaContext())
-            {
-                db.Customers.Update(customer);
-                db.SaveChanges();
+                _context.Customers.Update(customer);
+                _context.SaveChanges();
                 return true;
-            }
         }
 
         public bool UpdateMovie(Movies movies)
         {
-            using ( var db = new CinemaContext())
-            {
-                db.Movies.Update(movies);
-                db.SaveChanges();
+                _context.Movies.Update(movies);
+                _context.SaveChanges();
                 return true;
-            }
         }
     }
 }

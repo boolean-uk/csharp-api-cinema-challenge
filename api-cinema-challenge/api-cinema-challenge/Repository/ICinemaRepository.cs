@@ -10,7 +10,7 @@ namespace api_cinema_challenge.Repository
         bool DeleteCustomer(int id);
 
         IEnumerable<Movies> GetMovies();
-        bool AddMovie(Movies movie);
+        Movies AddMovie(Movies movie);
         bool UpdateMovie(Movies movie);
         bool DeleteMovie(int id);
 

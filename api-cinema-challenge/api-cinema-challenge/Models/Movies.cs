@@ -12,9 +12,8 @@ namespace api_cinema_challenge.Models
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        //[ForeignKey("Screenings")]
-        //public int ScreeningId { get; set; }
-        //public Screenings Screenings { get; set; }
+
+        public List<Screenings> Screenings { get; set; }
 
     }
 }

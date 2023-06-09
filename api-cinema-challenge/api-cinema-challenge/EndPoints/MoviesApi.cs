@@ -47,7 +47,8 @@ namespace api_cinema_challenge.EndPoints
         {
             try
             {
-                if (service.AddMovie(movie)) return Results.Ok();
+                var newMovie = service.AddMovie(movie);
+                if (newMovie != null) return Results.Ok(newMovie);
                 return Results.NotFound();
             }
             catch (Exception ex)

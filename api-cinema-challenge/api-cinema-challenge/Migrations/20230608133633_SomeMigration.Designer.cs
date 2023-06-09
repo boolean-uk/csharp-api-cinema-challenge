@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api_cinema_challenge.Context;
@@ -11,9 +12,11 @@ using api_cinema_challenge.Context;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    partial class CinemaContextModelSnapshot : ModelSnapshot
+    [Migration("20230608133633_SomeMigration")]
+    partial class SomeMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,8 +118,6 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MoviesId");
-
                     b.ToTable("Screenings");
                 });
 
@@ -141,15 +142,6 @@ namespace api_cinema_challenge.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Models.Screenings", b =>
-                {
-                    b.HasOne("api_cinema_challenge.Models.Movies", null)
-                        .WithMany("Screenings")
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("api_cinema_challenge.Models.Tickets", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.Screenings", "Screenings")
@@ -158,11 +150,6 @@ namespace api_cinema_challenge.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Screenings");
-                });
-
-            modelBuilder.Entity("api_cinema_challenge.Models.Movies", b =>
-                {
                     b.Navigation("Screenings");
                 });
 #pragma warning restore 612, 618

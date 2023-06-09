@@ -113,11 +113,9 @@ namespace api_cinema_challenge.Data
                 var screenings = new List<Screenings>();
                 var tickets = new List<Tickets>();
 
-                
-
                 if (!db.Movies.Any())
                 {
-                    for (int x =1; x <20;  x++)
+                    for (int x = 1; x < 20; x++)
                     {
                         Movies movie = new Movies();
                         movie.Id = x;
@@ -131,10 +129,10 @@ namespace api_cinema_challenge.Data
                     }
                     db.Movies.AddRange(movies);
                 }
-                
+
                 if (!db.Screenings.Any())
                 {
-                    for(int x =1; x <5;  x++)
+                    for (int x = 1; x < 20; x++)
                     {
                         Screenings screening = new Screenings();
                         screening.Id = x;
@@ -149,9 +147,10 @@ namespace api_cinema_challenge.Data
                     db.Screenings.AddRange(screenings);
                 }
 
+
                 if(!db.Tickets.Any()) 
                 { 
-                    for (int x =1; x <50;  x++)
+                    for (int x =1; x <20;  x++)
                     {
                         Tickets ticket = new Tickets();
                         ticket.Id = x;
