@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models;
+using api_cinema_challenge.Repository.Models;
 
 namespace api_cinema_challenge.Repository
 {
@@ -10,7 +11,7 @@ namespace api_cinema_challenge.Repository
         bool DeleteCustomer(int id);
 
         IEnumerable<Movies> GetMovies();
-        Movies AddMovie(Movies movie);
+        Movies AddMovie(CreateMovie movie);
         bool UpdateMovie(Movies movie);
         bool DeleteMovie(int id);
 

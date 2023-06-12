@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api_cinema_challenge.Context;
@@ -11,9 +12,11 @@ using api_cinema_challenge.Context;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    partial class CinemaContextModelSnapshot : ModelSnapshot
+    [Migration("20230609104939_BeginingExtension")]
+    partial class BeginingExtension
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +53,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Movies", b =>
@@ -84,7 +87,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screenings", b =>
@@ -117,7 +120,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("Screenings", (string)null);
+                    b.ToTable("Screenings");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Tickets", b =>
@@ -142,7 +145,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screenings", b =>

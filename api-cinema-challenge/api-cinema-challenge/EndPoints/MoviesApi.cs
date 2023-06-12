@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using api_cinema_challenge.Repository.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace api_cinema_challenge.EndPoints
@@ -10,7 +11,7 @@ namespace api_cinema_challenge.EndPoints
         {
             app.MapGet("/movies", GetMovies);
             app.MapPost("/movies", AddMovie);
-            app.MapPut("/movies", UpdateMovie);
+            app.MapPut("/movies/{id}", UpdateMovie);
             app.MapDelete("/movies/{id}", DeleteMovie);
         }
 
@@ -43,7 +44,7 @@ namespace api_cinema_challenge.EndPoints
             }
         }
 
-        private static async Task<IResult> AddMovie(Movies movie, ICinemaRepository service)
+        private static async Task<IResult> AddMovie(CreateMovie movie, ICinemaRepository service)
         {
             try
             {

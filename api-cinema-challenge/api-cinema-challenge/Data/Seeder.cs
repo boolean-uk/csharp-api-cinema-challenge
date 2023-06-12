@@ -60,11 +60,10 @@ namespace api_cinema_challenge.Data
 
         private static List<String> Rating = new List<String>()
         {
-        "92%",
-        "93%",
-        "79%",
-        "91%",
-        "79%"
+        "R",
+        "PG-13",
+        "PG-17",
+        "PG-21"
         };
 
         private static List<String> Description = new List<String>()
@@ -141,7 +140,7 @@ namespace api_cinema_challenge.Data
                         screening.StartedAt = DateTime.UtcNow;
                         screening.CreatedAt = DateTime.UtcNow;
                         screening.UpdatedAt = DateTime.UtcNow;
-                        screening.MoviesId = movies[movieRandom.Next(movies.Count)].Id;
+                        screening.MoviesId = movies[movieRandom.Next(movies.Count)].Id.Value;
                         screenings.Add(screening);
                     }
                     db.Screenings.AddRange(screenings);
@@ -156,7 +155,7 @@ namespace api_cinema_challenge.Data
                         ticket.Id = x;
                         var screening = screenings[screeningRandom.Next(screenings.Count)];
                         ticket.numSeats = ticketRandom.Next(1, screening.Capacity + 1);
-                        ticket.ScreenId = screening.Id;
+                        ticket.ScreenId = screening.Id.Value;
                         tickets.Add(ticket);
                     }
                     db.Tickets.AddRange(tickets);
