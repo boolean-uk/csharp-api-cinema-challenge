@@ -7,5 +7,6 @@ namespace api_cinema_challenge.Repositories
         Movie CreateMovie(MoviePost m);
         IEnumerable<Movie> GetMovies();
         Movie UpdateMovie(int id, MoviePut movieFields);
+        Movie DeleteMovie(int id);
     }
 }

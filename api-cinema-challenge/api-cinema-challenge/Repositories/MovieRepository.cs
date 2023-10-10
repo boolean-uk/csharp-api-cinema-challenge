@@ -76,5 +76,19 @@ namespace api_cinema_challenge.Repositories
             }
             return null;
         }
+
+        public Movie DeleteMovie(int id)
+        {
+            using(var db = new CinemaContext())
+            {
+                Movie movie = db.Movies.SingleOrDefault(m => m.id == id);
+                // TODO: handle case where movie is null
+
+                db.Remove(movie);
+                db.SaveChanges();
+                return movie;
+            }
+            return null;
+        }
     }
 }

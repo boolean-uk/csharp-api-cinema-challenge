@@ -87,9 +87,20 @@ namespace api_cinema_challenge.EndPoints
         /// Status 200 - Movie object deleted
         /// </returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        private static Task DeleteMovie(int id, IMovieRepository service)
+        private static async Task<IResult> DeleteMovie(int id, IMovieRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Payload<Movie> payload = new Payload<Movie>() { data = service.DeleteMovie(id) };
+                    return Results.Ok(payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
 
     }
