@@ -21,7 +21,19 @@ namespace api_cinema_challenge.EndPoints
         [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> CreateMovie(MoviePost m, IMovieRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Movie movie = service.CreateMovie(m);
+                    Payload<Movie> payload = new Payload<Movie>() { data = movie };
+                    return Results.Created($"/movies/{movie.id}", payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
 
         /// <summary>Get all movies</summary>
