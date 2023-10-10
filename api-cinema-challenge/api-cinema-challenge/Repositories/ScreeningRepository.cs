@@ -30,5 +30,14 @@ namespace api_cinema_challenge.Repositories
             };
             return null;
         }
+
+        public IEnumerable<Screening> GetScreenings(int movieId)
+        {
+            using (var db = new CinemaContext())
+            {
+                return db.Screenings.ToList().FindAll(s => s.movieId == movieId);
+            }
+            return null;
+        }
     }
 }

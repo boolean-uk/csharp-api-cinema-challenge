@@ -39,9 +39,23 @@ namespace api_cinema_challenge.EndPoints
         /// Status 200 - List of all screenings for a movie
         /// </returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        private static Task GetScreenings(int id, IScreeningRepository service)
+        private static async Task<IResult> GetScreenings(int id, IScreeningRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Payload<IEnumerable<Screening>> payload = new Payload<IEnumerable<Screening>>()
+                    {
+                        data = service.GetScreenings(id)
+                    };
+                    return Results.Ok(payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
     }
 }
