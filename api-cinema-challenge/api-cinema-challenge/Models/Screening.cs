@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api_cinema_challenge.Model
+namespace api_cinema_challenge.Models
 {
     public class Screening
     {
