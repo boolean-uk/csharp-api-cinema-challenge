@@ -25,5 +25,14 @@ namespace api_cinema_challenge.Repositories
             }
             return null;
         }
+
+        public IEnumerable<Customer> GetCustomers()
+        {
+            using (var db = new CinemaContext())
+            {
+                return db.Customers.ToList();
+            }
+            return null;
+        }
     }
 }

@@ -43,7 +43,21 @@ namespace api_cinema_challenge.EndPoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> GetCustomers(ICustomerRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Payload<IEnumerable<Customer>> payload = new Payload<IEnumerable<Customer>>()
+                    {
+                        data = service.GetCustomers()
+                    };
+                    return Results.Ok(payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
 
         /// <summary>Update a customer</summary>

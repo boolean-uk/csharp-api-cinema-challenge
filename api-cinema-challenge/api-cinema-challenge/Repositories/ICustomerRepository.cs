@@ -5,5 +5,6 @@ namespace api_cinema_challenge.Repositories
     public interface ICustomerRepository
     {
         Customer CreateCustomer(CustomerPost c);
+        IEnumerable<Customer> GetCustomers();
     }
 }
