@@ -16,11 +16,11 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "TITLE_OF_PROJECT_API",
-        Description = "DESCRIPTION_OF_API",
+        Title = "Cinema Booking Api",
+        Description = "A complete Cinema Booking API in C# using ASP.NET and Entity Framework",
         Contact = new OpenApiContact
         {
-            Name = "YOUR_NAME",
+            Name = "Konstantina Stafyla",
         }
     });
 });
