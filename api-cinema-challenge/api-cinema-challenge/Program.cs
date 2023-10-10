@@ -1,12 +1,18 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using api_cinema_challenge.EndPoints;
+using api_cinema_challenge.Repositories;
+using api_cinema_challenge.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddDbContext<CinemaContext>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -36,6 +42,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ConfigureTestAPI();
+
+app.ConfigureCustomerApi();
 
 app.UseHttpsRedirection();
 
