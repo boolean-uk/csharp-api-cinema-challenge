@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models.Customer
+﻿namespace api_cinema_challenge.Models
 {
     public class Customer
     {

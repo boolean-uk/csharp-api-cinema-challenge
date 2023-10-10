@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models.Movie
+﻿namespace api_cinema_challenge.Models
 {
     public class MovieInput
     {

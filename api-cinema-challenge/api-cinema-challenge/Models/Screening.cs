@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api_cinema_challenge.Models.Screening
+namespace api_cinema_challenge.Model
 {
     public class Screening
     {
@@ -13,5 +13,6 @@ namespace api_cinema_challenge.Models.Screening
 
         [ForeignKey("Movie")]
         public int movieId { get; set; }
+        public Movie Movie { get; set; }
     }
 }
