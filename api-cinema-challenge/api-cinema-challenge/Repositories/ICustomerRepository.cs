@@ -6,7 +6,7 @@ namespace api_cinema_challenge.Repositories
     {
         Customer CreateCustomer(CustomerPost c);
         IEnumerable<Customer> GetCustomers();
-        Customer UpdateCustomer(int id, CustomerPut c);
+        Customer UpdateCustomer(int id, CustomerPut customerFields);
         Customer DeleteCustomer(int id);
     }
 }

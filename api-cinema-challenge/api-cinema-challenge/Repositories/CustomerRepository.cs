@@ -62,8 +62,10 @@ namespace api_cinema_challenge.Repositories
                     customer.phone = customerFields.phone;
                 }
                 if (updatedFields)
+                {
                     customer.updatedAt = DateTime.UtcNow;
-                db.SaveChanges();
+                    db.SaveChanges();
+                }
                 return customer;
             }
             return null;
