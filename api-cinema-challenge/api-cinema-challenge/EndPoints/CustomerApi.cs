@@ -18,9 +18,22 @@ namespace api_cinema_challenge.EndPoints
         /// <returns>
         /// Status 201 - Customer object created
         /// </returns>
+        [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> CreateCustomer(CustomerPost c, ICustomerRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Customer customer = service.CreateCustomer(c);
+                    Payload<Customer> payload = new Payload<Customer>() { data = customer };
+                    return Results.Created($"/customers/{customer.id}", payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
 
         /// <summary>Get all customers</summary>
@@ -37,6 +50,7 @@ namespace api_cinema_challenge.EndPoints
         /// <returns>
         /// Status 201 - Customer object updated
         /// </returns>
+        [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> UpdateCustomer(int id, CustomerPut c, ICustomerRepository service)
         {
             throw new NotImplementedException();
@@ -46,6 +60,7 @@ namespace api_cinema_challenge.EndPoints
         /// <returns>
         /// Status 200 - Customer object deleted
         /// </returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> DeleteCustomer(int id, ICustomerRepository service)
         {
             throw new NotImplementedException();
