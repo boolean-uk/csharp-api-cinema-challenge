@@ -43,7 +43,21 @@ namespace api_cinema_challenge.EndPoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> GetMovies(IMovieRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Payload<IEnumerable<Movie>> payload = new Payload<IEnumerable<Movie>>()
+                    {
+                        data = service.GetMovies()
+                    };
+                    return Results.Ok(payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
 
         /// <summary>Update a movie</summary>

@@ -26,5 +26,14 @@ namespace api_cinema_challenge.Repositories
             }
             return null;
         }
+
+        public IEnumerable<Movie> GetMovies()
+        {
+            using (var db = new CinemaContext())
+            {
+                return db.Movies.ToList();
+            }
+            return null;
+        }
     }
 }
