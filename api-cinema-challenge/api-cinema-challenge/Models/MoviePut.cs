@@ -1,6 +1,6 @@
 ﻿namespace api_cinema_challenge.Models
 {
-    public class MovieInput
+    public class MoviePut
     {
         public string title { get; set; }
         public int rating { get; set; }
