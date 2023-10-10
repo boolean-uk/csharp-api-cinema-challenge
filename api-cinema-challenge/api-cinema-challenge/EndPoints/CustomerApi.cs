@@ -82,14 +82,25 @@ namespace api_cinema_challenge.EndPoints
             }
         }
 
-        /// <summary>Update a customer</summary>
+        /// <summary>Delete a customer</summary>
         /// <returns>
         /// Status 200 - Customer object deleted
         /// </returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> DeleteCustomer(int id, ICustomerRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Payload<Customer> payload = new Payload<Customer>() { data = service.DeleteCustomer(id) };
+                    return Results.Ok(payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
     }
 }
