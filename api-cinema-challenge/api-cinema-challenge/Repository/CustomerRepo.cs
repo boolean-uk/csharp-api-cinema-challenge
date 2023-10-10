@@ -53,6 +53,7 @@ namespace api_cinema_challenge.Repository
                     target.name = customer.name;
                     target.email = customer.email;
                     target.phone = customer.phone;
+                    target.updatedAt = DateTime.UtcNow;
                     db.SaveChanges();
                     return true;
                 }

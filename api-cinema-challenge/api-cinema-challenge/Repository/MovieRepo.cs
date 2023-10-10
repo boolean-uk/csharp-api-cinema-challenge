@@ -53,6 +53,7 @@ namespace api_cinema_challenge.Repository
                     target.rating = movie.rating;
                     target.description = movie.description;
                     target.runtimeMins = movie.runtimeMins;
+                    target.updatedAt = DateTime.UtcNow;
                     db.SaveChanges();
                     return true;
                 }
