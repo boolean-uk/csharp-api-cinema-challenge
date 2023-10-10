@@ -17,9 +17,21 @@ namespace api_cinema_challenge.EndPoints
         /// Status 201 - Screening object created
         /// </returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static Task CreateScreening(int id, ScreeningPost s, IScreeningRepository service)
+        private static async Task<IResult> CreateScreening(int id, ScreeningPost s, IScreeningRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Screening screening = service.CreateScreening(id, s);
+                    Payload<Screening> payload = new Payload<Screening>() { data = screening };
+                    return Results.Created($"/movies/{id}/screenings/{screening.id}", payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
 
         /// <summary>Get a list of every screening for a movie.</summary>

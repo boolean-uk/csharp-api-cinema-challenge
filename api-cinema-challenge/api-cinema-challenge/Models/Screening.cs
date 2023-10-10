@@ -13,6 +13,6 @@ namespace api_cinema_challenge.Models
 
         [ForeignKey("Movie")]
         public int movieId { get; set; }
-        public Movie Movie { get; set; }
+        public Movie movie { get; set; }
     }
 }
