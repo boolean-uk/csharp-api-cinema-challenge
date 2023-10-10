@@ -65,9 +65,21 @@ namespace api_cinema_challenge.EndPoints
         /// Status 201 - Movie object updated
         /// </returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static Task UpdateMovie(int id, MoviePut m, IMovieRepository service)
+        private static async Task<IResult> UpdateMovie(int id, MoviePut m, IMovieRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Movie movie = service.UpdateMovie(id, m);
+                    Payload<Movie> payload = new Payload<Movie>() { data = movie };
+                    return Results.Created($"/movies/{id}", payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
 
         /// <summary>Delete a movie</summary>
