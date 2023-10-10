@@ -34,5 +34,39 @@ namespace api_cinema_challenge.Repositories
             }
             return null;
         }
+
+        public Customer UpdateCustomer(int id, CustomerPut customerFields)
+        {
+            using ( var db = new CinemaContext())
+            {
+                Customer customer = db.Customers.SingleOrDefault(c => c.id == id);
+                // TODO: handle case where customer is null
+
+                bool updatedFields = false;
+
+                db.Customers.Attach(customer);
+                // update all non-null fields
+                if (!string.IsNullOrEmpty(customerFields.name))
+                {
+                    updatedFields = true;
+                    customer.name = customerFields.name;
+                }
+                if (!string.IsNullOrEmpty(customerFields.email))
+                {
+                    updatedFields = true;
+                    customer.email = customerFields.email;
+                }
+                if (!string.IsNullOrEmpty(customerFields.phone))
+                {
+                    updatedFields = true;
+                    customer.phone = customerFields.phone;
+                }
+                if (updatedFields)
+                    customer.updatedAt = DateTime.UtcNow;
+                db.SaveChanges();
+                return customer;
+            }
+            return null;
+        }
     }
 }

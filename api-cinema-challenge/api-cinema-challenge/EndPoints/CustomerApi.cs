@@ -67,7 +67,19 @@ namespace api_cinema_challenge.EndPoints
         [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> UpdateCustomer(int id, CustomerPut c, ICustomerRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Customer customer = service.UpdateCustomer(id, c);
+                    Payload<Customer> payload = new Payload<Customer>() { data = customer };
+                    return Results.Created($"/customers/{id}", payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
 
         /// <summary>Update a customer</summary>
