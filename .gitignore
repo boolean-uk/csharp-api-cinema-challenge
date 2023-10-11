@@ -365,4 +365,10 @@ FodyWeavers.xsd
 
 /api-cinema-challenge/api-cinema-challenge/bin/
 /api-cinema-challenge/api-cinema-challenge/obj/
+
+*/**/bin/Debug   
+*/**/bin/Release   
+*/**/obj/Debug   
+*/**/obj/Release   
+/api-cinema-challenge/api-cinema-challenge/appsettings.json
 /api-cinema-challenge/api-cinema-challenge/appsettings.Development.json
