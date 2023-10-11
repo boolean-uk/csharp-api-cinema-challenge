@@ -25,5 +25,14 @@ namespace api_cinema_challenge.Repositories
             }
             return null;
         }
+
+        public IEnumerable<Ticket> GetTickets(int customerId, int screeningId)
+        {
+            using ( var db = new CinemaContext())
+            {
+                return db.Tickets.ToList().FindAll(t => t.customerId == customerId && t.screeningId == screeningId);
+            };
+            return null;
+        }
     }
 }

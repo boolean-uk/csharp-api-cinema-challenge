@@ -41,7 +41,21 @@ namespace api_cinema_challenge.EndPoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> GetTickets(int customerId, int screeningId, ITicketRepository service)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    Payload<IEnumerable<Ticket>> payload = new Payload<IEnumerable<Ticket>>()
+                    {
+                        data = service.GetTickets(customerId, screeningId)
+                    };
+                    return Results.Ok(payload);
+                });
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
         }
     }
 }
