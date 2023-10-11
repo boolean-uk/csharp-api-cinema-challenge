@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace api_cinema_challenge.Repositories
 {
@@ -103,6 +104,12 @@ namespace api_cinema_challenge.Repositories
             {
                 Movie movie = db.Movies.SingleOrDefault(m => m.id == id);
                 // TODO: handle case where movie is null
+
+                // if screenings exist, delete screenings first
+                List<Screening> screenings = db.Screenings.ToList().FindAll(s => s.movieId == id);
+
+                screenings.ForEach(s => db.Screenings.Remove(s));
+                db.SaveChanges();
 
                 db.Remove(movie);
                 db.SaveChanges();
