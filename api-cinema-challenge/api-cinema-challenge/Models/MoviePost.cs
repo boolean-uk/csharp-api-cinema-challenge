@@ -6,5 +6,6 @@
         public required string rating { get; set; }
         public required string description { get; set; }
         public required int runtimeMins { get; set; }
+        public List<ScreeningPost>? screenings { get; set; }
     }
 }

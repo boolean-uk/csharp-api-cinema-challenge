@@ -22,6 +22,26 @@ namespace api_cinema_challenge.Repositories
 
                 db.Movies.Add(movie);
                 db.SaveChanges();
+
+                // if screenings field exists, create screenings as well
+                if (m.screenings != null && m.screenings.Any())
+                {
+                    foreach (ScreeningPost s in m.screenings)
+                    {
+                        Screening screening = new Screening()
+                        {
+                            screenNumber = s.screenNumber,
+                            capacity = s.capacity,
+                            startsAt = s.startsAt,
+                            createdAt = date,
+                            updatedAt = date,
+                            movieId = movie.id,
+                            movie = movie
+                        };
+                        db.Screenings.Add(screening);
+                        db.SaveChanges();
+                    }
+                }
                 return movie;
             }
             return null;
