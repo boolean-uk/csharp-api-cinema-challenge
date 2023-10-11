@@ -16,7 +16,7 @@ namespace api_cinema_challenge.EndPoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> CreateACustomer(Customer customer, ICustomerRepo service)
+        private static async Task<IResult> CreateACustomer(CustomerPost customer, ICustomerRepo service)
         {
             try
             {
@@ -30,7 +30,6 @@ namespace api_cinema_challenge.EndPoints
                     newCustomer.createdAt = DateTime.UtcNow;
                     newCustomer.updatedAt = DateTime.UtcNow;
                     service.AddCustomer(newCustomer);
-                    //service.Save();
                     Payload<Customer> payload = new Payload<Customer>()
                     {
                         data = newCustomer
@@ -43,19 +42,6 @@ namespace api_cinema_challenge.EndPoints
             {
                 return Results.Problem(ex.Message);
             }
-
-
-
-            /*try
-            {
-                if (service.AddCustomer(customer)) return Results.Ok();
-                return Results.NotFound();
-
-            }
-            catch (Exception ex)
-            {
-                return Results.Problem(ex.Message);
-            }*/
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -79,34 +65,26 @@ namespace api_cinema_challenge.EndPoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> UpdateCustomer(Customer customer, ICustomerRepo service)
+        private static async Task<IResult> UpdateCustomer(CustomerPost customer, ICustomerRepo service)
         {
             try
             {
-                // need check from Nigel here
                 return await Task.Run(() =>
                 {
                     if (customer == null) return Results.NotFound();
                     Customer newCustomer = new Customer();
-                    newCustomer.Id = customer.Id;
                     newCustomer.email = customer.email;
                     newCustomer.name = customer.name;
                     newCustomer.phone = customer.phone;
                     newCustomer.createdAt = DateTime.UtcNow;
                     newCustomer.updatedAt = DateTime.UtcNow;
-                    service.UpdateCustomer(customer);
-                    //service.Save();
+                    service.UpdateCustomer(newCustomer);
                     Payload<Customer> payload = new Payload<Customer>()
                     {
                         data = newCustomer
                     };
 
                     return Results.Created($"https://localhost:7195/customer/{newCustomer.Id}", payload);
-
-
-                    //this was the code without the payload and success string added.It worked as it should
-                    /*if (service.UpdateCustomer(customer)) return Results.Ok();
-                    return Results.NotFound();*/
                 });
 
             }
@@ -119,16 +97,13 @@ namespace api_cinema_challenge.EndPoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> DeleteCustomer(int id, ICustomerRepo service)
         {
-            //same as above need check from Nigel
-
-            //added the using to get the target with id
             using (var db = new CinemaContext())
                 try
                 {
                     var target = db.Customers.FirstOrDefault(c => c.Id == id);
                     if (target == null) return Results.NotFound();
                     Customer newCustomer = new Customer();
-                    newCustomer.Id = target.Id;
+                    //newCustomer.Id = target.Id;
                     newCustomer.email = target.email;
                     newCustomer.name = target.name;
                     newCustomer.phone = target.phone;
@@ -146,18 +121,6 @@ namespace api_cinema_challenge.EndPoints
                     {
                         return Results.NotFound();
                     }
-
-                    // Maybe this Service.Save that I dont have in the repository is responsible for not deleting the object
-                    //service.Save();
-                    
-
-                    
-
-
-                    //same as above this is previous code before adding payload and success string
-                    /*if (service.DeleteCustomer(id)) return Results.Ok();
-                    return Results.NotFound();*/
-
                 }
                 catch (Exception ex)
                 {

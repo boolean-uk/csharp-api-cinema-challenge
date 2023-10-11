@@ -13,13 +13,25 @@ namespace api_cinema_challenge.EndPoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> CreateAScreening(Screening screening, IScreeningRepo service)
+        private static async Task<IResult> CreateAScreening(ScreeningPost screening, IScreeningRepo service)
         {
             try
             {
-                if (service.AddScreening(screening)) return Results.Ok();
-                return Results.NotFound();
+                return await Task.Run(() =>
+                {
+                    if (screening == null) return Results.NotFound();
+                    Screening newScreening = new Screening();
+                    newScreening.screenNumber = screening.screenNumber;
+                    newScreening.capacity = screening.capacity;
+                    newScreening.startsAt = screening.startsAt;
+                    service.AddScreening(newScreening);
+                    Payload<Screening> payload = new Payload<Screening>()
+                    {
+                        data = newScreening
+                    };
 
+                    return Results.Created($"https://localhost:7195/customer/{newScreening.Id}", payload);
+                });
             }
             catch (Exception ex)
             {
@@ -32,8 +44,13 @@ namespace api_cinema_challenge.EndPoints
         {
             try
             {
-                return await Task.Run(() => {
-                    return Results.Ok(service.GetAllScreenings());
+                return await Task.Run(() =>
+                {
+                    Payload<IEnumerable<Screening>> payload = new Payload<IEnumerable<Screening>>()
+                    {
+                        data = service.GetAllScreenings().ToList()
+                    };
+                    return Results.Ok(payload);
                 });
             }
             catch (Exception ex)

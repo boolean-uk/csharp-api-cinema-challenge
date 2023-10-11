@@ -27,6 +27,7 @@ namespace api_cinema_challenge.Repository
                     // we do db.Remove(target) without the
                     // Customers. Why is that?
                     db.Customers.Remove(target);
+                    db.SaveChanges();
                     return true;
                 }
                 return false;
