@@ -17,7 +17,7 @@ namespace api_cinema_challenge.Repositories
                 {
                     screenNumber = s.screenNumber,
                     capacity = s.capacity,
-                    startsAt = s.startsAt,
+                    startsAt = date, // TODO: convert s.startsAt to Utc date and store that here
                     createdAt = date,
                     updatedAt = date,
                     movieId = movieId,
