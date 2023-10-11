@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1",
+        Version = "v2",
         Title = "Cinema Challenge",
         Description = "Cinema API Challenge",
         Contact = new OpenApiContact
@@ -42,6 +42,8 @@ if (app.Environment.IsDevelopment())
 app.ConfigureTestAPI();
 
 app.ConfigureCustomerApi();
+app.ConfigureMovieApi();
+app.ConfigureScreenApi();
 
 app.UseHttpsRedirection();
 

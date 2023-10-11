@@ -10,7 +10,7 @@ namespace api_cinema_challenge.EndPoints
         public static void ConfigureCustomerApi(this WebApplication application)
         {
             application.MapGet("/customers", GetCustomers);
-            application.MapPost("/customers", AddCustomer);
+            application.MapPost("/customer", AddCustomer);
             application.MapPut("/customers/{id}", UpdateCustomer);
             application.MapDelete("/customers/{id}", DeleteCustomer);
         }
