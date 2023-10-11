@@ -45,7 +45,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureTestAPI();
 
 app.UseHttpsRedirection();
 
