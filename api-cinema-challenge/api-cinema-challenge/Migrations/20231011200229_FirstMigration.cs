@@ -64,6 +64,23 @@ namespace api_cinema_challenge.Migrations
                 {
                     table.PrimaryKey("PK_Screenings", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    numSeats = table.Column<int>(type: "integer", nullable: false),
+                    createdAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CustomerId = table.Column<int>(type: "integer", nullable: false),
+                    ScreeningId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -77,6 +94,9 @@ namespace api_cinema_challenge.Migrations
 
             migrationBuilder.DropTable(
                 name: "Screenings");
+
+            migrationBuilder.DropTable(
+                name: "Tickets");
         }
     }
 }

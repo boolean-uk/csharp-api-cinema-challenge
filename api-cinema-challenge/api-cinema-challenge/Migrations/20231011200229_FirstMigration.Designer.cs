@@ -12,7 +12,7 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20231011193212_FirstMigration")]
+    [Migration("20231011200229_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -119,6 +119,34 @@ namespace api_cinema_challenge.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Screenings");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScreeningId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("createdAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("numSeats")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("updatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tickets");
                 });
 #pragma warning restore 612, 618
         }

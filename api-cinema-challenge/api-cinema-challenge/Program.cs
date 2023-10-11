@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IMovieRepo, MovieRepo>();
 builder.Services.AddScoped<IScreeningRepo, ScreeningRepo>();
+builder.Services.AddScoped<ITicketRepo, TicketRepo>();
 
 builder.Services.AddDbContext<CinemaContext>();
 
@@ -55,5 +56,6 @@ app.MapControllers();
 app.ConfigureCustomerApi();
 app.ConfigureMovieApi();
 app.ConfigureScreeningApi();
+app.ConfigureTicketApi();
 
 app.Run();

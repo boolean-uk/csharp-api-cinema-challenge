@@ -73,6 +73,7 @@ namespace api_cinema_challenge.EndPoints
                 {
                     if (customer == null) return Results.NotFound();
                     Customer newCustomer = new Customer();
+                    newCustomer.Id = customer.Id;
                     newCustomer.email = customer.email;
                     newCustomer.name = customer.name;
                     newCustomer.phone = customer.phone;
