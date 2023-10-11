@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.EndPoints
@@ -16,7 +17,7 @@ namespace api_cinema_challenge.EndPoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> CreateAMovie(MoviePost movie, IMovieRepo service)
+        private static async Task<IResult> CreateAMovie(MoviePost movie, IMovieRepo service, IScreeningRepo screen)
         {
             try
             {
@@ -30,7 +31,26 @@ namespace api_cinema_challenge.EndPoints
                     newMovie.runtimeMins = movie.runtimeMins;
                     newMovie.createdAt = DateTime.UtcNow;
                     newMovie.updatedAt = DateTime.UtcNow;
+                    
                     service.AddMovie(newMovie);
+
+                    if (movie.screenings.Any())
+                    {
+                        foreach(var screeningPost in movie.screenings)
+                        {
+                            Screening screening = new Screening()
+                            {
+                                screenNumber = screeningPost.screenNumber,
+                                startsAt = screeningPost.startsAt,
+                                capacity = screeningPost.capacity,
+                                MovieId = newMovie.Id,
+                                createdAt = DateTime.UtcNow,
+                                updatedAt = DateTime.UtcNow,
+                            };
+                            screen.AddScreening(screening);
+                        }
+                    }
+
                     Payload<Movie> payload = new Payload<Movie>()
                     {
                         data = newMovie
@@ -97,7 +117,7 @@ namespace api_cinema_challenge.EndPoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        private static async Task<IResult> DeleteMovie(int id, IMovieRepo service)
+        private static async Task<IResult> DeleteMovie(int id, IMovieRepo service, IScreeningRepo screen)
         {
             using (var db = new CinemaContext())
                 try
@@ -111,12 +131,20 @@ namespace api_cinema_challenge.EndPoints
                     newMovie.runtimeMins = target.runtimeMins;
                     newMovie.createdAt = DateTime.UtcNow;
                     newMovie.updatedAt = DateTime.UtcNow;
+
+                    // here I would add target.screenings and then
+                    // check if screening.MovieId == id to Remove
+                    // any screenings for this movie but I only
+                    // have screenings in the MoviePost instead of Movie
+
                     Payload<Movie> payload = new Payload<Movie>()
                     {
                         data = newMovie
                     };
                     if (service.DeleteMovie(id))
                     {
+
+
                         return Results.Created($"https://localhost:7195/customer/{newMovie.Id}", payload);
                     }
                     else

@@ -12,7 +12,7 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20231010175817_FirstMigration")]
+    [Migration("20231011193212_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -98,13 +98,22 @@ namespace api_cinema_challenge.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("MovieId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("capacity")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("createdAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("screenNumber")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("startsAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("updatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");

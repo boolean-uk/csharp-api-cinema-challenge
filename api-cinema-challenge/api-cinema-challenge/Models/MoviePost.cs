@@ -10,6 +10,6 @@ namespace api_cinema_challenge.Models
         public string rating { get; set; }
         public string description { get; set; }
         public int runtimeMins { get; set; }
-        public IEnumerable<Screening> screenings { get; set; }
+        public IEnumerable<ScreeningPost> screenings { get; set; }
     }
 }
