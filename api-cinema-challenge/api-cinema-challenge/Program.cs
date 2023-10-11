@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureTestAPI();
+// app.ConfigureTestAPI();
 
 app.ConfigureCustomerApi();
 app.ConfigureMovieApi();
