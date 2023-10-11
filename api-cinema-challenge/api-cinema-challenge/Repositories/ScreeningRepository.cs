@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repositories
 {
@@ -17,7 +18,7 @@ namespace api_cinema_challenge.Repositories
                 {
                     screenNumber = s.screenNumber,
                     capacity = s.capacity,
-                    startsAt = date, // TODO: convert s.startsAt to Utc date and store that here
+                    startsAt = s.startsAt,
                     createdAt = date,
                     updatedAt = date,
                     movieId = movieId,
@@ -35,7 +36,7 @@ namespace api_cinema_challenge.Repositories
         {
             using (var db = new CinemaContext())
             {
-                return db.Screenings.ToList().FindAll(s => s.movieId == movieId);
+                return db.Screenings.Include(s => s.movie).ToList().FindAll(s => s.movieId == movieId);
             }
             return null;
         }
