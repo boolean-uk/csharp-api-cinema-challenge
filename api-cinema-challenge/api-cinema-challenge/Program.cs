@@ -44,6 +44,7 @@ app.ConfigureTestAPI();
 app.ConfigureCustomerApi();
 app.ConfigureMovieApi();
 app.ConfigureScreenApi();
+app.ConfigureTicketApi();
 
 app.UseHttpsRedirection();
 

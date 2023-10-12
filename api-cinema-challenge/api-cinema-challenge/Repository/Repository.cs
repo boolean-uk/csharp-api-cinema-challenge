@@ -2,6 +2,7 @@
 using api_cinema_challenge.Models.Customer;
 using api_cinema_challenge.Models.Movie;
 using api_cinema_challenge.Models.Screen;
+using api_cinema_challenge.Models.Ticket;
 
 namespace api_cinema_challenge.Repository
 {
@@ -30,6 +31,14 @@ namespace api_cinema_challenge.Repository
             {
                 return db.movies.ToList();
             }
+        }
+
+        public IEnumerable<Ticket> GetTickets() 
+        {
+            using (var db = new CinemaContext())
+            {
+                return db.tickets.ToList();
+            }    
         }
 
         // Get one
@@ -88,6 +97,17 @@ namespace api_cinema_challenge.Repository
                 return true;
             }
             return false;
+        }
+
+        public bool AddTicket(Ticket ticket)
+        {
+            using (var db = new CinemaContext())
+            {
+                db.tickets.Add(ticket);
+                db.SaveChanges();
+                return true;
+            }
+            return false; 
         }
 
         // Update one 

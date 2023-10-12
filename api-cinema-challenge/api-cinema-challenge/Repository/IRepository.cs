@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.Models.Customer;
 using api_cinema_challenge.Models.Movie;
 using api_cinema_challenge.Models.Screen;
+using api_cinema_challenge.Models.Ticket;
 
 namespace api_cinema_challenge.Repository
 {
@@ -10,6 +11,7 @@ namespace api_cinema_challenge.Repository
         IEnumerable<Customer> GetCustomers();
         IEnumerable<Screen> GetScreens();
         IEnumerable<Movie> GetMovies();
+        IEnumerable<Ticket>GetTickets();
 
         // Get one
         Customer GetCustomer(int id);
@@ -19,6 +21,7 @@ namespace api_cinema_challenge.Repository
         bool AddCustomer (Customer customer);
         bool AddScreen(Screen screen);
         bool AddMovie(Movie movie);
+        bool AddTicket(Ticket ticket);
         
         // Update one
         bool UpdateCustomer (int id, Customer customer);
