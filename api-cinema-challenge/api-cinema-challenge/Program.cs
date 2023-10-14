@@ -1,46 +1,51 @@
+using api_cinema_challenge.Data;
+using api_cinema_challenge.EndPoints;
+using api_cinema_challenge.Repository;
+using api_cinema_challenge.DataContext;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using api_cinema_challenge.EndPoints;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+builder.Services.AddDbContext<CinemaContext>();
 
-//TODO: change the capitalized strings in the options to match your api and contact details
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "TITLE_OF_PROJECT_API",
-        Description = "DESCRIPTION_OF_API",
+        Title = "Cinema_Booking_Api",
+        Description = "Cinema_Booking_Api",
         Contact = new OpenApiContact
         {
-            Name = "YOUR_NAME",
+            Name = "Ntina_B",
         }
     });
 });
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.ConfigureTestAPI();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.ConfigureMoviesApi();
+app.ConfigureTicketsApi();
+app.ConfigureCustomersApi();
+app.ConfigureScreeningsApi();
+
+app.Seed();
+
+app.Run(); 
