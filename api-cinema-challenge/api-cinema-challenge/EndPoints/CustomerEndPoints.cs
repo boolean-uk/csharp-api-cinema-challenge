@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
+using api_cinema_challenge.DTO;
 
 namespace workshop.wwwapi.Endpoints
 {
@@ -64,7 +65,7 @@ namespace workshop.wwwapi.Endpoints
             List<Customer> customer = customerResponse.ToList();
 
 
-            return TypedResults.Ok(customer);
+            return TypedResults.Ok(new RequestSuccessDTO(customer));
         }
         public static async Task<IResult> CreateACustomer(CustomerPayload payload, ICustomerRepository repository)
         {
@@ -83,7 +84,7 @@ namespace workshop.wwwapi.Endpoints
 
             var customerResponse = await repository.CreateACustomer(newCustomer);
            
-            return TypedResults.Ok(customerResponse);
+            return TypedResults.Ok(new RequestSuccessDTO(customerResponse));
         }
 
         public static async Task<IResult> UpdateCustomerById(int id, CustomerPayload payload, ICustomerRepository repository)
@@ -99,7 +100,7 @@ namespace workshop.wwwapi.Endpoints
             Customer? customerResponse = await repository.DeleteACustomer(id);
             if (customerResponse == null) { TypedResults.NotFound(); }
 
-            return TypedResults.Ok(customerResponse);
+            return TypedResults.Ok(new RequestSuccessDTO(customerResponse));
         }
 
 
