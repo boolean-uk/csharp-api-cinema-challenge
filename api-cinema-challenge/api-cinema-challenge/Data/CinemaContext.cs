@@ -145,5 +145,7 @@ namespace api_cinema_challenge.Data
         public DbSet<User> Users { get; set; }  
 
         public DbSet<Movie> Movies { get; set; }
+
+        public DbSet<Screening> Screenings { get; set; }
     }
 }

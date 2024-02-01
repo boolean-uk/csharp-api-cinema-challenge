@@ -1,7 +1,9 @@
 ﻿using api_cinema_challenge.Controllers.MovieRepo;
+using api_cinema_challenge.Controllers.ScreeningRepo;
 using api_cinema_challenge.Controllers.UserRepo;
 using api_cinema_challenge.DTO;
 using static api_cinema_challenge.Models.Payloads.MoviePayloads;
+using static api_cinema_challenge.Models.Payloads.ScreeningPayloads;
 
 namespace api_cinema_challenge.Views
 {
@@ -15,6 +17,11 @@ namespace api_cinema_challenge.Views
             movieGroup.MapPost("/", CreateMovie);
             movieGroup.MapPut("/{id}", UpdateMovie);
             movieGroup.MapDelete("/{id}", DeleteMovie);
+
+
+
+            movieGroup.MapPost("/{movie_id}/screenings", CreateScreening);
+            movieGroup.MapGet("/{movie_id}/screenings", GetScreeningByMovieId);
         }
 
 
@@ -98,6 +105,28 @@ namespace api_cinema_challenge.Views
             }
             return TypedResults.Ok(new MovieAllDetailsDTO(result));
 
+        }
+
+
+        private static async Task<IResult> CreateScreening(int movie_id, ScreeningPostPayload payload, IScreeningRepository screeningRepository)
+        {
+            var result = await screeningRepository.CreateScreening(movie_id, payload.screenNumber, payload.capacity, payload.startsAt);
+            if ( result == null )
+            {
+                return TypedResults.NotFound($"Could not find movie with {movie_id}");
+            }
+            return TypedResults.Created($"/movies/{movie_id}/screenings" ,new ScreeningAllDetailsDTO(result));
+
+        }
+
+        private static async Task<IResult> GetScreeningByMovieId(int movie_id, IScreeningRepository screeningRepository)
+        {
+            var result = await screeningRepository.GetScreeningByMovieId(movie_id);
+            if (result == null)
+            {
+                return TypedResults.NotFound($"Movie with id {movie_id} has no screening");
+            }
+            return TypedResults.Ok(new ScreeningAllDetailsDTO(result));
         }
     }
 }
