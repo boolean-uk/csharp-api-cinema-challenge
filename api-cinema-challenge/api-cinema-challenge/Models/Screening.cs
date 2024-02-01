@@ -2,16 +2,16 @@
 
 namespace api_cinema_challenge.Models
 {
-    [Table("screenings")]
+    //[Table("screenings")]
     public class Screening
     {
-        [Column("id")]
+        //[Column("id")]
         public int Id { get; set; }
-        [Column("screen_numbers")]
+        //[Column("screen_numbers")]
         public int ScreenNumber { get; set; }
-        [Column("capacities")]
+        //[Column("capacities")]
         public int Capacity { get; set; }
-        [Column("starts_at")]
+        //[Column("starts_at")]
         public string StartsAt { get; set; }
 
 

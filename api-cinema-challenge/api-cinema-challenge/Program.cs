@@ -23,4 +23,5 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.ConfigureUserApi();
+app.ConfigureMovieApi();
 app.Run();

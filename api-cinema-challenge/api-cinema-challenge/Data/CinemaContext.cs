@@ -44,8 +44,8 @@ namespace api_cinema_challenge.Data
                     Rating = "R",
                     Description = "A computer hacker learns about the true nature of his reality",
                     RuntimeMins = 136,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -54,8 +54,8 @@ namespace api_cinema_challenge.Data
                     Rating = "PG-13",
                     Description = "A thief who enters the dreams of others to steal their secrets",
                     RuntimeMins = 148,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -64,8 +64,8 @@ namespace api_cinema_challenge.Data
                     Rating = "R",
                     Description = "Two imprisoned men bond over a number of years",
                     RuntimeMins = 142,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -74,8 +74,8 @@ namespace api_cinema_challenge.Data
                     Rating = "R",
                     Description = "Various interconnected stories of criminals in Los Angeles",
                     RuntimeMins = 154,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -84,8 +84,8 @@ namespace api_cinema_challenge.Data
                     Rating = "R",
                     Description = "The aging patriarch of an organized crime dynasty transfers control to his son",
                     RuntimeMins = 175,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -94,8 +94,8 @@ namespace api_cinema_challenge.Data
                     Rating = "PG-13",
                     Description = "A man with a low IQ witnesses and unwittingly influences several defining historical events",
                     RuntimeMins = 142,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -104,8 +104,8 @@ namespace api_cinema_challenge.Data
                     Rating = "PG-13",
                     Description = "A masked vigilante battles the criminal underworld in Gotham City",
                     RuntimeMins = 152,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -114,8 +114,8 @@ namespace api_cinema_challenge.Data
                     Rating = "R",
                     Description = "An insomniac office worker and a soapmaker form an underground fight club",
                     RuntimeMins = 139,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -124,8 +124,8 @@ namespace api_cinema_challenge.Data
                     Rating = "R",
                     Description = "A young FBI cadet must receive the help of an incarcerated and manipulative cannibal killer",
                     RuntimeMins = 118,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 },
                 new Movie()
                 {
@@ -134,8 +134,8 @@ namespace api_cinema_challenge.Data
                     Rating = "R",
                     Description = "In Nazi-occupied France, a group of Jewish-American soldiers plan to assassinate Hitler",
                     RuntimeMins = 153,
-                    Created_at = DateTime.Now,
-                    Updated_at = DateTime.Now
+                    Created_at = DateTime.UtcNow,
+                    Updated_at = DateTime.UtcNow
                 }
             );
         }
