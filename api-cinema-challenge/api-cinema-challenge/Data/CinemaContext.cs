@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.Model;
+﻿using System.Diagnostics;
+using api_cinema_challenge.Model;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -17,6 +18,7 @@ namespace api_cinema_challenge.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString);
+            optionsBuilder.LogTo(message => Debug.WriteLine(message));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

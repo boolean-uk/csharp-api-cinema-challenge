@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240201083951_DB")]
-    partial class DB
+    [Migration("20240201095312_db")]
+    partial class db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace api_cinema_challenge.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Customers", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,7 +62,7 @@ namespace api_cinema_challenge.Migrations
                     b.ToTable("customers");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Movies", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Movie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,7 +104,7 @@ namespace api_cinema_challenge.Migrations
                     b.ToTable("movies");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Screenings", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Screening", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,6 +118,10 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnName("capacity");
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("ends_at");
+
+                    b.Property<DateTime>("EndsAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
@@ -144,7 +148,7 @@ namespace api_cinema_challenge.Migrations
                     b.ToTable("screenings");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Tickets", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Ticket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -188,9 +192,9 @@ namespace api_cinema_challenge.Migrations
                     b.ToTable("tickets");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Screenings", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Screening", b =>
                 {
-                    b.HasOne("api_cinema_challenge.Model.Movies", "Movie")
+                    b.HasOne("api_cinema_challenge.Model.Movie", "Movie")
                         .WithMany("Screenings")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -199,21 +203,21 @@ namespace api_cinema_challenge.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Tickets", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Ticket", b =>
                 {
-                    b.HasOne("api_cinema_challenge.Model.Customers", "Customer")
+                    b.HasOne("api_cinema_challenge.Model.Customer", "Customer")
                         .WithMany("Tickets")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api_cinema_challenge.Model.Movies", "Movie")
+                    b.HasOne("api_cinema_challenge.Model.Movie", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api_cinema_challenge.Model.Screenings", "Screening")
+                    b.HasOne("api_cinema_challenge.Model.Screening", "Screening")
                         .WithMany("Tickets")
                         .HasForeignKey("ScreeningId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -226,17 +230,17 @@ namespace api_cinema_challenge.Migrations
                     b.Navigation("Screening");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Customers", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Customer", b =>
                 {
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Movies", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Movie", b =>
                 {
                     b.Navigation("Screenings");
                 });
 
-            modelBuilder.Entity("api_cinema_challenge.Model.Screenings", b =>
+            modelBuilder.Entity("api_cinema_challenge.Model.Screening", b =>
                 {
                     b.Navigation("Tickets");
                 });
