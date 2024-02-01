@@ -63,20 +63,73 @@ namespace api_cinema_challenge.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_screenings", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_screenings_movies_movie_id",
+                        column: x => x.movie_id,
+                        principalTable: "movies",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "tickets",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    num_seats = table.Column<int>(type: "integer", nullable: false),
+                    customer_id = table.Column<int>(type: "integer", nullable: false),
+                    screening_id = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tickets", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_tickets_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tickets_screenings_screening_id",
+                        column: x => x.screening_id,
+                        principalTable: "screenings",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_screenings_movie_id",
+                table: "screenings",
+                column: "movie_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tickets_customer_id",
+                table: "tickets",
+                column: "customer_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tickets_screening_id",
+                table: "tickets",
+                column: "screening_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "tickets");
+
+            migrationBuilder.DropTable(
                 name: "customers");
 
             migrationBuilder.DropTable(
-                name: "movies");
+                name: "screenings");
 
             migrationBuilder.DropTable(
-                name: "screenings");
+                name: "movies");
         }
     }
 }

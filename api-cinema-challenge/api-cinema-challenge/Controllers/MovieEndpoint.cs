@@ -17,7 +17,7 @@ namespace api_cinema_challenge.Controllers
 
         public static async Task<IResult> GetMovies(IMovieRepository movieRepository)
         {
-            return TypedResults.Ok(await movieRepository.GetMovies());
+            return TypedResults.Ok(new MovieListOutput("success", await movieRepository.GetMovies()));
         }
         public static async Task<IResult> GetMovieByID(IMovieRepository movieRepository, int id)
         {
@@ -34,22 +34,24 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest("Please provide a rating");
             if (payload.Description == null || payload.Description == "")
                 return TypedResults.BadRequest("Please provide a description");
-            Movie movie = await movieRepository.CreateMovie(payload.Title, payload.Rating, payload.Description, payload.RuntimeMins);
-            return TypedResults.Created("", movie);
+            Movie movie = await movieRepository.CreateMovie(payload.Title, payload.Rating, payload.Description, payload.RuntimeMins, payload.Screenings);
+            return TypedResults.Created("", new MovieOutput("success", movie));
         }
         public static async Task<IResult> UpdateMovie(IMovieRepository movieRepository, int id, MoviePayload payload)
         {
             Movie? movie = await movieRepository.GetMovieByID(id);
             if (movie is null) return TypedResults.NotFound($"Movie {id} doesn't exist");
             Movie updatedMovie = await movieRepository.UpdateMovie(movie, payload.Title, payload.Rating, payload.Description, payload.RuntimeMins);
-            return TypedResults.Created("", updatedMovie);
+            return TypedResults.Created("", new MovieOutput("success", updatedMovie));
         }
         public static async Task<IResult> DeleteMovie(IMovieRepository movieRepository, int id)
         {
             Movie? movie = await movieRepository.GetMovieByID(id);
             if (movie is null) return TypedResults.NotFound($"Movie {id} doesn't exist");
             await movieRepository.DeleteMovie(movie);
-            return TypedResults.Ok(movie);
+            return TypedResults.Ok(new MovieOutput("success", movie));
         }
+
+
     }
 }

@@ -12,24 +12,19 @@ namespace api_cinema_challenge.Controllers
             movieGroup.MapGet("/{id}/screenings", GetScreening);
         }
 
-        public static async Task<IResult> CreateScreening(IScreeningRepository screeningRepository, IMovieRepository movieRepository, ScreeningPayload payload, int id)
+        public static async Task<IResult> CreateScreening(IMovieRepository movieRepository, ScreeningPayload payload, int id)
         {
             Movie? movie = await movieRepository.GetMovieByID(id);
             if (movie is null) return TypedResults.NotFound($"Movie {id} doesn't exist");
 
-            return TypedResults.Created("", new ScreeningResponseDTO(await screeningRepository.CreateScreening(id, payload.screenNumber, payload.capacity, payload.startsAt)));
+            return TypedResults.Created("", new ScreeningOutput("succes", await movieRepository.CreateScreening(id, payload.screenNumber, payload.capacity, payload.startsAt)));
         }
-        public static async Task<IResult> GetScreening(IScreeningRepository screeningRepository, IMovieRepository movieRepository, int id)
+        public static async Task<IResult> GetScreening(IMovieRepository movieRepository, int id)
         {
             Movie? movie = await movieRepository.GetMovieByID(id);
             if (movie is null) return TypedResults.NotFound($"Movie {id} doesn't exist");
-            var screenings = await screeningRepository.GetScreenings(id);
-            List<ScreeningResponseDTO> results = new List<ScreeningResponseDTO>();
-            foreach (Screening screening in screenings)
-            {
-                results.Add(new ScreeningResponseDTO(screening));
-            }
-            return TypedResults.Ok(results);
+            var screenings = await movieRepository.GetScreenings(id);
+            return TypedResults.Ok(new ScreeningListOutput("succes", screenings));
         }
     }
 }

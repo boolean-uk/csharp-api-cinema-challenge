@@ -40,5 +40,31 @@ namespace api_cinema_challenge.Models
             updatedAt = screening.UpdatedAt;
         }
     }
+
+    public class ScreeningOutput
+    {
+        public string status { get; }
+        public ScreeningResponseDTO data { get; }
+        public ScreeningOutput(string status, Screening data)
+        {
+            this.status = status;
+            this.data = new ScreeningResponseDTO(data);
+        }
+    }
+
+    public class ScreeningListOutput
+    {
+        public string status { get; }
+        public ICollection<ScreeningResponseDTO> data { get; }
+        public ScreeningListOutput(string status, IEnumerable<Screening> screenings)
+        {
+            this.status = status;
+            data = new List<ScreeningResponseDTO>();
+            foreach (Screening screening in screenings)
+            {
+                data.Add(new ScreeningResponseDTO(screening));
+            }
+        }
+    }
     public record ScreeningPayload(int screenNumber, int capacity, DateTime startsAt);
 }

@@ -13,7 +13,7 @@ namespace api_cinema_challenge.Repository
         {
             _cinemaContext = db;
         }
-        public async Task<Movie> CreateMovie(string title, string rating, string description, int runtimeMins)
+        public async Task<Movie> CreateMovie(string title, string rating, string description, int runtimeMins, List<ScreeningPayload>? screenings)
         {
             Movie movie = new Movie();
             movie.Title = title;
@@ -22,6 +22,14 @@ namespace api_cinema_challenge.Repository
             movie.RuntimeMins = runtimeMins;
             movie.CreatedAt = DateTime.Now.ToUniversalTime();
             movie.UpdatedAt = DateTime.Now.ToUniversalTime();
+            movie.screenings = new List<Screening>();
+            if (screenings is not null) //Happens at the same time as creating the movie, so foreign key of the screening can't refer to the movie, cause the movie doesn't exist yet
+            {
+                foreach (ScreeningPayload screening in screenings)
+                {
+                    movie.screenings.Add(await CreateScreening(movie.Id, screening.screenNumber, screening.capacity, screening.startsAt));
+                }
+            }
             await _cinemaContext.Movies.AddAsync(movie);
             _cinemaContext.SaveChanges();
             return movie;
@@ -30,6 +38,11 @@ namespace api_cinema_challenge.Repository
         public async Task<Movie> DeleteMovie(Movie movie)
         {
             _cinemaContext.Remove(movie);
+            ICollection<Screening> screenings = await GetScreenings(movie.Id);
+            foreach (Screening screening in screenings)
+            {
+                _cinemaContext.Remove(screening);
+            }
             await _cinemaContext.SaveChangesAsync();
             return movie;
         }
@@ -53,6 +66,25 @@ namespace api_cinema_challenge.Repository
             movie.UpdatedAt = DateTime.Now.ToUniversalTime();
             await _cinemaContext.SaveChangesAsync();
             return movie;
+        }
+
+        public async Task<Screening> CreateScreening(int movieID, int screenNumber, int capacity, DateTime startsAt)
+        {
+            Screening screening = new Screening();
+            screening.ScreenNumber = screenNumber;
+            screening.MovieId = movieID;
+            screening.Capacity = capacity;
+            screening.UpdatedAt = DateTime.Now.ToUniversalTime();
+            screening.CreatedAt = DateTime.Now.ToUniversalTime();
+            screening.StartsAt = startsAt;
+            await _cinemaContext.Screenings.AddAsync(screening);
+            _cinemaContext.SaveChanges();
+            return screening;
+        }
+
+        public async Task<ICollection<Screening>> GetScreenings(int movieId)
+        {
+            return await _cinemaContext.Screenings.Where(s => s.MovieId == movieId).ToListAsync();
         }
     }
 }

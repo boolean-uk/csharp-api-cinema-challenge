@@ -20,4 +20,26 @@ namespace api_cinema_challenge.Models
     }
 
     public record CustomerPayload(string Name, string Email, string Phone);
+
+    public class CustomerOutput
+    {
+        public string status { get;}
+        public Customer data { get; }
+        public CustomerOutput(string status, Customer data)
+        {
+            this.status = status;
+            this.data = data;
+        }
+    }
+    public class CustomerListOutput
+    {
+        public string status { get; }
+        public IEnumerable<Customer> data { get; }
+        public CustomerListOutput(string status, IEnumerable<Customer> data)
+        {
+            this.status = status;
+            this.data = data;
+        }
+    }
+
 }
