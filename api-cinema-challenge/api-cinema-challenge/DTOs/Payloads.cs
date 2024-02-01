@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Any;
+using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Data.SqlTypes;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
@@ -26,7 +30,8 @@ namespace api_cinema_challenge.DTOs
 
     };
 
-    public class CreateScreeningPayload
+    
+    public record CreateScreeningPayload
     {
 
         [Required(ErrorMessage = "Screen Number Required!")]
@@ -40,13 +45,14 @@ namespace api_cinema_challenge.DTOs
         [DisplayFormat(DataFormatString = "{YYYY-MM-DD HH:MM:SS}")] // why doesn't it work...
         public DateTime startsAt { get; init; }
 
-        public CreateScreeningPayload(int screen, int cap, DateTime starts )
+        public CreateScreeningPayload(int ScreenNumber, int Capacity, DateTime StartsAt )
         {
-            screenNumber = screen;
-            capacity = cap;
-            startsAt = starts;
+            screenNumber = ScreenNumber;
+            capacity = Capacity;
+            startsAt = StartsAt;
         }
     };
+    
 
     public record CreateMoviePayload {
 
@@ -63,15 +69,13 @@ namespace api_cinema_challenge.DTOs
         [Required(ErrorMessage = "Field required!")]
         public int runtimeMins { get; init; }
 
-        public CreateMoviePayload(string t, string r, string d, int rtm)
+        public CreateMoviePayload(string Title, string Rating, string Description, int RuntimeMins)
         {
-            title = t;
-            rating = r;
-            description = d;
-            runtimeMins = rtm;
+            title = Title;
+            rating = Rating;
+            description = Description;
+            runtimeMins = RuntimeMins;
         }
-
-
     };
 
 
@@ -88,11 +92,11 @@ namespace api_cinema_challenge.DTOs
         [Required(ErrorMessage = "Phone number required!")]
         public string phone { get; init; }
 
-        public UpdateCustomerPayload(string n, string e, string p)
+        public UpdateCustomerPayload(string Name, string Email, string Phone)
         {
-            name = n;
-            email = e;
-            phone = p;
+            name = Name;
+            email = Email;
+            phone = Phone;
         }
 
     };
@@ -113,12 +117,12 @@ namespace api_cinema_challenge.DTOs
         [Required(ErrorMessage = "Field required!")]
         public int runtimeMins { get; init; }
 
-        public UpdateMoviePayload(string t, string r, string d, int rtm)
+        public UpdateMoviePayload(string Title, string Rating, string Description, int RuntimeMins)
         {
-            title = t;
-            rating = r;
-            description = d;
-            runtimeMins = rtm;
+            title = Title;
+            rating = Rating;
+            description = Description;
+            runtimeMins = RuntimeMins;
         }
 
     };

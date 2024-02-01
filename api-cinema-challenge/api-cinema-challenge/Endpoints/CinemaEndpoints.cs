@@ -260,9 +260,9 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> CreateScreening(int id, [FromBody]CreateScreeningPayload payload, IRepository repository)
+        public static async Task<IResult> CreateScreening(int id, CreateScreeningPayload payload, IRepository repository)
         {
-         
+
             if (payload.screenNumber <= 0 || payload.capacity <= 0 || id < 0)
             {
                 return Results.BadRequest("Non-empty fields are required");

@@ -17,8 +17,6 @@ namespace api_cinema_challenge.Models
 
 
         [Column("starts_at")]
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{YYYY-MM-DD HH:MM:SS}")]
         public DateTime StartsAt { get; set; }
 
         [Column("created_at")]

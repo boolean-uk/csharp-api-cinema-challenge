@@ -2,6 +2,7 @@ using api_cinema_challenge.Data;
 using api_cinema_challenge.Repository;
 using api_cinema_challenge.Endpoints;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.ComponentModel.DataAnnotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
