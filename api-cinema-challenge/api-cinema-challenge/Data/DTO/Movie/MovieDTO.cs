@@ -16,5 +16,14 @@ namespace api_cinema_challenge.Data.DTO {
             Description = movie.Description;
             RuntimeMins = movie.RuntimeMins;
         }
+
+        public static List<MovieDTO> FromRepository(IEnumerable<Movie> movies) {
+            List<MovieDTO> ret = new List<MovieDTO>();
+            foreach (Movie movie in movies)
+            {
+                ret.Add(new MovieDTO(movie));
+            }
+            return ret;
+        }
     }
 }

@@ -3,6 +3,7 @@
 
 
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Data.DTO;
 using api_cinema_challenge.Repository.Interface;
 
 namespace api_cinema_challenge.Endpoints {
@@ -18,29 +19,32 @@ namespace api_cinema_challenge.Endpoints {
             movies.MapDelete("/{Id}", DeleteMovie);
         }
 
-        private static async Task DeleteMovie(IMovieRepository repository, int Id)
+        private static async Task<IResult> DeleteMovie(IMovieRepository repository, int Id)
         {
             throw new NotImplementedException();
         }
 
-        private static async Task CreateMovie(IMovieRepository repository)
+        private static async Task<IResult> CreateMovie(IMovieRepository repository)
         {
             throw new NotImplementedException();
         }
 
-        private static async Task UpdateMovie(IMovieRepository repository)
+        private static async Task<IResult> UpdateMovie(IMovieRepository repository)
         {
             throw new NotImplementedException();
         }
 
-        private static async Task GetMovie(IMovieRepository repository, int Id)
+        private static async Task<IResult> GetMovie(IMovieRepository repository, int Id)
         {
-            throw new NotImplementedException();
+            var movies = await repository.GetMovie(Id);
+            if(movies == null)
+                return Results.NotFound("No movie with Id: " + Id + " Found");
+            return TypedResults.Ok(new MovieScreeningDTO(movies));
         }
 
-        private static async Task GetMovies(IMovieRepository repository)
+        private static async Task<IResult> GetMovies(IMovieRepository repository)
         {
-            throw new NotImplementedException();
+            return TypedResults.Ok(MovieDTO.FromRepository(await repository.GetAllMovies()));
         }
     }
 }
