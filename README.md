@@ -3,7 +3,7 @@
 ## Learning Objectives
 - Use ASP.NET and Entity Framework to build a RESTful API
 - Use object-oriented programming to manage source code complexity
-- Use an API client (Postman, Insomnia, etc.) or to test-drive code
+- Use an API client (Postman, Insomnia, etc.) to test-drive code
 
 ## Instructions
 
@@ -12,13 +12,10 @@ It's time to use everything you've learned up to this point! Your task is to bui
 1. Fork this repository
 2. Clone your fork to your machine
 3. Open the api-cinema-challenge solution with Visual Studio
-4. Update appsettings.json with your own credentials.  Note that the Data folder already contains a CinemaContext which you may use to add your DbSets.
-5. Create the ERD to describe the model of your data and the relationships between each entity
-6. Check the Program.cs and do any changes needed before starting. They are marked with //TODO: comments (remember VIEW menu and TASK LIST to see these)
-7. It would be a good direction to use different namespaces for consistency. Ex.:
-   1. Controllers: api_cinema_challenge.CSharp.Main.Controller
-   2. Models: api_cinema_challenge.CSharp.Main.Model
-   3. Everything else: api_cinema_challenge.CSharp.Main
+4. Create appsettings.json with your own db credentials.  Note that the Data folder already contains a CinemaContext which you may use to add your DbSets.
+5. Create a complete ERD to describe the model of your data and the relationships between each entity
+6. Check the Program.cs and make any changes needed before starting.
+7. Separate out your code in the Data context with seeders, Models, Repository layer, Endpoints layer (controllers).
 8. Finally your task is to develop the API that [satisfies this API spec](https://boolean-uk.github.io/csharp-api-cinema-challenge/)
 
 
@@ -35,8 +32,8 @@ It contains a few new routes, different approaches to data mutation and, most im
 
 ### Tips
 - Beware of cyclical Json and Db Entities reference
-  - Use decorators to ignore model values to json ignore : 
-  - You could create different Data Objects to avoid those dependencies
+  - Use decorators to ignore model values to json ignore
+  - You could create different Data Transfer Objects to avoid those dependencies
 Entity with cyclical dependance: 
 ```json
 {
