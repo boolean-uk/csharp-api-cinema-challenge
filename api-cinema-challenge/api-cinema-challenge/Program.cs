@@ -1,4 +1,7 @@
+using api_cinema_challenge.Controllers;
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Repositories;
+using api_cinema_challenge.Repositories.customer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepo>();
+builder.Services.AddScoped<IMovieRepository, MovieRepo>();
+builder.Services.AddScoped<IScreeningRepository, ScreeningRepo>();
 
 var app = builder.Build();
 
@@ -17,4 +23,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.ConfigureCustomerEndpoints();
+app.ConfigureMovieEndpoints();
+app.ConfigureScreeningEndpoints();
 app.Run();
