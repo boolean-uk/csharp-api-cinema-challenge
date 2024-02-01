@@ -159,6 +159,7 @@ namespace api_cinema_challenge.Data {
         private List<Movie> _movies = new List<Movie>();
         private List<Screening> _screenings = new List<Screening>();
         private List<Ticket> _tickets = new List<Ticket>();
+        private List<Seat> _seats = new List<Seat>();
 
         public Seeder()
         {
@@ -198,9 +199,21 @@ namespace api_cinema_challenge.Data {
                 };
                 _movies.Add(movies);
             }
-
             for (int x = 1; x < 25; x++)
             {
+                for (int y = 1; y < 10; y++)
+                {
+                    Guid guid = Guid.NewGuid();
+                    Seat seat = new Seat() 
+                    {
+                        Id = guid.GetHashCode(),
+                        SeatRow = "A.",
+                        SeatNumber = y,
+                        ScreeningId = x,
+                    };
+                    _seats.Add(seat);
+                }
+
                 Screening screening = new Screening
                 {
                     Id = x,
@@ -210,30 +223,39 @@ namespace api_cinema_challenge.Data {
                     EndsAt = DateTime.UtcNow.AddHours(2),
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
-                    MovieId = screenRandom.Next(1, _movies.Count)
+                    MovieId = screenRandom.Next(1, _movies.Count),
                 };
                 _screenings.Add(screening);
             }
 
-            for (int x = 1; x < 25; x++)
-            {
-                Ticket ticket = new Ticket
-                {
-                    Id = x,
-                    NumSeats = ticketRandom.Next(1,5),
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
-                    ScreeningId = screenRandom.Next(1, _screenings.Count),
-                    CustomerId = screenRandom.Next(1, _customers.Count)
-                };
-                _tickets.Add(ticket);
-            }
+            // for (int x = 1; x < 5; x++)
+            // {
+            //     Ticket ticket = new Ticket
+            //     {
+            //         Id = x,
+            //         CreatedAt = DateTime.UtcNow,
+            //         UpdatedAt = DateTime.UtcNow,
+            //         ScreeningId = screenRandom.Next(1, _screenings.Count),
+            //         CustomerId = screenRandom.Next(1, _customers.Count)
+            //     };
 
+            //     int numSeatsToAssign = screenRandom.Next(1, 4);
+            //     for (int i = 0; i < numSeatsToAssign; i++)
+            //     {
+            //         Seat availableSeat = _seats.Where(s => s.ScreeningId == ticket.ScreeningId && s.TicketId == 0).OrderBy(s => screenRandom.Next()).First();
+            //         Console.WriteLine(ticket.Id);
+            //         availableSeat.TicketId = ticket.Id;
+            //         //availableSeat.Ticket = ticket;
+            //         //ticket.Seats.Add(availableSeat);
+            //     }
+            //     _tickets.Add(ticket);
+            // }
         }
         public List<Customer> Customers { get { return _customers; } }
         public List<Movie> Movies { get { return _movies; } }
         public List<Ticket> Tickets { get { return _tickets; } }
         public List<Screening> Screenings { get { return _screenings; } }
+        public List<Seat> Seats { get { return _seats; } }
     }
     
 }

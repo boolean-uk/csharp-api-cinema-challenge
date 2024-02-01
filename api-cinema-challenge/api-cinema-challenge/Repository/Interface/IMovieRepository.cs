@@ -8,8 +8,8 @@ namespace api_cinema_challenge.Repository.Interface {
         Task<Movie> CreateMovie (string title, string rating, string description, string runtimeMins);
         public Task<Movie?> GetMovie(int id);
         Task<IEnumerable<Movie>> GetAllMovies();
-        Task UpdateMovie(int id, Movie movie);
-        Task DeleteMovie(int id);
+        Task<Movie> UpdateMovie(int id, Movie movie);
+        Task<Movie> DeleteMovie(int id);
     }
 
 }

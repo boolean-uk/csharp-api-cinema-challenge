@@ -4,6 +4,7 @@
 
 using api_cinema_challenge.Data;
 using api_cinema_challenge.Data.DTO;
+using api_cinema_challenge.Data.Payload;
 using api_cinema_challenge.Repository.Interface;
 
 namespace api_cinema_challenge.Endpoints {
@@ -21,17 +22,24 @@ namespace api_cinema_challenge.Endpoints {
 
         private static async Task<IResult> DeleteMovie(IMovieRepository repository, int Id)
         {
-            throw new NotImplementedException();
+            if(Id <= 0)
+                return Results.BadRequest("Must be a postive ID");
+            var Movie = await repository.GetMovie(Id);
+            if(Movie == null)
+                return Results.NotFound("No movie found with Id: " + Id);
+            await repository.DeleteMovie(Id);
+            return TypedResults.Ok();
         }
 
-        private static async Task<IResult> CreateMovie(IMovieRepository repository)
+        private static async Task<IResult> CreateMovie(IMovieRepository repository, CreateMoviePayload payload)
         {
-            throw new NotImplementedException();
+            return TypedResults.Created("Created", await repository.CreateMovie(payload.Title, payload.Rating, payload.Description, payload.RuntimeMins));
         }
 
-        private static async Task<IResult> UpdateMovie(IMovieRepository repository)
+        //To be implemented...
+        private static async Task<IResult> UpdateMovie(IMovieRepository repository, UpdateMoviePayload payload)
         {
-            throw new NotImplementedException();
+            return TypedResults.Ok();
         }
 
         private static async Task<IResult> GetMovie(IMovieRepository repository, int Id)

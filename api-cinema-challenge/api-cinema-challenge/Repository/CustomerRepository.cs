@@ -39,19 +39,41 @@ namespace api_cinema_challenge.Repository {
                 .Include(tickets => tickets.Tickets)
                 .ThenInclude(ticket => ticket.Screening)
                 .ThenInclude(movie => movie.Movie)
+                .Include(tickets => tickets.Tickets)
+                .ThenInclude(tickets => tickets.Seats)
                 .ToListAsync();
         }
 
         public async Task<Customer?> GetCustomer(int Id)
         {
-            if(Id == 0)
+            if (Id <= 0)
+            {
                 return null;
-            return await _db.Customers
-                .Include(tickets => tickets.Tickets)
-                    .ThenInclude(ticket => ticket.Screening)
-                        .ThenInclude(movie => movie.Movie)
-                .Where(customer => customer.Id == Id)
+            }
+
+            var customer = await _db.Customers
+                .Include(c => c.Tickets)
+                .ThenInclude(t => t.Screening)
+                .ThenInclude(s => s.Movie)
+                .Where(c => c.Id == Id)
                 .FirstOrDefaultAsync();
+
+            if (customer == null)
+            {
+                return null;
+            }
+
+            Console.WriteLine(customer.Name);
+            foreach (Ticket item in customer.Tickets)
+            {
+                Console.WriteLine(item.ScreeningId);
+                foreach (Seat seat in item.Seats)
+                {
+                    Console.WriteLine(seat.SeatRow + seat.SeatNumber);
+                }
+            }
+
+            return customer;
         }
 
         public async Task<Customer> UpdateCustomer(int id, Customer customer, Customer Newcustomer)

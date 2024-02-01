@@ -8,9 +8,6 @@ namespace api_cinema_challenge.Model {
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("num_seats")]
-        public int NumSeats { get; set; }
-
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
 
@@ -24,5 +21,6 @@ namespace api_cinema_challenge.Model {
         [Column("customer_id")]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; } = null!;
+        public ICollection<Seat> Seats {get; set;} = [];
     }
 }

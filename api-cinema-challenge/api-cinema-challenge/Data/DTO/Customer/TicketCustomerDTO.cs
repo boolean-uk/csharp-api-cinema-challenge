@@ -8,11 +8,11 @@ namespace api_cinema_challenge.Data.DTO {
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public ScreeningDTO Screening { get; set; }
+        public ICollection<SeatDTO> Seats {get; set;}
 
         public TicketCustomerDTO(Ticket ticket) {
             Id = ticket.Id;
-            NumSeats = ticket.NumSeats;
-            CreatedAt = ticket.CreatedAt;
+            Seats = SeatDTO.FromRepository(ticket.Seats);
             UpdatedAt = ticket.UpdatedAt;
             Screening = new ScreeningDTO(ticket.Screening);
         }

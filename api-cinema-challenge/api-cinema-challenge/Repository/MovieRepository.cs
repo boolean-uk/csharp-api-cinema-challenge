@@ -30,16 +30,16 @@ namespace api_cinema_challenge.Repository {
             return movie;
         }
 
-        public async Task DeleteMovie(int id)
+        public async Task<Movie> DeleteMovie(int id)
         {
             var movie = await _db.Movies
                 .Where(movie => movie.Id == id)
                 .FirstOrDefaultAsync();
             if(movie == null)
-                return;
+                return null;
             _db.Movies.Remove(movie);
             await _db.SaveChangesAsync();
-            return;
+            return movie;
         }
 
         public async Task<IEnumerable<Movie>> GetAllMovies()
@@ -58,7 +58,7 @@ namespace api_cinema_challenge.Repository {
             return movie;
         }
 
-        public Task UpdateMovie(int id, Movie movie)
+        public Task<Movie> UpdateMovie(int id, Movie movie)
         {
             throw new NotImplementedException();
         }
