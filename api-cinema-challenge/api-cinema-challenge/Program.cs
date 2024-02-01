@@ -1,4 +1,6 @@
+using api_cinema_challenge.Controllers;
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IScreeningsRepository, ScreeningsRepository>();
 
 var app = builder.Build();
 
@@ -15,6 +20,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 app.UseHttpsRedirection();
+app.ConfigureCustomerEndpoint();
+app.ConfigureMoviesEndpoint();
+app.ConfigureScreeningsEndpoint();
 app.Run();
