@@ -164,13 +164,13 @@ namespace api_cinema_challenge.Data {
         {
 
             Random authorRandom = new Random();
-            Random bookRandom = new Random();
-            Random publisherRandom = new Random();
-            Random bookAuthor = new Random();
+            Random ticketRandom = new Random();
+            Random movieRandom = new Random();
+            Random screenRandom = new Random();
 
 
 
-            for (int x = 1; x < 250; x++)
+            for (int x = 1; x < 25; x++)
             {
                 string n = _firstnames[authorRandom.Next(_firstnames.Count)] + _lastnames[authorRandom.Next(_lastnames.Count)];
                 Customer Customer = new Customer() 
@@ -178,26 +178,56 @@ namespace api_cinema_challenge.Data {
                     Id = x,
                     Name = n,
                     Email = $"{n}@{_domain[authorRandom.Next(_domain.Count)]}".ToLower(),
-                    Phone = "21234"
+                    Phone = "21234",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 };
                 _customers.Add(Customer);
             }
 
-            for (int x = 1; x < 250; x++)
+            for (int x = 1; x < 30; x++)
             {
                 Movie movies = new Movie
                 {
                     Id = x,
-                    Title = _moviesName[publisherRandom.Next(_moviesName.Count)],
-                    Rating = _movieRatings[publisherRandom.Next(_movieRatings.Count)],
-                    Description = MovieDescriptions[publisherRandom.Next(MovieDescriptions.Count)],
+                    Title = _moviesName[movieRandom.Next(_moviesName.Count)],
+                    Rating = _movieRatings[movieRandom.Next(_movieRatings.Count)],
+                    Description = MovieDescriptions[movieRandom.Next(MovieDescriptions.Count)],
                     RuntimeMins = "240",
 
                 };
                 _movies.Add(movies);
             }
 
-           
+            for (int x = 1; x < 25; x++)
+            {
+                Screening screening = new Screening
+                {
+                    Id = x,
+                    ScreenNumber = screenRandom.Next(1,25),
+                    Capacity = screenRandom.Next(20,125),
+                    StartsAt = DateTime.UtcNow,
+                    EndsAt = DateTime.UtcNow.AddHours(2),
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    MovieId = screenRandom.Next(1, _movies.Count)
+                };
+                _screenings.Add(screening);
+            }
+
+            for (int x = 1; x < 25; x++)
+            {
+                Ticket ticket = new Ticket
+                {
+                    Id = x,
+                    NumSeats = ticketRandom.Next(1,5),
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    ScreeningId = screenRandom.Next(1, _screenings.Count),
+                    CustomerId = screenRandom.Next(1, _customers.Count)
+                };
+                _tickets.Add(ticket);
+            }
 
         }
         public List<Customer> Customers { get { return _customers; } }

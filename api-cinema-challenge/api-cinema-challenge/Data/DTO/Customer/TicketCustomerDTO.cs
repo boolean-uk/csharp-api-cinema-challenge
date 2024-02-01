@@ -14,7 +14,7 @@ namespace api_cinema_challenge.Data.DTO {
             NumSeats = ticket.NumSeats;
             CreatedAt = ticket.CreatedAt;
             UpdatedAt = ticket.UpdatedAt;
-            Screening = new ScreeningDTO();
+            Screening = new ScreeningDTO(ticket.Screening);
         }
 
         public static ICollection<TicketCustomerDTO> FromRepository(ICollection<Ticket> tickets) {

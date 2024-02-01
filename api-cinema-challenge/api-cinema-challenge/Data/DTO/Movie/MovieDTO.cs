@@ -1,3 +1,5 @@
+using api_cinema_challenge.Model;
+
 namespace api_cinema_challenge.Data.DTO {
     public class MovieDTO
     {
@@ -6,5 +8,13 @@ namespace api_cinema_challenge.Data.DTO {
         public string Rating { get; set; }
         public string Description { get; set; }
         public string RuntimeMins { get; set; }
+
+        public MovieDTO(Movie movie) {
+            Id = movie.Id;
+            Title = movie.Title;
+            Rating = movie.Rating;
+            Description = movie.Description;
+            RuntimeMins = movie.RuntimeMins;
+        }
     }
 }

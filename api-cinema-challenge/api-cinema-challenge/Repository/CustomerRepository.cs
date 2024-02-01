@@ -12,9 +12,20 @@ namespace api_cinema_challenge.Repository {
         public CustomerRepository(CinemaContext db) {
             _db = db;
         }
-        public Task<Customer> CreateCustomer(string name, string email, string phone)
+        public async Task<Customer> CreateCustomer(string name, string email, string phone)
         {
-            throw new NotImplementedException();
+            Customer customer = new Customer() 
+            {
+                Name = name,
+                Email = email,
+                Phone = phone,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _db.Customers.Add(customer);
+            await _db.SaveChangesAsync();
+            return customer;
         }
 
         public Task DeleteCustomer(int id)
@@ -26,20 +37,30 @@ namespace api_cinema_challenge.Repository {
         {
             return await _db.Customers
                 .Include(tickets => tickets.Tickets)
-                .ThenInclude(ticket => ticket.Movie)
-                .Include(tickets => tickets.Tickets)
-                .ThenInclude(movie => movie.Screening)
+                .ThenInclude(ticket => ticket.Screening)
+                .ThenInclude(movie => movie.Movie)
                 .ToListAsync();
         }
 
-        public Task<Customer> GetCustomer(int Id)
+        public async Task<Customer?> GetCustomer(int Id)
         {
-            throw new NotImplementedException();
+            if(Id == 0)
+                return null;
+            return await _db.Customers
+                .Include(tickets => tickets.Tickets)
+                    .ThenInclude(ticket => ticket.Screening)
+                        .ThenInclude(movie => movie.Movie)
+                .Where(customer => customer.Id == Id)
+                .FirstOrDefaultAsync();
         }
 
-        public Task<Customer> UpdateCustomer(int id, Customer customer)
+        public async Task<Customer> UpdateCustomer(int id, Customer customer, Customer Newcustomer)
         {
-            throw new NotImplementedException();
+            customer = Newcustomer;
+            customer.UpdatedAt = DateTime.UtcNow;
+
+            await _db.SaveChangesAsync();
+            return customer;
         }
     }
 }
