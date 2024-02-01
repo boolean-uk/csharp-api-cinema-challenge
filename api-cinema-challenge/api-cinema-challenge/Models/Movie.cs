@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
     [Table("movies")]
     public class Movie
     {
-
+        [Key]
         [Column("id")]
         public int MovieId { get; set; }
         [Column("titles")]

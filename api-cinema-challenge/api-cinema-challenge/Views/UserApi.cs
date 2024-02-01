@@ -1,13 +1,13 @@
-﻿using api_cinema_challenge.Controllers;
+﻿using api_cinema_challenge.Controllers.UserRepo;
 using api_cinema_challenge.DTO;
+using static api_cinema_challenge.Models.Payloads.UserPayloads;
 
 namespace api_cinema_challenge.Views
 {
     public static class UserApi
     {
 
-        public record UserPostPayload(string name, string email, string phonenumber);
-        public record UserPutPayload(string? name, string? email, string? phonenumber);
+
 
         public static void ConfigureUserApi(this WebApplication app)
         {
@@ -18,9 +18,6 @@ namespace api_cinema_challenge.Views
             userGroup.MapPut("/{id}", UpdateUser);
             userGroup.MapDelete("/{id}", DeleteUser);
         }
-
-
-
 
         private static async Task<IResult> GetAllUsers(IUserRepository userRepository)
         {
@@ -45,31 +42,55 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.BadRequest($"Username must be a non-empty value! You entered: {payload.name}");
             }
-            if (payload.email == null || payload.email == "")
+            if (payload.email == null || payload.email == "" || !payload.email.Contains("@"))
             {
-                return TypedResults.BadRequest($"E-mail must be a non-empty value! You entered: {payload.email}");
+                return TypedResults.BadRequest($"E-mail must be a non-empty value and cave a @: You entered: {payload.email}");
             }
             if (payload.phonenumber == null || payload.phonenumber == "")
             {
                 return TypedResults.BadRequest($"Phonenumber must be a non-empty value! You entered: {payload.phonenumber}");
             }
 
-            var result = userRepository.CreateUser(payload.name, payload.email, payload.phonenumber);
+            var result = await userRepository.CreateUser(payload.name, payload.email, payload.phonenumber);
 
-            throw new NotImplementedException();
+            if (result == null)
+            {
+                return TypedResults.BadRequest();
+            }
+            return TypedResults.Ok(new UserAllDetailsDTO(result));
         }
 
         private static async Task<IResult> UpdateUser(int id, UserPutPayload payload, IUserRepository userRepository)
         {
-
-
-            throw new NotImplementedException();
+            if (payload.name == "")
+            {
+                return TypedResults.BadRequest("Updated username can not be of type empty");
+            }
+            if (payload.email == "" || !payload.email.Contains("@"))
+            {
+                return TypedResults.BadRequest("Updated e-mail can not be of type empty or miss an @");
+            }
+            if (payload.phonenumber == "")
+            {
+                return TypedResults.BadRequest("Updated phonenumber can not be of type empty");
+            }
+            var result = await userRepository.UpdateUser(id, payload.name, payload.email, payload.phonenumber);
+            if (result == null)
+            {
+                return TypedResults.NotFound($"User with id: {id} could not be found");
+            }
+            return TypedResults.Created("Succsess", new UserAllDetailsDTO(result));
         }
 
-        private static async Task<IResult> DeleteUser(int id)
+        private static async Task<IResult> DeleteUser(int id, IUserRepository userRepository)
         {
-
-            throw new NotImplementedException();
+            var result = await userRepository.DeleteUser(id);
+            if ( result == null )
+            {
+                return TypedResults.NotFound($"User with id: {id} could not be found");
+            }
+            return TypedResults.Ok(new UserAllDetailsDTO(result));
+            
         }
 
 

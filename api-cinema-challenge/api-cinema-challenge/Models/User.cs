@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
@@ -7,6 +8,7 @@ namespace api_cinema_challenge.Models
     [Table("users")]
     public class User
     {
+        [Key]
         [Column("id")]
         public int UserId { get; set; }
 

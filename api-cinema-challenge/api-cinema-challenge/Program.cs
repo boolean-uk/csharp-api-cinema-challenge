@@ -1,4 +1,5 @@
-using api_cinema_challenge.Controllers;
+using api_cinema_challenge.Controllers.MovieRepo;
+using api_cinema_challenge.Controllers.UserRepo;
 using api_cinema_challenge.Data;
 using api_cinema_challenge.Views;
 
@@ -8,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
-builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 
 var app = builder.Build();
 

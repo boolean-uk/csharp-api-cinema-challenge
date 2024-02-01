@@ -24,16 +24,16 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(
-                new User() { UserId = 1, Name = "John Doe", Email = "john.doe@example.com", Phone = "+1234567890" },
-                new User() { UserId = 2, Name = "Jane Smith", Email = "jane.smith@example.com", Phone = "+9876543210" },
-                new User() { UserId = 3, Name = "Alice Johnson", Email = "alice.johnson@example.com", Phone = "+1122334455" },
-                new User() { UserId = 4, Name = "Bob Anderson", Email = "bob.anderson@example.com", Phone = "+9988776655" },
-                new User() { UserId = 5, Name = "Eva White", Email = "eva.white@example.com", Phone = "+6677889900" },
-                new User() { UserId = 6, Name = "David Brown", Email = "david.brown@example.com", Phone = "+1122337788" },
-                new User() { UserId = 7, Name = "Sophia Miller", Email = "sophia.miller@example.com", Phone = "+9988771122" },
-                new User() { UserId = 8, Name = "Michael Wilson", Email = "michael.wilson@example.com", Phone = "+4455667788" },
-                new User() { UserId = 9, Name = "Olivia Davis", Email = "olivia.davis@example.com", Phone = "+1122334466" },
-                new User() { UserId = 10, Name = "Daniel Taylor", Email = "daniel.taylor@example.com", Phone = "+9988775544" }
+                new User() { UserId = 1, Name = "John Doe", Email = "john.doe@example.com", Phone = "+1234567890", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 2, Name = "Jane Smith", Email = "jane.smith@example.com", Phone = "+9876543210", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 3, Name = "Alice Johnson", Email = "alice.johnson@example.com", Phone = "+1122334455", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 4, Name = "Bob Anderson", Email = "bob.anderson@example.com", Phone = "+9988776655", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 5, Name = "Eva White", Email = "eva.white@example.com", Phone = "+6677889900", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 6, Name = "David Brown", Email = "david.brown@example.com", Phone = "+1122337788", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 7, Name = "Sophia Miller", Email = "sophia.miller@example.com", Phone = "+9988771122", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 8, Name = "Michael Wilson", Email = "michael.wilson@example.com", Phone = "+4455667788", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 9, Name = "Olivia Davis", Email = "olivia.davis@example.com", Phone = "+1122334466", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
+                new User() { UserId = 10, Name = "Daniel Taylor", Email = "daniel.taylor@example.com", Phone = "+9988775544", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow }
             );
 
             modelBuilder.Entity<Movie>().HasData(
@@ -144,6 +144,6 @@ namespace api_cinema_challenge.Data
 
         public DbSet<User> Users { get; set; }  
 
-        
+        public DbSet<Movie> Movies { get; set; }
     }
 }
