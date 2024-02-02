@@ -6,7 +6,7 @@ namespace api_cinema_challenge.Repository
     {
         Task<List<Movie>> GetMovies();
         Task<Movie?> GetMovie(int id);
-        Task<Movie?> CreateMovie(string title, string rating, string description, int runtimeMins);
+        Task<Movie?> CreateMovie(string title, string rating, string description, int runtimeMins, ScreeningPost? screening);
         Task<Movie>? UpdateMovie(Movie customer, string? title, string? rating, string? description, int? runtimeMins);
         Task<List<Movie>> DeleteMovie(Movie movie);
     }

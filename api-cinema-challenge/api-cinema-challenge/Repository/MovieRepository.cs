@@ -16,7 +16,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<List<Movie>> GetMovies()
         {
-            var tasks = _databaseContext.Movies/*.Include(a => a.Screenings)*/.ToListAsync();
+            var tasks = _databaseContext.Movies.ToListAsync();
             return await tasks;
         }
 
@@ -26,7 +26,7 @@ namespace api_cinema_challenge.Repository
             return task;
         }
 
-        public async Task<Movie?> CreateMovie(string title, string rating, string description, int runtimeMins)
+        public async Task<Movie?> CreateMovie(string title, string rating, string description, int runtimeMins, ScreeningPost? screening)
         {
             List<Movie> movies = _databaseContext.Movies.ToList();
             int nrMovies = await _databaseContext.Movies.CountAsync();
@@ -40,6 +40,8 @@ namespace api_cinema_challenge.Repository
             }
 
             var newMovie = new Movie() { Id = id, Title = title, Rating = rating, Description = description, RuntimeMins = runtimeMins, CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime() };
+            newMovie.Screenings.Add(new Screening() { ScreenNumber = screening.ScreenNumber, Capacity = screening.Capacity, StartsAt = screening.StartsAt });
+            
             await _databaseContext.AddAsync(newMovie);
             await _databaseContext.SaveChangesAsync();
             return newMovie;

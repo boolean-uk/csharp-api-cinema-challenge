@@ -5,7 +5,7 @@ using api_cinema_challenge.Repository;
 
 namespace workshop.wwwapi.Endpoints
 {
-    public record MoviePostPayload(string title, string rating, string description, int runtimeMins);
+    public record MoviePostPayload(string title, string rating, string description, int runtimeMins, ScreeningPost? screening);
 
     public record MovieUpdatePayload(string? title, string? rating, string? description, int? runtimeMins);
 
@@ -35,7 +35,7 @@ namespace workshop.wwwapi.Endpoints
                 payload.description == null || payload.description == "")
                 return Results.BadRequest("Must have inputs");
 
-            Movie movie = await repository.CreateMovie(payload.title, payload.rating, payload.description, payload.runtimeMins);
+            Movie movie = await repository.CreateMovie(payload.title, payload.rating, payload.description, payload.runtimeMins, payload.screening);
             if (movie == null)
                 return Results.BadRequest("Title already exists");
 
