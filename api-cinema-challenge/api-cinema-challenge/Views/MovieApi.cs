@@ -38,7 +38,8 @@ namespace api_cinema_challenge.Views
             {
                 resultMovieAllDetailsDTO.Add(new MovieAllDetailsDTO(movie));
             }
-            return TypedResults.Ok(resultMovieAllDetailsDTO);
+            var movieDTO = new MovieListDataDTO(resultMovieAllDetailsDTO, "success");
+            return TypedResults.Ok(movieDTO);
         }
         private static async Task<IResult> CreateMovie(MoviePostPayload payload, IMovieRepository movieRepository)
         {
@@ -60,12 +61,11 @@ namespace api_cinema_challenge.Views
             }
 
             var result = await movieRepository.CreateMovie(payload.title, payload.rating, payload.description, payload.runtime);
-
             if (result == null)
             {
                 return TypedResults.BadRequest();
             }
-            return TypedResults.Ok(new MovieAllDetailsDTO(result));
+            return TypedResults.Created("/movies", new MovieDataDTO(result, "success"));
 
         }
         private static async Task<IResult> UpdateMovie(int id, MoviePutPayload payload, IMovieRepository movieRepository)
@@ -91,7 +91,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.BadRequest($"Internal error");
             }
-            return TypedResults.Created("Succsess", new MovieAllDetailsDTO(result));
+            return TypedResults.Created($"/movies/{id}", new MovieDataDTO(result, "success"));
 
 
             throw new NotImplementedException();
@@ -103,7 +103,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.NotFound($"Movie with given id {id} was not found");
             }
-            return TypedResults.Ok(new MovieAllDetailsDTO(result));
+            return TypedResults.Ok(new MovieDataDTO(result, "success"));
 
         }
 
@@ -115,7 +115,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.NotFound($"Could not find movie with {movie_id}");
             }
-            return TypedResults.Created($"/movies/{movie_id}/screenings" ,new ScreeningAllDetailsDTO(result));
+            return TypedResults.Created($"/movies/{movie_id}/screenings" ,new ScreeningDataDTO(result, "success"));
 
         }
 
@@ -126,7 +126,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.NotFound($"Movie with id {movie_id} has no screening");
             }
-            return TypedResults.Ok(new ScreeningAllDetailsDTO(result));
+            return TypedResults.Ok(new ScreeningDataDTO(result, "success"));
         }
     }
 }

@@ -31,9 +31,9 @@ namespace api_cinema_challenge.Views
             {
                 resultUserAllDetailsDTO.Add(new UserAllDetailsDTO(user));
             }
-
-            return TypedResults.Ok(resultUserAllDetailsDTO);
-            throw new NotImplementedException();    
+            var dataDTO = new UserListDataDTO(resultUserAllDetailsDTO, "success");
+            return TypedResults.Ok(dataDTO);
+    
         }
 
         private static async Task<IResult> CreateUser(UserPostPayload payload, IUserRepository userRepository)
@@ -57,7 +57,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.BadRequest();
             }
-            return TypedResults.Ok(new UserAllDetailsDTO(result));
+            return TypedResults.Created("/customers",new UserDataDTO(result, "success"));
         }
 
         private static async Task<IResult> UpdateUser(int id, UserPutPayload payload, IUserRepository userRepository)
@@ -79,7 +79,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.NotFound($"User with id: {id} could not be found");
             }
-            return TypedResults.Created("Succsess", new UserAllDetailsDTO(result));
+            return TypedResults.Created($"/customers/{id}", new UserDataDTO(result, "success"));
         }
 
         private static async Task<IResult> DeleteUser(int id, IUserRepository userRepository)
@@ -89,7 +89,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.NotFound($"User with id: {id} could not be found");
             }
-            return TypedResults.Ok(new UserAllDetailsDTO(result));
+            return TypedResults.Ok(new UserDataDTO(result, "success"));
             
         }
 
