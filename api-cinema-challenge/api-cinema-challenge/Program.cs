@@ -20,7 +20,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.ConfigureUsersEndpoint();
-//app.ConfigureMoviesEndpoint();
-//app.configureScreeningsEndpoint();
+app.ConfigureCinemaEndpoint();
+
 app.Run();

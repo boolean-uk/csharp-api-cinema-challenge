@@ -26,8 +26,7 @@ namespace api_cinema_challenge.Models
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
-        //public List<Screening> Screenings { get; set; }
-
+        //DTO
         public class MovieResponseDTO
         {
             public int ID { get; set; }

@@ -9,12 +9,7 @@ namespace api_cinema_challenge.Repository
 {
     public class Repository : IRepository
     {
-        
-        //delete movie
-
-        //create screening
-
-        //set up DB connection
+        //Connect to DB
         private CinemaContext _context;
         public Repository(CinemaContext db) 
         {

@@ -26,6 +26,7 @@ namespace api_cinema_challenge.Models
         public DateTime UpdatedAt { get; set; }
     }
 
+    //DTO
     public class UsersResponseDTO
     {
         public int ID { get; set; }
@@ -37,5 +38,4 @@ namespace api_cinema_challenge.Models
             ID = user.Id;
         }
     }
-
 }

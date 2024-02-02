@@ -32,9 +32,9 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
-            modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.Entity<User>().HasKey(u => u.Id); //Primary key
             modelBuilder.Entity<User>().HasData(
+                //users
                 new User 
                 { 
                     Id = 1, Name = "Joel Joelsson", 
@@ -83,13 +83,11 @@ namespace api_cinema_challenge.Data
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
                     UpdatedAt = DateTime.UtcNow.AddDays(-7)
                 }
-
                 );
 
-            
-
-            modelBuilder.Entity<Movie>().HasKey(u => u.Id);
+            modelBuilder.Entity<Movie>().HasKey(u => u.Id); //primary key
             modelBuilder.Entity<Movie>().HasData(
+                //movies
                 new Movie
                 {
                     Id = 1,
@@ -99,31 +97,6 @@ namespace api_cinema_challenge.Data
                     RuntimeMins = 77,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
-                    /*
-                    Screenings = new List<Screening>
-                    {
-                        new Screening
-                        {
-                            Id = 1,
-                            ScreenName = "Screen1",
-                            MovieId = 1,
-                            StartTime = DateTime.Now.AddHours(1),
-                            CreatedAt = DateTime.Now,
-                            UpdatedAt= DateTime.Now
-                        },
-
-                        new Screening
-                        {
-                            Id = 2,
-                            ScreenName = "Screen2",
-                            MovieId = 1,
-                            StartTime = DateTime.Now.AddHours(3),
-                            CreatedAt = DateTime.Now,
-                            UpdatedAt= DateTime.Now
-                        }
-
-                    }
-                    */
                 },
 
                 new Movie
@@ -135,29 +108,6 @@ namespace api_cinema_challenge.Data
                     RuntimeMins = 120,
                     CreatedAt = DateTime.UtcNow.AddDays(-5),
                     UpdatedAt = DateTime.UtcNow.AddDays(-3)
-                    /*
-                    Screenings = new List<Screening>
-                    {
-                        new Screening
-                        {
-                            Id = 3,
-                            ScreenName = "Screen3",
-                            MovieId= 2,
-                            StartTime = DateTime.Now.AddHours(4),
-                            CreatedAt = DateTime.Now,
-                            UpdatedAt= DateTime.Now
-                        },
-                        new Screening
-                        {
-                            Id = 4,
-                            ScreenName = "Screen4",
-                            MovieId= 2,
-                            StartTime = DateTime.Now.AddHours(1),
-                            CreatedAt = DateTime.Now,
-                            UpdatedAt= DateTime.Now
-                        }
-                    }
-                    */
 
                 },
 
@@ -170,20 +120,6 @@ namespace api_cinema_challenge.Data
                     RuntimeMins = 90,
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
                     UpdatedAt = DateTime.UtcNow.AddDays(-8)
-                    /*
-                    Screenings = new List<Screening>
-                    {
-                        new Screening
-                        {
-                            Id = 5,
-                            ScreenName = "Screen5",
-                            MovieId= 3,
-                            StartTime = DateTime.Now.AddHours(5),
-                            CreatedAt = DateTime.Now,
-                            UpdatedAt= DateTime.Now
-                        }
-                    }
-                    */
                 },
 
                 new Movie
@@ -211,12 +147,8 @@ namespace api_cinema_challenge.Data
 
             modelBuilder.Entity<Screening>()
             .HasKey(s => s.Id); // Primary key
-
-            //modelBuilder.Entity<Screening>()
-            //.HasOne(s => s.movie)
-            //.WithMany(m => m.Screenings)
-            //.HasForeignKey(s => s.MovieId);
             modelBuilder.Entity<Screening>().HasData(
+                //Screenings
                 new Screening
                 {
                     Id = 1,

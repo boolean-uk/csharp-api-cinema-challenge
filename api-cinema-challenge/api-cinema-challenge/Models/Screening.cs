@@ -27,6 +27,7 @@ namespace api_cinema_challenge.Models
         public DateTime UpdatedAt { get; set; }
     }
 
+    //DTO
     public class ScreeningResponseDTO
     {
         public int ID { get; set; }
