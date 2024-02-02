@@ -14,6 +14,12 @@ namespace api_cinema_challenge.Repository
             _databaseContext = db;
         }
 
+        public async Task<Screening?> GetScreening(int id)
+        {
+            var task = await _databaseContext.Screenings.FirstOrDefaultAsync(t => t.Id == id);
+            return task;
+        }
+
         public async Task<List<Screening?>> GetScreenings(int movieId)
         {
             var movie = await _databaseContext.Movies.Include(a => a.Screenings).FirstOrDefaultAsync(t => t.Id == movieId);
