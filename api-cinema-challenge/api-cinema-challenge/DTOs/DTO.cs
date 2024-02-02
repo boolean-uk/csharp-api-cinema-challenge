@@ -1,47 +1,46 @@
 ﻿using api_cinema_challenge.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace api_cinema_challenge.DTOs
 {
 
-    /**
-    class MovieResponseDTO
+
+    
+
+    class StatusListDto
     {
-        // define all of the properties that we want to return to the client
-        public int Id { get; set; }
-        public string FullName { get; set; }
+        public string status { get; set; }
 
-        public List<PatientAssignmentDTO> Appointments { get; set; } = new List<PatientAssignmentDTO>();
+        public List<Object> data { get; set; } = new List<Object>();
 
-        public PatientResponseDTO(Patient patient)
+        public StatusListDto(List<Object> dt)
         {
-            Id = patient.Id;
-            FullName = patient.FullName;
+            status = "success";
 
-            foreach (Appointment appo in patient.Appointments)
+            foreach(Object o in dt)
             {
-              Appointments.Add(new PatientAssignmentDTO(appo));
-           }
+                data.Add(o);
+            }
         }
     }
 
-    class MovieScreeningDTO
+    class StatusSingleDto
     {
-        public DateTime Booking { get; set; }
+        public string status { get; set; }
 
-        public DoctorDTO Doctor { get; set; }
+        public Object data { get; set; }
 
-        public PatientAssignmentDTO(Appointment appo)
+        public StatusSingleDto(Object dt)
         {
-            Booking = appo.Booking;
-            Doctor = new ScreeningDTO(appo.Screening);
+            status = "success";
+            data = dt;
         }
     }
-
-    **/
-
 
     // SINGLES
-
     class MovieDTO {
 
         public int Id { get; set; }
@@ -109,14 +108,31 @@ namespace api_cinema_challenge.DTOs
 
         public string UpdatedAt {get; set; }
 
-        public CustomerDTO(Customer c)
+        public CustomerDTO(Customer customer)
         {
-            Id = c.Id;
-            Name = c.Name;
-            Email = c.Email;
-            Phone = c.Phone;                                                                        
-            CreatedAt = c.CreatedAt.ToString("yyyy-MM-ddTHH':'mm':'ss.fffzzz");  
-            UpdatedAt = c.UpdatedAt.ToString("yyyy-MM-ddTHH':'mm':'ss.fffzzz");
+            Id = customer.Id;
+            Name = customer.Name;
+            Email = customer.Email;
+            Phone = customer.Phone;                                                                        
+            CreatedAt = customer.CreatedAt.ToString("yyyy-MM-ddTHH':'mm':'ss.fffzzz");  
+            UpdatedAt = customer.UpdatedAt.ToString("yyyy-MM-ddTHH':'mm':'ss.fffzzz");
+        }
+    }
+
+    class TicketDTO
+    {
+        public int Id { get; set; }
+        public int NumSeats { get; set; }
+        public string CreatedAt { get; set; }
+        public string UpdatedAt { get; set; }
+
+
+        public TicketDTO(Ticket t)
+        {
+            Id = t.Id;
+            NumSeats = t.NumSeats;
+            CreatedAt = t.CreatedAt.ToString("yyyy-MM-ddTHH':'mm':'ss.fffzzz");
+            UpdatedAt = t.UpdatedAt.ToString("yyyy-MM-ddTHH':'mm':'ss.fffzzz");
         }
     }
 }

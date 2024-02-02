@@ -5,6 +5,7 @@ using api_cinema_challenge.DTOs;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.IO.Pipes;
 using System.Globalization;
+using System.Net.Sockets;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -29,7 +30,12 @@ namespace api_cinema_challenge.Endpoints
 
             cinemaGroup.MapPost("/movies/{id}/screenings", CreateScreening);
             cinemaGroup.MapGet("/movies/{id}/screenings", GetScreenings);
-            
+
+
+            // http://localhost:4000/customers/{customerId}/screenings/{screeningId}
+            cinemaGroup.MapPost("/customers/{customerId}/screenings/{screeningId}", CreateTicket);
+            cinemaGroup.MapGet("/customers/{customerId}/screenings/{screeningId}", GetTickets);
+
         }
 
         /// AID FUNCTIONS
@@ -54,8 +60,7 @@ namespace api_cinema_challenge.Endpoints
 
         public static bool correctDateTimeFormat(string inputString)
         {
-            // Console.WriteLine($"datetime format: {inputString}");  // 2024-02-02 07:06:40
-
+           
             return DateTime.TryParseExact(inputString, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result);
    
         }
@@ -67,14 +72,17 @@ namespace api_cinema_challenge.Endpoints
 
             var customers = await repository.GetCustomers();
 
-            var customerDTO = new List<CustomerDTO>();
+            List<Object> custDTO = new List<Object>();
 
             foreach (Customer customer in customers)
             {
-                customerDTO.Add(new CustomerDTO(customer));
+                var cust = new CustomerDTO(customer);
+                custDTO.Add(cust);
             }
 
-            return TypedResults.Ok(customerDTO);
+            StatusListDto sto = new StatusListDto(custDTO);
+
+            return TypedResults.Ok(sto);
         }
 
 
@@ -82,17 +90,22 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateCustomer(CreateCustomerPayload payload, IRepository repository)
         {
-         
-            if (payload.Name == null || payload.Phone == "" || payload.Email == "")
+
+            if (payload.Name == "" || payload.Phone == "" || payload.Email == "")
             {
                 return Results.BadRequest("Non-empty fields are required.");
+            }
+
+            if (payload.Name == null || payload.Phone == null || payload.Email == null)
+            {
+                return Results.BadRequest("Non-null fields are required.");
             }
 
             if (IsValidEmail(payload.Email) == false)
             {
                 return Results.BadRequest("Email needs to be in correct format.");
             }
-        
+
             Customer? customer = await repository.CreateCustomer(payload.Name, payload.Email, payload.Phone);
             if (customer == null)
             {
@@ -101,8 +114,12 @@ namespace api_cinema_challenge.Endpoints
 
             repository.SaveChanges();
 
-            return TypedResults.Created($"/customers{customer.Id}", new CustomerDTO(customer));
+            CustomerDTO cust = new CustomerDTO(customer);
+
+            return TypedResults.Created($"/customers{customer.Id}", new StatusSingleDto( cust ));
         }
+
+
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -116,30 +133,67 @@ namespace api_cinema_challenge.Endpoints
                 return Results.NotFound("customer not found");
             }
 
-            var customerDTO = new CustomerDTO(customer);
+            CustomerDTO customerDTO = new CustomerDTO(customer);
+            StatusSingleDto sto = new StatusSingleDto( customerDTO );
 
             repository.SaveChanges();
 
-            return TypedResults.Ok(customerDTO);
+            return TypedResults.Ok(sto);
         }
+
 
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> UpdateCustomer(int id, UpdateCustomerPayload payload, IRepository repository)
         {
-         
+
+            var ogcust = repository.GetCustomers().Result.FirstOrDefault(x => x.Id == id);
+
+            if (ogcust == null)
+            {
+                return Results.BadRequest("The customer does not exist.");
+            }
+
+            string newName = ogcust.Name;
+            string newEmail = ogcust.Email;
+            string newPhone = ogcust.Phone;
+
+            bool emailFlag = false;
+
             if (payload.name == "" && payload.phone == "" && payload.email == "")
             {
                 return Results.BadRequest("Non-empty fields are required");
             }
 
-            if (IsValidEmail(payload.email) == false)
+            if (payload.name != null && payload.name.Length > 0)
             {
-                return Results.BadRequest("Email needs to be in correct format.");
+                newName = payload.name;
             }
 
-            Customer? customer = await repository.UpdateCustomer(id, payload.name, payload.email, payload.phone);
+            if (payload.phone != null && payload.phone.Length > 0)
+            {
+                newPhone = payload.phone;
+            }
+
+            if (payload.email != null && payload.email.Length > 0)
+            {
+                emailFlag = true;
+            }
+
+            if (emailFlag && IsValidEmail(payload.email) == false)
+            {
+                return Results.BadRequest("Email format was incorrect!");
+            }
+
+            else if (emailFlag && IsValidEmail(payload.email) == true)
+            {
+                newEmail = payload.email;
+            }
+
+
+
+            Customer? customer = await repository.UpdateCustomer(id, newName, newEmail, newPhone);
             if (customer == null)
             {
                 return Results.BadRequest("Failed to create customer.");
@@ -147,7 +201,10 @@ namespace api_cinema_challenge.Endpoints
 
             repository.SaveChanges();
 
-            return TypedResults.Created($"/customers{customer.Id}", new CustomerDTO(customer));
+            CustomerDTO cdto = new CustomerDTO(customer);
+            StatusSingleDto sto = new StatusSingleDto( cdto );
+
+            return TypedResults.Created($"/customers{customer.Id}", sto);
         }
 
 
@@ -160,20 +217,27 @@ namespace api_cinema_challenge.Endpoints
 
             var movies = await repository.GetMovies();
 
-            var movieDTO = new List<MovieDTO>();
+            List<Object> fstatus = new List<object>();
+
 
             foreach (Movie movie in movies)
             {
-                movieDTO.Add(new MovieDTO(movie));
+                MovieDTO dt = new MovieDTO(movie);
+
+                fstatus.Add(dt);
             }
 
-            return TypedResults.Ok(movieDTO);
+            var statusDTO = new StatusListDto(fstatus);
+
+            return TypedResults.Ok(statusDTO);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateMovie(CreateMoviePayload payload, IRepository repository)
         {
+
+            List<Screening> scrs = new List<Screening>();
          
             if (payload.title == "" || payload.rating == "" || payload.description == "" || payload.runtimeMins < 0)
             {
@@ -192,10 +256,35 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Failed to create movie.");
             }
 
+            repository.SaveChanges(); // !!!
+
+            if (payload.Screenings != null && payload.Screenings.Count() > 0)
+            {
+                foreach(CreateScreeningPayload sc in payload.Screenings)
+                {
+
+                    Screening? screening = await repository
+                        .CreateScreening(
+                        sc.screenNumber, 
+                        sc.capacity, 
+                        DateTime.Parse(sc.startsAt).ToUniversalTime(), 
+                        movie.Id);
+
+                    if (screening == null)
+                    {
+                        return Results.BadRequest("Screening could not be created!");
+                    }
+                }
+                
+            }
+
             repository.SaveChanges();
 
-            return TypedResults.Created($"/movies{movie.Id}", new MovieDTO(movie));
+            MovieDTO mdto = new MovieDTO(movie);
+
+            return TypedResults.Created($"/movies{movie.Id}", new StatusSingleDto( mdto ));
         }
+
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -211,37 +300,56 @@ namespace api_cinema_challenge.Endpoints
             }
 
             var MovieDTO = new MovieDTO(movie);
+            var StatusDTO = new StatusSingleDto( MovieDTO );
 
             repository.SaveChanges();
 
-            return TypedResults.Ok(MovieDTO);
+            return TypedResults.Ok(StatusDTO);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> UpdateMovie(int id, UpdateMoviePayload payload, IRepository repository)
         {
-         
-            if (payload.title == "" || payload.rating == "" || payload.description == "" || payload.runtimeMins < 0)
+
+
+            // nothing to update
+            if (payload.title == "" && payload.rating == "" && payload.description == "" && payload.runtimeMins < 0)
             {
                 return Results.BadRequest("Non-empty fields are required");
             }
 
-            if (payload.title == null || payload.rating == null || payload.description == null )
+            if (payload.title == null || payload.rating == null || payload.description == null || payload.runtimeMins == null)
             {
                 return Results.BadRequest("Non-null fields are required");
             }
+
+            Movie ogMovie = repository.GetMovies().Result.FirstOrDefault(x => x.Id == id);
+
+            if (ogMovie == null)
+            {
+                return Results.BadRequest("Movie not found");
+            }
+
+            string newTitle = (payload.title.Length > 0) ? payload.title : ogMovie.Title;
+            string newRating = (payload.rating.Length > 0) ? payload.rating : ogMovie.Rating;
+            string newDescription = (payload.description.Length > 0) ? payload.description : ogMovie.Description;
+            int newRuntimeMins = (payload.runtimeMins != ogMovie.RuntimeMins && payload.runtimeMins != 0) ? payload.runtimeMins : ogMovie.RuntimeMins;
         
-            Movie? movie = await repository.UpdateMovie(id, payload.title, payload.rating, payload.description, payload.runtimeMins);
+            Movie? movie = await repository.UpdateMovie(id, newTitle, newRating, newDescription, newRuntimeMins);
 
             if (movie == null)
             {
                 return Results.BadRequest("Failed to create movie.");
             }
 
+
+            MovieDTO mv = new MovieDTO(movie);
+            StatusSingleDto sto = new StatusSingleDto( mv );
+
             repository.SaveChanges();
 
-            return TypedResults.Created($"/movies{movie.Id}", new MovieDTO(movie));
+            return TypedResults.Created($"/movies{movie.Id}", sto);
         }
 
 
@@ -256,14 +364,17 @@ namespace api_cinema_challenge.Endpoints
 
             var screenings = await repository.GetScreenings(id);
 
-            var screeningDTO = new List<ScreeningDTO>();
+            List<Object> fstatus = new List<Object>();
 
             foreach (Screening screening in screenings)
             {
-                screeningDTO.Add(new ScreeningDTO(screening));
+                var scr = new ScreeningDTO(screening);
+                fstatus.Add(scr);
             }
 
-            return TypedResults.Ok(screeningDTO);
+            var statusDTO = new StatusListDto(fstatus);
+
+            return TypedResults.Ok(statusDTO);
         }
 
 
@@ -286,12 +397,72 @@ namespace api_cinema_challenge.Endpoints
                 payload.screenNumber,
                 payload.capacity,
                 DateTime.Parse(payload.startsAt).ToUniversalTime(),
-                id);
+            id);
 
+
+            if (screening == null)
+            {
+                return Results.BadRequest("Screening could not be created!");
+            }
 
             repository.SaveChanges();
 
-            return TypedResults.Created($"/screenings{screening.Id}", new ScreeningDTO(screening));
+            ScreeningDTO screeningDTO = new ScreeningDTO(screening);
+            StatusSingleDto sto = new StatusSingleDto( screeningDTO );
+
+            return TypedResults.Created($"/screenings{screening.Id}", sto);
+        }
+
+
+
+
+        //{customerId}/screenings/{screeningId}
+        /// TICKETS
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetTickets(int customerId, int screeningId, IRepository repository)
+        {
+
+            var tickets = await repository.GetTickets(customerId, screeningId);
+
+            List<Object> fstatus = new List<Object>();
+
+            foreach (Ticket t in tickets)
+            {
+                var tic = new TicketDTO(t);
+                fstatus.Add(tic);
+               
+            }
+
+            var statusDTO = new StatusListDto(fstatus);
+
+            return TypedResults.Ok(statusDTO);
+        }
+
+
+        // {customerId}/screenings/{screeningId}
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]  // [AsParameters]
+        public static async Task<IResult> CreateTicket(int customerId, int screeningId, CreateTicketPayload payload, IRepository repository)
+        {
+
+            if (payload.numSeats <= 0)
+            {
+                return Results.BadRequest("Non-zero positive seat amount is required");
+            }
+
+
+            Ticket? ticket = await repository.CreateTicket(customerId, screeningId, payload.numSeats);
+
+            if (ticket == null)
+            {
+                return Results.BadRequest("Customer or screening does not exist!");
+            }
+
+            repository.SaveChanges();
+
+            TicketDTO tdo = new TicketDTO(ticket);
+
+            return TypedResults.Created($"/{customerId}/screenings/{screeningId}", new StatusSingleDto( tdo ));
         }
     }
 }

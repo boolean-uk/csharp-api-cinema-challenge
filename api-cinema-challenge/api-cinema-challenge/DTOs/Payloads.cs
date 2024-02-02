@@ -33,7 +33,21 @@ namespace api_cinema_challenge.DTOs
 
     };
 
-    
+
+    public record CreateTicketPayload
+    {
+
+        [Required(ErrorMessage = "Seats are required!")]
+        public int numSeats { get; init; }
+
+        public CreateTicketPayload(int NumSeats)
+        {
+            numSeats = NumSeats;
+        }
+
+    };
+
+
     public record CreateScreeningPayload
     {
 
@@ -75,12 +89,15 @@ namespace api_cinema_challenge.DTOs
         [Required(ErrorMessage = "Field required!")]
         public int runtimeMins { get; init; }
 
-        public CreateMoviePayload(string Title, string Rating, string Description, int RuntimeMins)
+        public List<CreateScreeningPayload>? Screenings { get; init; } = new List<CreateScreeningPayload>();
+
+        public CreateMoviePayload(string Title, string Rating, string Description, int RuntimeMins, List<CreateScreeningPayload>? screenings)
         {
             title = Title;
             rating = Rating;
             description = Description;
             runtimeMins = RuntimeMins;
+            Screenings = screenings;
         }
     };
 
