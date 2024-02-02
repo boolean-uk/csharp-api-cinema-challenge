@@ -27,9 +27,10 @@ namespace api_cinema_challenge.Repository
             return screening;
         }
 
-        public async Task<IEnumerable<Screenings>> GetScreenings()
+        public async Task<IEnumerable<Screenings>> GetScreenings(int MoviesId)
         {
-            return await _db.Screenings.Include(y => y.Movies).ToListAsync();
+            //Get all screenings for movie with this Id
+            return await _db.Screenings.Include(y => y.Movies).Where(y => y.MoviesId == MoviesId).ToListAsync();
         }
     }
 }

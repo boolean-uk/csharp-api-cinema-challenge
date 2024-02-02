@@ -55,8 +55,8 @@ namespace api_cinema_challenge.Data
         public int Id { get; set; }
         public int ScreenNr { get; set; }
         public int Capacity { get; set; }
-        public int MovieId { get; set; }
-        public MovieDTO Movies { get; set; }
+        //public int MovieId { get; set; }
+        //public MovieDTO Movies { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
@@ -65,8 +65,8 @@ namespace api_cinema_challenge.Data
             Id = screening.Id;
             ScreenNr = screening.ScreenNr;
             Capacity = screening.Capacity;
-            MovieId = screening.MoviesId;
-            Movies = new MovieDTO(screening.Movies);
+            //MovieId = screening.MoviesId;
+            //Movies = new MovieDTO(screening.Movies);
             StartsAt = screening.StartsAt;
             Created = screening.CreatedAt;
             Updated = screening.UpdatedAt;

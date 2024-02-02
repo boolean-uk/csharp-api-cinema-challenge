@@ -15,21 +15,21 @@ namespace api_cinema_challenge.Controllers
             screeningGroup.MapGet("/", GetAllScreenings);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateScreening(IScreeningsRepository screeningsRepository, NewScreening newData)
+        public static async Task<IResult> CreateScreening(IScreeningsRepository screeningsRepository, NewScreening newData, int movieId)
         {
             //Check that newData has all values
-            if(newData.Capacity == 0 || newData.StartsAt == null || newData.ScreenNr == 0 || newData.MoviesId == 0)
+            if(newData.Capacity == 0 || newData.StartsAt == null || newData.ScreenNr == 0 || movieId == 0)
             {
                 return TypedResults.BadRequest("You must enter data for all fields!");
             }
             //Create the new screening
-            var screening = new GetScreeningDTO(await screeningsRepository.CreateScreening(newData.ScreenNr, newData.Capacity, newData.StartsAt, newData.MoviesId));
+            var screening = new GetScreeningDTO(await screeningsRepository.CreateScreening(newData.ScreenNr, newData.Capacity, newData.StartsAt, movieId));
             return TypedResults.Created($"/{screening.ScreenNr}", screening);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAllScreenings(IScreeningsRepository screeningsRepository)
+        public static async Task<IResult> GetAllScreenings(IScreeningsRepository screeningsRepository, int movieId)
         {
-            var screening = GetScreeningDTO.FromRepository(await screeningsRepository.GetScreenings());
+            var screening = GetScreeningDTO.FromRepository(await screeningsRepository.GetScreenings(movieId));
             return TypedResults.Ok(screening);
         }
     }

@@ -3,7 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace api_cinema_challenge.Models
 {
-    public record NewScreening(int ScreenNr, int Capacity, DateTime StartsAt, int MoviesId);
+    public record NewScreening(int ScreenNr, int Capacity, DateTime StartsAt);
     [Table("screenings")]
     public class Screenings
     {
