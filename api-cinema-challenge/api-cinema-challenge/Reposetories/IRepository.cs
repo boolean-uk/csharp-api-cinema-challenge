@@ -22,12 +22,12 @@ namespace api_cinema_challenge.Reposetories
         Task<Movie?> DeleteMovie(int id);
 
 
+        Task<Screening> CreateScreening(int screenNumber, int capasity, DateTime startsAt, int movieid);
+        Task<IEnumerable<Screening>> GetScreenings(int movieId);
 
-        /*--------------------------------------------------------------------------------------------------------------------*/
+
+        
 
 
-
-        Task<Screening> CreateScreening(int screenNumber, int capasity, DateTime startsAt, int movieID);
-        Task<IEnumerable<Screening>> GetScreenings();
     }
 }

@@ -126,15 +126,14 @@ namespace api_cinema_challenge.Reposetories
             return result;
         }
 
-        public async Task<Screening> CreateScreening(int screenNumber, int capasity, DateTime startsAt, int movieID)
+        public async Task<Screening> CreateScreening(int screenNumber, int capasity, DateTime startsAt, int movieid)
         {
-            var movie = await _cinemaContext.Movies.FindAsync(movieID);
+           
             Screening screening = new Screening();
+            screening.movieId = movieid;
             screening.screenNumber = screenNumber;
             screening.capacity = capasity;
             screening.startsAt = startsAt.ToUniversalTime();
-            screening.movieId = movieID;
-            screening.movie = movie;
             screening.createdAt = DateTime.Now.ToUniversalTime();
             screening.updatedAt = DateTime.Now.ToUniversalTime();
             _cinemaContext.Screenings.Add(screening);
@@ -142,12 +141,32 @@ namespace api_cinema_challenge.Reposetories
             return screening;
         }
 
-        public async Task<IEnumerable<Screening>> GetScreenings()
+        public async Task<IEnumerable<Screening?>> GetScreenings(int movieId)
         {
-            var screenings = await _cinemaContext.Screenings.Include(s => s.movie).ToListAsync();
+            var screenings = await _cinemaContext.Screenings.ToListAsync();
+            List<Screening> result = new List<Screening>(); 
+            foreach (var screening in screenings)
+            {
+                if(screening.movieId == movieId)
+                {
+                    result.Add(screening);
+                }
+                
+            }
+
             _cinemaContext.SaveChanges();
 
-            return screenings;
+            if (result.Count > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+            
+
+            
 
         }
 

@@ -63,17 +63,17 @@ namespace api_cinema_challenge.Migrations
                         {
                             id = 1,
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            email = "donaldwinslet@gov.ru",
-                            name = "Donald Winslet",
-                            phone = "+46123212321",
+                            email = "katepresley@bbc.co.uk",
+                            name = "Kate Presley",
+                            phone = "+46888888888",
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             id = 2,
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            email = "katewinfrey@gov.nl",
-                            name = "Kate Winfrey",
+                            email = "donaldhepburn@something.com",
+                            name = "Donald Hepburn",
                             phone = "+46123456789",
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         },
@@ -81,18 +81,18 @@ namespace api_cinema_challenge.Migrations
                         {
                             id = 3,
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            email = "mickwinfrey@theworld.ca",
-                            name = "Mick Winfrey",
-                            phone = "+46123456789",
+                            email = "kateobama@nasa.org.us",
+                            name = "Kate Obama",
+                            phone = "+46987654321",
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             id = 4,
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            email = "katehendrix@bbc.co.uk",
+                            email = "katehendrix@theworld.ca",
                             name = "Kate Hendrix",
-                            phone = "+46888888888",
+                            phone = "+46987654321",
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
@@ -141,41 +141,41 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             id = 1,
-                            Description = "Two Transparent Leopards",
+                            Description = "Fifteen Purple Buildings",
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            rating = "PG-3",
+                            rating = "R",
                             runtimeMins = 15,
-                            title = "Fifteen Microscopic Planets",
+                            title = "Two Transparent Planets",
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             id = 2,
-                            Description = "The Orange Houses",
+                            Description = "A herd of Green Cars",
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            rating = "PG-7",
+                            rating = "PG-3",
                             runtimeMins = 30,
-                            title = "An army of Rose Smelling Houses",
+                            title = "Fifteen Green Houses",
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             id = 3,
-                            Description = "Two Rose Smelling Houses",
+                            Description = "An army of Large Flowers",
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            rating = "PG-7",
+                            rating = "NC-17",
                             runtimeMins = 45,
-                            title = "The Orange Buildings",
+                            title = "Fifteen Large Cars",
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             id = 4,
-                            Description = "Several Bitter Flowers",
+                            Description = "A bunch of Purple Houses",
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            rating = "R",
+                            rating = "PG-13",
                             runtimeMins = 60,
-                            title = "Fifteen Transparent Houses",
+                            title = "A herd of Orange Houses",
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
@@ -215,8 +215,6 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("movieId");
-
                     b.ToTable("screening");
 
                     b.HasData(
@@ -225,7 +223,7 @@ namespace api_cinema_challenge.Migrations
                             id = 1,
                             capacity = 40,
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            movieId = 2,
+                            movieId = 0,
                             screenNumber = 2,
                             startsAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
@@ -235,7 +233,7 @@ namespace api_cinema_challenge.Migrations
                             id = 2,
                             capacity = 40,
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            movieId = 3,
+                            movieId = 2,
                             screenNumber = 1,
                             startsAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
@@ -245,7 +243,7 @@ namespace api_cinema_challenge.Migrations
                             id = 3,
                             capacity = 40,
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            movieId = 3,
+                            movieId = 0,
                             screenNumber = 2,
                             startsAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
@@ -255,22 +253,11 @@ namespace api_cinema_challenge.Migrations
                             id = 4,
                             capacity = 40,
                             createdAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
-                            movieId = 1,
+                            movieId = 2,
                             screenNumber = 1,
                             startsAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
                             updatedAt = new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc)
                         });
-                });
-
-            modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
-                {
-                    b.HasOne("api_cinema_challenge.Models.Movie", "movie")
-                        .WithMany()
-                        .HasForeignKey("movieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("movie");
                 });
 #pragma warning restore 612, 618
         }

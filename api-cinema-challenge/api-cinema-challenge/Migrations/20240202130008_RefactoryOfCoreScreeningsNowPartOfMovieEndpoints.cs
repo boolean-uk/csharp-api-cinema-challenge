@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api_cinema_challenge.Migrations
 {
     /// <inheritdoc />
-    public partial class CustomersMoviesAndScreeningsTables : Migration
+    public partial class RefactoryOfCoreScreeningsNowPartOfMovieEndpoints : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,9 +55,9 @@ namespace api_cinema_challenge.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    movie_id = table.Column<int>(type: "integer", nullable: false),
                     screen_number = table.Column<int>(type: "integer", nullable: false),
                     capacity = table.Column<int>(type: "integer", nullable: false),
-                    movie_id = table.Column<int>(type: "integer", nullable: false),
                     starts_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -65,12 +65,6 @@ namespace api_cinema_challenge.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_screening", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_screening_movie_movie_id",
-                        column: x => x.movie_id,
-                        principalTable: "movie",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -78,10 +72,10 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "id", "created_at", "email", "name", "phone", "updated_at" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "donaldwinslet@gov.ru", "Donald Winslet", "+46123212321", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 2, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "katewinfrey@gov.nl", "Kate Winfrey", "+46123456789", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 3, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "mickwinfrey@theworld.ca", "Mick Winfrey", "+46123456789", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 4, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "katehendrix@bbc.co.uk", "Kate Hendrix", "+46888888888", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) }
+                    { 1, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "katepresley@bbc.co.uk", "Kate Presley", "+46888888888", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 2, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "donaldhepburn@something.com", "Donald Hepburn", "+46123456789", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 3, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "kateobama@nasa.org.us", "Kate Obama", "+46987654321", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 4, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "katehendrix@theworld.ca", "Kate Hendrix", "+46987654321", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) }
                 });
 
             migrationBuilder.InsertData(
@@ -89,10 +83,10 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "id", "movie_description", "creatd_at", "movie_rating", "runtime_in_minutes", "title", "updated_at" },
                 values: new object[,]
                 {
-                    { 1, "Two Transparent Leopards", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "PG-3", 15, "Fifteen Microscopic Planets", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 2, "The Orange Houses", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "PG-7", 30, "An army of Rose Smelling Houses", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 3, "Two Rose Smelling Houses", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "PG-7", 45, "The Orange Buildings", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 4, "Several Bitter Flowers", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "R", 60, "Fifteen Transparent Houses", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) }
+                    { 1, "Fifteen Purple Buildings", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "R", 15, "Two Transparent Planets", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 2, "A herd of Green Cars", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "PG-3", 30, "Fifteen Green Houses", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 3, "An army of Large Flowers", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "NC-17", 45, "Fifteen Large Cars", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 4, "A bunch of Purple Houses", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), "PG-13", 60, "A herd of Orange Houses", new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) }
                 });
 
             migrationBuilder.InsertData(
@@ -100,16 +94,11 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "id", "capacity", "created_at", "movie_id", "screen_number", "starts_at", "updated_at" },
                 values: new object[,]
                 {
-                    { 1, 40, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), 2, 2, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 2, 40, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), 3, 1, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 3, 40, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), 3, 2, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
-                    { 4, 40, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), 1, 1, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) }
+                    { 1, 40, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), 0, 2, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 2, 40, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), 2, 1, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 3, 40, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), 0, 2, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) },
+                    { 4, 40, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), 2, 1, new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc) }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_screening_movie_id",
-                table: "screening",
-                column: "movie_id");
         }
 
         /// <inheritdoc />
@@ -119,10 +108,10 @@ namespace api_cinema_challenge.Migrations
                 name: "customer");
 
             migrationBuilder.DropTable(
-                name: "screening");
+                name: "movie");
 
             migrationBuilder.DropTable(
-                name: "movie");
+                name: "screening");
         }
     }
 }
