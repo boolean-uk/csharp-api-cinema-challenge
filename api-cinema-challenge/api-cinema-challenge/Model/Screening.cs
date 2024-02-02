@@ -22,8 +22,7 @@ namespace api_cinema_challenge.Model {
         [Column("movie_id")]
         public int MovieId {get; set;}
         public Movie Movie {get; set;} = null!;
-        public ICollection<Seat> Seats {get; set;} = [];
-
+        public ICollection<Seat> Seats {get; set;} = new List<Seat>();
         public ICollection<Ticket> Tickets {get; set;} = [];
 
     }

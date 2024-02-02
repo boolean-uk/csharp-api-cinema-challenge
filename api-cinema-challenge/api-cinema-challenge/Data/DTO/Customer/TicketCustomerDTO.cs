@@ -4,20 +4,16 @@ namespace api_cinema_challenge.Data.DTO {
     public class TicketCustomerDTO
     {
         public int Id { get; set; }
-        public int NumSeats { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public ScreeningDTO Screening { get; set; }
-        public ICollection<SeatDTO> Seats {get; set;}
-
+        public int ScreeningId {get; set;}
+        //public ICollection<SeatDTO> Seats {get; set;}
+        
         public TicketCustomerDTO(Ticket ticket) {
             Id = ticket.Id;
-            Seats = SeatDTO.FromRepository(ticket.Seats);
-            UpdatedAt = ticket.UpdatedAt;
-            Screening = new ScreeningDTO(ticket.Screening);
+            //Seats = SeatDTO.FromRepository(ticket.Seats);
+            ScreeningId = ticket.ScreeningId;
         }
 
-        public static ICollection<TicketCustomerDTO> FromRepository(ICollection<Ticket> tickets) {
+        public static ICollection<TicketCustomerDTO> FromRepository(IEnumerable<Ticket> tickets) {
             List<TicketCustomerDTO> result = new List<TicketCustomerDTO>();
             foreach (var ticket in tickets)
             {

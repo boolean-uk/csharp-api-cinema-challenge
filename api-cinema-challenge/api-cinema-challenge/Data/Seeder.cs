@@ -169,11 +169,9 @@ namespace api_cinema_challenge.Data {
             Random movieRandom = new Random();
             Random screenRandom = new Random();
 
-
-
             for (int x = 1; x < 25; x++)
             {
-                string n = _firstnames[authorRandom.Next(_firstnames.Count)] + _lastnames[authorRandom.Next(_lastnames.Count)];
+                string n = _firstnames[authorRandom.Next(_firstnames.Count)] + " " + _lastnames[authorRandom.Next(_lastnames.Count)];
                 Customer Customer = new Customer() 
                 {
                     Id = x,
@@ -199,9 +197,10 @@ namespace api_cinema_challenge.Data {
                 };
                 _movies.Add(movies);
             }
+
             for (int x = 1; x < 25; x++)
             {
-                for (int y = 1; y < 10; y++)
+                for (int y = 1; y < 20; y++)
                 {
                     Guid guid = Guid.NewGuid();
                     Seat seat = new Seat() 
@@ -210,7 +209,9 @@ namespace api_cinema_challenge.Data {
                         SeatRow = "A.",
                         SeatNumber = y,
                         ScreeningId = x,
+                        //Ticket id sets to 0
                     };
+                    Console.WriteLine("ScreenID: " + seat.ScreeningId);
                     _seats.Add(seat);
                 }
 
@@ -228,28 +229,41 @@ namespace api_cinema_challenge.Data {
                 _screenings.Add(screening);
             }
 
-            // for (int x = 1; x < 5; x++)
-            // {
-            //     Ticket ticket = new Ticket
-            //     {
-            //         Id = x,
-            //         CreatedAt = DateTime.UtcNow,
-            //         UpdatedAt = DateTime.UtcNow,
-            //         ScreeningId = screenRandom.Next(1, _screenings.Count),
-            //         CustomerId = screenRandom.Next(1, _customers.Count)
-            //     };
+            for (int x = 1; x < 25; x++)
+            {
+                Ticket ticket = new Ticket
+                {
+                    Id = x,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    ScreeningId = screenRandom.Next(1, _screenings.Count),
+                    CustomerId = authorRandom.Next(1, _customers.Count)
+                };
 
-            //     int numSeatsToAssign = screenRandom.Next(1, 4);
-            //     for (int i = 0; i < numSeatsToAssign; i++)
-            //     {
-            //         Seat availableSeat = _seats.Where(s => s.ScreeningId == ticket.ScreeningId && s.TicketId == 0).OrderBy(s => screenRandom.Next()).First();
-            //         Console.WriteLine(ticket.Id);
-            //         availableSeat.TicketId = ticket.Id;
-            //         //availableSeat.Ticket = ticket;
-            //         //ticket.Seats.Add(availableSeat);
-            //     }
-            //     _tickets.Add(ticket);
-            // }
+                int numSeatsToAssign = screenRandom.Next(1, 4);
+                for (int i = 0; i < 2; i++)
+                {
+                    Seat availableSeat = _seats
+                        .Where(s => s.ScreeningId == ticket.ScreeningId)
+                        .OrderBy(s => ticketRandom.Next())
+                        .FirstOrDefault();
+                    Console.WriteLine(ticket.ScreeningId);
+                    if (availableSeat != null)
+                    {
+                        availableSeat.TicketId = ticket.Id; // Update Ticket ID.
+                        Console.WriteLine("Seat Found" + availableSeat.TicketId);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"No available seat found for ticket {ticket.Id}");
+                    }
+                }
+                _tickets.Add(ticket);
+                foreach (var item in _seats)
+                {
+                    Console.WriteLine("Seats Ticket: " + item.TicketId);
+                }
+            }
         }
         public List<Customer> Customers { get { return _customers; } }
         public List<Movie> Movies { get { return _movies; } }

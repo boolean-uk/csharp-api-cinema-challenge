@@ -18,7 +18,7 @@ namespace api_cinema_challenge.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString);
-            optionsBuilder.LogTo(message => Debug.WriteLine(message));
+            //optionsBuilder.LogTo(message => Debug.WriteLine(message));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
             modelBuilder.Entity<Seat>().HasData(seeder.Seats);
-            //modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
+            modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
         }
 
         public DbSet<Customer> Customers {get; set; }

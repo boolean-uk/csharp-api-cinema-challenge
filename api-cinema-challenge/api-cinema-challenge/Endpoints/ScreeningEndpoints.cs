@@ -1,42 +1,73 @@
 
 
 
+using api_cinema_challenge.Data.DTO;
+using api_cinema_challenge.Data.Payload;
+using api_cinema_challenge.Model;
+using api_cinema_challenge.Repository.Interface;
+
 namespace api_cinema_challenge.Endpoints {
     public static class ScreeningEndpoints {
         
         public static void ConfigureScreeningEndpoints(this WebApplication app) {
-            var movies = app.MapGroup("/screening");
+            var screening = app.MapGroup("/screening");
 
-            movies.MapGet("/", GetScreenings);
-            movies.MapGet("/{id}", GetScreening);
-            movies.MapPut("/{id}", UpdateScreening);
-            movies.MapPost("/", CreateScreening);
-            movies.MapDelete("/{Id}", DeleteScreening);
+            screening.MapGet("/", GetScreenings);
+            screening.MapGet("/{Id}", GetScreeningByID);
+            screening.MapGet("/{Id}/seats", GetSeats);
+            screening.MapPut("/{Id}", UpdateScreening);
+            screening.MapPost("/{movieId}", CreateScreening);
+            screening.MapDelete("/{Id}", DeleteScreening);
         }
 
-        private static async Task DeleteScreening(HttpContext context)
+        private static async Task DeleteScreening(IScreeningRepository repository)
         {
             throw new NotImplementedException();
         }
 
-        private static async Task CreateScreening(HttpContext context)
+        private static async Task GetSeats(IScreeningRepository repository)
         {
             throw new NotImplementedException();
         }
 
-        private static async Task UpdateScreening(HttpContext context)
+        private static async Task<IResult> CreateScreening(IScreeningRepository repository, int movieId, CreateScreeningPayload payload)
+        {
+            if(payload.Capacity == 0)
+                return Results.BadRequest("Capacity cant be 0");
+            if(payload.ScreenNumber == 0)
+                return Results.BadRequest("Screen number cant be 0");
+            if(payload.StartsAt == null)
+                return Results.BadRequest("Need a startTime");
+            if(payload.EndsAt == null)
+                return Results.BadRequest("Needs a endTime");
+            if(payload.Seats == null)
+                return Results.BadRequest("Needs atleast 1 Seat");
+
+            var screening = repository.CreateScreening(payload.ScreenNumber, movieId, payload.Capacity, payload.StartsAt, payload.EndsAt, payload.Seats);
+               
+            return TypedResults.Created("Created", new ScreeningBaseDTO(await screening));
+        }
+
+        private static async Task UpdateScreening(IScreeningRepository repository)
         {
             throw new NotImplementedException();
         }
 
-        private static async Task GetScreenings(HttpContext context)
+        private static async Task GetScreenings(IScreeningRepository repository)
         {
             throw new NotImplementedException();
         }
 
-        private static async Task GetScreening(HttpContext context)
+        private static async Task<IResult> GetScreeningByID(IScreeningRepository repository, int id)
         {
-            throw new NotImplementedException();
+            if(id <= 0)
+                return Results.BadRequest("Not a valid Id");
+            var Screening = await repository.GetScreening(id);
+            if(Screening == null)
+                return Results.NotFound("No screening with ID: " + id + " Found");
+            
+            return TypedResults.Ok(new ScreeningDTO(Screening));
+
         }
     }
 }
