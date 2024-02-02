@@ -263,6 +263,11 @@ namespace api_cinema_challenge.Endpoints
                 foreach(CreateScreeningPayload sc in payload.Screenings)
                 {
 
+                    if (correctDateTimeFormat(sc.startsAt) == false) 
+                    {
+                        return Results.BadRequest("Give datetime in the correct format: YYYY-MM-DD HH:MM:SS");
+                    }
+
                     Screening? screening = await repository
                         .CreateScreening(
                         sc.screenNumber, 
