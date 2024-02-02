@@ -39,8 +39,9 @@ namespace api_cinema_challenge.Controllers
                 );
 
             CustomerDTO customerDTO = new CustomerDTO(result);
+            CustomerBaseDTO baseDTO = new CustomerBaseDTO(customerDTO); 
 
-            return TypedResults.Ok(customerDTO);
+            return TypedResults.Ok(baseDTO);
 
         }
         public static async Task<IResult> GetCustomers(IRepository repository)
@@ -53,11 +54,13 @@ namespace api_cinema_challenge.Controllers
             }
             else
             {
-                var dto = new List<CustomerDTO>();
+                var dto = new List<CustomerBaseDTO>();
                 foreach( var result in results) 
                 {
                     var customerDTO = new CustomerDTO(result);
-                    dto.Add(customerDTO);
+                    CustomerBaseDTO baseDTO = new CustomerBaseDTO(customerDTO);
+
+                    dto.Add(baseDTO);
                 }
 
                 return TypedResults.Ok(dto);    
@@ -111,16 +114,16 @@ namespace api_cinema_challenge.Controllers
             }
             else
             {
-                var result = new CustomerDTO(customer);
+                var customerDTO = new CustomerDTO(customer);
+                CustomerBaseDTO baseDTO = new CustomerBaseDTO(customerDTO);
 
-                return TypedResults.Ok(result);
+                return TypedResults.Ok(baseDTO);
+
+                
             }
         }
 
-        private static void ValidateCustomerUpdateData(CustomerUpdateData updateData)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         private static async Task<IResult> DeleteCustomer(IRepository repository, int id)
         {
@@ -138,9 +141,11 @@ namespace api_cinema_challenge.Controllers
             }
             else
             {
-                var result = new CustomerDTO(customer);
+                var customerDTO = new CustomerDTO(customer);
 
-                return TypedResults.Ok(result);
+                CustomerBaseDTO baseDTO = new CustomerBaseDTO(customerDTO);
+
+                return TypedResults.Ok(baseDTO);
             }
         }
 

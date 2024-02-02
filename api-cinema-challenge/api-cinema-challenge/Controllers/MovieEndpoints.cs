@@ -47,8 +47,9 @@ namespace api_cinema_challenge.Controllers
                 );
 
             MovieDTO movieDTO = new MovieDTO(result);
+            MovieBaseDTO baseDTO = new MovieBaseDTO(movieDTO);
 
-            return TypedResults.Ok(movieDTO);
+            return TypedResults.Ok(baseDTO);
         }
         
         public static async Task<IResult> GetMovies(IRepository repository)
@@ -61,11 +62,14 @@ namespace api_cinema_challenge.Controllers
             }
             else
             {
-                var dto = new List<MovieDTO>();
+                var dto = new List<MovieBaseDTO>();
                 foreach (var result in results)
                 {
                     var movieDTO = new MovieDTO(result);
-                    dto.Add(movieDTO);
+                    MovieBaseDTO baseDTO = new MovieBaseDTO(movieDTO);
+
+                    
+                    dto.Add(baseDTO);
                 }
 
                 return TypedResults.Ok(dto);
@@ -128,9 +132,11 @@ namespace api_cinema_challenge.Controllers
             }
             else
             {
-                var result = new MovieDTO(movie);
+                var movieDTO = new MovieDTO(movie);
 
-                return TypedResults.Ok(result);
+                MovieBaseDTO baseDTO = new MovieBaseDTO(movieDTO);
+
+                return TypedResults.Ok(baseDTO);
             }
         }
 
@@ -177,7 +183,9 @@ namespace api_cinema_challenge.Controllers
             {
                 ScreeningDTO screeningDTO = new ScreeningDTO(result);
 
-                return TypedResults.Ok(screeningDTO);
+                ScreeningBaseDTO baseDTO = new ScreeningBaseDTO(screeningDTO);
+
+                return TypedResults.Ok(baseDTO);
             }
             
         }
@@ -195,11 +203,16 @@ namespace api_cinema_challenge.Controllers
             }
             else
             {
-                var dto = new List<ScreeningDTO>();
+                var dto = new List<ScreeningBaseDTO>();
                 foreach (var screening in screenings)
                 {
                     var screeningDTO = new ScreeningDTO(screening);
-                    dto.Add(screeningDTO);
+                    
+                    ScreeningBaseDTO baseDTO = new ScreeningBaseDTO(screeningDTO);
+                    
+                    dto.Add(baseDTO);
+
+                    
                 }
 
                 return TypedResults.Ok(dto);
