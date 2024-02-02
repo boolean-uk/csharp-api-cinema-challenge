@@ -41,18 +41,27 @@ namespace api_cinema_challenge.Controllers
         {
             //Find movie to update via Id
             Movies? movie = await moviesRepository.GetMovie(id);
+            //Put newData into temporary working variables
+            string title = newData.Title;
+            string rating = newData.Rating;
+            string description = newData.Description;
+            int runtime = (int)newData.Runtime;
             //Check if movie exists
             if (movie == null)
             {
                 return TypedResults.NotFound($"No movie with id {id} found.");
             }
-            //Check that newData has all values
-            if (newData.Title == null || newData.Rating == null || newData.Description == null)
-            {
-                return TypedResults.BadRequest("You must enter data for all fields!");
-            }
+            //Check if new data is empty, otherwise use old values
+            if (title == null || title == "string" || title == string.Empty)
+                title = movie.Title;
+            if (rating == null || rating == "string" || rating == string.Empty)
+                rating = movie.Rating;
+            if (description == null || description == "string" || description == string.Empty)
+                description = movie.Description;
+            if (runtime == 0)
+                runtime = movie.RuntimeMins;
             //Run the Update method
-            movie = await moviesRepository.UpdateMovie(id, newData.Title, newData.Rating, newData.Description, newData.Runtime);
+            movie = await moviesRepository.UpdateMovie(id, title, rating, description, runtime);
             return TypedResults.Created($"/{movie.Id}", movie);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]

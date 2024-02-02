@@ -2,6 +2,7 @@
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -39,18 +40,27 @@ namespace api_cinema_challenge.Controllers
         {
             //Find customer to update via Id
             Customer? customer = await customerRepository.GetCustomer(id);
+            //Put newData into temporary working variables
+            string name = newData.Name;
+            string email = newData.Email;
+            string phoneNr = newData.PhoneNr;
+            int screeningId = (int)newData.ScreeningId;
             //Check if customer exists
             if (customer == null)
             {
                 return TypedResults.NotFound($"No customer with id {id} found.");
             }
-            //Check that newData has all values
-            if (newData.Name == null || newData.Email == null || newData.PhoneNr == null || newData.ScreeningId == 0)
-            {
-                return TypedResults.BadRequest("You must enter data for all fields!");
-            }
+            //Check that newData has all values, otherwise use old values
+            if (name == null || name == "string" || name == string.Empty)
+                name = customer.Name;
+            if (email == null || email == "string" || email == string.Empty)
+                email = customer.Email;
+            if (phoneNr == null || phoneNr == "string" || phoneNr == string.Empty)
+                phoneNr = customer.PhoneNr;
+            if (screeningId == 0)
+                screeningId = customer.ScreeningId;
             //Run the Update method
-            customer = await customerRepository.UpdateCustomer(id, newData.Name, newData.Email, newData.PhoneNr, newData.ScreeningId);
+            customer = await customerRepository.UpdateCustomer(id, name, email, phoneNr, screeningId);
             return TypedResults.Created($"/{customer.Id}", customer);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
