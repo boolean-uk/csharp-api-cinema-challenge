@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
+using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.Data
 {
@@ -20,7 +21,14 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<Screenings>();
 
+            //addSeeds
         }
+
+        public DbSet<Customer> Customer { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screenings> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }
