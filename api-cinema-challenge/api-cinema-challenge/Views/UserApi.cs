@@ -135,7 +135,19 @@ namespace api_cinema_challenge.Views
 
         private static async Task<IResult> GetAllTickets(IUserRepository userRepository, ITicketRepository ticketRepository, IScreeningRepository screeningRepository, int user_id, int screening_id)
         {
+
+            var user = await userRepository.GetUserById(user_id);
+            if (user == null)
+            {
+                return TypedResults.NotFound($"Nu such user could be found");
+            }
+            var screening = await screeningRepository.GetScreeningById(screening_id);
+            if ( screening == null )
+            {
+                return TypedResults.NotFound($"");
+            }
             var result = await ticketRepository.GetAllTickets(user_id, screening_id);
+            
          
             if ( result == null )
             {
