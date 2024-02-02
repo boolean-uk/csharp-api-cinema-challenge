@@ -23,7 +23,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest("You must enter data for all fields!");
             }
             //Create the new screening
-            var screening = new GetScreeningDTO(await screeningsRepository.CreateScreening(newData.ScreenNr, newData.Capacity, newData.StartsAt, movieId));
+            var screening = new ScreeningDTO(await screeningsRepository.CreateScreening(newData.ScreenNr, newData.Capacity, newData.StartsAt, movieId));
             return TypedResults.Created($"/{screening.ScreenNr}", screening);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]

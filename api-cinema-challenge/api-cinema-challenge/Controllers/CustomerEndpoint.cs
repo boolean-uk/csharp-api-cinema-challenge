@@ -26,7 +26,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest("You must enter data for all fields!");
             }
             //Create the new customer
-            var customer = new GetCustomerDTO(await customerRepository.CreateCustomer(newData.Name, newData.Email, newData.PhoneNr, newData.ScreeningId));
+            var customer = new CustomerDTO(await customerRepository.CreateCustomer(newData.Name, newData.Email, newData.PhoneNr, newData.ScreeningId));
             return TypedResults.Created($"/{customer.Id}",customer);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]

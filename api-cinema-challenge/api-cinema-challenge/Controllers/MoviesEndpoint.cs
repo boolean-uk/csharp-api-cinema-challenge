@@ -27,7 +27,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest("You must enter data for all fields!");
             }
             //Create the new movie
-            var movie = new GetMovieDTO(await moviesRepository.CreateMovie(newData.Title,newData.Rating,newData.Description,newData.Runtime));
+            var movie = new MovieDTO(await moviesRepository.CreateMovie(newData.Title,newData.Rating,newData.Description,newData.Runtime));
             return TypedResults.Created($"/{movie.Id}", movie);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
