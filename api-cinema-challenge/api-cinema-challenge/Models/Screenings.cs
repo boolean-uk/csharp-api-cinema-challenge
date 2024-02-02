@@ -16,12 +16,14 @@ namespace api_cinema_challenge.Models
 
         [Column("starts_at")]
         public DateTime StartsAt { get; set; }
-        public DateTime CreatedAt { get; set; } 
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; }
+        [Column("updated_at")]
         public DateTime UpdatedAT { get; set; }
 
         [Column("movie_id")]
-        //[ForeignKey("Movie")]
         public int MovieID { get; set; }
-        //public Movie Movie { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

@@ -4,6 +4,7 @@ using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -26,7 +27,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Customer?> GetCustomer(int id)
         {
-            return await _context.Customer.FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Customer.Include(c => c.Tickets).FirstOrDefaultAsync(c => c.Id == id);
         }
 
        
@@ -94,7 +95,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Movie?> GetMovie(int id)
         {
-            return await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Movies.Include(m => m.Screenings).FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<Movie?> CreateMovie(string title, string rating, string description, int runtimeMins)
@@ -147,7 +148,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Screenings?> GetScreening(int id)
         {
-            return await _context.Screenings.FirstOrDefaultAsync(s => s.Id == id);
+            return await _context.Screenings.Include(s=> s.Tickets).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Screenings?> CreateScreening(int movieID, int screenNumber, int capacity, DateTime StartsAt )
@@ -166,5 +167,60 @@ namespace api_cinema_challenge.Repository
             return screening;
         }
 
+
+
+
+        public async Task<IEnumerable<Ticket>> GetTickets(int customerId, int screeningID)
+        {
+            return await _context.Tickets.Where(t => t.CustomerID == customerId).Where(t => t.ScreeningID == screeningID).ToListAsync();
+        }
+
+
+        public async Task<int> GetNumberOfAvailableSeats(int screeningID)
+        {
+            Screenings? screening = await GetScreening(screeningID);
+            if (screening == null)
+            {
+                return 0;
+            }
+
+            if (screening.Tickets == null) return 0;
+            int numSeatsAvailable = screening.Capacity;
+
+            foreach (Ticket ticket in screening.Tickets)
+            {
+                numSeatsAvailable -= ticket.numSeats;
+            }
+
+            return numSeatsAvailable;
+        }
+
+
+
+        public async Task<Ticket?> BookTicket(int customerID, int screeningID, int numSeats)
+        {
+            if (customerID == null || screeningID == null || numSeats == null) return null;
+
+            var ticket = new Ticket {numSeats = numSeats, CustomerID = customerID, ScreeningID=screeningID, CreatedAt = DateTime.UtcNow };
+            Screenings? screening = await GetScreening(screeningID);
+            if (screening == null)
+            {
+                return null;
+            }
+
+            screening.Tickets.Add(ticket);
+
+            Customer? customer = await GetCustomer(customerID);
+            if (customer == null)
+            {
+                return null;
+            }
+            customer.Tickets.Add(ticket);
+
+            await _context.Tickets.AddAsync(ticket);
+
+            await _context.SaveChangesAsync();
+            return ticket;
+        }
     }
 }

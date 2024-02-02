@@ -20,7 +20,9 @@ namespace api_cinema_challenge.Models
 
         [Column("runtime_mins")]
         public int RuntimeMins { get; set; }
-        public DateTime CreatedAt { get; set; } // (DateTime.Today.Date.ToString("dd-MM-yyyy HH:mm:ss")
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; }
+        [Column("updated_at")]
         public DateTime UpdatedAT { get; set; }
         public ICollection<Screenings> Screenings { get; set;} = new List<Screenings>();
     }

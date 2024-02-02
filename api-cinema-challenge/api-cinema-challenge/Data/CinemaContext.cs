@@ -29,5 +29,6 @@ namespace api_cinema_challenge.Data
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screenings> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

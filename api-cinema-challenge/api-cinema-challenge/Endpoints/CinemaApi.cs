@@ -17,14 +17,16 @@ namespace api_cinema_challenge.Endpoints
 
             customerGroup.MapGet("/", GetCustomers);
             customerGroup.MapPost("/", CreateCustomer);
-            customerGroup.MapPut("/{id}", UpdateCustomer);
-            customerGroup.MapDelete("/{id}", DeleteCustomer);
+            customerGroup.MapPut("/{id}/", UpdateCustomer);
+            customerGroup.MapDelete("/{id}/", DeleteCustomer);
             movieGroup.MapGet("/", GetMovies);
             movieGroup.MapPost("/", CreateMovie);
-            movieGroup.MapPut("/{id}", UpdateMovie);
-            movieGroup.MapDelete("/{id}", DeleteMovie);
-            movieGroup.MapGet("/{id}/screenings", GetScreenings);
-            movieGroup.MapPost("/{id}/screenings", CreateScreening);
+            movieGroup.MapPut("/{id}/", UpdateMovie);
+            movieGroup.MapDelete("/{id}/", DeleteMovie);
+            movieGroup.MapGet("/{id}/screenings/", GetScreenings);
+            movieGroup.MapPost("/{id}/screenings/", CreateScreening);
+            customerGroup.MapPost("/{customerID}/screening/{screeningID}/", BookTicket);
+            customerGroup.MapGet("/{customerId}/screenings/", GetTickets);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -73,7 +75,7 @@ namespace api_cinema_challenge.Endpoints
             Customer? customer = await Repository.GetCustomer(customerId);
             if (customer == null)
             {
-                return TypedResults.NotFound();
+                return TypedResults.NotFound("Customer not found");
             }
             Customer? customerUpdated = await Repository.UpdateCustomer(customerId, payload.Name, payload.Email, payload.Phone);
             if (customerUpdated == null)
@@ -94,7 +96,7 @@ namespace api_cinema_challenge.Endpoints
             Customer? customer = await repository.GetCustomer(customerId);
             if (customer == null)
             {
-                return TypedResults.NotFound();
+                return TypedResults.NotFound("Customer not found");
             }
             Customer? customerDelete = await repository.DeleteCustomer(customerId);
             if (customerDelete == null)
@@ -153,7 +155,7 @@ namespace api_cinema_challenge.Endpoints
             Movie? movie = await Repository.GetMovie(movieId);
             if (movie == null)
             {
-                return TypedResults.NotFound();
+                return TypedResults.NotFound("Movie not found");
             }
             Movie? movieUpdated = await Repository.UpdateMovie(movieId, payload.Title, payload.Rating, payload.Description, payload.RuntimeMins);
             if (movieUpdated == null)
@@ -174,7 +176,7 @@ namespace api_cinema_challenge.Endpoints
             Movie? movie = await repository.GetMovie(movieId);
             if (movie == null)
             {
-                return TypedResults.NotFound();
+                return TypedResults.NotFound("Movie not found");
             }
             Movie? movieDelete = await repository.DeleteMovie(movieId);
             if (movieDelete == null)
@@ -190,13 +192,13 @@ namespace api_cinema_challenge.Endpoints
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> GetScreenings(int movieId, IRepository repository)
         {
             Movie? movie = await repository.GetMovie(movieId);
             if (movie == null)
             {
-                return TypedResults.NotFound();
+                return TypedResults.NotFound("Movie not found");
             }
             var screenings = await repository.GetScreenings(movieId);
             var screeningDto = new List<ScreeningDTO>();
@@ -226,6 +228,62 @@ namespace api_cinema_challenge.Endpoints
             }
 
             return TypedResults.Created($"/movies/{movieId}/", new ScreeningDTO(screening));
+        }
+
+
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetTickets(int customerId, int screeningID, IRepository repository)
+        {
+            Customer? customer = await repository.GetCustomer(customerId);
+            if (customer == null)
+            {
+                return TypedResults.NotFound("Customer not found");
+            }
+
+            Screenings? screening = await repository.GetScreening(screeningID);
+            if (screening == null)
+            {
+                return TypedResults.NotFound("Screening not found.");
+            }
+
+            var tickets = await repository.GetTickets(customerId, screeningID);
+            var ticketDto = new List<TicketDTO>();
+            foreach (Ticket ticket in tickets)
+            {
+                ticketDto.Add(new TicketDTO(ticket));
+            }
+            return TypedResults.Ok(ticketDto);
+        }
+
+
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public static async Task<IResult> BookTicket(int customerID, int screeningID, int numSeats, IRepository repository)
+        {
+         
+            if (numSeats == null || screeningID == null||customerID == null)
+            {
+                return Results.BadRequest("A customerID/screeningID/Number of seats is required");
+            }
+
+            int seatsAvailable = await repository.GetNumberOfAvailableSeats(screeningID);
+            //return TypedResults.Ok(seatsAvailable);
+            
+            if (seatsAvailable < numSeats)
+            {
+               return Results.BadRequest("Number of seats not available.");
+            }
+            
+            Ticket? ticket = await repository.BookTicket(customerID, screeningID, numSeats);
+            if (ticket == null)
+            {
+                return Results.BadRequest("Failed to book ticket.");
+            }
+
+            return TypedResults.Created($"/customers/{customerID}/screening/{screeningID}/", new TicketDTO(ticket));
         }
     }
 }

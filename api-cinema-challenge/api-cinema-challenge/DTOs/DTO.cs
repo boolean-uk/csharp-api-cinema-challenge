@@ -45,7 +45,7 @@ namespace api_cinema_challenge.DTOs
                 Email = customer.Email,
                 phone = customer.Phone,
                 CreatedAt = customer.CreatedAt,
-                UpdatedAt = customer.UpdatedAT
+                UpdatedAt = customer.UpdatedAT,
             };
         }
     }
@@ -71,7 +71,24 @@ namespace api_cinema_challenge.DTOs
         }
     }
 
+    class TicketDTO
+    {
+        public string Status { get; set; }
+        public object Data { get; set; }
 
+
+        public TicketDTO(Ticket ticket)
+        {
+            Status = "success";
+            Data = new
+            {
+                Id = ticket.Id,
+                NumSeats = ticket.numSeats,
+                CreatedAt = ticket.CreatedAt,
+                UpdatedAt = ticket.UpdatedAT
+            };
+        }
+    }
 
 }
 

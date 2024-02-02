@@ -22,7 +22,9 @@ namespace api_cinema_challenge.Repository
         public Task<Screenings?> GetScreening(int id);
         public Task<Screenings?> CreateScreening(int movieID, int screenNumber, int capacity, DateTime StartsAt);
 
-
+        public Task<Ticket?> BookTicket(int customerID, int screeningID, int numSeats);
+        public Task<IEnumerable<Ticket>> GetTickets(int customerId, int screeningID);
         public bool IsValidEmail(string email);
+        public Task<int> GetNumberOfAvailableSeats(int screeningID);
     }
 }

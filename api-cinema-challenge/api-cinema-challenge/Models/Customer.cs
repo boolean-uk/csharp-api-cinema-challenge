@@ -19,8 +19,11 @@ namespace api_cinema_challenge.Models
 
         [Column("phone")]
         public string Phone { get; set; }
-
-        public DateTime CreatedAt { get; set; } // (DateTime.Today.Date.ToString("dd-MM-yyyy HH:mm:ss")
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; } 
+        [Column("updated_at")]
         public DateTime UpdatedAT { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
