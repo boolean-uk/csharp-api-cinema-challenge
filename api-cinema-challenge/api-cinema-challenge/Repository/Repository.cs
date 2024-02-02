@@ -4,6 +4,7 @@ using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace api_cinema_challenge.Repository
@@ -28,9 +29,22 @@ namespace api_cinema_challenge.Repository
             return await _context.Customer.FirstOrDefaultAsync(c => c.Id == id);
         }
 
+       
+
+        public bool IsValidEmail(string email)
+        {
+            var trimmedEmail = email.Trim();
+
+            // Regular expression for basic email validation
+            var regex = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+
+            return regex.IsMatch(trimmedEmail);
+        }
+
         public async Task<Customer?> CreateCustomer(string name, string email, string phone)
         {
             if (name == "" || email == null || phone == "") return null;
+            //if(IsValidEmail(email) == false) { return null; } 
             var customer = new Customer { Name = name, Email = email, Phone = phone, CreatedAt = DateTime.UtcNow };
             await _context.Customer.AddAsync(customer);
             await _context.SaveChangesAsync();

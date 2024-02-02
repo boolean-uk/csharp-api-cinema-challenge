@@ -22,5 +22,7 @@ namespace api_cinema_challenge.Repository
         public Task<Screenings?> GetScreening(int id);
         public Task<Screenings?> CreateScreening(int movieID, int screenNumber, int capacity, DateTime StartsAt);
 
+
+        public bool IsValidEmail(string email);
     }
 }

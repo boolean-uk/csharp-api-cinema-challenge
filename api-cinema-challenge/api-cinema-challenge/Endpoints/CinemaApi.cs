@@ -31,7 +31,12 @@ namespace api_cinema_challenge.Endpoints
         public static async Task<IResult> GetCustomers(IRepository repository)
         {
             var customers = await repository.GetCustomers();
-            return TypedResults.Ok(customers);
+            var customerDto = new List<CustomerDTO>();
+            foreach (Customer customer in customers)
+            {
+                customerDto.Add(new CustomerDTO(customer));
+            }
+            return TypedResults.Ok(customerDto);
         }
 
 
@@ -45,7 +50,8 @@ namespace api_cinema_challenge.Endpoints
             {
                 return Results.BadRequest("A non-empty Name is required");
             }
-            if (payload.Email.Contains('@') == false) 
+
+            if(repository.IsValidEmail(payload.Email) == false)
             {
                 return Results.BadRequest("Not a valid Email");
             }
@@ -56,7 +62,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Failed to create customer.");
             }
 
-            return TypedResults.Created($"/customers/{customer.Id}", customer);
+            return TypedResults.Created($"/customers/{customer.Id}", new CustomerDTO(customer));
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -75,7 +81,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Failed to update customer.");
             }
 
-            return TypedResults.Created($"/customers/{customerUpdated.Id}", customerUpdated);
+            return TypedResults.Created($"/customers/{customerUpdated.Id}", new CustomerDTO(customerUpdated));
         }
 
 
@@ -96,7 +102,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Failed to delete customer.");
             }
 
-            return TypedResults.Ok(customer);
+            return TypedResults.Ok(new CustomerDTO(customer));
         }
 
 
@@ -110,7 +116,12 @@ namespace api_cinema_challenge.Endpoints
         public static async Task<IResult> GetMovies(IRepository repository)
         {
             var movies = await repository.GetMovies();
-            return TypedResults.Ok(movies);
+            var movieDto = new List<MovieDTO>();
+            foreach (Movie movie in movies)
+            {
+                movieDto.Add(new MovieDTO(movie));
+            }
+            return TypedResults.Ok(movieDto);
         }
 
 
@@ -131,7 +142,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Failed to create movie.");
             }
 
-            return TypedResults.Created($"/movies/{movie.Id}", movie);
+            return TypedResults.Created($"/movies/{movie.Id}", new MovieDTO(movie));
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -150,7 +161,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Failed to update movie.");
             }
 
-            return TypedResults.Created($"/movies/{movieUpdated.Id}", movieUpdated);
+            return TypedResults.Created($"/movies/{movieUpdated.Id}", new MovieDTO(movieUpdated));
         }
 
 
@@ -171,7 +182,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Failed to delete movie.");
             }
 
-            return TypedResults.Ok(movie);
+            return TypedResults.Ok(new MovieDTO(movie));
         }
 
 
@@ -179,10 +190,21 @@ namespace api_cinema_challenge.Endpoints
 
 
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> GetScreenings(int movieId, IRepository repository)
         {
+            Movie? movie = await repository.GetMovie(movieId);
+            if (movie == null)
+            {
+                return TypedResults.NotFound();
+            }
             var screenings = await repository.GetScreenings(movieId);
-            return TypedResults.Ok(screenings);
+            var screeningDto = new List<ScreeningDTO>();
+            foreach (Screenings screening in screenings)
+            {
+                screeningDto.Add(new ScreeningDTO(screening));
+            }
+            return TypedResults.Ok(screeningDto);
         }
 
 
@@ -203,7 +225,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Failed to create screening.");
             }
 
-            return TypedResults.Created($"/movies/{movieId}/", screening);
+            return TypedResults.Created($"/movies/{movieId}/", new ScreeningDTO(screening));
         }
     }
 }
