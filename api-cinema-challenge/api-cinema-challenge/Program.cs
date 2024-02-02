@@ -13,6 +13,8 @@ builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IMovieRepository,MovieRepository>();
 builder.Services.AddScoped<IScreeningRepository, ScreeningRepository>();
 builder.Services.AddScoped<ITicketRepository,TicketRepository>();
+builder.Services.AddScoped<ICustomerRepository,CustomerRepository>();
+
 
 var app = builder.Build();
 
@@ -27,4 +29,5 @@ app.UseHttpsRedirection();
 app.ConfigureMovieApi();
 app.ConfigureTicketApi();
 app.ConfigureScreeningApi();
+app.ConfigureCustomerApi();
 app.Run();

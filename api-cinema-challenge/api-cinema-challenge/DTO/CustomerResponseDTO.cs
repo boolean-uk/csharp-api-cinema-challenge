@@ -14,6 +14,7 @@ namespace api_cinema_challange.Models
 
         public CustomerResponseDTO(Customer Customer)
         {
+            Id = Customer.Id;
             Name = Customer.Name;
             Email = Customer.Email;
             Phone = Customer.Phone;

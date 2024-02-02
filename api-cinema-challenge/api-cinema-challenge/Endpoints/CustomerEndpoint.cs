@@ -1,5 +1,6 @@
 using api_cinema_challange.Models;
 using api_cinema_challange.Repository;
+using System.Text.RegularExpressions;
 
 namespace api_cinema_challange.Endpoints
 {
@@ -21,24 +22,23 @@ namespace api_cinema_challange.Endpoints
         private static async Task<IResult> CreateCustomer(ICustomerRepository CustomerRepository, CustomerPostPayload payload, IScreeningRepository screeningRepository)
         {
             //lägg till alla if satser
-
-            Customer? Customer = await CustomerRepository.CreateACustomer(payload.title, payload.rating, payload.description, payload.runtimeMins);
-
-            if (payload.screenings != null)
+            if (!IsValidEmail(payload.Email))
             {
-                foreach (CustomerScreeningPostPayload screening in payload.screenings)
-                {
-                    await screeningRepository.CreateScreening(Customer.Id, screening.screen_number, screening.capacity, screening.startsAt);
-                }
+                return TypedResults.BadRequest("email must be in email format");
             }
+            Customer? Customer = await CustomerRepository.CreateACustomer(payload.Name, payload.Email, payload.Phone);
 
             return TypedResults.Ok(CustomerResponseDTO.FromRepository(Customer));
         }
 
         private static async Task<IResult> UpdateCustomer(ICustomerRepository CustomerRepository, CustomerUpdatePayload payload)
         {
+            if (!IsValidEmail(payload.Email))
+            {
+                return TypedResults.BadRequest("email must be in email format");
+            }
             //lägg till alla if satser
-            Customer? Customer = await CustomerRepository.UpdateCustomer(payload.id, payload.title, payload.rating, payload.description, payload.runtimeMins);
+            Customer? Customer = await CustomerRepository.UpdateCustomer(payload.id, payload.Name, payload.Email, payload.Phone);
             if (Customer == null)
             {
                 return TypedResults.NotFound();
@@ -54,6 +54,15 @@ namespace api_cinema_challange.Endpoints
                 return TypedResults.NotFound();
             }
             return TypedResults.Ok(CustomerResponseDTO.FromRepository(Customer));
+        }
+
+        private static bool IsValidEmail(string email)
+        {
+            // Define a regular expression for a simple email validation
+            string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
+            // Use Regex.IsMatch to check if the email matches the pattern
+            return Regex.IsMatch(email, pattern);
         }
     }
 }
