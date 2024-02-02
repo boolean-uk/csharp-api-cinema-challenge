@@ -40,7 +40,10 @@ namespace api_cinema_challenge.Repository
             }
 
             var newMovie = new Movie() { Id = id, Title = title, Rating = rating, Description = description, RuntimeMins = runtimeMins, CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime() };
-            newMovie.Screenings.Add(new Screening() { ScreenNumber = screening.ScreenNumber, Capacity = screening.Capacity, StartsAt = screening.StartsAt });
+
+            int screenId = _databaseContext.Screenings.ToList().Last().Id;
+            screenId++;
+            newMovie.Screenings.Add(new Screening() { Id = screenId, ScreenNumber = screening.ScreenNumber, Capacity = screening.Capacity, StartsAt = screening.StartsAt, CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime(), MovieId = id });
             
             await _databaseContext.AddAsync(newMovie);
             await _databaseContext.SaveChangesAsync();
