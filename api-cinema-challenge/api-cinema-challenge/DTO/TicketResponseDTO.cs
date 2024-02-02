@@ -5,13 +5,13 @@ namespace api_cinema_challenge.DTO
 {
     public class TicketResponseDTO
     {
-        public int Id { get; set; }
-        public int NumSeats { get; set; }
+        public string Status { get; set; }
+        public DataTicketDTO Datas { get; set; }
 
         public TicketResponseDTO(Ticket ticket)
         {
-            Id = ticket.Id;
-            NumSeats = ticket.NumSeats;
+            Status = "Success";
+            Datas = new DataTicketDTO(ticket);
         }
 
         public static List<TicketResponseDTO> FromRepository(IEnumerable<Ticket> tickets)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
+using System.Net.Sockets;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -35,11 +36,12 @@ namespace api_cinema_challenge.Endpoints
                 payload.phone == null || payload.phone == "")
                 return Results.BadRequest("Must have all inputs");
 
-            Customer customer = await repository.CreateCustomer(payload.name, payload.email, payload.phone);
+            Customer? customer = await repository.CreateCustomer(payload.name, payload.email, payload.phone);
             if (customer == null)
                 return Results.BadRequest("Name already exists");
 
-            return TypedResults.Created($"/customers{customer.Name} {customer.Email} {customer.Phone}", customer);
+            CustomerResponseDTO custom = CustomerResponseDTO.FromARepository(customer);
+            return TypedResults.Created($"/customers{custom.Status} {custom.Datas}", custom);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,7 +55,8 @@ namespace api_cinema_challenge.Endpoints
             if (customer == null)
                 return Results.BadRequest("Name already found");
 
-            return TypedResults.Created($"/products{customer.Name} {customer.Email} {customer.Phone}", customer);
+            CustomerResponseDTO custom = CustomerResponseDTO.FromARepository(customer);
+            return TypedResults.Created($"/customers{custom.Status} {custom.Datas}", custom);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

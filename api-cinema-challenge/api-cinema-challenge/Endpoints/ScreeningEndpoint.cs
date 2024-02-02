@@ -33,9 +33,9 @@ namespace api_cinema_challenge.Endpoints
             var screens = await repository.CreateScreening(payload.screenNumber, payload.capacity, payload.startsAt, movieId);
             if (screens == null)
                 return Results.BadRequest("Could not make that screening");
-            ScreeningResponseDTO screening = ScreeningResponseDTO.FromARepository(screens);
 
-            return TypedResults.Created($"/screenings{screening.ScreenNumber} {screening.Capacity} {screening.StartsAt}", screening);
+            ScreeningResponseDTO screening = ScreeningResponseDTO.FromARepository(screens);
+            return TypedResults.Created($"/screenings{screening.Status} {screening.Datas}", screening);
         }
     }
 }

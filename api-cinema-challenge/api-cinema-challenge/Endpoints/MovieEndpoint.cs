@@ -39,7 +39,8 @@ namespace workshop.wwwapi.Endpoints
             if (movie == null)
                 return Results.BadRequest("Title already exists");
 
-            return TypedResults.Created($"/movies{movie.Title} {movie.Rating} {movie.Description} {movie.RuntimeMins}", movie);
+            MovieResponseDTO mov = MovieResponseDTO.FromARepository(movie);
+            return TypedResults.Created($"/movies{mov.Status} {mov.Datas}", mov);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,7 +54,8 @@ namespace workshop.wwwapi.Endpoints
             if (movie == null)
                 return Results.BadRequest("Title already found");
 
-            return TypedResults.Created($"/movies{movie.Title} {movie.Rating} {movie.Description} {movie.RuntimeMins}", movie);
+            MovieResponseDTO mov = MovieResponseDTO.FromARepository(movie);
+            return TypedResults.Created($"/movies{mov.Status} {mov.Datas}", mov);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

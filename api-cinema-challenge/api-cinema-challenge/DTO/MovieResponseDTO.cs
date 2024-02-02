@@ -5,23 +5,13 @@ namespace api_cinema_challenge.DTO
 {
     public class MovieResponseDTO
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Rating { get; set; }
-        public string Description { get; set; }
-        public int RuntimeMins { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public string Status { get; set; }
+        public DataMovieDTO Datas { get; set; }
 
         public MovieResponseDTO(Movie movie)
         {
-            Id = movie.Id;
-            Title = movie.Title;
-            Rating = movie.Rating;
-            Description = movie.Description;
-            RuntimeMins = movie.RuntimeMins;
-            CreatedAt = movie.CreatedAt;
-            UpdatedAt = movie.UpdatedAt;
+            Status = "Success";
+            Datas = new DataMovieDTO(movie);
         }
 
         public static List<MovieResponseDTO> FromRepository(IEnumerable<Movie> movies)
@@ -30,6 +20,12 @@ namespace api_cinema_challenge.DTO
             foreach (var movie in movies)
                 results.Add(new MovieResponseDTO(movie));
             return results;
+        }
+
+        public static MovieResponseDTO FromARepository(Movie movie)
+        {
+            MovieResponseDTO result = new MovieResponseDTO(movie);
+            return result;
         }
     }
 }

@@ -45,7 +45,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Could not book that ticket");
 
             TicketResponseDTO tick = TicketResponseDTO.FromARepository(ticket);
-            return TypedResults.Created($"/tickets{tick.NumSeats}", tick);
+            return TypedResults.Created($"/tickets{tick.Status} {tick.Datas}", tick);
         }
     }
 }
