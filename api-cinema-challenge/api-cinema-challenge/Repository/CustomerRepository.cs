@@ -12,7 +12,7 @@ namespace api_cinema_challenge.Repository
         {
             _db = db;
         }
-        public async Task<Customer?> CreateCustomer(string name, string email, int phoneNr, int ScreeningId)
+        public async Task<Customer?> CreateCustomer(string name, string email, string phoneNr, int ScreeningId)
         {
             //Create customer to return
             Customer customer = new Customer();
@@ -43,14 +43,14 @@ namespace api_cinema_challenge.Repository
         {
             return await _db.Customers.Include(x => x.Screening).ToListAsync();
         }
-        public async Task<Customer?> UpdateCustomer(int id, string Name, string Email, int? PhoneNr, int? ScreeningId)
+        public async Task<Customer?> UpdateCustomer(int id, string Name, string Email, string? PhoneNr, int? ScreeningId)
         {
             //Get customer to be updated
             var customer = await GetCustomer(id);
             //Add updated data to movie
             customer.Name = Name;
             customer.Email = Email;
-            customer.PhoneNr = (int)PhoneNr;
+            customer.PhoneNr = PhoneNr;
             customer.ScreeningId = (int)ScreeningId;
             customer.UpdatedAt = DateTime.UtcNow;
             //Return customer now with updated data and save changes

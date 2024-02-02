@@ -39,7 +39,7 @@ namespace api_cinema_challenge.Data
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public int PhoneNr { get; set; }
+        public string PhoneNr { get; set; }
         public int ScreeningId { get; set; }
         public CustomerDTO(Customer customer)
         {
@@ -116,7 +116,7 @@ namespace api_cinema_challenge.Data
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public int PhoneNr { get; set; }
+        public string PhoneNr { get; set; }
         public int ScreeningId { get; set; }
         public ScreeningDTO Screening { get; set; }
         public DateTime Created { get; set; }

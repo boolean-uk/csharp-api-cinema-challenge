@@ -2,8 +2,8 @@
 
 namespace api_cinema_challenge.Models
 {
-    public record NewCustomer(string Name, string Email, int PhoneNr, int ScreeningId);
-    public record UpdateCustomer(string? Name, string? Email, int? PhoneNr, int? ScreeningId);
+    public record NewCustomer(string Name, string Email, string PhoneNr, int ScreeningId);
+    public record UpdateCustomer(string? Name, string? Email, string? PhoneNr, int? ScreeningId);
     [Table("customers")]
     public class Customer
     {
@@ -14,7 +14,7 @@ namespace api_cinema_challenge.Models
         [Column("email")]
         public string Email { get; set; }
         [Column("phone_nr")]
-        public int PhoneNr { get; set; }
+        public string PhoneNr { get; set; }
         [Column("screening_id")]
         public int ScreeningId { get; set; }
         //[Column("screening")]

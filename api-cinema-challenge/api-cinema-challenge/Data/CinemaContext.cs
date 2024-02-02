@@ -38,9 +38,9 @@ namespace api_cinema_challenge.Data
                 new Screenings { Id = 3, ScreenNr = 3, Capacity = 32, StartsAt = utc1, MoviesId = 2 }
             );
             modelBuilder.Entity<Customer>().HasData(
-                new Customer { Id = 1, Name = "Victor Adamson", Email = "Victor@Adamson.se", PhoneNr = 070666123, ScreeningId = 2 },
-                new Customer { Id = 2, Name = "Phill Collins", Email = "Phill@Collins.com", PhoneNr = 321566322, ScreeningId = 3 },
-                new Customer { Id = 3, Name = "Person Humansson", Email = "Real@Email.mars", PhoneNr = 325666442, ScreeningId = 1 }
+                new Customer { Id = 1, Name = "Victor Adamson", Email = "Victor@Adamson.se", PhoneNr = "070666123", ScreeningId = 2 },
+                new Customer { Id = 2, Name = "Phill Collins", Email = "Phill@Collins.com", PhoneNr = "321566322", ScreeningId = 3 },
+                new Customer { Id = 3, Name = "Person Humansson", Email = "Real@Email.mars", PhoneNr = "325666442", ScreeningId = 1 }
             );
         }
         public DbSet<Customer> Customers { get; set; }

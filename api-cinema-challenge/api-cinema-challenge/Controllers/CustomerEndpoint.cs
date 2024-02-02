@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> CreateCustomer(ICustomerRepository customerRepository, NewCustomer newData)
         {
             //Check that newData has all values
-            if (newData.Name == null || newData.Email == null || newData.PhoneNr == 0 || newData.ScreeningId == 0)
+            if (newData.Name == null || newData.Email == null || newData.PhoneNr == null || newData.ScreeningId == 0)
             {
                 return TypedResults.BadRequest("You must enter data for all fields!");
             }
@@ -45,7 +45,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"No customer with id {id} found.");
             }
             //Check that newData has all values
-            if (newData.Name == null || newData.Email == null || newData.PhoneNr == 0 || newData.ScreeningId == 0)
+            if (newData.Name == null || newData.Email == null || newData.PhoneNr == null || newData.ScreeningId == 0)
             {
                 return TypedResults.BadRequest("You must enter data for all fields!");
             }
