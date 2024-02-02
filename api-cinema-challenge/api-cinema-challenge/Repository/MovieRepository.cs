@@ -17,12 +17,12 @@ namespace api_cinema_challenge.Repository
 
         public async Task<List<Movie>> GetAll()
         {
-            return await _databaseContext.Movies.ToListAsync();
+            return await _databaseContext.Movies.Include(m => m.Screenings).ThenInclude(s => s.Screen).ToListAsync();
         }
 
         public async Task<Movie?> GetMovieById(int id)
         {
-            return await _databaseContext.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            return await _databaseContext.Movies.Include(m => m.Screenings).ThenInclude(s => s.Screen).FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<Movie> CreateAMovie(Movie movie)
@@ -32,7 +32,7 @@ namespace api_cinema_challenge.Repository
             return movie;
         }
 
-        public async Task<Movie?> UpdateAMovie(int id, string title, string description, string rating, int runtimeMins)
+        public async Task<Movie?> UpdateAMovie(int id, string title, string description, string rating, string director, DateTime Runtime, DateTime ReleaseDate)
         {
             var movieToUpdate = await GetMovieById(id);
             if (movieToUpdate == null)
@@ -43,7 +43,9 @@ namespace api_cinema_challenge.Repository
             movieToUpdate.Title = title;
             movieToUpdate.Description = description;
             movieToUpdate.Rating = rating;
-            movieToUpdate.RuntimeMins = runtimeMins;
+            movieToUpdate.Director = director;
+            movieToUpdate.Runtime = Runtime;
+            movieToUpdate.ReleaseDate = ReleaseDate;
             movieToUpdate.UpdatedAt = DateTime.UtcNow;
 
             await SaveChangesAsync();

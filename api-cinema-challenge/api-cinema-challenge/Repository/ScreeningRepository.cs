@@ -26,11 +26,22 @@ namespace api_cinema_challenge.Repository
             return (screening);
         }
 
-        public async Task<List<Screening>> GetAllScreeningsByMovieId(int MovieId)
+        public async Task<List<Screening>> GetScreeningsByMovieId(int MovieId)
         {
-            return await _databaseContext.Screenings.Where(s => s.MovieId == MovieId).ToListAsync();
+            return await _databaseContext.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.Screen).ThenInclude(s => s.Seats)
+                .Include(s => s.Tickets)
+                .Where(s => s.MovieId == MovieId).ToListAsync();
         }
-
+        public async Task<List<Screening>> GetScreenings()
+        {
+            return await _databaseContext.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.Tickets)
+                .Include(s => s.Screen).ThenInclude(s => s.Seats)
+                .ToListAsync();
+        }
         private bool SaveChanges()
         {
             _databaseContext.SaveChanges();

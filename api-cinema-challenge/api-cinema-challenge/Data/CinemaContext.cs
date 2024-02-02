@@ -25,45 +25,24 @@ namespace api_cinema_challenge.Data
             DateTimeOffset dateTime = DateTimeOffset.Parse(dateString);
             DateTime dateTimeUtc = dateTime.UtcDateTime;
 
+            //Primary Composite key for SeatScreen
+            modelBuilder.Entity<Ticket>().HasKey(e => new {e.screeningId, e.seatId} );
 
-            modelBuilder.Entity<Customer>().HasData(new Customer()
-            {
-                Id = 1,
-                Name = "Chris Wolstenholme",
-                Email = "Chris@muse.mu",
-                Phone = "+44729388192",
-                CreatedAt = dateTimeUtc,
-                UpdatedAt = dateTimeUtc
-            });
+            //Add test data
+            Seeder.Seed(modelBuilder);
 
-
-            modelBuilder.Entity<Movie>().HasData(new Movie()
-            {
-                Id = 1,
-                Title = "Dodgeball",
-                Rating = "PG-13",
-                Description = "The greatest movie ever made.",
-                RuntimeMins = 126,
-                CreatedAt = dateTimeUtc,
-                UpdatedAt = dateTimeUtc
-            });
-
-            modelBuilder.Entity<Screening>().HasData(new Screening()
-            {
-                Id = 1,
-                ScreenNumber = 5,
-                Capacity = 40,
-                StartsAt = dateTimeUtc.AddHours(3),
-                MovieId = 1,
-                CreatedAt = dateTimeUtc,
-                UpdatedAt = dateTimeUtc
-            }) ;
 
 
         }
 
 
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Booking > Bookings { get; set; }
+        public DbSet<Screen> Screens{ get; set; }
+        public DbSet<Seat> Seats{ get; set; }
+        //public DbSet<SeatScreening> SeatScreenings{ get; set; }
+        public DbSet<Ticket> Tickets{ get; set; }
+
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
 

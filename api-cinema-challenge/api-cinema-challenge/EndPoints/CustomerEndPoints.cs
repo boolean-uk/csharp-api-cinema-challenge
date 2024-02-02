@@ -61,12 +61,14 @@ namespace workshop.wwwapi.Endpoints
 
         public static async Task<IResult> GetAllCustomers(ICustomerRepository repository)
         {
-            var customerResponse = await repository.GetAll();
-            List<Customer> customer = customerResponse.ToList();
+            var cResponse = await repository.GetAll();
+            List<Customer> customerResponse = cResponse.ToList();
 
 
-            return TypedResults.Ok(new RequestSuccessDTO(customer));
+            return TypedResults.Ok(RequestDTO.Success(CustomerDTO.FromListOfCustomers(customerResponse)));
         }
+
+
         public static async Task<IResult> CreateACustomer(CustomerPayload payload, ICustomerRepository repository)
         {
             if (!payload.AllFieldsFilled()) { return TypedResults.BadRequest("All fields required."); }
@@ -84,23 +86,24 @@ namespace workshop.wwwapi.Endpoints
 
             var customerResponse = await repository.CreateACustomer(newCustomer);
            
-            return TypedResults.Ok(new RequestSuccessDTO(customerResponse));
+            return TypedResults.Ok(RequestDTO.Success(new CustomerDTO(customerResponse)));
         }
 
         public static async Task<IResult> UpdateCustomerById(int id, CustomerPayload payload, ICustomerRepository repository)
         {
-            if (!payload.AllFieldsFilled()) { return TypedResults.BadRequest(); }
+            if (!payload.AllFieldsFilled()) { return TypedResults.BadRequest("All fields required."); }
+            if (!payload.IsValidEmail()) { return TypedResults.BadRequest("Not a valid email."); }
 
             var customerResponse = await repository.UpdateACustomer(id, payload.name, payload.email, payload.phone);
 
-            return TypedResults.Ok(customerResponse);
+            return TypedResults.Ok(RequestDTO.Success(customerResponse));
         }
         public static async Task<IResult> DeleteCustomerById(int id, ICustomerRepository repository)
         {
             Customer? customerResponse = await repository.DeleteACustomer(id);
             if (customerResponse == null) { TypedResults.NotFound(); }
 
-            return TypedResults.Ok(new RequestSuccessDTO(customerResponse));
+            return TypedResults.Ok(RequestDTO.Success(customerResponse));
         }
 
 

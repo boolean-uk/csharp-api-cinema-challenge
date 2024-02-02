@@ -37,7 +37,12 @@ namespace api_cinema_challenge.Repository
 
         public async Task<List<Customer>> GetAll()
         {
-            List<Customer> response = await _databaseContext.Customers.ToListAsync();
+            List<Customer> response = await _databaseContext.Customers
+                    .Include(c => c.Bookings).ThenInclude(b => b.tickets)
+                    .ThenInclude(t => t.seat)
+                    .Include(c => c.Bookings).ThenInclude(b => b.tickets)
+                    .ThenInclude(t => t.screening).ThenInclude(s => s.Movie)
+                    .ToListAsync();
             return response;
         }
 
