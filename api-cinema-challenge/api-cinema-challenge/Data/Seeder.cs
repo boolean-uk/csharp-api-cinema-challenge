@@ -162,7 +162,6 @@ namespace api_cinema_challenge.Data
 
         public List<Screening> Screenings { get { return _screenings; } }
 
-
         public List<Ticket> Tickets { get { return _tickets; } }
 
     }

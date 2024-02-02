@@ -7,9 +7,6 @@ using System.Xml.Linq;
 namespace api_cinema_challenge.DTOs
 {
 
-
-    
-
     class StatusListDto
     {
         public string status { get; set; }
