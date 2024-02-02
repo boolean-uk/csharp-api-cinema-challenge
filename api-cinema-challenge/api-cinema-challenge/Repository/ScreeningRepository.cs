@@ -22,7 +22,27 @@ namespace api_cinema_challenge.Repository
             screening.MovieId = MovieId;
 
             _databaseContext.Screenings.Add(screening);
+           
+            
+
+           
+            
+
             SaveChanges();
+            
+            //Create tickets for new screening
+
+             List<Seat> seatsInScreeningRoom = await _databaseContext.Seats.Where(S => S.ScreenId == screening.ScreenId).ToListAsync();
+            List<Ticket> tickets = new List<Ticket>();    
+            foreach(Seat seat in seatsInScreeningRoom)
+                    { tickets.Add(new Ticket() { screeningId = screening.Id, seatId = seat.Id, price = 15f, createdAt=DateTime.UtcNow, updatedAt=DateTime.UtcNow }); }
+
+
+            _databaseContext.Tickets.AddRange(tickets);
+
+            SaveChanges();
+
+
             return (screening);
         }
 
@@ -47,5 +67,17 @@ namespace api_cinema_challenge.Repository
             _databaseContext.SaveChanges();
             return true;
         }
+
+        public async Task<Screening?> DeleteScreening(int ScreeningId)
+        {
+            
+            Screening? screeningToDelete = _databaseContext.Screenings.FirstOrDefault(s => s.Id == ScreeningId);
+            if (screeningToDelete == null) { return null; }
+            _databaseContext.Screenings.Remove(screeningToDelete);
+            SaveChanges();
+            return screeningToDelete;
+
+        }
+
     }
 }

@@ -7,7 +7,7 @@ namespace api_cinema_challenge.Models.DTOs
 {
     public class ScreeningDTO
     {
-        public int Id { get; set; }
+        public int ScreeningId { get; set; }
         public string MovieName { get; set; }
         public string ScreenName { get; set; }
         public int TotalSeats { get; set; }
@@ -24,7 +24,7 @@ namespace api_cinema_challenge.Models.DTOs
 
             return new ScreeningDTO
             {
-                Id = screening.Id,
+                ScreeningId = screening.Id,
                 MovieName = screening.Movie?.Title,
                 ScreenName = screening.Screen.name,
                 TotalSeats = totalSeats,

@@ -8,6 +8,7 @@ namespace api_cinema_challenge.Repository
         Task<List<Screening>> GetScreeningsByMovieId(int id);
         Task<List<Screening>> GetScreenings();
         Task<Screening?> CreateAScreeningForMovieId(Screening screening, int MovieId);
+        Task<Screening?> DeleteScreening(int ScreeningId);
 
     }
 }

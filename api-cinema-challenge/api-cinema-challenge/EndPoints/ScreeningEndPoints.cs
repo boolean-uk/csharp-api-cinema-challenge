@@ -36,7 +36,7 @@ namespace workshop.wwwapi.Endpoints
             movieGroup.MapPost("/{id}/screenings", CreateScreeningForMovie);
             movieGroup.MapGet("/screenings", GetAllScreenings);
             movieGroup.MapGet("/{id}/screenings", GetAllScreeningsForMovieByID);
-            //movieGroup.MapGet("/{MovieId}/screenings/{ScreeningId}", DeleteScreening);
+            movieGroup.MapDelete("/screenings/{ScreeningId}", DeleteScreening);
 
         }
 
@@ -58,6 +58,7 @@ namespace workshop.wwwapi.Endpoints
             if (screenings.Count == 0) { return TypedResults.NotFound(); }
 
             return Results.Ok(ScreeningDTO.FromScreenings(screenings));
+
         }
 
 
@@ -84,17 +85,16 @@ namespace workshop.wwwapi.Endpoints
             return Results.Created($"/movies/{createdScreening.Id}", ScreeningDTO.FromScreening(createdScreening));
         }
 
-       /* public static async Task<IResult> DeleteScreening(int MovieId, int ScreeningId,  IScreeningRepository repository, IMovieRepository movieRepo)
+        public static async Task<IResult> DeleteScreening(int ScreeningId,  IScreeningRepository repository, IMovieRepository movieRepo)
         {
-            if (await movieRepo.GetMovieById(MovieId) == null) { return TypedResults.NotFound(); }
 
-            await repository.
-            if (screenings.Count == 0) { return TypedResults.NotFound(); }
+            Screening deletedScreening =  await repository.DeleteScreening(ScreeningId);
+            if (deletedScreening == null) { return TypedResults.NotFound(); }
 
-            return Results.Ok(ScreeningDTO.FromScreenings(screenings));
+            return Results.Ok(ScreeningDTO.FromScreening(deletedScreening));
 
 
-        }*/
+        }
 
     }
 }
