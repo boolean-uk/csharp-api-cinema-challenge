@@ -23,6 +23,15 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Ticket>().HasOne(u => u.User)
+                .WithMany(t => t.Tickets)
+                .HasForeignKey(fk => fk.UserId);
+
+            modelBuilder.Entity<Ticket>().HasOne(s => s.Screening)
+                .WithMany(t => t.Tickets)
+                .HasForeignKey(fk => fk.ScreeningId);
+
             modelBuilder.Entity<User>().HasData(
                 new User() { UserId = 1, Name = "John Doe", Email = "john.doe@example.com", Phone = "+1234567890", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
                 new User() { UserId = 2, Name = "Jane Smith", Email = "jane.smith@example.com", Phone = "+9876543210", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
@@ -147,5 +156,7 @@ namespace api_cinema_challenge.Data
         public DbSet<Movie> Movies { get; set; }
 
         public DbSet<Screening> Screenings { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

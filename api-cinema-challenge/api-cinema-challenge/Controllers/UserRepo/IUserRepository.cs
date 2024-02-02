@@ -11,5 +11,7 @@ namespace api_cinema_challenge.Controllers.UserRepo
         Task<User?> CreateUser(string name, string email, string phonenumber);
         Task<User?> UpdateUser(int user_id, string? name, string? email, string? phonenumber);
         Task<User?> DeleteUser(int user_id);
+
+    
     }
 }

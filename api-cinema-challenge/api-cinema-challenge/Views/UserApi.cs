@@ -1,5 +1,9 @@
-﻿using api_cinema_challenge.Controllers.UserRepo;
+﻿using api_cinema_challenge.Controllers.ScreeningRepo;
+using api_cinema_challenge.Controllers.TicketRepo;
+using api_cinema_challenge.Controllers.UserRepo;
 using api_cinema_challenge.DTO;
+using api_cinema_challenge.Models;
+using static api_cinema_challenge.Models.Payloads.TicketPayloads;
 using static api_cinema_challenge.Models.Payloads.UserPayloads;
 
 namespace api_cinema_challenge.Views
@@ -17,6 +21,8 @@ namespace api_cinema_challenge.Views
             userGroup.MapPost("/", CreateUser);
             userGroup.MapPut("/{id}", UpdateUser);
             userGroup.MapDelete("/{id}", DeleteUser);
+
+            userGroup.MapPost("/{user_id}/screenings/{screening_id}", BookTicket);
         }
 
         private static async Task<IResult> GetAllUsers(IUserRepository userRepository)
@@ -91,6 +97,39 @@ namespace api_cinema_challenge.Views
             }
             return TypedResults.Ok(new UserDataDTO(result, "success"));
             
+        }
+
+        private static async Task<IResult> BookTicket(IUserRepository userRepository, ITicketRepository ticketRepository, IScreeningRepository screeningRepository, int user_id, int screening_id, TicketPostPayload payload)
+        {
+            var user = await userRepository.GetUserById(user_id);
+            var screening = await screeningRepository.GetScreeningById(screening_id);
+            if (user == null)
+            {
+                return TypedResults.NotFound($"Could not find user with id {user_id}");
+            }
+            if (screening == null)
+            {
+                return TypedResults.NotFound($"Could not find screening with id {screening_id}");
+            }
+
+            var newTicket = new Ticket
+            {
+                UserId = user_id,
+                ScreeningId = screening_id,
+                NumSeats = payload.num_seats,
+
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+            };
+
+            var savedTicket = await ticketRepository.SaveTicket(newTicket);
+            if ( savedTicket == null )
+            {
+                return TypedResults.NotFound();
+            }
+
+            return TypedResults.Created("/", new TicketDataDTO(savedTicket, "success"));
+            throw new NotImplementedException();
         }
 
 

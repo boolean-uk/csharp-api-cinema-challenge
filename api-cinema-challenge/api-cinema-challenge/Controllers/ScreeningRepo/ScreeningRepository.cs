@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Controllers.ScreeningRepo
 {
@@ -37,6 +38,12 @@ namespace api_cinema_challenge.Controllers.ScreeningRepo
         }
 
         public async Task<Screening?> GetScreeningByMovieId(int id)
+        {
+            return await _db.Screenings.FirstOrDefaultAsync(m => m.MovieId == id);
+            //return await _db.Screenings.FindAsync(id);
+        }
+
+        public async Task<Screening?> GetScreeningById(int id)
         {
             return await _db.Screenings.FindAsync(id);
         }

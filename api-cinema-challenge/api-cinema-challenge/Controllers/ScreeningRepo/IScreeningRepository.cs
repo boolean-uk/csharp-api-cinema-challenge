@@ -7,6 +7,7 @@ namespace api_cinema_challenge.Controllers.ScreeningRepo
 
         Task<Screening?> CreateScreening(int id, int screenNumber, int capacity, DateTime startsAt);
         Task<Screening?> GetScreeningByMovieId(int movieId);
+        Task<Screening?> GetScreeningById(int screening_id);
 
     }
 }

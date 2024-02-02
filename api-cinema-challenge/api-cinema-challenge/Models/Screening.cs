@@ -8,7 +8,7 @@ namespace api_cinema_challenge.Models
     {
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public int ScreeningId { get; set; }
         [Column("screen_numbers")]
         public int ScreenNumber { get; set; }
         [Column("capacities")]
@@ -21,7 +21,9 @@ namespace api_cinema_challenge.Models
         public DateTime UpdatedAt { get; set; }
 
 
+        // internal
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

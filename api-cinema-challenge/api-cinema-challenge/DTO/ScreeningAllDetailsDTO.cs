@@ -16,7 +16,7 @@ namespace api_cinema_challenge.DTO
         public DateTime UpdatedAt { get; set; }
 
         public ScreeningAllDetailsDTO(Screening screening) {
-            Id = screening.Id;
+            Id = screening.ScreeningId;
             ScreenNumber = screening.ScreenNumber;
             Capacity = screening.Capacity;
             StartsAt = screening.StartsAt;
