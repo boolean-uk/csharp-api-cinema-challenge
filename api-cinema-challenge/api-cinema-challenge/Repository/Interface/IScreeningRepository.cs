@@ -12,6 +12,7 @@ namespace api_cinema_challenge.Repository.Interface {
         Task<IEnumerable<Screening>> GetAllScreenings();
         Task UpdateScreening(int id, Screening screening);
         Task DeleteScreening(int id);
+        Task<ICollection<Seat>> GetSeats(int screeningId);
     }
 
 }

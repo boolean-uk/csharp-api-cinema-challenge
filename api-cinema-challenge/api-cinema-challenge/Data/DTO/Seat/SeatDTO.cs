@@ -11,7 +11,7 @@ namespace api_cinema_challenge.Data.DTO {
             SeatNumber = seat.SeatNumber;
         }
 
-        public static List<SeatDTO> FromRepository(ICollection<Seat> seats) {
+        public static List<SeatDTO> FromRepository(IEnumerable<Seat> seats) {
             List<SeatDTO> ret = new List<SeatDTO>();
             foreach (Seat seat in seats)
             {

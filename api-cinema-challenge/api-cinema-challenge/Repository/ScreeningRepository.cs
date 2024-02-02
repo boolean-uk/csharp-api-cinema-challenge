@@ -56,9 +56,9 @@ namespace api_cinema_challenge.Repository {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Screening>> GetAllScreenings()
+        public async Task<IEnumerable<Screening>> GetAllScreenings()
         {
-            throw new NotImplementedException();
+            return await _db.Screenings.Include(screening => screening.Movie).ToListAsync();
         }
 
         public async Task<Screening?> GetScreening(int id)
@@ -73,6 +73,19 @@ namespace api_cinema_challenge.Repository {
             if(screening == null)
                 return null;
             return screening;
+        }
+
+        public async Task<ICollection<Seat>> GetSeats(int screeningId)
+        {
+            if(screeningId <= 0)
+                return null;
+            var ticket = await _db.Tickets
+                        .Include(ticket => ticket.Seats)
+                        .Where(seat => seat.ScreeningId == screeningId)
+                        .FirstOrDefaultAsync();
+            if(ticket == null)
+                return null;
+            return ticket.Seats;
         }
 
         public Task<IEnumerable<Screening>> GetScreeningsByMovieId(int movieId)

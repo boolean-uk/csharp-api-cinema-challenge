@@ -11,27 +11,21 @@ namespace api_cinema_challenge.Endpoints {
         public static void ConfigureTicketsEndpoints(this WebApplication app) {
             var movies = app.MapGroup("/tickets");
 
-            movies.MapGet("/", GetTickets);
             movies.MapGet("/{Id}", GetTicket);
-            movies.MapPut("/{Id}", UpdateTicket);
             movies.MapPost("/{customerId}/{screeningId}", CreateTicket);
-            movies.MapDelete("/{Id}", DeleteTicket);
-        }
-
-        private static async Task DeleteTicket(ITicketRepository repository)
-        {
-            throw new NotImplementedException();
         }
 
         private static async Task<IResult> CreateTicket(ITicketRepository repository, int customerId, int screeningId, CreateTicketPayload payload)
         {
-            await repository.CreateTicket(customerId, screeningId, payload.seats);
-            return Results.Ok("Created");
-        }
-
-        private static async Task UpdateTicket(ITicketRepository repository)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                await repository.CreateTicket(customerId, screeningId, payload.seats);
+                return Results.Ok("Created");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
         }
 
         private static async Task<IResult> GetTicket(ITicketRepository repository, int Id)

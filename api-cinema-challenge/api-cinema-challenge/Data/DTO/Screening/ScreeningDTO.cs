@@ -1,4 +1,5 @@
 
+
 using api_cinema_challenge.Model;
 
 namespace api_cinema_challenge.Data.DTO {
@@ -20,6 +21,16 @@ namespace api_cinema_challenge.Data.DTO {
             StartsAt = screening.StartsAt;
             UpdatedAt = screening.UpdatedAt;
             Movie = new MovieDTO(screening.Movie);
+        }
+
+        public static List<ScreeningDTO> FromRepository(IEnumerable<Screening> screenings)
+        {
+            List<ScreeningDTO> ret = new List<ScreeningDTO>();
+            foreach (var item in screenings)
+            {
+                ret.Add(new ScreeningDTO(item));
+            }
+            return ret;
         }
     }
 }

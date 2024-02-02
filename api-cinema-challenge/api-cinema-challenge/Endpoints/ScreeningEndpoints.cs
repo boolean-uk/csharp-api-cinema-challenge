@@ -10,14 +10,14 @@ namespace api_cinema_challenge.Endpoints {
     public static class ScreeningEndpoints {
         
         public static void ConfigureScreeningEndpoints(this WebApplication app) {
-            var screening = app.MapGroup("/screening");
+            var screening = app.MapGroup("/screenings");
 
             screening.MapGet("/", GetScreenings);
             screening.MapGet("/{Id}", GetScreeningByID);
             screening.MapGet("/{Id}/seats", GetSeats);
             screening.MapPut("/{Id}", UpdateScreening);
             screening.MapPost("/{movieId}", CreateScreening);
-            screening.MapDelete("/{Id}", DeleteScreening);
+            //screening.MapDelete("/{Id}", DeleteScreening);
         }
 
         private static async Task DeleteScreening(IScreeningRepository repository)
@@ -25,9 +25,12 @@ namespace api_cinema_challenge.Endpoints {
             throw new NotImplementedException();
         }
 
-        private static async Task GetSeats(IScreeningRepository repository)
+        private static async Task<IResult> GetSeats(IScreeningRepository repository, int id)
         {
-            throw new NotImplementedException();
+            var seats = await repository.GetSeats(id);
+            if(seats == null)
+                return Results.BadRequest("No Seats Found");
+            return TypedResults.Ok(SeatDTO.FromRepository(seats));
         }
 
         private static async Task<IResult> CreateScreening(IScreeningRepository repository, int movieId, CreateScreeningPayload payload)
@@ -53,9 +56,9 @@ namespace api_cinema_challenge.Endpoints {
             throw new NotImplementedException();
         }
 
-        private static async Task GetScreenings(IScreeningRepository repository)
+        private static async Task<IResult> GetScreenings(IScreeningRepository repository)
         {
-            throw new NotImplementedException();
+            return TypedResults.Ok(ScreeningDTO.FromRepository(await repository.GetAllScreenings()));
         }
 
         private static async Task<IResult> GetScreeningByID(IScreeningRepository repository, int id)
