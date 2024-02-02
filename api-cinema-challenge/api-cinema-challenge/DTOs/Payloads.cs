@@ -2,10 +2,13 @@
 using Microsoft.OpenApi.Any;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 
 namespace api_cinema_challenge.DTOs
@@ -35,17 +38,20 @@ namespace api_cinema_challenge.DTOs
     {
 
         [Required(ErrorMessage = "Screen Number Required!")]
+        [JsonPropertyName("screenNumber")]
         public int screenNumber { get; init; }
 
         [Required(ErrorMessage = "Capacity Required!")]
+        [JsonPropertyName("capacity")]
         public int capacity { get; init; }
 
         [Required(ErrorMessage = "Starting Datetime Required!")]
+        [JsonPropertyName("startsAt")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{YYYY-MM-DD HH:MM:SS}")] // why doesn't it work...
-        public DateTime startsAt { get; init; }
+        [DisplayFormat(DataFormatString = "YYYY-MM-DD HH:MM:SS")] // why doesn't it work... does the static method lack the model context?
+        public string startsAt { get; init; }
 
-        public CreateScreeningPayload(int ScreenNumber, int Capacity, DateTime StartsAt )
+        public CreateScreeningPayload(int ScreenNumber, int Capacity, string StartsAt )
         {
             screenNumber = ScreenNumber;
             capacity = Capacity;

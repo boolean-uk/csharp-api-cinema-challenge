@@ -3,6 +3,8 @@ using api_cinema_challenge.Repository;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.DTOs;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.IO.Pipes;
+using System.Globalization;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -37,7 +39,7 @@ namespace api_cinema_challenge.Endpoints
 
             if (trimmedEmail.EndsWith("."))
             {
-                return false; // suggested by @TK-421
+                return false;
             }
             try
             {
@@ -50,6 +52,13 @@ namespace api_cinema_challenge.Endpoints
             }
         }
 
+        public static bool correctDateTimeFormat(string inputString)
+        {
+            // Console.WriteLine($"datetime format: {inputString}");  // 2024-02-02 07:06:40
+
+            return DateTime.TryParseExact(inputString, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result);
+   
+        }
 
         /// CUSTOMERS
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -259,7 +268,7 @@ namespace api_cinema_challenge.Endpoints
 
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]  // [AsParameters]
         public static async Task<IResult> CreateScreening(int id, CreateScreeningPayload payload, IRepository repository)
         {
 
@@ -267,17 +276,18 @@ namespace api_cinema_challenge.Endpoints
             {
                 return Results.BadRequest("Non-empty fields are required");
             }
+
+            if (correctDateTimeFormat(payload.startsAt) == false) 
+            {
+                return Results.BadRequest("Give datetime in the correct format: YYYY-MM-DD HH:MM:SS");
+            }
         
             Screening? screening = await repository.CreateScreening(
                 payload.screenNumber,
                 payload.capacity,
-                payload.startsAt,
+                DateTime.Parse(payload.startsAt).ToUniversalTime(),
                 id);
 
-            if (screening == null)
-            {
-                return Results.BadRequest("Failed to create screening.");
-            }
 
             repository.SaveChanges();
 
