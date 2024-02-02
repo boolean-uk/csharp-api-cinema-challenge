@@ -220,8 +220,9 @@ namespace api_cinema_challenge.Data
                 new Screening
                 {
                     Id = 1,
-                    ScreenName = "Screen1",
+                    ScreenNumber = 1,
                     MovieId = 1,
+                    Capacity = 100,
                     StartTime = DateTime.UtcNow.AddHours(1),
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
@@ -230,8 +231,9 @@ namespace api_cinema_challenge.Data
                 new Screening
                 {
                     Id = 2,
-                    ScreenName = "Screen2",
+                    ScreenNumber = 2,
                     MovieId = 1,
+                    Capacity = 120,
                     StartTime = DateTime.UtcNow.AddHours(3),
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
@@ -240,8 +242,9 @@ namespace api_cinema_challenge.Data
                 new Screening
                 {
                     Id = 3,
-                    ScreenName = "Screen3",
+                    ScreenNumber = 3,
                     MovieId = 2,
+                    Capacity = 70,
                     StartTime = DateTime.UtcNow.AddHours(4),
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
@@ -250,8 +253,9 @@ namespace api_cinema_challenge.Data
                 new Screening
                 {
                     Id = 4,
-                    ScreenName = "Screen4",
+                    ScreenNumber = 4,
                     MovieId = 2,
+                    Capacity = 80,
                     StartTime = DateTime.UtcNow.AddHours(1),
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
@@ -260,8 +264,9 @@ namespace api_cinema_challenge.Data
                 new Screening
                 {
                     Id = 5,
-                    ScreenName = "Screen5",
+                    ScreenNumber = 5,
                     MovieId = 3,
+                    Capacity = 83,
                     StartTime = DateTime.UtcNow.AddHours(5),
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
