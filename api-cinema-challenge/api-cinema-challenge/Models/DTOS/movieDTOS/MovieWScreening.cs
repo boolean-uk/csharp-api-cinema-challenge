@@ -1,6 +1,6 @@
-﻿namespace api_cinema_challenge.Models
+﻿namespace api_cinema_challenge.Models.DTOS.movieDTOS
 {
-    public class MovieDTO
+    public class MovieWScreeningDTO
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -9,7 +9,8 @@
         public int RuntimeMins { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
-        public MovieDTO(Movie movie)
+        public ICollection<ScreeningToMovieDTO> Screenings { get; set; } = new List<ScreeningToMovieDTO>();
+        public MovieWScreeningDTO(Movie movie)
         {
             Id = movie.Id;
             Title = movie.Title;
@@ -19,6 +20,10 @@
             string datePattern = "yyyy-MM-ddTHH:mm:ss";
             CreatedAt = movie.CreatedAt.ToString(datePattern);
             UpdatedAt = movie.UpdatedAt.ToString(datePattern);
+            foreach (var screening in movie.Screenings)
+            {
+                Screenings.Add(new ScreeningToMovieDTO(screening));
+            }
         }
     }
 

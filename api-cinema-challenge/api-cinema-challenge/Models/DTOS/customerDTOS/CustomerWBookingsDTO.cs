@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using api_cinema_challenge.Models.DTOS;
 
 namespace api_cinema_challenge.Models
 {
-    [Table("customers")]
-    public class CustomerDTO
+    public class CustomerWBookingsDTO
     {
 
         public int Id { get; set; }
@@ -17,8 +16,9 @@ namespace api_cinema_challenge.Models
         public string CreatedAt { get; init; }
 
         public string UpdatedAt { get; set; }
+        public ICollection<BasicBookingsCustomerDTO> Bookings { get; set; } = new List<BasicBookingsCustomerDTO>();
 
-        public CustomerDTO(Customer customer)
+        public CustomerWBookingsDTO(Customer customer)
         {
             Id = customer.Id;
             Name = customer.Name;
@@ -27,6 +27,10 @@ namespace api_cinema_challenge.Models
             string datePattern = "yyyy-MM-ddTHH:mm:ss";
             CreatedAt = customer.CreatedAt.ToString(datePattern);
             UpdatedAt = customer.UpdatedAt.ToString(datePattern);
+            foreach (var booking in customer.Bookings)
+            {
+                Bookings.Add(new BasicBookingsCustomerDTO(booking));
+            }
         }
     }
 }

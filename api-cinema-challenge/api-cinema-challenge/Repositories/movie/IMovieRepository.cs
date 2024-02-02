@@ -8,6 +8,7 @@ namespace api_cinema_challenge.Repositories
         public Task<List<Movie>> GetAll();
         public Task<Movie?> Get(int id);
         public Task<Movie?> Update(int id, string title, string rating, string description, int runtimeMins);
-        public Task<Movie?> Delete(int id);
+        public Task<Movie?> HardDelete(int id);
+        public Task<Movie?> SoftDelete(int id);
     }
 }

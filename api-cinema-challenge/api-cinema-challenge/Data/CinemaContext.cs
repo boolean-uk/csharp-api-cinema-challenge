@@ -1,6 +1,5 @@
 ﻿using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace api_cinema_challenge.Data
 {
@@ -18,50 +17,41 @@ namespace api_cinema_challenge.Data
         {
 
             optionsBuilder.UseNpgsql(_connectionString);
-            optionsBuilder.LogTo(message => Debug.WriteLine("DEBUGGING " + message));
+            //optionsBuilder.LogTo(message => Debug.WriteLine("DEBUGGING " + message));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Screening>()
+            .HasOne(e => e.Screen)
+            .WithMany(e => e.Screenings)
+            .HasForeignKey(e => e.ScreenId)
+            .IsRequired();
             modelBuilder.Entity<Screening>()
             .HasOne(e => e.Movie)
             .WithMany(e => e.Screenings)
             .HasForeignKey(e => e.MovieId)
             .IsRequired();
 
-            modelBuilder.Entity<Customer>().HasData(
-                new Customer
-                {
-                    Id = 1,
-                    Name = "Chris Wolstenholme",
-                    Email = "chris@muse.mu",
-                    Phone = "+44729388192",
-                }
-            );
-            modelBuilder.Entity<Movie>().HasData(
-                new Movie
-                {
-                    Id = 1,
-                    Title = "Dodgeball",
-                    Rating = "PG-13",
-                    Description = "The greatest movie ever made.",
-                    RuntimeMins = 126,
-                }
-            );
-            modelBuilder.Entity<Screening>().HasData(
-                new Screening
-                {
-                    Id = 1,
-                    MovieId = 1,
-                    ScreenNumber = 5,
-                    Capacity = 40,
-                    StartsAt = DateTime.UtcNow.AddDays(5)
-                }
-            );
+            modelBuilder.Entity<Booking>()
+                .HasOne(c => c.Customer)
+                .WithMany(b => b.Bookings)
+                .HasForeignKey(e => e.CustomerId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(s => s.Screening)
+                .WithMany(b => b.Bookings)
+                .HasForeignKey(s => s.ScreeningId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
+        public DbSet<Booking> Bookings { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screen> Screens { get; set; }
         public DbSet<Screening> Screenings { get; set; }
     }
 }

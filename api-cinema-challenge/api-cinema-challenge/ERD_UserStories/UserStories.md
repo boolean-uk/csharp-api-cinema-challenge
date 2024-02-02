@@ -1,0 +1,8 @@
+- As a customer, so I can receive my tickets, I want to provide my email.
+- As a customer, so I can decide which movie I want to watch, I want to see a list of all available movies.
+- As a customer, so I can book a ticket, I want to see available screenings.
+- As a customer, so I can keep track of my bookings, I'd like to see all my bookings.
+- As an admin, so I can manage the movies shown at the cinema, I want to update the list of movies.
+- As an admin, so I can track the sales, I want to track all bookings and customers.
+- As an admin, so that I can use a theater multiple times per day, I want to create screenings at unique times.
+- As a manager, so that I can expand, I want to be able to add screens.

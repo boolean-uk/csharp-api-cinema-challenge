@@ -29,5 +29,6 @@ namespace api_cinema_challenge.Models
         [Column("updated_at")]
         [Required]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
 }

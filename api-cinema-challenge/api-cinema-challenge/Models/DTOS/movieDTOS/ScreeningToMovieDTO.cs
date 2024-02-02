@@ -1,12 +1,10 @@
 ﻿namespace api_cinema_challenge.Models.DTOS
 {
-    public record ScreeningDTO
+    public record ScreeningToMovieDTO
     {
         public int Id { get; set; }
 
         public int ScreenId { get; set; }
-
-        public int MovieId { get; set; }
 
         public int RemaningCapacity { get; set; }
 
@@ -18,11 +16,10 @@
 
         public string updatedAt { get; set; }
 
-        public ScreeningDTO(Screening screening)
+        public ScreeningToMovieDTO(Screening screening)
         {
             Id = screening.Id;
             ScreenId = screening.ScreenId;
-            MovieId = screening.MovieId;
             RemaningCapacity = screening.RemaningCapacity;
             Price = screening.Price;
 

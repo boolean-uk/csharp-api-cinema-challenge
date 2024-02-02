@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.DTOS.customerDTOS;
 using api_cinema_challenge.Models.Payloads;
 using api_cinema_challenge.Repositories.customer;
 using Microsoft.AspNetCore.Mvc;
@@ -33,12 +34,12 @@ namespace api_cinema_challenge.Controllers
         private async static Task<IResult> GetAllCustomers(ICustomerRepository repository)
         {
             List<Customer> allCustomers = await repository.GetAll();
-            List<CustomerDTO> resultCustomers = new List<CustomerDTO>();
+            var resultCustomers = new List<CustomerWBookingsDTO>();
             if (allCustomers.Count == 0) { return TypedResults.NotFound("No customers where found"); }
 
             foreach (var customer in allCustomers)
             {
-                resultCustomers.Add(new CustomerDTO(customer));
+                resultCustomers.Add(new CustomerWBookingsDTO(customer));
             }
             return TypedResults.Ok(resultCustomers);
         }

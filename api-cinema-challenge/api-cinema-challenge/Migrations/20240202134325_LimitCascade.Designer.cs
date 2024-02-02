@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api_cinema_challenge.Data;
@@ -11,9 +12,11 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    partial class CinemaContextModelSnapshot : ModelSnapshot
+    [Migration("20240202134325_LimitCascade")]
+    partial class LimitCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("ScreeningId");
 
-                    b.ToTable("bookings", (string)null);
+                    b.ToTable("bookings");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Customer", b =>
@@ -93,7 +96,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("customers", (string)null);
+                    b.ToTable("customers");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Movie", b =>
@@ -138,7 +141,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("movies", (string)null);
+                    b.ToTable("movies");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screen", b =>
@@ -164,7 +167,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("screens", (string)null);
+                    b.ToTable("screens");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
@@ -209,7 +212,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("ScreenId");
 
-                    b.ToTable("screenings", (string)null);
+                    b.ToTable("screenings");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Booking", b =>

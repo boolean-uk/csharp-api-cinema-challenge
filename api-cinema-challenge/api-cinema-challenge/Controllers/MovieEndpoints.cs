@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.DTOS.movieDTOS;
 using api_cinema_challenge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,12 +33,12 @@ namespace api_cinema_challenge.Controllers
         private async static Task<IResult> GetAllMovies(IMovieRepository repository)
         {
             var allMovies = await repository.GetAll();
-            var resultMovies = new List<MovieDTO>();
+            var resultMovies = new List<MovieWScreeningDTO>();
             if (allMovies.Count == 0) { return TypedResults.NotFound("No movies where found"); }
 
             foreach (var movie in allMovies)
             {
-                resultMovies.Add(new MovieDTO(movie));
+                resultMovies.Add(new MovieWScreeningDTO(movie));
             }
 
             return TypedResults.Ok(resultMovies);
@@ -62,10 +63,10 @@ namespace api_cinema_challenge.Controllers
         {
             if (await repository.Get(id) == null) { return TypedResults.NotFound($"Movie not found with id {id}"); }
 
-            var movie = await repository.Delete(id);
+            var movie = await repository.SoftDelete(id);
 
             //TODO Check for error
-            return TypedResults.Ok(new MovieDTO(movie));
+            return movie == null ? TypedResults.BadRequest("error") : TypedResults.Ok(new MovieDTO(movie));
         }
     }
 }

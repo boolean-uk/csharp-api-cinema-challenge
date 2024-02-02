@@ -23,10 +23,15 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest(payload.CheckPayload());
             }
 
-
-
-            var newScreening = await repository.Add(id, payload.ScreenNumber, payload.Capacity, payload.StartsAt);
-            return newScreening == null ? TypedResults.NotFound("Movie not found") : TypedResults.Created($"/movies/{id}/screenings/{newScreening.Id}", new ScreeningDTO(newScreening));
+            try
+            {
+                var screening = await repository.Add(id, payload.ScreenId, payload.StartsAt, payload.Price);
+                return screening == null ? TypedResults.BadRequest("Could not create screening") : TypedResults.Ok(new ScreeningDTO(screening));
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex.Message);
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

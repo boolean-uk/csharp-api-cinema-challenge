@@ -10,19 +10,25 @@ namespace api_cinema_challenge.Models
         [Required]
         public int Id { get; set; }
 
+        [ForeignKey("Screen")]
+        [Column("screen_id")]
+        [Required]
+        public int ScreenId { get; set; }
+        public Screen Screen { get; set; }
+
         [ForeignKey("Movie")]
         [Column("movie_id")]
         [Required]
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
 
-        [Column("screen_number")]
+        [Column("remaning_capacity")]
         [Required]
-        public int ScreenNumber { get; set; }
+        public int RemaningCapacity { get; set; }
 
-        [Column("capacity")]
+        [Column("price")]
         [Required]
-        public int Capacity { get; set; }
+        public float Price { get; set; }
 
         [Column("starts_at")]
         [Required]
@@ -36,5 +42,6 @@ namespace api_cinema_challenge.Models
         [Required]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
 }

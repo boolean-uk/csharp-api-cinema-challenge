@@ -19,17 +19,6 @@ namespace api_cinema_challenge.Repositories
             return newMovies.Entity;
         }
 
-        public async Task<Movie?> Delete(int id)
-        {
-            var movie = await Get(id);
-            if (movie == null) { return null; }
-
-            _db.Movies.Remove(movie);
-
-            await _db.SaveChangesAsync();
-            return movie;
-        }
-
         public async Task<Movie?> Get(int id)
         {
             var movie = await _db.Movies.FirstOrDefaultAsync(c => c.Id.Equals(id));
@@ -38,7 +27,28 @@ namespace api_cinema_challenge.Repositories
 
         public async Task<List<Movie>> GetAll()
         {
-            return await _db.Movies.ToListAsync();
+            return await _db.Movies.Include(m => m.Screenings).Where(m => m.Available == true).ToListAsync();
+        }
+
+        public async Task<Movie?> SoftDelete(int id)
+        {
+            var movie = await Get(id);
+            if (movie == null) { return null; }
+
+            movie.Available = false;
+
+            await _db.SaveChangesAsync();
+            return movie;
+        }
+        public async Task<Movie?> HardDelete(int id)
+        {
+            var movie = await Get(id);
+            if (movie == null) { return null; }
+
+            _db.Movies.Remove(movie);
+
+            await _db.SaveChangesAsync();
+            return movie;
         }
 
         public async Task<Movie?> Update(int id, string title, string rating, string description, int runtimeMins)

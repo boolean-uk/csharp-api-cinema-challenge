@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api_cinema_challenge.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,7 @@ namespace api_cinema_challenge.Migrations
                 name: "movies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(type: "text", nullable: false),
                     rating = table.Column<string>(type: "text", nullable: false),
@@ -44,7 +44,22 @@ namespace api_cinema_challenge.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_movies", x => x.Id);
+                    table.PrimaryKey("PK_movies", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "screens",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    capacity = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_screens", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,9 +68,10 @@ namespace api_cinema_challenge.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    screen_id = table.Column<int>(type: "integer", nullable: false),
                     movie_id = table.Column<int>(type: "integer", nullable: false),
-                    screen_number = table.Column<int>(type: "integer", nullable: false),
-                    capacity = table.Column<int>(type: "integer", nullable: false),
+                    remaning_capacity = table.Column<int>(type: "integer", nullable: false),
+                    price = table.Column<float>(type: "real", nullable: false),
                     starts_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -67,34 +83,72 @@ namespace api_cinema_challenge.Migrations
                         name: "FK_screenings_movies_movie_id",
                         column: x => x.movie_id,
                         principalTable: "movies",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_screenings_screens_screen_id",
+                        column: x => x.screen_id,
+                        principalTable: "screens",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "bookings",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    customer_id = table.Column<int>(type: "integer", nullable: false),
+                    screening_id = table.Column<int>(type: "integer", nullable: false),
+                    nr_of_tickets = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_bookings", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_bookings_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_bookings_screenings_screening_id",
+                        column: x => x.screening_id,
+                        principalTable: "screenings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "customers",
-                columns: new[] { "Id", "created_at", "email", "name", "phone", "updated_at" },
-                values: new object[] { 1, new DateTime(2024, 2, 1, 15, 58, 39, 745, DateTimeKind.Utc).AddTicks(5420), "chris@muse.mu", "Chris Wolstenholme", "+44729388192", new DateTime(2024, 2, 1, 15, 58, 39, 745, DateTimeKind.Utc).AddTicks(5422) });
+            migrationBuilder.CreateIndex(
+                name: "IX_bookings_customer_id",
+                table: "bookings",
+                column: "customer_id");
 
-            migrationBuilder.InsertData(
-                table: "movies",
-                columns: new[] { "Id", "created_at", "description", "rating", "runttime_mins", "title", "updated_at" },
-                values: new object[] { 1, new DateTime(2024, 2, 1, 15, 58, 39, 745, DateTimeKind.Utc).AddTicks(5514), "The greatest movie ever made.", "PG-13", 126, "Dodgeball", new DateTime(2024, 2, 1, 15, 58, 39, 745, DateTimeKind.Utc).AddTicks(5514) });
-
-            migrationBuilder.InsertData(
-                table: "screenings",
-                columns: new[] { "Id", "capacity", "created_at", "movie_id", "screen_number", "starts_at", "updated_at" },
-                values: new object[] { 1, 40, new DateTime(2024, 2, 1, 15, 58, 39, 745, DateTimeKind.Utc).AddTicks(5533), 1, 5, new DateTime(2024, 2, 6, 15, 58, 39, 745, DateTimeKind.Utc).AddTicks(5535), new DateTime(2024, 2, 1, 15, 58, 39, 745, DateTimeKind.Utc).AddTicks(5533) });
+            migrationBuilder.CreateIndex(
+                name: "IX_bookings_screening_id",
+                table: "bookings",
+                column: "screening_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_screenings_movie_id",
                 table: "screenings",
                 column: "movie_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_screenings_screen_id",
+                table: "screenings",
+                column: "screen_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "bookings");
+
             migrationBuilder.DropTable(
                 name: "customers");
 
@@ -103,6 +157,9 @@ namespace api_cinema_challenge.Migrations
 
             migrationBuilder.DropTable(
                 name: "movies");
+
+            migrationBuilder.DropTable(
+                name: "screens");
         }
     }
 }

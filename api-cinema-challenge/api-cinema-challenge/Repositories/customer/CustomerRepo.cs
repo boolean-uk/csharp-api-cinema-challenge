@@ -38,7 +38,7 @@ namespace api_cinema_challenge.Repositories.customer
 
         public async Task<List<Customer>> GetAll()
         {
-            return await _db.Customers.ToListAsync();
+            return await _db.Customers.Include(c => c.Bookings).ToListAsync();
         }
 
         public async Task<Customer?> Update(int id, string name, string email, string phone)
