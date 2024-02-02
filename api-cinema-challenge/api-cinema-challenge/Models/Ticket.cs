@@ -10,7 +10,7 @@ namespace api_cinema_challenge.Models
         [Column("id")]
         public int TicketId { get; set; }
         [Column("num_seats")]
-        public int NumSeats { get; set; }
+        public int SeatNumber { get; set; } // numSeat is the most ambiguous nameing I have ever read numSeat = number of seats 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
         [Column("updated_at")]

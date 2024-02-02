@@ -10,7 +10,7 @@ namespace api_cinema_challenge.DTO
       
         public int TicketId { get; set; }
        
-        public int NumSeats { get; set; }
+        public int SeatNumber { get; set; }
        
         public DateTime CreatedAt { get; set; }
        
@@ -22,7 +22,7 @@ namespace api_cinema_challenge.DTO
 
         public TicketDTO(Ticket ticket) {
             TicketId = ticket.TicketId;
-            NumSeats = ticket.NumSeats;
+            SeatNumber = ticket.SeatNumber;
             CreatedAt = ticket.CreatedAt;
             UpdatedAt = ticket.UpdatedAt;
             User = new UserAllDetailsDTO(ticket.User);

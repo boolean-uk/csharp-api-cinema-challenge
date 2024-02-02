@@ -23,6 +23,7 @@ namespace api_cinema_challenge.Views
             userGroup.MapDelete("/{id}", DeleteUser);
 
             userGroup.MapPost("/{user_id}/screenings/{screening_id}", BookTicket);
+            userGroup.MapGet("/{user_id}/screenings/{screening_id}", GetAllTickets);
         }
 
         private static async Task<IResult> GetAllUsers(IUserRepository userRepository)
@@ -116,7 +117,7 @@ namespace api_cinema_challenge.Views
             {
                 UserId = user_id,
                 ScreeningId = screening_id,
-                NumSeats = payload.num_seats,
+                SeatNumber = payload.num_seats,
 
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
@@ -130,6 +131,25 @@ namespace api_cinema_challenge.Views
 
             return TypedResults.Created("/", new TicketDataDTO(savedTicket, "success"));
             throw new NotImplementedException();
+        }
+
+        private static async Task<IResult> GetAllTickets(IUserRepository userRepository, ITicketRepository ticketRepository, IScreeningRepository screeningRepository, int user_id, int screening_id)
+        {
+            var result = await ticketRepository.GetAllTickets(user_id, screening_id);
+         
+            if ( result == null )
+            {
+                return TypedResults.NotFound($"There are no tickets currently in the database");
+            }
+            var ticketDTO = new List<TicketDTO>();
+            foreach (var ticket in result)
+            {
+                ticketDTO.Add(new TicketDTO(ticket));
+            }
+
+            var ticketListDTO = new TicketListDataDTO(ticketDTO, "success");
+            return TypedResults.Ok(ticketListDTO);
+            
         }
 
 

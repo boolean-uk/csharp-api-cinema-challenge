@@ -74,5 +74,19 @@ namespace api_cinema_challenge.DTO
             data = new TicketDTO(ticket_data);
         }
     }
+
+    public class TicketListDataDTO
+    {
+        string status { get; set; }
+
+        public List<TicketDTO> data { get; set; }
+
+        public TicketListDataDTO(List<TicketDTO> ticket_data, string status)
+        {
+            data = ticket_data;
+            this.status = status;
+        }
+    }
     
+
 }
