@@ -31,7 +31,7 @@ namespace api_cinema_challenge.Data
 
             Seeder seeder = new Seeder();
 
-            modelBuilder.Entity<Ticket>().HasKey(e => new { e.ScreeningId, e.CustomerId });
+            modelBuilder.Entity<Ticket>().HasKey(e => new { e.Id, e.ScreeningId, e.CustomerId });
 
             modelBuilder.Entity<Movie>().HasMany(e => e.Screenings).WithOne(e => e.Movie).HasForeignKey(e => e.MovieId);
 
