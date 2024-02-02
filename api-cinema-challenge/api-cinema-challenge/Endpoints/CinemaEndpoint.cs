@@ -20,12 +20,14 @@ namespace api_cinema_challenge.Endpoints
             cinema.MapDelete("movies/{id}", DeleteMovie);
             cinema.MapGet("movies/{id}/screenings", GetAllScreeningsByMovieID);
             cinema.MapPost("movies/{id}/screenings", CreateScreening);
+            cinema.MapPost("customers/{customers_id}/screenings/{screening_id}", CreateTicket);
+            cinema.MapGet("customers/{customers_id}/screenings/{screening_id}", GetAllTicketsByCustomerAndScreeningID);
         }
 
         public static async Task<IResult> GetAllCustomers(IRepository repository)
         {
             var customers = await repository.GetAllCustomers();
-            return TypedResults.Ok(customers);
+            return TypedResults.Ok(new CustomerResponseDTO("success", customers));
         }
 
         public static async Task<IResult> CreateCustomer(CreateCustomerPayload payload, IRepository repository)
@@ -43,7 +45,7 @@ namespace api_cinema_challenge.Endpoints
                 return TypedResults.BadRequest("Phone is required");
             }
             var customer = await repository.CreateCustomer(payload.Name, payload.Email, payload.Phone, payload);
-            return TypedResults.Ok(customer);
+            return TypedResults.Ok(new CustomerResponseDTO("success", new List<Customer>(){customer}));
         }
 
         public static async Task<IResult> UpdateCustomer(int id, UpdateCustomerPayload payload, IRepository repository)
@@ -65,7 +67,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok(customer);
+            return TypedResults.Ok(new CustomerResponseDTO("success", new List<Customer>(){customer}));
         }
 
         public static async Task<IResult> DeleteCustomer(int id, IRepository repository)
@@ -75,13 +77,14 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok();
+            var customers = await repository.GetAllCustomers();
+            return TypedResults.Ok(new CustomerResponseDTO("success", customers));
         }
 
         public static async Task<IResult> GetAllMovies(IRepository repository)
         {
             var movies = await repository.GetAllMovies();
-            return TypedResults.Ok(MovieDTO.FromRepository(movies));
+            return TypedResults.Ok(new MovieListResponseDTO("success", movies));
         }
 
         public static async Task<IResult> CreateMovie(CreateMoviePayload payload, IRepository repository)
@@ -103,7 +106,7 @@ namespace api_cinema_challenge.Endpoints
                 return TypedResults.BadRequest("RunTimeMinutes must be greater than 0");
             }
             var movie = await repository.CreateMovie(payload.Title, payload.Rating, payload.Description, payload.RunTimeMinutes, payload);
-            return TypedResults.Ok(movie);
+            return TypedResults.Ok(new MovieListResponseDTO("success", new List<Movie>(){movie}));
         }
 
         public static async Task<IResult> UpdateMovie(int id, UpdateMoviePayload payload, IRepository repository)
@@ -129,7 +132,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok(movie);
+            return TypedResults.Ok(new MovieListResponseDTO("success", new List<Movie>(){movie}));
         }
 
         public static async Task<IResult> DeleteMovie(int id, IRepository repository)
@@ -139,17 +142,18 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok();
+            var movies = await repository.GetAllMovies();
+            return TypedResults.Ok(new MovieListResponseDTO("success", movies));;
         }
 
         public static async Task<IResult> GetAllScreeningsByMovieID(int id, IRepository repository)
         {
             var screenings = await repository.GetAllScreeningsByMovieID(id);
-            var results = new List<ScreeningDTO>();
-            foreach(var screen in screenings){
-                 results.Add(new ScreeningDTO(screen));
+            if (screenings.Count == 0)
+            {
+                return TypedResults.NotFound();
             }
-            return TypedResults.Ok(results);
+            return TypedResults.Ok(new ScreeningListResponseDTO("success", screenings));
         }
 
         public static async Task<IResult> CreateScreening(CreateScreeningPayload payload, IRepository repository)
@@ -172,7 +176,36 @@ namespace api_cinema_challenge.Endpoints
             }
             Screening? screening = await repository.CreateScreening(payload.MovieId, payload.ScreenNumber, payload.Capacity, payload.StartTime, payload);
 
-            return TypedResults.Ok(new ScreeningDTO(screening));
+            return TypedResults.Ok(new ScreeningResponseDTO("success", screening));
         }
+
+        public static async Task<IResult> CreateTicket(int customerId, int screeningId, CreateTicketPayload payload, IRepository repository)
+        {
+            if (payload.SeatNumber <= 0)
+            {
+                return TypedResults.BadRequest("SeatNumber must be greater than 0");
+            }
+            if (payload.CustomerId <= 0)
+            {
+                return TypedResults.BadRequest("CustomerId must be greater than 0");
+            }
+            if (payload.ScreeningId <= 0)
+            {
+                return TypedResults.BadRequest("ScreeningId must be greater than 0");
+            }
+            Ticket? ticket = await repository.CreateTicket(payload.SeatNumber, payload.CustomerId, payload.ScreeningId, payload);
+            return TypedResults.Ok(new TicketResponseDTO("success", ticket));
+        }
+
+        public static async Task<IResult> GetAllTicketsByCustomerAndScreeningID(int customerId, int screeningId, IRepository repository)
+        {
+            var tickets = await repository.GetAllTicketsByCustomerAndScreeningID(customerId, screeningId);
+            if (tickets.Count == 0)
+            {
+                return TypedResults.NotFound();
+            }
+            return TypedResults.Ok(new TicketListResponseDTO("success", tickets));
+        }
+
     }
 }

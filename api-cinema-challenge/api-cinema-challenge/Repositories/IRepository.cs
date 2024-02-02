@@ -28,9 +28,11 @@ namespace api_cinema_challenge.Repositories
 
         Task<bool> DeleteMovie(int id);
 
-        Task<IEnumerable<Screening>> GetAllScreeningsByMovieID(int movieId);
+        Task<ICollection<Screening>> GetAllScreeningsByMovieID(int movieId);
 
         Task<Screening?> CreateScreening(int movieId, int screenNumber, int capacity, DateTime startTime, CreateScreeningPayload payload);
 
+        Task<Ticket?> CreateTicket(int seatNumber, int customerId, int screeningId, CreateTicketPayload payload);
+        Task<ICollection<Ticket>> GetAllTicketsByCustomerAndScreeningID(int customerId, int screeningId);
     }
 }

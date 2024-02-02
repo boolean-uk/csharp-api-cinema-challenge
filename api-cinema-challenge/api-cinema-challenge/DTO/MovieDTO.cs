@@ -35,4 +35,27 @@ namespace api_cinema_challenge.DTO
         }
     }
 
+    public class MovieResponseDTO{
+        public string status { get;}
+        public IEnumerable<MovieDTO> data { get; set; }
+
+        public MovieResponseDTO(string status, IEnumerable<MovieDTO> data){
+            this.status = status;
+            this.data = data;
+        }
+    }
+
+    public class MovieListResponseDTO{
+        public string status { get;}
+        public List<MovieDTO> data { get; set; }
+
+        public MovieListResponseDTO(string status, IEnumerable<Movie> data){
+            this.status = status;
+            this.data = new List<MovieDTO>();
+            foreach (var movie in data){
+                this.data.Add(new MovieDTO(movie));
+            }
+        }
+    }
+
 }

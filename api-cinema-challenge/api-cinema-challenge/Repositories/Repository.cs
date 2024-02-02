@@ -44,7 +44,7 @@ namespace api_cinema_challenge.Repositories
         {
             var customer = await _context.Customers.FindAsync(id);
 
-            if (customer == null)
+            if (customer == null || string.IsNullOrEmpty(payload.Name) || string.IsNullOrEmpty(payload.Email) || string.IsNullOrEmpty(payload.Phone))
             {
                 return null;
             }
@@ -136,7 +136,7 @@ namespace api_cinema_challenge.Repositories
         }
 
 
-        public async Task<IEnumerable<Screening>> GetAllScreeningsByMovieID(int movieId)
+        public async Task<ICollection<Screening>> GetAllScreeningsByMovieID(int movieId)
         {
             if (movieId == null)
             {
@@ -167,6 +167,37 @@ namespace api_cinema_challenge.Repositories
             await _context.Screenings.AddAsync(screening);
             await _context.SaveChangesAsync();
             return screening;
+        }
+
+        public async Task<Ticket?> CreateTicket(int seatNumber, int customerId, int screeningId, CreateTicketPayload payload)
+        {
+            if (seatNumber == null || customerId == null || screeningId == null)
+            {
+                return null;
+            }
+            DateTime utc = DateTime.Now.ToUniversalTime();
+            var ticket = new Ticket
+            {
+                SeatNumber = payload.SeatNumber,
+                CustomerId = payload.CustomerId,
+                ScreeningId = payload.ScreeningId,
+                CreatedAt = utc,
+                UpdatedAt = utc
+            };
+
+            await _context.Tickets.AddAsync(ticket);
+            await _context.SaveChangesAsync();
+            return ticket;
+        }
+
+        public async Task<ICollection<Ticket>> GetAllTicketsByCustomerAndScreeningID(int customerId, int screeningId)
+        {
+            if (customerId == null || screeningId == null)
+            {
+                return null;
+            }
+            var tickets = await _context.Tickets.Where(t => t.CustomerId == customerId && t.ScreeningId == screeningId).ToListAsync();
+            return tickets;
         }
     }
 }

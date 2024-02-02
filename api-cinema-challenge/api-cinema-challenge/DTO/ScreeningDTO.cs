@@ -1,5 +1,4 @@
 using api_cinema_challenge.Models;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace api_cinema_challenge.DTO
 {
@@ -12,6 +11,7 @@ namespace api_cinema_challenge.DTO
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public MovieDTO Movie { get; set; }
         
         public ScreeningDTO(Screening screening)
         {
@@ -21,7 +21,32 @@ namespace api_cinema_challenge.DTO
             StartTime = screening.StartTime;
             CreatedAt = screening.CreatedAt;
             UpdatedAt = screening.UpdatedAt;
+            Movie = new MovieDTO(screening.Movie);
         }
 
+    }
+    public class ScreeningResponseDTO{
+        public string status { get;}
+        public ScreeningDTO data { get; set; }
+
+    
+        public ScreeningResponseDTO(string status, Screening data){
+            this.status = status;
+            this.data = new ScreeningDTO(data);
+        }
+    }
+
+    public class ScreeningListResponseDTO{
+        public string status { get;}
+        public List<ScreeningDTO> data { get; set; }
+
+    
+        public ScreeningListResponseDTO(string status, IEnumerable<Screening> data){
+            this.status = status;
+            this.data = new List<ScreeningDTO>();
+            foreach (var screening in data){
+                this.data.Add(new ScreeningDTO(screening));
+            }
+        }
     }
 }

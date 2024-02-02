@@ -7,5 +7,7 @@ namespace api_cinema_challenge.Endpoints
     public record CreateMoviePayload(string Title, string Rating, string Description, int RunTimeMinutes);
     public record UpdateMoviePayload(string Title, string Rating, string Description, int RunTimeMinutes);
     public record CreateScreeningPayload(int MovieId, int ScreenNumber, int Capacity, DateTime StartTime);
+    
+    public record CreateTicketPayload(int SeatNumber, int CustomerId, int ScreeningId);
 
 }

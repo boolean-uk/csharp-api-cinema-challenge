@@ -24,7 +24,8 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             DateTime utc = DateTime.Now.ToUniversalTime();
-            modelBuilder.Entity<Screening>().HasKey(s => new {s.Id, s.MovieId, s.ScreenNumber, s.Capacity, s.StartTime, s.CreatedAt, s.UpdatedAt});
+            modelBuilder.Entity<Screening>().HasKey(s => new {s.Id});
+           
 
             // SEED Costumers
             modelBuilder.Entity<Customer>().HasData(
@@ -45,10 +46,18 @@ namespace api_cinema_challenge.Data
                 new Screening { Id = 3, MovieId = 1, ScreenNumber = 3, Capacity = 40, StartTime = utc, CreatedAt = utc, UpdatedAt = utc }
             );
 
+            // SEED Tickets
+            modelBuilder.Entity<Ticket>().HasData(
+                new Ticket { Id = 1, SeatNumber = 1, CustomerId = 1, ScreeningId = 1, CreatedAt = utc, UpdatedAt = utc },
+                new Ticket { Id = 2, SeatNumber = 2, CustomerId = 2, ScreeningId = 2, CreatedAt = utc, UpdatedAt = utc },
+                new Ticket { Id = 3, SeatNumber = 3, CustomerId = 1, ScreeningId = 3, CreatedAt = utc, UpdatedAt = utc }
+            );
+
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }
