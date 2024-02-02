@@ -11,17 +11,25 @@ namespace api_cinema_challenge.Controllers
             app.MapGet("/customers/{customerId}/screenings/{screeningId}", GetTickets);
         }
 
-        public static async Task<IResult> CreateTicket(ITicketRepository ticketRepository, int customerId, int screeningId, TicketPayload payload)
+        public static async Task<IResult> CreateTicket(ITicketRepository ticketRepository, IMovieRepository movieRepository, ICustomerRepository customerRepository, int customerId, int screeningId, TicketPayload payload)
         {
-            Ticket? result = await ticketRepository.CreateTicket(payload.NumSeats, customerId, screeningId);
+            Customer? customer = await customerRepository.GetCustomerByID(customerId);
+            if (customer is null) return TypedResults.BadRequest("The customer doesn't exist");
+            Screening? screening = await movieRepository.GetScreeningByID(screeningId);
+            if (screening is null) return TypedResults.BadRequest("The screening doesn't exist");
+
+            Ticket result = await ticketRepository.CreateTicket(payload.NumSeats, customer, screening);
             if (result is null) return TypedResults.BadRequest("The customer or the screening doesn't exist");
             return TypedResults.Created("", new TicketOutput("success", result));
         }
 
-        public static async Task<IResult> GetTickets(ITicketRepository ticketRepository, int customerId, int screeningId)
+        public static async Task<IResult> GetTickets(ITicketRepository ticketRepository, IMovieRepository movieRepository, ICustomerRepository customerRepository, int customerId, int screeningId)
         {
+            Customer? customer = await customerRepository.GetCustomerByID(customerId);
+            if (customer is null) return TypedResults.BadRequest("The customer doesn't exist");
+            Screening? screening = await movieRepository.GetScreeningByID(screeningId);
+            if (screening is null) return TypedResults.BadRequest("The screening doesn't exist");
             var result = await ticketRepository.GetTickets(customerId, screeningId);
-            if (result is null) return TypedResults.BadRequest("The customer or the screening doesn't exist");
             return TypedResults.Created("", new TicketListOutput("success", result));
         }
     }

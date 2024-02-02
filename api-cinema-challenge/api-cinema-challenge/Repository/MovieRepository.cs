@@ -23,14 +23,17 @@ namespace api_cinema_challenge.Repository
             movie.CreatedAt = DateTime.Now.ToUniversalTime();
             movie.UpdatedAt = DateTime.Now.ToUniversalTime();
             movie.screenings = new List<Screening>();
-            if (screenings is not null) //Happens at the same time as creating the movie, so foreign key of the screening can't refer to the movie, cause the movie doesn't exist yet
+            await _cinemaContext.Movies.AddAsync(movie);
+            _cinemaContext.SaveChanges();
+            if (screenings is not null) 
+                //Happens at the same time as creating the movie, so foreign key of the screening can't refer to the movie, cause the movie doesn't exist yet
             {
                 foreach (ScreeningPayload screening in screenings)
                 {
-                    movie.screenings.Add(await CreateScreening(movie.Id, screening.screenNumber, screening.capacity, screening.startsAt));
+                    Screening result = await CreateScreening(movie.Id, screening.screenNumber, screening.capacity, screening.startsAt);
+                    movie.screenings.Add(result);
                 }
             }
-            await _cinemaContext.Movies.AddAsync(movie);
             _cinemaContext.SaveChanges();
             return movie;
         }
@@ -85,6 +88,15 @@ namespace api_cinema_challenge.Repository
         public async Task<ICollection<Screening>> GetScreenings(int movieId)
         {
             return await _cinemaContext.Screenings.Where(s => s.MovieId == movieId).ToListAsync();
+        }
+        public async Task<ICollection<Screening>> GetAllScreenings()
+        {
+            return await _cinemaContext.Screenings.ToListAsync();
+        }
+
+        public async Task<Screening?> GetScreeningByID(int screeningId)
+        {
+            return await _cinemaContext.Screenings.FirstOrDefaultAsync(x => x.Id == screeningId);
         }
     }
 }

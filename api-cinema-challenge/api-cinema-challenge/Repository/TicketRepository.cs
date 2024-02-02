@@ -11,25 +11,22 @@ namespace api_cinema_challenge.Repository
         {
             _cinemaContext = db;
         }
-        public async Task<Ticket?> CreateTicket(int numSeats, int customerID, int screeningID)
+        public async Task<Ticket> CreateTicket(int numSeats, Customer customer, Screening screening)
         {
-            Screening? screening = await _cinemaContext.Screenings.FirstOrDefaultAsync(x => x.Id == screeningID);
-            Customer? customer = await _cinemaContext.Customers.FirstOrDefaultAsync(x => x.Id == customerID);
-            if (screening is null || customer is null) return null;
             Ticket ticket = new Ticket();
             ticket.NumSeats = numSeats;
             ticket.UpdatedAt = DateTime.Now.ToUniversalTime();
             ticket.CreatedAt = DateTime.Now.ToUniversalTime();
-            ticket.ScreeningId = screeningID;
-            ticket.CustomerId = customerID;
+            ticket.ScreeningId = screening.Id;
+            ticket.CustomerId = customer.Id;
             await _cinemaContext.Tickets.AddAsync(ticket);
             _cinemaContext.SaveChanges();
             return ticket;
         }
 
-        public Task<ICollection<Ticket>?> GetTickets(int customerID, int screeningID)
+        public async Task<ICollection<Ticket>> GetTickets(int customerID, int screeningID)
         {
-            throw new NotImplementedException();
+            return await _cinemaContext.Tickets.Where(x => x.CustomerId == customerID && x.ScreeningId == screeningID).ToListAsync();
         }
     }
 }

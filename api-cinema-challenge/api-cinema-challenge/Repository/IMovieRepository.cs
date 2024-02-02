@@ -12,5 +12,9 @@ namespace api_cinema_challenge.Repository
 
         public Task<ICollection<Screening>> GetScreenings(int movieID);
         public Task<Screening> CreateScreening(int movieID, int screenNumber, int capacity, DateTime startsAt);
+
+        public Task<Screening?> GetScreeningByID(int screeningId);
+        public Task<ICollection<Screening>> GetAllScreenings();
+
     }
 }
