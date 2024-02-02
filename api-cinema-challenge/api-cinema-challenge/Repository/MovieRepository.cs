@@ -91,7 +91,7 @@ namespace api_cinema_challenge.Repository
         }
         public async Task<ICollection<Screening>> GetAllScreenings()
         {
-            return await _cinemaContext.Screenings.ToListAsync();
+            return await _cinemaContext.Screenings.Include(x => x.Movie).ToListAsync();
         }
 
         public async Task<Screening?> GetScreeningByID(int screeningId)

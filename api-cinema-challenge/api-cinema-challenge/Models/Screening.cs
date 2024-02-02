@@ -9,7 +9,7 @@ namespace api_cinema_challenge.Models
         public int Id { get; set;}
         [Column("movie_id")]
         public int MovieId { get; set; }
-        public Movie? Movie { get; set; }
+        public Movie Movie { get; set; }
         [Column("screen_number")]
         public int ScreenNumber { get; set; }
         [Column("capacity")]
@@ -25,6 +25,7 @@ namespace api_cinema_challenge.Models
     public class ScreeningResponseDTO
     {
         public int id { get; set; }
+        public MovieDTO movie { get; set; }
         public int screenNumber { get; set; }
         public int capacity { get; set; }
         public DateTime startsAt { get; set; }
@@ -32,7 +33,8 @@ namespace api_cinema_challenge.Models
         public DateTime updatedAt { get; set; }
         public ScreeningResponseDTO(Screening screening)
         {
-            id = screening.MovieId;
+            id = screening.Id;
+            movie = new MovieDTO(screening.Movie);
             screenNumber = screening.ScreenNumber;
             capacity = screening.Capacity;
             startsAt = screening.StartsAt;

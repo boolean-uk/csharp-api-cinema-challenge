@@ -26,7 +26,17 @@ namespace api_cinema_challenge.Repository
 
         public async Task<ICollection<Ticket>> GetTickets(int customerID, int screeningID)
         {
-            return await _cinemaContext.Tickets.Where(x => x.CustomerId == customerID && x.ScreeningId == screeningID).ToListAsync();
+            return await _cinemaContext.Tickets.Where(x => x.CustomerId == customerID && x.ScreeningId == screeningID).Include(x => x.Screening).ThenInclude(x => x.Movie).ToListAsync();
+        }
+
+        public async Task<ICollection<Ticket>> GetTicketsbyCustomer(Customer customer)
+        {
+            return await _cinemaContext.Tickets.Where(x => x.CustomerId == customer.Id).Include(x => x.Screening).ThenInclude(x => x.Movie).ToListAsync();
+        }
+
+        public async Task<ICollection<Ticket>> GetTicketsbyScreening(Screening screening)
+        {
+            return await _cinemaContext.Tickets.Where(x => x.ScreeningId == screening.Id).Include(x=>x.Customer).Include(x => x.Screening).ThenInclude(x => x.Movie).ToListAsync();
         }
     }
 }

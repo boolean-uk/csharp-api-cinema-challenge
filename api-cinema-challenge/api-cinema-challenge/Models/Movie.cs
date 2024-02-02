@@ -34,6 +34,7 @@ namespace api_cinema_challenge.Models
         public DateTime updatedAt { get; }
         public MovieDTO(Movie movie)
         {
+            if (movie is null) return;
             id = movie.Id;
             title = movie.Title;
             rating = movie.Rating;

@@ -9,6 +9,8 @@ namespace api_cinema_challenge.Controllers
         {
             app.MapPost("/customers/{customerId}/screenings/{screeningId}", CreateTicket);
             app.MapGet("/customers/{customerId}/screenings/{screeningId}", GetTickets);
+            app.MapGet("/customers/{customerId}/tickets", GetTicketsByCustomer);
+            app.MapGet("/screenings/{screeningId}/tickets", GetTicketsByScreening);
         }
 
         public static async Task<IResult> CreateTicket(ITicketRepository ticketRepository, IMovieRepository movieRepository, ICustomerRepository customerRepository, int customerId, int screeningId, TicketPayload payload)
@@ -32,5 +34,23 @@ namespace api_cinema_challenge.Controllers
             var result = await ticketRepository.GetTickets(customerId, screeningId);
             return TypedResults.Created("", new TicketListOutput("success", result));
         }
+
+        public static async Task<IResult> GetTicketsByCustomer(ITicketRepository ticketRepository, ICustomerRepository customerRepository, int customerId)
+        {
+            Customer? customer = await customerRepository.GetCustomerByID(customerId);
+            if (customer is null) return TypedResults.BadRequest("The customer doesn't exist");
+            var result = await ticketRepository.GetTicketsbyCustomer(customer);
+            return TypedResults.Created("", new TicketListOutput("success", result));
+        }
+
+        public static async Task<IResult> GetTicketsByScreening(ITicketRepository ticketRepository, IMovieRepository movieRepository, int screeningId)
+        {
+            Screening? screening = await movieRepository.GetScreeningByID(screeningId);
+            if (screening is null) return TypedResults.BadRequest("The screening doesn't exist");
+            var result = await ticketRepository.GetTicketsbyScreening(screening);
+            return TypedResults.Created("", new TicketListOutput("success", result));
+        }
+
+
     }
 }
