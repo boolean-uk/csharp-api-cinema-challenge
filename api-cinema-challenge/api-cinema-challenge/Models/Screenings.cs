@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography.X509Certificates;
 
 namespace api_cinema_challenge.Models
 {
@@ -16,7 +17,8 @@ namespace api_cinema_challenge.Models
         public DateTime StartsAt { get; set; }
         [Column("movies_id")]
         public int MoviesId { get; set; }
-        public Movies Movies { get; set; }
+        //[Column("movie")]
+        public virtual Movies Movies { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public Screenings()

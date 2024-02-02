@@ -12,7 +12,7 @@ namespace api_cinema_challenge.Data
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
-            this.Database.EnsureCreated();
+            this.Database.EnsureCreated(); // IF ERROR HERE, CHECK ZSCALER!!
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -24,8 +24,8 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movies>().HasKey(x => new { x.Id });
-            modelBuilder.Entity<Screenings>().HasKey(x => new { x.Id });
-            modelBuilder.Entity<Customer>().HasKey(x => new { x.Id });
+            modelBuilder.Entity<Screenings>().HasKey(x => new { x.Id});
+            modelBuilder.Entity<Customer>().HasKey(x => new { x.Id});
 
             modelBuilder.Entity<Movies>().HasData(
                 new Movies { Id = 1, Title = "So Lonesome I Could Cry", Description = "Amazing but imaginary Hank Williams movie", Rating = "PG-16", RuntimeMins = 114},

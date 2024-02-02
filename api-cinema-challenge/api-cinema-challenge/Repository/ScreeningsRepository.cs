@@ -19,7 +19,7 @@ namespace api_cinema_challenge.Repository
             //Populate the screening with payload data
             screening.ScreenNr = ScreenNr;
             screening.Capacity = Capacity;
-            screening.StartsAt = StartsAt;
+            screening.StartsAt = StartsAt.ToUniversalTime();
             screening.MoviesId = MoviesId;
             //add screening to database and save it + return
             _db.Screenings.Add(screening);
@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<IEnumerable<Screenings>> GetScreenings()
         {
-            return await _db.Screenings.ToListAsync();
+            return await _db.Screenings.Include(y => y.Movies).ToListAsync();
         }
     }
 }

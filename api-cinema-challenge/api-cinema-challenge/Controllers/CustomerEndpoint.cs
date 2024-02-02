@@ -25,13 +25,13 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest("You must enter data for all fields!");
             }
             //Create the new customer
-            var customer = new CustomerDTO(await customerRepository.CreateCustomer(newData.Name, newData.Email, newData.PhoneNr, newData.ScreeningId));
+            var customer = new GetCustomerDTO(await customerRepository.CreateCustomer(newData.Name, newData.Email, newData.PhoneNr, newData.ScreeningId));
             return TypedResults.Created($"/{customer.Id}",customer);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllCustomers(ICustomerRepository customerRepository)
         {
-            var customer = CustomerDTO.FromRepository(await customerRepository.GetCustomers());
+            var customer = GetCustomerDTO.FromRepository(await customerRepository.GetCustomers());
             return TypedResults.Ok(customer);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]

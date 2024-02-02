@@ -2,8 +2,8 @@
 
 namespace api_cinema_challenge.Models
 {
-    public record UpdateMovie(string? Title, string? Rating, string? Description, int? Runtime);
     public record NewMovie(string Title, string Rating, string Description, int Runtime);
+    public record UpdateMovie(string? Title, string? Rating, string? Description, int? Runtime);
     [Table("movies")]
     public class Movies
     {

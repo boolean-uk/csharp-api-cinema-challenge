@@ -16,11 +16,20 @@ namespace api_cinema_challenge.Repository
         {
             //Create customer to return
             Customer customer = new Customer();
-            //Populate the customer with payload data
-            customer.Name = name;
-            customer.Email = email;
-            customer.PhoneNr = phoneNr;
-            customer.ScreeningId = (int)ScreeningId;
+            
+            //Check data is valid
+            if(IsValidEmail(email))
+            {
+                //Populate the customer with payload data
+                customer.Name = name;
+                customer.Email = email;
+                customer.PhoneNr = phoneNr;
+                customer.ScreeningId = ScreeningId;
+            }
+            else
+            {
+                return null;
+            }
             //add customer to database and save it + return
             _db.Customers.Add(customer);
             _db.SaveChanges();
@@ -28,11 +37,11 @@ namespace api_cinema_challenge.Repository
         }
         public async Task<Customer?> GetCustomer(int id)
         {
-            return await _db.Customers.FindAsync(id);
+            return await _db.Customers.Include(y => y.Screening).SingleOrDefaultAsync(y => y.Id == id);
         }
         public async Task<IEnumerable<Customer>> GetCustomers()
         {
-            return await _db.Customers.ToListAsync();
+            return await _db.Customers.Include(x => x.Screening).ToListAsync();
         }
         public async Task<Customer?> UpdateCustomer(int id, string Name, string Email, int? PhoneNr, int? ScreeningId)
         {
@@ -54,6 +63,24 @@ namespace api_cinema_challenge.Repository
             _db.Customers.Remove(customer);
             _db.SaveChanges();
             return customer;
+        }
+        bool IsValidEmail(string email)
+        {
+            var trimmedEmail = email.Trim();
+
+            if (trimmedEmail.EndsWith("."))
+            {
+                return false;
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

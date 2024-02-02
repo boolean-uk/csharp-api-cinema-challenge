@@ -17,7 +17,8 @@ namespace api_cinema_challenge.Models
         public int PhoneNr { get; set; }
         [Column("screening_id")]
         public int ScreeningId { get; set; }
-        public Screenings Screening { get; set; }
+        //[Column("screening")]
+        public virtual Screenings Screening { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public Customer()

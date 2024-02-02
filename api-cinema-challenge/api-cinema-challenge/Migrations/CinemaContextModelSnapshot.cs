@@ -59,7 +59,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("ScreeningId");
 
-                    b.ToTable("customers");
+                    b.ToTable("customers", (string)null);
 
                     b.HasData(
                         new
@@ -130,7 +130,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("movies");
+                    b.ToTable("movies", (string)null);
 
                     b.HasData(
                         new
@@ -190,7 +190,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("screenings");
+                    b.ToTable("screenings", (string)null);
 
                     b.HasData(
                         new
