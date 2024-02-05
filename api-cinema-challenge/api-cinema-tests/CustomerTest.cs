@@ -28,17 +28,17 @@ namespace api_cinema_tests
             //Act
             var response = await _client.GetAsync("/customers");
 
-            var test = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync();
 
-            List<Customer> cust = JsonConvert.DeserializeObject<List<Customer>>(test);
+            List<Customer> responseCustomers = JsonConvert.DeserializeObject<List<Customer>>(responseContent);
 
             //Assert
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
-            Assert.That(cust[0].Name, Is.EqualTo("Jon Doe"));
-            Assert.That(cust[0].Email, Is.EqualTo("jon@example.com"));
-            Assert.That(cust[0].Phone, Is.EqualTo("+123"));
-            Assert.That(cust[0].CreatedAt, Is.LessThan(DateTime.UtcNow));
-            Assert.That(cust[0].UpdatedAt, Is.LessThan(DateTime.UtcNow));
+            Assert.That(responseCustomers[0].Name, Is.EqualTo("Jon Doe"));
+            Assert.That(responseCustomers[0].Email, Is.EqualTo("jon@example.com"));
+            Assert.That(responseCustomers[0].Phone, Is.EqualTo("+123"));
+            Assert.That(responseCustomers[0].CreatedAt, Is.LessThan(DateTime.UtcNow));
+            Assert.That(responseCustomers[0].UpdatedAt, Is.LessThan(DateTime.UtcNow));
         }
 
         [Test]
