@@ -27,11 +27,12 @@ A local cinema wants to allow people to book tickets online to see movies that a
  - Customers: CRUD /customers - DONE
 - Movies: CRUD /movies - DONE
 - Screens: CRUD /screens - DONE
-- Screenings: CRUD /screenings
-- Bookings: Create / Delete-> /bookings 
+- Screenings: CRUD /screenings - DONE
+- Bookings: Create / Delete-> /bookings -  
 	(you should be able to create a new booking where you specify )
 
 		a) the screening, 
 		b) the number of tickets, 
 		c) for extra challenge a list of seat row + number)
+- 
 - Optional challenge: Seats: CRUD /seats
