@@ -20,6 +20,7 @@ namespace api_cinema_challenge.Repository
             //Check data is valid: seat is within capacity, screening exists, customer exists
             var screening = await _db.Screenings.SingleOrDefaultAsync(x => x.Id == ScreeningId);
             var customer = await _db.Customers.SingleOrDefaultAsync(y => y.Id == CustomerId);
+            //Validate that seat is not taken
             if (screening == null || customer == null) 
             {
                 return null;
