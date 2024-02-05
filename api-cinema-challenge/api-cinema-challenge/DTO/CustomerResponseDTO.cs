@@ -7,12 +7,12 @@ namespace api_cinema_challenge.DTO
     {
         public string Status { get; set; }
 
-        public DataCustomerDTO Datas { get; set; }
+        public CustomerDataDTO Datas { get; set; }
 
         public CustomerResponseDTO(Customer customer)
         {
             Status = "Success";
-            Datas = new DataCustomerDTO(customer);
+            Datas = new CustomerDataDTO(customer);
         }
 
         public static List<CustomerResponseDTO> FromRepository(IEnumerable<Customer> customers)

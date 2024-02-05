@@ -7,12 +7,12 @@ namespace api_cinema_challenge.DTO
     public class ScreeningResponseDTO
     {
         public string Status { get; set; }
-        public DataScreeningDTO Datas { get; set; }
+        public ScreeningDataDTO Datas { get; set; }
 
         public ScreeningResponseDTO(Screening screening) 
         {
             Status = "Success";
-            Datas = new DataScreeningDTO(screening);
+            Datas = new ScreeningDataDTO(screening);
         }
 
         public static List<ScreeningResponseDTO> FromRepository(IEnumerable<Screening> screenings)

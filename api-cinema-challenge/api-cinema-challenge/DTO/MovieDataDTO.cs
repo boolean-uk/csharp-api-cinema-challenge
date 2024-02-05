@@ -3,7 +3,7 @@ using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.DTO
 {
-    public class DataMovieDTO
+    public class MovieDataDTO
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -13,7 +13,7 @@ namespace api_cinema_challenge.DTO
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public DataMovieDTO(Movie movie)
+        public MovieDataDTO(Movie movie)
         {
             Id = movie.Id;
             Title = movie.Title;

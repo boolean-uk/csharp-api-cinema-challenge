@@ -6,12 +6,12 @@ namespace api_cinema_challenge.DTO
     public class TicketResponseDTO
     {
         public string Status { get; set; }
-        public DataTicketDTO Datas { get; set; }
+        public TicketDataDTO Datas { get; set; }
 
         public TicketResponseDTO(Ticket ticket)
         {
             Status = "Success";
-            Datas = new DataTicketDTO(ticket);
+            Datas = new TicketDataDTO(ticket);
         }
 
         public static List<TicketResponseDTO> FromRepository(IEnumerable<Ticket> tickets)

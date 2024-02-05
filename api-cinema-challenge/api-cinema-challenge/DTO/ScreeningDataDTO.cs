@@ -4,7 +4,7 @@ using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.DTO
 {
-    public class DataScreeningDTO
+    public class ScreeningDataDTO
     {
         public int Id { get; set; }
         public int ScreenNumber { get; set; }
@@ -13,7 +13,7 @@ namespace api_cinema_challenge.DTO
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public DataScreeningDTO(Screening screening) 
+        public ScreeningDataDTO(Screening screening) 
         {
             Id = screening.Id;
             ScreenNumber = screening.ScreenNumber;
