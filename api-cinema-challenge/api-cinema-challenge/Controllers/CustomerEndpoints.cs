@@ -1,4 +1,6 @@
 ﻿using api_cinema_challenge.DTO;
+using api_cinema_challenge.DTO.DTO_Customer;
+using api_cinema_challenge.DTO.DTO_Ticket;
 using api_cinema_challenge.Reposetories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +16,8 @@ namespace api_cinema_challenge.Controllers
             customerGroup.MapGet("/", GetCustomers);
             customerGroup.MapPut("/{customerId}", UpdateCustomer);
             customerGroup.MapDelete("/{customerId}", DeleteCustomer);
+            customerGroup.MapPost("/{customerId}/screenings/{screeningId}", BookATicket);
+            //customerGroup.MapGet("/{customerId}/screenings/{screeningId}", GetAllCustomersTicketsPerScreaning);
         }
 
 
@@ -145,6 +149,31 @@ namespace api_cinema_challenge.Controllers
 
                 CustomerBaseDTO baseDTO = new CustomerBaseDTO(customerDTO);
 
+                return TypedResults.Ok(baseDTO);
+            }
+        }
+
+        private static async Task<IResult> BookATicket(IRepository repository, int customerId, int screeningId,TicketPayload payload)
+        {
+            if (customerId <= 0 || screeningId <= 0) 
+            {
+                return TypedResults.BadRequest("both customer Id and screening Id need to be positive integers above 0");
+            }
+            if(payload.numSeats <= 0)
+            {
+                return TypedResults.BadRequest("you must have at least 1 seat booked (numSeats can not be an integer of 0 or below)");
+            }
+
+            var result = await repository.BookATicket(customerId, screeningId, payload.numSeats);
+
+            if (result == null) 
+            {
+                return TypedResults.NotFound("invalid customer or screening ID");
+            }
+            else
+            {
+                var ticketDTO = new TicketDTO(result);
+                TicketBaseDTO baseDTO = new TicketBaseDTO(ticketDTO);
                 return TypedResults.Ok(baseDTO);
             }
         }

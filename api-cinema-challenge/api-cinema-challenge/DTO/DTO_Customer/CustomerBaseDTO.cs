@@ -1,11 +1,11 @@
 ﻿using System.Net.NetworkInformation;
 
-namespace api_cinema_challenge.DTO
+namespace api_cinema_challenge.DTO.DTO_Customer
 {
     public class CustomerBaseDTO
     {
 
-        public string status {  get; set; }
+        public string status { get; set; }
 
         public CustomerDTO data { get; set; }
 
@@ -14,7 +14,7 @@ namespace api_cinema_challenge.DTO
             status = "success";
             data = customer;
         }
-        
-        
+
+
     }
 }

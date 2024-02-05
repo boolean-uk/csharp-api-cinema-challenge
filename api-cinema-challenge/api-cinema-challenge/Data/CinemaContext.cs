@@ -24,12 +24,14 @@ namespace api_cinema_challenge.Data
             Seeder seeder = new Seeder();
 
             modelBuilder.Entity<Movie>().HasKey(m => new {m.id});
-            modelBuilder.Entity<Customer>().HasKey(c => new { c.id });
-            modelBuilder.Entity<Screening>().HasKey(s => new { s.id});
+            modelBuilder.Entity<Customer>().HasKey(c => new {c.id});
+            modelBuilder.Entity<Screening>().HasKey(s => new {s.id});
+            modelBuilder.Entity<Ticket>().HasKey(t => new {t.id});
 
             modelBuilder.Entity<Movie>().HasData(seeder.movies);
             modelBuilder.Entity<Customer>().HasData(seeder.customers);
             modelBuilder.Entity<Screening>().HasData(seeder.screenings);
+            //modelBuilder.Entity<Ticket>()HasData(seeder.tickets); add this to seeder 
         }
 
 

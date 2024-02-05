@@ -1,7 +1,7 @@
 ﻿using api_cinema_challenge.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api_cinema_challenge.DTO
+namespace api_cinema_challenge.DTO.DTO_Movie
 {
     public class MovieDTO
     {
@@ -13,7 +13,7 @@ namespace api_cinema_challenge.DTO
         public DateTime createdAt { get; set; }
         public DateTime updatedAt { get; set; }
 
-        public MovieDTO(Movie movie) 
+        public MovieDTO(Movie movie)
         {
             id = movie.id;
             title = movie.title;

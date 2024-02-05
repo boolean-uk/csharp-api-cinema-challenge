@@ -1,7 +1,7 @@
 ﻿using api_cinema_challenge.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api_cinema_challenge.DTO
+namespace api_cinema_challenge.DTO.DTO_Screening
 {
     public class ScreeningDTO
     {
@@ -12,7 +12,7 @@ namespace api_cinema_challenge.DTO
         public DateTime createdAt { get; set; }
         public DateTime updatedAt { get; set; }
 
-        public ScreeningDTO(Screening screening) 
+        public ScreeningDTO(Screening screening)
         {
             id = screening.id;
             screenNumber = screening.screenNumber;

@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.DTO;
+﻿using api_cinema_challenge.DTO.DTO_Movie;
+using api_cinema_challenge.DTO.DTO_Screening;
 using api_cinema_challenge.Reposetories;
 using System.Globalization;
 

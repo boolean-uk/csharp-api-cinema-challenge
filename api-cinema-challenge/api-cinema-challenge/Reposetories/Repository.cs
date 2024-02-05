@@ -170,6 +170,9 @@ namespace api_cinema_challenge.Reposetories
 
         }
 
-        
+        public Task<Ticket?> BookATicket(int customerId, int screeningId, object numSeats)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using api_cinema_challenge.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api_cinema_challenge.DTO
+namespace api_cinema_challenge.DTO.DTO_Customer
 {
-    
+
     public class CustomerDTO
     {
         public int id { get; set; }
@@ -13,7 +13,7 @@ namespace api_cinema_challenge.DTO
         public DateTime createdAt { get; set; }
         public DateTime updatedAt { get; set; }
 
-        public CustomerDTO(Customer customer) 
+        public CustomerDTO(Customer customer)
         {
             id = customer.id;
             name = customer.name;
@@ -22,7 +22,7 @@ namespace api_cinema_challenge.DTO
             createdAt = customer.createdAt;
             updatedAt = customer.updatedAt;
 
-           
+
         }
     }
 }
