@@ -35,6 +35,9 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Ticket>().HasAlternateKey(e => e.Id);
             modelBuilder.Entity<Ticket>().Property(e => e.Id).ValueGeneratedOnAdd();
 
+            //Alternate key for seats
+            modelBuilder.Entity<Seat>().HasAlternateKey(e => new { e.ScreenId, e.seatNumber});
+
 
             //Add test data
             Seeder.Seed(modelBuilder);

@@ -1,7 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace api_cinema_challenge.Repository
 {
@@ -45,7 +44,8 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Screen?> UpdateAScreen(int id, string name)
         {
-            Screen? screen = await GetScreenById(id);
+            Screen? screen = await GetScreenById(id)
+                ;
             if (screen == null) { return null; }
             screen.name = name;
             screen.UpdatedAt = DateTime.UtcNow;
@@ -55,8 +55,11 @@ namespace api_cinema_challenge.Repository
         }
         public async Task<Screen?> GetScreenById(int id)
         {
-            Screen? response = await _databaseContext.Screens.FirstOrDefaultAsync(c => c.id == id);
-            if(response == null) { return null; }
+            Screen? response = await _databaseContext.Screens
+                .Include(s => s.Screenings).ThenInclude(s => s.Movie)
+                .Include(s => s.Seats)
+                .FirstOrDefaultAsync(c => c.id == id);
+            if (response == null) { return null; }
             return response;
         }
 
