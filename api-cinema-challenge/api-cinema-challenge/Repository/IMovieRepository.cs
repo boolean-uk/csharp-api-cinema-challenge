@@ -7,7 +7,7 @@ namespace api_cinema_challenge.Repository
     {
         public Task<Movie> AddMovie(Movie movie);
         public Task<IEnumerable<Movie>> GetAllMovies();
-        public Task<Movie?> UpdateMovie(int id, MoviePost movie);
+        public Task<Movie?> UpdateMovie(int id, MoviePut movie);
         public Task<Movie?> DeleteMovie(int id);
     }
 }

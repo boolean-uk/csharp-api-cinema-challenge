@@ -32,12 +32,31 @@ namespace api_cinema_challenge.Controllers
                 Title = movie.Title,
                 Rating = movie.Rating,
                 Description = movie.Description,
-                Runtime = movie.Runtime
+                Runtime = (int)movie.Runtime
             };
 
-            var addedMovie = await repository.AddMovie(newMovie);
+            if (movie.Screenings != null)
+            {
+                foreach (var screening in movie.Screenings)
+                {
+                    var newScreening = new Screening
+                    {
+                        ScreenNumber = screening.ScreenNumber,
+                        Capacity = screening.Capacity,
+                        StartsAt = screening.StartsAt,
+                        MovieId = newMovie.Id,
+                        Movie = newMovie
+                    };
 
-            return TypedResults.Created($"/{newMovie.Id}", addedMovie.ToDTO());
+                    newMovie.Screenings.Add(newScreening);
+                }
+            }
+
+            var addedMovie = await repository.AddMovie(newMovie);
+            var movieDTO = addedMovie.ToDTO();
+            var responseDTO = new MovieResponseDTO { Status = "success", Data = movieDTO };
+
+            return TypedResults.Created($"/{newMovie.Id}", responseDTO);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -50,14 +69,15 @@ namespace api_cinema_challenge.Controllers
             {
                 moviesDTO.Add(mov.ToDTO());
             }
+            var responseDTO = new MovieResponseListDTO { Status = "success", Data = moviesDTO };
 
-            return TypedResults.Ok(moviesDTO);
+            return TypedResults.Ok(responseDTO);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> UpdateMovie(IMovieRepository repository, int id, MoviePost movie)
+        public static async Task<IResult> UpdateMovie(IMovieRepository repository, int id, MoviePut movie)
         {
             if (movie == null)
             {
@@ -70,7 +90,9 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Movie with id {id} was not found");
             }
 
-            return TypedResults.Created($"{changedMovie.Id}", changedMovie.ToDTO());
+            var movieDTO = new MovieResponseDTO { Status="success", Data=changedMovie.ToDTO() };
+
+            return TypedResults.Created($"{changedMovie.Id}", movieDTO);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -83,7 +105,9 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Movie with id {id} was not found");
             }
 
-            return TypedResults.Ok(deletedMovie.ToDTO());
+            var movieDTO = new MovieResponseDTO { Status="success", Data=deletedMovie.ToDTO() };
+
+            return TypedResults.Ok(movieDTO);
         }
     }
 }

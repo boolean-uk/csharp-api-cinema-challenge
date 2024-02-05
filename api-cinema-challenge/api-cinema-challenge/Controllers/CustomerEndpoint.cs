@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.DTOs;
 using api_cinema_challenge.Models.Posts;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> AddCustomer(ICustomerRespository repository, CustomerPost customer)
         {
-            if (customer == null)
+            if (customer == null || customer.Name == null || customer.Email == null || customer.PhoneNumber == null)
             {
                 return TypedResults.BadRequest("Invalid input");
             }
@@ -33,13 +34,17 @@ namespace api_cinema_challenge.Controllers
                 PhoneNumber = customer.PhoneNumber,
             };
 
-            return TypedResults.Created($"/{newCustomer.Id}", await repository.AddCustomer(newCustomer));
+            var addedCustomer = await repository.AddCustomer(newCustomer);
+
+            return TypedResults.Created($"/{newCustomer.Id}", addedCustomer.ToDTO());
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllCustomers(ICustomerRespository repository)
         {
-            return TypedResults.Ok(await repository.GetAllCustomers());
+            var customers = await repository.GetAllCustomers();
+            var customerDTO = new CustomerListDTO { Status = "success", Data = customers };
+            return TypedResults.Ok(customerDTO);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -58,7 +63,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Customer with id {id} was not found");
             }
 
-            return TypedResults.Created($"{changedCustomer.Id}", changedCustomer);
+            return TypedResults.Created($"{changedCustomer.Id}", changedCustomer.ToDTO());
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -71,7 +76,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Customer with id {id} was not found");
             }
 
-            return TypedResults.Ok(deletedCustomer);
+            return TypedResults.Ok(deletedCustomer.ToDTO());
         }
     }
 }

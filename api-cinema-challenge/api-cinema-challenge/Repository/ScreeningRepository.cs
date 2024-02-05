@@ -13,16 +13,33 @@ namespace api_cinema_challenge.Repository
             _db = db;
         }
 
-        public async Task<Screening> AddScreening(Screening screening)
+        public async Task<Screening?> AddScreening(int id, Screening screening)
         {
+            var movie = _db.Movies.FirstOrDefault(x => x.Id == id);
+            if (movie == null)
+            {
+                return null;
+            }
+
+            screening.Movie = movie;
+            screening.MovieId = movie.Id;
+            movie.Screenings.Add(screening);
+
             await _db.Screenings.AddAsync(screening);
             _db.SaveChanges();
             return screening;
         }
 
-        public async Task<IEnumerable<Screening>> GetAllScreenings()
+        public async Task<IEnumerable<Screening>?> GetAllScreenings(int id)
         {
-            return await _db.Screenings.Include(screening => screening.Movie).ToListAsync();
+            var movie = await _db.Movies.Include(movie => movie.Screenings)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (movie == null)
+            {
+                return null;
+            }
+
+            return movie.Screenings;
         }
     }
 }

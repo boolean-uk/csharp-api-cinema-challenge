@@ -11,6 +11,7 @@ builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<ICustomerRespository, CustomerRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IScreeningRepository, ScreeningRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,4 +25,5 @@ app.UseHttpsRedirection();
 app.ConfigureCustomerEndpoint();
 app.ConfigureMovieEndpoint();
 app.ConfigureScreeningEndpoint();
+app.ConfigureTicketEndpoint();
 app.Run();

@@ -26,6 +26,16 @@ namespace api_cinema_challenge.Data
                 .WithMany(m => m.Screenings)
                 .HasForeignKey(s => s.MovieId);
 
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Screening)
+                .WithMany(s => s.Tickets)
+                .HasForeignKey(t => t.ScreeningId);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Customer)
+                .WithMany(c => c.Tickets)
+                .HasForeignKey(t => t.CustomerId);
+
             Customer firstCustomer = new Customer
             {
                 Id = 1,
@@ -81,6 +91,14 @@ namespace api_cinema_challenge.Data
                 StartsAt = DateTime.UtcNow.AddDays(1)
             };
 
+            Ticket firstTicket = new Ticket
+            {
+                Id = 1,
+                ScreeningId = 1,
+                CustomerId = 1,
+                NumberOfSeats = 2
+            };
+
             modelBuilder.Entity<Screening>()
                 .HasData(firstScreening, secondScreening);
 
@@ -89,6 +107,9 @@ namespace api_cinema_challenge.Data
 
             modelBuilder.Entity<Movie>()
                 .HasData(firstMovie, secondMovie);
+
+            modelBuilder.Entity<Ticket>()
+                .HasData(firstTicket);
         }
 
         public DbSet<Customer> Customers { get; set; }

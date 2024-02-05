@@ -26,7 +26,7 @@ namespace api_cinema_challenge.Repository
             return await _db.Movies.Include(movie => movie.Screenings).ToListAsync();
         }
 
-        public async Task<Movie?> UpdateMovie(int id, MoviePost movie)
+        public async Task<Movie?> UpdateMovie(int id, MoviePut movie)
         {
             var foundMovie = await _db.Movies.FirstOrDefaultAsync(movie => movie.Id == id);
             if (foundMovie == null)
@@ -34,10 +34,10 @@ namespace api_cinema_challenge.Repository
                 return null;
             }
 
-            foundMovie.Title = movie.Title;
-            foundMovie.Rating = movie.Rating;
-            foundMovie.Description = movie.Description;
-            foundMovie.Runtime = movie.Runtime;
+            if (movie.Title != null) { foundMovie.Title = movie.Title; }
+            if (movie.Rating != null) { foundMovie.Rating = movie.Rating; }
+            if (movie.Description != null) { foundMovie.Description = movie.Description; }
+            if (movie.Runtime != null) { foundMovie.Runtime = (int)movie.Runtime; }
             foundMovie.UpdatedAt = DateTime.UtcNow;
 
             _db.SaveChanges();

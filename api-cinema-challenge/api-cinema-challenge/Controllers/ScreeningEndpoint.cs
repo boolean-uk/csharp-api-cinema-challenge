@@ -18,7 +18,8 @@ namespace api_cinema_challenge.Controllers
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> AddScreening(IScreeningRepository repository, ScreeningPost screening)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> AddScreening(IScreeningRepository repository, int id, ScreeningPost screening)
         {
             if (screening == null)
             {
@@ -32,15 +33,26 @@ namespace api_cinema_challenge.Controllers
                 StartsAt = screening.StartsAt,
             };
 
-            var addedScreening = await repository.AddScreening(newScreening);
+            var addedScreening = await repository.AddScreening(id, newScreening);
+
+            if (addedScreening == null)
+            {
+                return TypedResults.NotFound($"Movie with id {id} was not found");
+            }
 
             return TypedResults.Created($"/{addedScreening.Id}", addedScreening.ToDTO());
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAllScreenings(IScreeningRepository repository)
+        public static async Task<IResult> GetAllScreenings(IScreeningRepository repository, int id)
         {
-            var screenings = await repository.GetAllScreenings();
+            var screenings = await repository.GetAllScreenings(id);
+
+            if (screenings == null)
+            {
+                return TypedResults.Ok($"Movie with id {id} was not found");
+            }
+
             List<ScreeningDTO> screeningDTO = new List<ScreeningDTO>();
 
             foreach (var screening in screenings)
