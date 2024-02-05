@@ -12,13 +12,13 @@ namespace api_cinema_challenge.Controllers
         {
             var customerGroup = app.MapGroup("customers");
 
-            customerGroup.MapPost("/{customerId}", CreateCustomer);
+            customerGroup.MapPost("/", CreateCustomer);
             customerGroup.MapGet("/", GetAllCustomers);
-            customerGroup.MapPut("/", UpdateCustomer);
-            customerGroup.MapDelete("/", DeleteCustomer);
+            customerGroup.MapPut("/{customerId}", UpdateCustomer);
+            customerGroup.MapDelete("/{customerId}", DeleteCustomer);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateCustomer(ICustomerRepository customerRepository, NewCustomer newData)
+        public static async Task<IResult> CreateCustomer(ICustomerRepository customerRepository, CustomerPostPayload newData)
         {
             //Check that newData has all values
             if (newData.Name == null || newData.Email == null || newData.PhoneNr == null || newData.ScreeningId == 0)
@@ -36,7 +36,7 @@ namespace api_cinema_challenge.Controllers
             return TypedResults.Ok(customer);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> UpdateCustomer(ICustomerRepository customerRepository, UpdateCustomer newData, int id)
+        public static async Task<IResult> UpdateCustomer(ICustomerRepository customerRepository, CustomerUpdatePayload newData, int id)
         {
             //Find customer to update via Id
             Customer? customer = await customerRepository.GetCustomer(id);

@@ -24,5 +24,5 @@ AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 app.UseHttpsRedirection();
 app.ConfigureCustomerEndpoint();
 app.ConfigureMoviesEndpoint();
-app.ConfigureScreeningsEndpoint();
+//app.ConfigureScreeningsEndpoint();
 app.Run();

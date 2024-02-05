@@ -2,8 +2,8 @@
 
 namespace api_cinema_challenge.Models
 {
-    public record NewCustomer(string Name, string Email, string PhoneNr, int ScreeningId);
-    public record UpdateCustomer(string? Name, string? Email, string? PhoneNr, int? ScreeningId);
+    public record CustomerPostPayload(string Name, string Email, string PhoneNr, int ScreeningId);
+    public record CustomerUpdatePayload(string? Name, string? Email, string? PhoneNr, int? ScreeningId);
     [Table("customers")]
     public class Customer
     {
@@ -17,7 +17,6 @@ namespace api_cinema_challenge.Models
         public string PhoneNr { get; set; }
         [Column("screening_id")]
         public int ScreeningId { get; set; }
-        //[Column("screening")]
         public virtual Screenings Screening { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

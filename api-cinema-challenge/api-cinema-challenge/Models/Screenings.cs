@@ -3,7 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace api_cinema_challenge.Models
 {
-    public record NewScreening(int ScreenNr, int Capacity, DateTime StartsAt);
+    public record ScreeningPostPayload(int ScreenNr, int Capacity, DateTime StartsAt);
     [Table("screenings")]
     public class Screenings
     {
@@ -17,7 +17,6 @@ namespace api_cinema_challenge.Models
         public DateTime StartsAt { get; set; }
         [Column("movies_id")]
         public int MoviesId { get; set; }
-        //[Column("movie")]
         public virtual Movies Movies { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

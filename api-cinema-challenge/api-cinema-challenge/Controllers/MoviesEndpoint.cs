@@ -13,13 +13,15 @@ namespace api_cinema_challenge.Controllers
         {
             var movieGroup = app.MapGroup("movies");
 
-            movieGroup.MapPost("/{moviesId}", CreateMovie);
+            movieGroup.MapPost("/", CreateMovie);
             movieGroup.MapGet("/", GetAllMovies);
             movieGroup.MapPut("/{moviesId}", UpdateMovies);
             movieGroup.MapDelete("/{moviesId}", DeleteMovies);
+            movieGroup.MapPost("/{moviesId}/screenings", CreateScreening);
+            movieGroup.MapGet("/{moviesId}/screenings", GetAllScreenings);
         }        
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateMovie(IMoviesRepository moviesRepository, NewMovie newData)
+        public static async Task<IResult> CreateMovie(IMoviesRepository moviesRepository, MoviePostPayload newData)
         {
             //Check that newData has all values
             if(newData.Title == null || newData.Rating == null || newData.Description == null || newData.Runtime == 0)
@@ -37,7 +39,7 @@ namespace api_cinema_challenge.Controllers
             return TypedResults.Ok(movie);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> UpdateMovies(IMoviesRepository moviesRepository, UpdateMovie newData, int id)
+        public static async Task<IResult> UpdateMovies(IMoviesRepository moviesRepository, MovieUpdatePayload newData, int id)
         {
             //Find movie to update via Id
             Movies? movie = await moviesRepository.GetMovie(id);
@@ -76,6 +78,25 @@ namespace api_cinema_challenge.Controllers
             //Run the Delete method
             movie = await moviesRepository.DeleteMovie(id);
             return TypedResults.Ok(movie);
+        }
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> CreateScreening(IScreeningsRepository screeningsRepository, ScreeningPostPayload newData, int movieId)
+        {
+            //Check that newData has all values
+            if (newData.Capacity == 0 || newData.StartsAt == null || newData.ScreenNr == 0 || movieId == 0)
+            {
+                return TypedResults.BadRequest("You must enter data for all fields!");
+            }
+            //Create the new screening
+            var screening = new ScreeningDTO(await screeningsRepository.CreateScreening(newData.ScreenNr, newData.Capacity, newData.StartsAt, movieId));
+            return TypedResults.Created($"/{screening.ScreenNr}", screening);
+        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetAllScreenings(IScreeningsRepository screeningsRepository, int movieId)
+        {
+            var screening = GetScreeningDTO.FromRepository(await screeningsRepository.GetScreenings(movieId));
+            return TypedResults.Ok(screening);
         }
     }
 }
