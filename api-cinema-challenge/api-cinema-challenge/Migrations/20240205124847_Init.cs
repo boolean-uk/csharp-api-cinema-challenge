@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api_cinema_challenge.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,7 +40,8 @@ namespace api_cinema_challenge.Migrations
                     description = table.Column<string>(type: "text", nullable: false),
                     runttime_mins = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    available = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,14 +114,19 @@ namespace api_cinema_challenge.Migrations
                         column: x => x.customer_id,
                         principalTable: "customers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_bookings_screenings_screening_id",
                         column: x => x.screening_id,
                         principalTable: "screenings",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "customers",
+                columns: new[] { "Id", "created_at", "email", "name", "phone", "updated_at" },
+                values: new object[] { 1, new DateTime(2024, 2, 5, 12, 48, 47, 256, DateTimeKind.Utc).AddTicks(6879), "jon@example.com", "Jon Doe", "+123", new DateTime(2024, 2, 5, 12, 48, 47, 256, DateTimeKind.Utc).AddTicks(6883) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_bookings_customer_id",

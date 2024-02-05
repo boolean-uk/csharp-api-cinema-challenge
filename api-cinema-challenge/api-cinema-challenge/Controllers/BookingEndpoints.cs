@@ -14,7 +14,7 @@ namespace api_cinema_challenge.Controllers
             bookings.MapPost("", CreateBooking);
             bookings.MapGet("", GetAllBookings);
             app.MapGet("/customers/{customerId}/Bookings", GetAllBookingsByCustomer);
-            app.MapDelete("/{id}", DeleteBookingById);
+            bookings.MapDelete("/{id}", DeleteBookingById);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -28,7 +28,7 @@ namespace api_cinema_challenge.Controllers
             }
             try
             {
-                var booking = await repository.Add(customerId, payload.ScreeningId, payload.NrOfTickets);
+                var booking = await repository.Add(customerId, payload.ScreeningId, payload.ticketQuantity);
                 return booking == null ? TypedResults.NotFound("Customer or Screening was not found") : TypedResults.Created($"/customers/{customerId}", new BookingDTO(booking));
             }
             catch (Exception ex)

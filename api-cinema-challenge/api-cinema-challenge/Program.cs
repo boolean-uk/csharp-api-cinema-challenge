@@ -36,3 +36,5 @@ app.ConfigureScreenEndpoints();
 app.ConfigureScreeningEndpoints();
 
 app.Run();
+
+public partial class Program { }

@@ -12,15 +12,15 @@ namespace api_cinema_challenge.Repositories.customer
             _db = db;
         }
 
-        public async Task<Booking?> Add(int customerId, int screeningId, int nrOfTickets)
+        public async Task<Booking?> Add(int customerId, int screeningId, int ticketQuantity)
         {
             var screening = await _db.Screenings.FirstOrDefaultAsync(s => s.Id.Equals(screeningId));
             if (screening == null) { return null; }
-            if (screening.RemaningCapacity - nrOfTickets < 0) { throw new InvalidOperationException($"There are only {screening.RemaningCapacity} seats left"); }
+            if (screening.RemaningCapacity - ticketQuantity < 0) { throw new InvalidOperationException($"There are only {screening.RemaningCapacity} seats left"); }
 
-            var booking = _db.Bookings.Add(new Booking { CustomerId = customerId, ScreeningId = screeningId, NrOfTickets = nrOfTickets });
+            var booking = _db.Bookings.Add(new Booking { CustomerId = customerId, ScreeningId = screeningId, ticketQuantity = ticketQuantity });
             if (booking == null) { return null; }
-            screening.RemaningCapacity -= nrOfTickets;
+            screening.RemaningCapacity -= ticketQuantity;
             await _db.SaveChangesAsync();
             return booking.Entity;
         }

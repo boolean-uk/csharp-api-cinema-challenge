@@ -39,17 +39,17 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("customer_id");
 
-                    b.Property<int>("NrOfTickets")
-                        .HasColumnType("integer")
-                        .HasColumnName("nr_of_tickets");
-
                     b.Property<int>("ScreeningId")
                         .HasColumnType("integer")
                         .HasColumnName("screening_id");
 
-                    b.Property<DateTime>("UpdatedAT")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
+
+                    b.Property<int>("ticketQuantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("nr_of_tickets");
 
                     b.HasKey("Id");
 
@@ -57,7 +57,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("ScreeningId");
 
-                    b.ToTable("bookings", (string)null);
+                    b.ToTable("bookings");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Customer", b =>
@@ -93,7 +93,18 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("customers", (string)null);
+                    b.ToTable("customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 47, 256, DateTimeKind.Utc).AddTicks(6879),
+                            Email = "jon@example.com",
+                            Name = "Jon Doe",
+                            Phone = "+123",
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 47, 256, DateTimeKind.Utc).AddTicks(6883)
+                        });
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Movie", b =>
@@ -138,7 +149,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("movies", (string)null);
+                    b.ToTable("movies");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screen", b =>
@@ -164,7 +175,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("screens", (string)null);
+                    b.ToTable("screens");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
@@ -209,7 +220,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("ScreenId");
 
-                    b.ToTable("screenings", (string)null);
+                    b.ToTable("screenings");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Booking", b =>

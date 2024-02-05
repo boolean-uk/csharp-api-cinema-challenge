@@ -6,11 +6,11 @@
 
         public int ScreeningId { get; set; }
 
-        public int NrOfTickets { get; set; }
+        public int ticketQuantity { get; set; }
 
         public string CheckPayload()
         {
-            if (NrOfTickets <= 0) { return "Can't book less than 1 ticket"; }
+            if (ticketQuantity <= 0) { return "Can't book less than 1 ticket"; }
             return string.Empty;
         }
     }

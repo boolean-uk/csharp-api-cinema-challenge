@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int CustomerId { get; set; }
         public int ScreeningId { get; set; }
-        public int NrOfTickets { get; set; }
+        public int TicketQuantity { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
 
@@ -14,7 +14,7 @@
             Id = booking.Id;
             CustomerId = booking.CustomerId;
             ScreeningId = booking.ScreeningId;
-            NrOfTickets = booking.NrOfTickets;
+            TicketQuantity = booking.ticketQuantity;
             string datePattern = "yyyy-MM-ddTHH:mm:ss";
             CreatedAt = booking.CreatedAt.ToString(datePattern);
             UpdatedAt = booking.UpdatedAt.ToString(datePattern);

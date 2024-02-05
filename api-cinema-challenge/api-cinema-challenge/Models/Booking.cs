@@ -22,7 +22,7 @@ namespace api_cinema_challenge.Models
         public Screening Screening { get; set; }
 
         [Column("nr_of_tickets")]
-        public int NrOfTickets { get; set; }
+        public int ticketQuantity { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -46,6 +46,15 @@ namespace api_cinema_challenge.Data
                 .HasForeignKey(s => s.ScreeningId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer
+                {
+                    Id = 1,
+                    Name = "Jon Doe",
+                    Email = "jon@example.com",
+                    Phone = "+123"
+                });
         }
 
         public DbSet<Booking> Bookings { get; set; }

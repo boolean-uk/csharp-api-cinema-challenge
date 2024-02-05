@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240202121741_init")]
-    partial class init
+    [Migration("20240205124847_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,17 +42,17 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("customer_id");
 
-                    b.Property<int>("NrOfTickets")
-                        .HasColumnType("integer")
-                        .HasColumnName("nr_of_tickets");
-
                     b.Property<int>("ScreeningId")
                         .HasColumnType("integer")
                         .HasColumnName("screening_id");
 
-                    b.Property<DateTime>("UpdatedAT")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
+
+                    b.Property<int>("ticketQuantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("nr_of_tickets");
 
                     b.HasKey("Id");
 
@@ -97,6 +97,17 @@ namespace api_cinema_challenge.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 47, 256, DateTimeKind.Utc).AddTicks(6879),
+                            Email = "jon@example.com",
+                            Name = "Jon Doe",
+                            Phone = "+123",
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 47, 256, DateTimeKind.Utc).AddTicks(6883)
+                        });
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Movie", b =>
@@ -107,6 +118,10 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Available")
+                        .HasColumnType("boolean")
+                        .HasColumnName("available");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -216,13 +231,13 @@ namespace api_cinema_challenge.Migrations
                     b.HasOne("api_cinema_challenge.Models.Customer", "Customer")
                         .WithMany("Bookings")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("api_cinema_challenge.Models.Screening", "Screening")
                         .WithMany("Bookings")
                         .HasForeignKey("ScreeningId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Customer");
