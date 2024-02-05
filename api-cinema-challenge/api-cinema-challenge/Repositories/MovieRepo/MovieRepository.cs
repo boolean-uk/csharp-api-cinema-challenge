@@ -3,7 +3,7 @@ using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 
-namespace api_cinema_challenge.Controllers.MovieRepo
+namespace api_cinema_challenge.Reposities.MovieRepo
 {
     public class MovieRepository : IMovieRepository
     {

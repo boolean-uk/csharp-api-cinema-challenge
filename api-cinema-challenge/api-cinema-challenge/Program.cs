@@ -1,7 +1,7 @@
-using api_cinema_challenge.Controllers.MovieRepo;
-using api_cinema_challenge.Controllers.ScreeningRepo;
-using api_cinema_challenge.Controllers.TicketRepo;
-using api_cinema_challenge.Controllers.UserRepo;
+using api_cinema_challenge.Reposities.MovieRepo;
+using api_cinema_challenge.Reposities.ScreeningRepo;
+using api_cinema_challenge.Reposities.TicketRepo;
+using api_cinema_challenge.Reposities.UserRepo;
 using api_cinema_challenge.Data;
 using api_cinema_challenge.Views;
 

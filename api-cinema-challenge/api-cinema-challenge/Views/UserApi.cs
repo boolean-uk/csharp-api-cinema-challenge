@@ -1,6 +1,7 @@
-﻿using api_cinema_challenge.Controllers.ScreeningRepo;
-using api_cinema_challenge.Controllers.TicketRepo;
-using api_cinema_challenge.Controllers.UserRepo;
+﻿using api_cinema_challenge.Reposities.ScreeningRepo;
+using api_cinema_challenge.Reposities.TicketRepo;
+using api_cinema_challenge.Reposities.UserRepo;
+
 using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
 using static api_cinema_challenge.Models.Payloads.TicketPayloads;

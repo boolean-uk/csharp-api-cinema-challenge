@@ -1,7 +1,7 @@
 ﻿using api_cinema_challenge.Models;
 using System.Collections.Generic;
 
-namespace api_cinema_challenge.Controllers.UserRepo
+namespace api_cinema_challenge.Reposities.UserRepo
 {
     public interface IUserRepository
     {

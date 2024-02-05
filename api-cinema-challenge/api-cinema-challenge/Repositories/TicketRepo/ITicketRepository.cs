@@ -1,6 +1,6 @@
 ﻿using api_cinema_challenge.Models;
 
-namespace api_cinema_challenge.Controllers.TicketRepo
+namespace api_cinema_challenge.Reposities.TicketRepo
 {
     public interface ITicketRepository
     {

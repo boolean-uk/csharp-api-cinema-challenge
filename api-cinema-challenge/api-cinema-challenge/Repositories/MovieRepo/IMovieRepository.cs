@@ -1,6 +1,6 @@
 ﻿using api_cinema_challenge.Models;
 
-namespace api_cinema_challenge.Controllers.MovieRepo
+namespace api_cinema_challenge.Reposities.MovieRepo
 {
     public interface IMovieRepository
     {

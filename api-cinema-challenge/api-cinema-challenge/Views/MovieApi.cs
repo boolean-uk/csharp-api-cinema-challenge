@@ -1,6 +1,6 @@
-﻿using api_cinema_challenge.Controllers.MovieRepo;
-using api_cinema_challenge.Controllers.ScreeningRepo;
-using api_cinema_challenge.Controllers.UserRepo;
+﻿using api_cinema_challenge.Reposities.MovieRepo;
+using api_cinema_challenge.Reposities.ScreeningRepo;
+using api_cinema_challenge.Reposities.UserRepo;
 using api_cinema_challenge.DTO;
 using static api_cinema_challenge.Models.Payloads.MoviePayloads;
 using static api_cinema_challenge.Models.Payloads.ScreeningPayloads;

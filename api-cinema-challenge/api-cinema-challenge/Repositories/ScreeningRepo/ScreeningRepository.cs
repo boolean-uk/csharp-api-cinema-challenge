@@ -2,7 +2,7 @@
 using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace api_cinema_challenge.Controllers.ScreeningRepo
+namespace api_cinema_challenge.Reposities.ScreeningRepo
 {
     public class ScreeningRepository : IScreeningRepository
     {

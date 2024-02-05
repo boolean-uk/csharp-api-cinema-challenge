@@ -1,6 +1,6 @@
 ﻿using api_cinema_challenge.Models;
 
-namespace api_cinema_challenge.Controllers.ScreeningRepo
+namespace api_cinema_challenge.Reposities.ScreeningRepo
 {
     public interface IScreeningRepository
     {
