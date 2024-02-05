@@ -12,7 +12,7 @@ namespace api_cinema_challenge.Data
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
-            this.Database.EnsureCreated(); // IF ERROR HERE, CHECK ZSCALER!!
+            this.Database.EnsureCreated(); // IF ERROR HERE, CHECK ZSCALER!! Or not
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

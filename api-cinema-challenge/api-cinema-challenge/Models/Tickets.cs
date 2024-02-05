@@ -13,6 +13,8 @@ namespace api_cinema_challenge.Models
         public int CustomerId { get; set; }
         [Column("screening_id")]
         public int ScreeningId { get; set; }
+        //public Screenings Screenings { get; set; }
+        //public Customer Customer { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public Tickets()

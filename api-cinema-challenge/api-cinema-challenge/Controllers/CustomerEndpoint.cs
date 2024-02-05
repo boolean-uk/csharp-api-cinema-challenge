@@ -85,19 +85,23 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> CreateTicket(ITicketRepository ticketRepository, TicketPostPayload newTicketData)
         {
             //Check that newTicketData has all values
-            if (newTicketData.SeatNr < 0 || newTicketData.CustomerId < 0 || newTicketData.ScreeningId < 0)
+            if (newTicketData.SeatNr <= 0 || newTicketData.CustomerId <= 0 || newTicketData.ScreeningId <= 0)
             {
-                return TypedResults.BadRequest("Your booking does not exist.");
+                return TypedResults.BadRequest("Your booking details are wrong.");
             }
             //Create the new ticket
             var ticket = new TicketDTO(await ticketRepository.CreateTicket(newTicketData.SeatNr, newTicketData.ScreeningId, newTicketData.CustomerId));
+            if (ticket == null)
+            {
+                return TypedResults.BadRequest("This seat is already booked.");
+            }
             //return TypedResults, remember the path and such
             return TypedResults.Created($"/customer/{ticket.CustomerId}/screenings/{ticket.ScreeningId}", ticket);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAllTickets(ITicketRepository ticketRepository, int screeningId)
+        public static async Task<IResult> GetAllTickets(ITicketRepository ticketRepository, int screeningId, int customerId)
         {
-            var ticket = GetTicketDTO.FromRepository(await ticketRepository.GetAllTickets());
+            var ticket = GetTicketDTO.FromRepository(await ticketRepository.GetAllTickets(screeningId, customerId));
             if(ticket == null)
             {
                 return TypedResults.BadRequest("No tickets found.");

@@ -32,7 +32,7 @@ namespace api_cinema_challenge.Controllers
         public DateTime Updated { get; set; }
         public TicketDTO(Tickets ticket)
         {
-            Id = ticket.Id;
+            Id = ticket.Id;//Similar error to earlier
             SeatNr = ticket.SeatNr;
             CustomerId = ticket.CustomerId;
             ScreeningId = ticket.ScreeningId;

@@ -21,10 +21,17 @@ namespace api_cinema_challenge.Repository
             var screening = await _db.Screenings.SingleOrDefaultAsync(x => x.Id == ScreeningId);
             var customer = await _db.Customers.SingleOrDefaultAsync(y => y.Id == CustomerId);
             //Validate that seat is not taken
-            if (screening == null || customer == null) 
+            foreach (var booking in _db.Tickets)
             {
-                return null;
+                if (booking.SeatNr == SeatNr)
+                {
+                    return null;
+                }
             }
+            //if (screening.Id == null || SeatNr == null || ScreeningId == null || CustomerId == null)
+            //{
+            //    return null;
+            //}
             if (SeatNr <= screening.Capacity && ScreeningId == screening.Id && CustomerId == customer.Id)
             {
                 //Populate the ticket with payload data
@@ -32,19 +39,15 @@ namespace api_cinema_challenge.Repository
                 ticket.ScreeningId = ScreeningId;
                 ticket.CustomerId = CustomerId;
             }
-            else
-            {
-                return null;
-            }
             //add ticket to database and save it + return
             _db.Tickets.Add(ticket);
             _db.SaveChanges();
             return ticket;
         }
 
-        public async Task<IEnumerable<Tickets>> GetAllTickets()
-        {/*.Include(x => x.CustomerId)*/
-            return await _db.Tickets.ToListAsync();
+        public async Task<IEnumerable<Tickets>> GetAllTickets(int screeningId, int customerId) //Add customerId aswell
+        {
+            return await _db.Tickets.Where(x => x.ScreeningId == screeningId && x.CustomerId == customerId).ToListAsync();
         }
     }
 }
