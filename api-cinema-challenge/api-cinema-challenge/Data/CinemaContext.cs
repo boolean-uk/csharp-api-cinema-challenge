@@ -13,6 +13,10 @@ namespace api_cinema_challenge.Data
     public class CinemaContext : DbContext
     {
         private string _connectionString;
+        public DbSet<User> Users { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screens { get; set; }
+        
         public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -25,11 +29,7 @@ namespace api_cinema_challenge.Data
             optionsBuilder.UseNpgsql(_connectionString);
             optionsBuilder.LogTo(message => Debug.WriteLine(message)); //see the sql EF using in the console
         }
-
-        public DbSet<User> Users { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Screening> Screens { get; set; }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasKey(u => u.Id); //Primary key
@@ -37,7 +37,8 @@ namespace api_cinema_challenge.Data
                 //users
                 new User 
                 { 
-                    Id = 1, Name = "Joel Joelsson", 
+                    Id = 1, 
+                    Name = "Joel Joelsson", 
                     Email = "joel@email.com", 
                     PhoneNumber = "0700050088",
                     CreatedAt = DateTime.UtcNow,
@@ -146,12 +147,13 @@ namespace api_cinema_challenge.Data
                 );
 
             modelBuilder.Entity<Screening>()
-            .HasKey(s => s.Id); // Primary key
+            // Primary key, composite
+            .HasKey(s => new { s.MovieId, s.ScreenNumber, s.StartTime }); 
             modelBuilder.Entity<Screening>().HasData(
                 //Screenings
                 new Screening
                 {
-                    Id = 1,
+                    //Id = 1,
                     ScreenNumber = 1,
                     MovieId = 1,
                     Capacity = 100,
@@ -162,7 +164,7 @@ namespace api_cinema_challenge.Data
 
                 new Screening
                 {
-                    Id = 2,
+                    //Id = 2,
                     ScreenNumber = 2,
                     MovieId = 1,
                     Capacity = 120,
@@ -173,7 +175,7 @@ namespace api_cinema_challenge.Data
 
                 new Screening
                 {
-                    Id = 3,
+                    //Id = 3,
                     ScreenNumber = 3,
                     MovieId = 2,
                     Capacity = 70,
@@ -184,7 +186,7 @@ namespace api_cinema_challenge.Data
 
                 new Screening
                 {
-                    Id = 4,
+                    //Id = 4,
                     ScreenNumber = 4,
                     MovieId = 2,
                     Capacity = 80,
@@ -195,7 +197,7 @@ namespace api_cinema_challenge.Data
 
                 new Screening
                 {
-                    Id = 5,
+                    //Id = 5,
                     ScreenNumber = 5,
                     MovieId = 3,
                     Capacity = 83,

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.DTOs;
 using api_cinema_challenge.Repository;
 using static api_cinema_challenge.Models.Movie;
 using Microsoft.AspNetCore.Builder;
@@ -16,16 +17,16 @@ namespace api_cinema_challenge.Endpoints
             var screeningsGroup = app.MapGroup("screenings");
 
             //users
-            usersGroup.MapPost("/create/user", CreateUser);
-            usersGroup.MapGet("/get/users", GetUsers);
-            usersGroup.MapPut("/update/user", UpdateUsers);
-            usersGroup.MapDelete("/delete/user", DeleteUser);
+            usersGroup.MapPost("/users/", CreateUser);
+            usersGroup.MapGet("/users/", GetUsers);
+            usersGroup.MapPut("/users/{Id}/", UpdateUser);
+            usersGroup.MapDelete("/users/{Id}/", DeleteUser);
 
             //movies
-            movieGroup.MapPut("update/movie", UpdateMovie);
-            movieGroup.MapPost("/create/movie", CreateMovie);
-            movieGroup.MapGet("/get/movies", GetMovies);
-            movieGroup.MapDelete("delete/movie", DeleteMovie);
+            movieGroup.MapPut("/movies/{Id}/", UpdateMovie);
+            movieGroup.MapPost("/movies/", CreateMovie);
+            movieGroup.MapGet("/movies/", GetMovies);
+            movieGroup.MapDelete("/movies/{Id}", DeleteMovie);
 
             //screenings
             screeningsGroup.MapGet("/get/screenings", GetScreenings);
@@ -36,7 +37,7 @@ namespace api_cinema_challenge.Endpoints
         //201responses.users
         //createuser
         //updateuser
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UsersResponseDTO))]
         public static async Task<IResult> CreateUser(IRepository repository, 
             string name, string email, string phoneNumber)
         {
@@ -44,17 +45,21 @@ namespace api_cinema_challenge.Endpoints
             UsersResponseDTO userToReturn = new UsersResponseDTO(user);
             return TypedResults.Created("created",userToReturn);
         }
-        public static async Task<IResult> UpdateUsers(IRepository repository, 
-            int id, string name, string email, string phoneNumber)
+        public static async Task<IResult> UpdateUser(IRepository repository, int id, 
+            UpdateUserPayload updateData)
         {
-            var user = await repository.UpdateUser(id, name, email, phoneNumber);
+            var user = await repository.UpdateUser(id, updateData);
+            if (user == null) 
+            {
+                return TypedResults.NotFound(id);
+            }
             UsersResponseDTO userToReturn = new UsersResponseDTO(user);
             return TypedResults.Created("updated", userToReturn);
         }
 
         //201responses.screenings
         //createscreening
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Screening))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ScreeningResponseDTO))]
         public static async Task<IResult> CreateScreening(IRepository repository, 
             int movieId, int screenNumber, int capacity, DateTime startsAt)
         {
@@ -66,7 +71,7 @@ namespace api_cinema_challenge.Endpoints
         //201responses.movies
         //CreateMovie
         //UpdateMovie
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Movie))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(MovieResponseDTO))]
         public static async Task<IResult> CreateMovie(IRepository repository, 
             string title, string rating, string description, int runtime)
         {
@@ -74,10 +79,14 @@ namespace api_cinema_challenge.Endpoints
             MovieResponseDTO MovieToReturn = new MovieResponseDTO(movie);
             return TypedResults.Created("created", MovieToReturn);
         }
-        public static async Task<IResult> UpdateMovie(IRepository repository, 
-            int id, string title, string rating, string description, int runtime)
+        public static async Task<IResult> UpdateMovie(IRepository repository, int id, 
+            UpdateMoviePayload UpdateData)
         {
-            var movie = await repository.UpdateMovie(id, title, rating, description, runtime);
+            var movie = await repository.UpdateMovie(id, UpdateData);
+            if (movie == null)
+            {
+                return TypedResults.NotFound(id);
+            }
             MovieResponseDTO MovieToReturn = new MovieResponseDTO(movie);
             return TypedResults.Created("updated", MovieToReturn);
         }

@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace api_cinema_challenge.Models
 {
-
     [Table("users")]
     public class User
     {
+        [Key]
         [Column("id")]
         public int Id { get; set; }
 
@@ -24,18 +25,5 @@ namespace api_cinema_challenge.Models
 
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
-    }
-
-    //DTO
-    public class UsersResponseDTO
-    {
-        public int ID { get; set; }
-        public string name { get; set; }
-
-        public UsersResponseDTO(User user)
-        {
-            name = user.Name;
-            ID = user.Id;
-        }
-    }
+    } 
 }

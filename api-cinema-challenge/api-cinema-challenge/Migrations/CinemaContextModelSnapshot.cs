@@ -66,72 +66,57 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5705),
+                            CreatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(254),
                             Description = "A short comedy movie",
                             Rating = "Good",
                             RuntimeMins = 77,
                             Title = "The Sweet Potato",
-                            UpdatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5705)
+                            UpdatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(254)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 1, 28, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5707),
+                            CreatedAt = new DateTime(2024, 1, 31, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(256),
                             Description = "A thrilling mystery movie",
                             Rating = "Excellent",
                             RuntimeMins = 120,
                             Title = "Mystery Mansion",
-                            UpdatedAt = new DateTime(2024, 1, 30, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5708)
+                            UpdatedAt = new DateTime(2024, 2, 2, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(257)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 1, 23, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5709),
+                            CreatedAt = new DateTime(2024, 1, 26, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(258),
                             Description = "A beautiful romantic movie",
                             Rating = "Great",
                             RuntimeMins = 90,
                             Title = "Romantic Sunset",
-                            UpdatedAt = new DateTime(2024, 1, 25, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5710)
+                            UpdatedAt = new DateTime(2024, 1, 28, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(258)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 1, 18, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5711),
+                            CreatedAt = new DateTime(2024, 1, 21, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(260),
                             Description = "An epic science fiction movie",
                             Rating = "Excellent",
                             RuntimeMins = 150,
                             Title = "Sci-Fi Odyssey",
-                            UpdatedAt = new DateTime(2024, 1, 21, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5712)
+                            UpdatedAt = new DateTime(2024, 1, 24, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(260)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 1, 13, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5713),
+                            CreatedAt = new DateTime(2024, 1, 16, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(261),
                             Description = "A gripping drama movie",
                             Rating = "Good",
                             RuntimeMins = 110,
                             Title = "Drama Junction",
-                            UpdatedAt = new DateTime(2024, 1, 15, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5714)
+                            UpdatedAt = new DateTime(2024, 1, 18, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(262)
                         });
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("integer")
-                        .HasColumnName("capacity");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<int>("MovieId")
                         .HasColumnType("integer")
                         .HasColumnName("movie_id");
@@ -144,64 +129,67 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_time");
 
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer")
+                        .HasColumnName("capacity");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("Id");
+                    b.HasKey("MovieId", "ScreenNumber", "StartTime");
 
                     b.ToTable("screenings");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Capacity = 100,
-                            CreatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5830),
                             MovieId = 1,
                             ScreenNumber = 1,
-                            StartTime = new DateTime(2024, 2, 2, 13, 7, 27, 644, DateTimeKind.Utc).AddTicks(5829),
-                            UpdatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5830)
+                            StartTime = new DateTime(2024, 2, 5, 12, 30, 49, 300, DateTimeKind.Utc).AddTicks(1387),
+                            Capacity = 100,
+                            CreatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1389),
+                            UpdatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1389)
                         },
                         new
                         {
-                            Id = 2,
-                            Capacity = 120,
-                            CreatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5833),
                             MovieId = 1,
                             ScreenNumber = 2,
-                            StartTime = new DateTime(2024, 2, 2, 15, 7, 27, 644, DateTimeKind.Utc).AddTicks(5832),
-                            UpdatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5833)
+                            StartTime = new DateTime(2024, 2, 5, 14, 30, 49, 300, DateTimeKind.Utc).AddTicks(1391),
+                            Capacity = 120,
+                            CreatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1391),
+                            UpdatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1392)
                         },
                         new
                         {
-                            Id = 3,
-                            Capacity = 70,
-                            CreatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5835),
                             MovieId = 2,
                             ScreenNumber = 3,
-                            StartTime = new DateTime(2024, 2, 2, 16, 7, 27, 644, DateTimeKind.Utc).AddTicks(5835),
-                            UpdatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5835)
+                            StartTime = new DateTime(2024, 2, 5, 15, 30, 49, 300, DateTimeKind.Utc).AddTicks(1393),
+                            Capacity = 70,
+                            CreatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1393),
+                            UpdatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1394)
                         },
                         new
                         {
-                            Id = 4,
-                            Capacity = 80,
-                            CreatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5837),
                             MovieId = 2,
                             ScreenNumber = 4,
-                            StartTime = new DateTime(2024, 2, 2, 13, 7, 27, 644, DateTimeKind.Utc).AddTicks(5837),
-                            UpdatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5838)
+                            StartTime = new DateTime(2024, 2, 5, 12, 30, 49, 300, DateTimeKind.Utc).AddTicks(1395),
+                            Capacity = 80,
+                            CreatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1395),
+                            UpdatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1395)
                         },
                         new
                         {
-                            Id = 5,
-                            Capacity = 83,
-                            CreatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5839),
                             MovieId = 3,
                             ScreenNumber = 5,
-                            StartTime = new DateTime(2024, 2, 2, 17, 7, 27, 644, DateTimeKind.Utc).AddTicks(5839),
-                            UpdatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5840)
+                            StartTime = new DateTime(2024, 2, 5, 16, 30, 49, 300, DateTimeKind.Utc).AddTicks(1396),
+                            Capacity = 83,
+                            CreatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1397),
+                            UpdatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(1397)
                         });
                 });
 
@@ -245,47 +233,47 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5291),
+                            CreatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(62),
                             Email = "joel@email.com",
                             Name = "Joel Joelsson",
                             PhoneNumber = "0700050088",
-                            UpdatedAt = new DateTime(2024, 2, 2, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5295)
+                            UpdatedAt = new DateTime(2024, 2, 5, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(64)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 1, 31, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5297),
+                            CreatedAt = new DateTime(2024, 2, 3, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(67),
                             Email = "alice@email.com",
                             Name = "Alice Johnson",
                             PhoneNumber = "0701122334",
-                            UpdatedAt = new DateTime(2024, 1, 31, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5305)
+                            UpdatedAt = new DateTime(2024, 2, 3, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(73)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 1, 28, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5306),
+                            CreatedAt = new DateTime(2024, 1, 31, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(74),
                             Email = "bob@email.com",
                             Name = "Bob Smith",
                             PhoneNumber = "0709876543",
-                            UpdatedAt = new DateTime(2024, 1, 30, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5307)
+                            UpdatedAt = new DateTime(2024, 2, 2, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(75)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 1, 25, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5309),
+                            CreatedAt = new DateTime(2024, 1, 28, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(76),
                             Email = "emma@email.com",
                             Name = "Emma White",
                             PhoneNumber = "0703344556",
-                            UpdatedAt = new DateTime(2024, 1, 27, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5309)
+                            UpdatedAt = new DateTime(2024, 1, 30, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(76)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 1, 23, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5311),
+                            CreatedAt = new DateTime(2024, 1, 26, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(78),
                             Email = "david@email.com",
                             Name = "David Brown",
                             PhoneNumber = "0706677889",
-                            UpdatedAt = new DateTime(2024, 1, 26, 12, 7, 27, 644, DateTimeKind.Utc).AddTicks(5312)
+                            UpdatedAt = new DateTime(2024, 1, 29, 11, 30, 49, 300, DateTimeKind.Utc).AddTicks(78)
                         });
                 });
 #pragma warning restore 612, 618

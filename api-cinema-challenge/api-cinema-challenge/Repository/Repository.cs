@@ -25,12 +25,7 @@ namespace api_cinema_challenge.Repository
         //Create user
         public async Task<User> CreateUser(string name, string email, string PhoneNumber)
         {
-            var users = await _context.Users.ToListAsync();
-            var lastUser = users.OrderByDescending(u => u.Id).FirstOrDefault();
-            int newUserId = (lastUser != null) ? lastUser.Id + 1 : 1;
-
             User user = new User();
-            user.Id = newUserId;
             user.Name = name;
             user.Email = email;
             user.PhoneNumber = PhoneNumber;
@@ -43,8 +38,20 @@ namespace api_cinema_challenge.Repository
         }
 
         //update user
-        public async Task<User> UpdateUser(int id, string name, string email, string phoneNumber)
+        public async Task<User> UpdateUser(int id, UpdateUserPayload updateData)
         {
+            
+            string name = (string)updateData.name;
+            string email = (string)updateData.email;
+            string phoneNumber = (string)updateData.phoneNumber;
+
+            if (name == null ||
+                email == null ||
+                phoneNumber == null)
+            {
+                return null;
+            }
+
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
@@ -74,12 +81,7 @@ namespace api_cinema_challenge.Repository
         //CreateMovie
         public async Task<Movie> CreateMovie(string title, string rating, string desc, int runtime)
         {
-            var movies = await _context.Movies.ToListAsync();
-            var lastMovie = movies.OrderByDescending(u => u.Id).FirstOrDefault();
-            int newMovieId = (lastMovie != null) ? lastMovie.Id + 1 : 1;
-
             Movie movie = new Movie();
-            movie.Id = newMovieId;
             movie.Title = title;
             movie.Rating = rating;
             movie.RuntimeMins = runtime;
@@ -98,8 +100,22 @@ namespace api_cinema_challenge.Repository
         }
 
         //update Movies
-        public async Task<Movie> UpdateMovie(int id, string title, string rating, string description, int runtime) 
+        public async Task<Movie> UpdateMovie(int id, UpdateMoviePayload UpdateData) 
         {
+
+            string title = (string)UpdateData.title;
+            string rating = (string)UpdateData.rating;
+            string description = (string)UpdateData.description;
+            int runtime = (int)UpdateData.runtime;
+
+            if (title == null ||
+                rating == null ||
+                description == null ||
+                runtime == null)
+            {
+                return null;
+            }
+
             var movie = await _context.Movies.FindAsync(id);
             if (movie == null)
             {
@@ -135,12 +151,8 @@ namespace api_cinema_challenge.Repository
         
         public async Task<Screening> CreateScreening(int movieId, int screenNumber, int capacity, DateTime startsAt)
         {
-            var screenings = await _context.Screens.ToListAsync();
-            var lastScreening = screenings.OrderByDescending(s => s.Id).FirstOrDefault();
-            int newScreeningId = (lastScreening != null) ? lastScreening.Id + 1 : 1;
 
             Screening screening = new Screening();
-            screening.Id = newScreeningId;
             screening.MovieId = movieId;
             screening.Capacity = capacity;
             screening.ScreenNumber = screenNumber; 
