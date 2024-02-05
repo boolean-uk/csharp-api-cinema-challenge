@@ -1,7 +1,7 @@
-using api_cinema_challange.Models;
-using api_cinema_challange.Repository;
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Repository;
 
-namespace api_cinema_challange.Endpoints
+namespace api_cinema_challenge.Endpoints
 {
     public static class MovieApi
     {
@@ -32,7 +32,7 @@ namespace api_cinema_challange.Endpoints
                 }
             }
 
-            return TypedResults.Ok(MovieResponseDTO.FromRepository(movie));
+            return TypedResults.Created("created", MovieResponseDTO.FromRepository(movie));
         }
 
         private static async Task<IResult> UpdateMovie(IMovieRepository movieRepository, MovieUpdatePayload payload)
@@ -43,7 +43,7 @@ namespace api_cinema_challange.Endpoints
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok(MovieResponseDTO.FromRepository(movie));
+            return TypedResults.Created("created", MovieResponseDTO.FromRepository(movie));
         }
 
         private static async Task<IResult>DeleteMovie(IMovieRepository movieRepository, int movieid){

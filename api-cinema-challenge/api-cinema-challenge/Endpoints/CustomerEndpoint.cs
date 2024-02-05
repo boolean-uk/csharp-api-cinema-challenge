@@ -1,8 +1,8 @@
-using api_cinema_challange.Models;
-using api_cinema_challange.Repository;
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Repository;
 using System.Text.RegularExpressions;
 
-namespace api_cinema_challange.Endpoints
+namespace api_cinema_challenge.Endpoints
 {
     public static class CustomerApi
     {
@@ -28,7 +28,7 @@ namespace api_cinema_challange.Endpoints
             }
             Customer? Customer = await CustomerRepository.CreateACustomer(payload.Name, payload.Email, payload.Phone);
 
-            return TypedResults.Ok(CustomerResponseDTO.FromRepository(Customer));
+            return TypedResults.Created("created", CustomerResponseDTO.FromRepository(Customer));
         }
 
         private static async Task<IResult> UpdateCustomer(ICustomerRepository CustomerRepository, CustomerUpdatePayload payload)
@@ -43,7 +43,7 @@ namespace api_cinema_challange.Endpoints
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok(CustomerResponseDTO.FromRepository(Customer));
+            return TypedResults.Created("created", CustomerResponseDTO.FromRepository(Customer));
         }
 
         private static async Task<IResult> DeleteCustomer(ICustomerRepository CustomerRepository, int Customerid)

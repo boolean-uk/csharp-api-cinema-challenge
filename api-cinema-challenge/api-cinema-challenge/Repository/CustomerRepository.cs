@@ -1,7 +1,7 @@
-using api_cinema_challange.Models;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Data;
 using Microsoft.EntityFrameworkCore;
-namespace api_cinema_challange.Repository
+namespace api_cinema_challenge.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {

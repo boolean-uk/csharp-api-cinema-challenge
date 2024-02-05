@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using api_cinema_challenge.Data;
 
-namespace api_cinema_challange.Models
+namespace api_cinema_challenge.Models
 {
     [Table("ticket")]
     public class Ticket

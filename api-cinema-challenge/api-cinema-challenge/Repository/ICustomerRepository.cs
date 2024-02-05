@@ -1,6 +1,6 @@
-using api_cinema_challange.Models;
+using api_cinema_challenge.Models;
 
-namespace api_cinema_challange.Repository
+namespace api_cinema_challenge.Repository
 {
     public interface ICustomerRepository
     {

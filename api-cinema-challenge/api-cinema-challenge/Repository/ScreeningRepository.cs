@@ -1,8 +1,8 @@
-using api_cinema_challange.Models;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Data;
 using Microsoft.EntityFrameworkCore;
-using api_cinema_challange.Repository;
-namespace api_cinema_challange.Repository
+using api_cinema_challenge.Repository;
+namespace api_cinema_challenge.Repository
 {
     public class ScreeningRepository : IScreeningRepository
     {
@@ -30,6 +30,12 @@ namespace api_cinema_challange.Repository
             
             _databaseContext.Screenings.Add(screening);
             await _databaseContext.SaveChangesAsync();
+            return screening;
+        }
+
+        public async Task<Screening?> GetScreeningById(int id)
+        {
+            Screening? screening = await _databaseContext.Screenings.Where(s => s.Id == id).FirstOrDefaultAsync();
             return screening;
         }
     }

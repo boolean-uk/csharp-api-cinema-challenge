@@ -1,8 +1,8 @@
-using api_cinema_challange.Models;
-using api_cinema_challange.Repository;
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Repository;
 using static System.Reflection.Metadata.BlobBuilder;
 
-namespace api_cinema_challange.Endpoints
+namespace api_cinema_challenge.Endpoints
 {
     public static class ScreeningEndpoint
     {
@@ -30,7 +30,7 @@ namespace api_cinema_challange.Endpoints
                 return null;
             }
 
-            return TypedResults.Ok(ScreeningResponseDTO.FromRepository(screening));
+            return TypedResults.Created("created", ScreeningResponseDTO.FromRepository(screening));
         }
 
     }

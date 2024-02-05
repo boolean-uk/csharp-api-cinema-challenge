@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
-using api_cinema_challange.Models;
-using api_cinema_challange.Seeder;
+using api_cinema_challenge.Models;
+
 namespace api_cinema_challenge.Data
 {
     public class CinemaContext : DbContext

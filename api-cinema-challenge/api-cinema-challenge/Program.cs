@@ -1,6 +1,6 @@
-using api_cinema_challange;
-using api_cinema_challange.Endpoints;
-using api_cinema_challange.Repository;
+using api_cinema_challenge;
+using api_cinema_challenge.Endpoints;
+using api_cinema_challenge.Repository;
 using api_cinema_challenge.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,3 +31,5 @@ app.ConfigureTicketApi();
 app.ConfigureScreeningApi();
 app.ConfigureCustomerApi();
 app.Run();
+
+public partial class Program { } // needed for testing - please ignore
