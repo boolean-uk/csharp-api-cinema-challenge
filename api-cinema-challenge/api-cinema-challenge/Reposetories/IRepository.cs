@@ -11,8 +11,9 @@ namespace api_cinema_challenge.Reposetories
         Task<Customer?> DeleteCustomer(int id);
 
 
-        Task<Ticket?> BookATicket(int customerId, int screeningId, object numSeats);
-        //Task<IEnumerable<Ticket?>> 
+        Task<Ticket?> BookATicket(int customerId, int screeningId, int numSeats);
+        Task<IEnumerable<Ticket?>> GetAllBookedTickets();
+        Task<IEnumerable<Ticket?>> GetAllCustomersTicketsPerScreaning(int customerId, int screeningId);
 
 
 
@@ -28,7 +29,5 @@ namespace api_cinema_challenge.Reposetories
 
         Task<Screening> CreateScreening(int screenNumber, int capasity, DateTime startsAt, int movieid);
         Task<IEnumerable<Screening>> GetScreenings(int movieId);
-
-
     }
 }

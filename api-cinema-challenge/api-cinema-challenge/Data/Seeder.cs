@@ -102,11 +102,14 @@ namespace api_cinema_challenge.Data
         private List<Movie> _movies = new List<Movie>();
         
         private List<Screening> _screening = new List<Screening>();
+
+        private List<Ticket> _tickets = new List<Ticket>();
         public Seeder()
         {
             Random customerRandom = new Random();
             Random movieRandom = new Random();
             Random screeningRandom = new Random();
+            Random ticketRandom = new Random();
 
             for (int x = 1; x < 5; x++)
             {
@@ -150,11 +153,23 @@ namespace api_cinema_challenge.Data
                 _screening.Add( screening );
             }
 
+            for(int x = 1; x<4; x++)
+            {
+                Ticket ticket = new Ticket();
+                ticket.id = x;
+                ticket.customerId = ticketRandom.Next(_customers.Count);
+                ticket.screeningId = ticketRandom.Next(_screening.Count);
+                ticket.numbSeats = x * 2;
+                ticket.createdAt = DateTime.Today.ToUniversalTime();
+                ticket.updatedAt = DateTime.Today.ToUniversalTime();    
+            }
+
         }
 
         public List<Movie> movies { get {  return _movies; } }  
         public List<Customer> customers { get { return _customers; } }
-        public List<Screening> screenings { get { return _screening; } }    
+        public List<Screening> screenings { get { return _screening; } }  
+        public List<Ticket> tickets { get { return _tickets; } }
 
         
     }

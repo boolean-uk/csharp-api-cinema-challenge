@@ -8,6 +8,7 @@ namespace api_cinema_challenge.DTO.DTO_Screening
         public int id { get; set; }
         public int screenNumber { get; set; }
         public int capacity { get; set; }
+        public int remainingSeats { get; set; }
         public DateTime startsAt { get; set; }
         public DateTime createdAt { get; set; }
         public DateTime updatedAt { get; set; }
@@ -17,6 +18,7 @@ namespace api_cinema_challenge.DTO.DTO_Screening
             id = screening.id;
             screenNumber = screening.screenNumber;
             capacity = screening.capacity;
+            remainingSeats = screening.remainingSeats;
             startsAt = screening.startsAt;
             createdAt = screening.createdAt;
             updatedAt = screening.updatedAt;

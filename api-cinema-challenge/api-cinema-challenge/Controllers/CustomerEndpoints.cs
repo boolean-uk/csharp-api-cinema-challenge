@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.DTO.DTO_Customer;
 using api_cinema_challenge.DTO.DTO_Ticket;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Reposetories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +17,16 @@ namespace api_cinema_challenge.Controllers
             customerGroup.MapGet("/", GetCustomers);
             customerGroup.MapPut("/{customerId}", UpdateCustomer);
             customerGroup.MapDelete("/{customerId}", DeleteCustomer);
+            customerGroup.MapGet("/tickets", GetAllBookedTickets);
             customerGroup.MapPost("/{customerId}/screenings/{screeningId}", BookATicket);
-            //customerGroup.MapGet("/{customerId}/screenings/{screeningId}", GetAllCustomersTicketsPerScreaning);
+            customerGroup.MapGet("/{customerId}/screenings/{screeningId}", GetAllCustomersTicketsPerScreaning);
         }
 
 
         public static async Task<IResult> CreateCustomer(IRepository repository, CustomerPayload customerPayload)
         {
+
+            
             if(customerPayload.name == null || customerPayload.name == string.Empty)
             {
                 return TypedResults.NotFound("not a valid name");
@@ -58,18 +62,11 @@ namespace api_cinema_challenge.Controllers
             }
             else
             {
-                var dto = new List<CustomerBaseDTO>();
-                foreach( var result in results) 
-                {
-                    var customerDTO = new CustomerDTO(result);
-                    CustomerBaseDTO baseDTO = new CustomerBaseDTO(customerDTO);
-
-                    dto.Add(baseDTO);
-                }
-
-                return TypedResults.Ok(dto);    
+                var dto = PutCustomersInDTO(results);   
+                return TypedResults.Ok(dto);
             }
         }
+
 
         private static async Task<IResult> UpdateCustomer(IRepository repository,int id, CustomerUpdateData updateData)
         {
@@ -153,17 +150,17 @@ namespace api_cinema_challenge.Controllers
             }
         }
 
-        private static async Task<IResult> BookATicket(IRepository repository, int customerId, int screeningId,TicketPayload payload)
+        private static async Task<IResult> BookATicket(IRepository repository, int customerId, int screeningId, TicketPayload payload)
         {
-            if (customerId <= 0 || screeningId <= 0) 
+            if (customerId <= 0 || screeningId <= 0)
             {
                 return TypedResults.BadRequest("both customer Id and screening Id need to be positive integers above 0");
             }
-            if(payload.numSeats <= 0)
+            if (payload.numSeats <= 0)
             {
                 return TypedResults.BadRequest("you must have at least 1 seat booked (numSeats can not be an integer of 0 or below)");
             }
-
+            
             var result = await repository.BookATicket(customerId, screeningId, payload.numSeats);
 
             if (result == null) 
@@ -178,5 +175,64 @@ namespace api_cinema_challenge.Controllers
             }
         }
 
+        private static async Task<IResult> GetAllBookedTickets(IRepository repository)
+        {
+            var bookedTickets = await repository.GetAllBookedTickets();
+            var ticketDTOList = new List<TicketBaseDTO>();
+            foreach (var ticket in bookedTickets)
+            {
+                var ticketsDTO = new TicketDTO(ticket);
+                var results = new TicketBaseDTO(ticketsDTO);
+                ticketDTOList.Add(results);
+                
+
+            }
+            return TypedResults.Ok(ticketDTOList);
+        }
+
+        private static async Task<IResult> GetAllCustomersTicketsPerScreaning(IRepository repository, int customerId, int screeningId)
+        {
+            if (customerId <= 0 || screeningId <= 0 ) 
+            {
+                return TypedResults.BadRequest("customer id and Screening id has to be positive integers");
+            
+            }
+
+            var customerTicket = await repository.GetAllCustomersTicketsPerScreaning(customerId, screeningId);  
+
+            if (customerTicket == null)
+            {
+                return TypedResults.NotFound("customerID, screeningID or both are not valid ID's");
+            }
+
+            List<TicketBaseDTO> tickets = new List<TicketBaseDTO>();
+            foreach(Ticket ticket in customerTicket) 
+            {
+                var ticketDTO = new TicketDTO(ticket);
+                var ticketBaseDTO = new TicketBaseDTO(ticketDTO);
+                tickets.Add(ticketBaseDTO);
+            }
+
+            
+
+            return TypedResults.Ok(tickets);
+        }
+
+
+        //other methods 
+        private static List<CustomerBaseDTO> PutCustomersInDTO(IEnumerable<Customer> results)
+        {
+            var dto = new List<CustomerBaseDTO>();
+            foreach (var result in results)
+            {
+                var customerDTO = new CustomerDTO(result);
+                CustomerBaseDTO baseDTO = new CustomerBaseDTO(customerDTO);
+
+                dto.Add(baseDTO);
+            }
+
+            return dto;
+        }
+        
     }
 }

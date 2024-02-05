@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.DTO;
+using api_cinema_challenge.DTO.DTO_Ticket;
 using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
@@ -133,6 +134,7 @@ namespace api_cinema_challenge.Reposetories
             screening.movieId = movieid;
             screening.screenNumber = screenNumber;
             screening.capacity = capasity;
+            screening.remainingSeats = capasity;
             screening.startsAt = startsAt.ToUniversalTime();
             screening.createdAt = DateTime.Now.ToUniversalTime();
             screening.updatedAt = DateTime.Now.ToUniversalTime();
@@ -170,9 +172,53 @@ namespace api_cinema_challenge.Reposetories
 
         }
 
-        public Task<Ticket?> BookATicket(int customerId, int screeningId, object numSeats)
+        public async Task<Ticket?> BookATicket(int customerId, int screeningId, int numSeats)
         {
-            throw new NotImplementedException();
+            //check if id is valid
+            var screening = await _cinemaContext.Screenings.FindAsync(screeningId);
+            if (screening == null)
+            {
+                return null;
+            }
+
+            //check if there are enough seats for the booked ticket.
+            if(numSeats > screening.remainingSeats)
+            {
+                //should send some type of feedback to endpoints to trigger badrequest about the seats
+            }
+
+            //create new ticket 
+            var ticket = new Ticket();
+            ticket.customerId = customerId;
+            ticket.screeningId = screeningId;
+            ticket.numbSeats = numSeats;
+
+            _cinemaContext.Tickets.Add(ticket);
+            _cinemaContext.SaveChanges();
+            return ticket;
+
+
+        }
+
+        public async Task<IEnumerable<Ticket?>> GetAllBookedTickets()
+        {
+            var tickets = await _cinemaContext.Tickets.ToListAsync();
+
+            return tickets;
+        }
+
+        public async Task<IEnumerable<Ticket>?> GetAllCustomersTicketsPerScreaning(int customerId, int screeningId)
+        {
+            var tickets = await _cinemaContext.Tickets.Where(c => c.customerId == customerId && c.screeningId == screeningId).ToListAsync();
+            if (tickets == null)
+            { return null; }
+            else
+            {
+                return tickets;
+            }
+            
+
+
         }
     }
 }
