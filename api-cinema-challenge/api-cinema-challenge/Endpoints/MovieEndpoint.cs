@@ -17,7 +17,7 @@ namespace workshop.wwwapi.Endpoints
 
             movieGroup.MapGet("/", GetMovies);
             movieGroup.MapPost("/", CreateMovie);
-            movieGroup.MapPut("/", UpdateMovie);
+            movieGroup.MapPut("/{id}", UpdateMovie);
             movieGroup.MapDelete("/{id}", DeleteMovie);
         }
 
@@ -30,10 +30,30 @@ namespace workshop.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> CreateMovie(IMovieRepository repository, MoviePostPayload payload)
         {
-            if (payload.title == null || payload.title == "" ||
-                payload.rating == null || payload.rating == "" ||
-                payload.description == null || payload.description == "")
-                return Results.BadRequest("Must have inputs");
+            //Handling missing inputs
+            bool somethingWrong = false;
+            string message = "";
+
+            if (payload.title == null || payload.title == "")
+            {
+                message += "Title not valid.\n";
+                somethingWrong = true;
+            }
+
+            if (payload.rating == null || payload.rating == "")
+            {
+                message += "Rating not valid.\n";
+                somethingWrong = true;
+            }
+
+            if (payload.description == null || payload.description == "")
+            {
+                message += "Description not valid.";
+                somethingWrong = true;
+            }
+
+            if (somethingWrong)
+                return Results.BadRequest(message);
 
             Movie movie = await repository.CreateMovie(payload.title, payload.rating, payload.description, payload.runtimeMins, payload.screening);
             if (movie == null)
