@@ -29,9 +29,8 @@ namespace api_cinema_challenge.Endpoints
             movieGroup.MapDelete("/movies/{Id}", DeleteMovie);
 
             //screenings
-            screeningsGroup.MapGet("/get/screenings", GetScreenings);
-            screeningsGroup.MapPost("/create/screening", CreateScreening);
-
+            screeningsGroup.MapGet("/screenings/{movieId}/", GetScreenings);
+            screeningsGroup.MapPost("/screenings/", CreateScreening);
         }
 
         //201responses.users

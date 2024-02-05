@@ -23,3 +23,5 @@ app.UseHttpsRedirection();
 app.ConfigureCinemaEndpoint();
 
 app.Run();
+
+public partial class Program { } // needed for testing - please ignore

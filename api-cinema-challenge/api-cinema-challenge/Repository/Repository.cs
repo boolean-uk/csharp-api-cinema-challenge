@@ -23,12 +23,12 @@ namespace api_cinema_challenge.Repository
         }
 
         //Create user
-        public async Task<User> CreateUser(string name, string email, string PhoneNumber)
+        public async Task<User> CreateUser(string name, string email, string phoneNumber)
         {
             User user = new User();
             user.Name = name;
             user.Email = email;
-            user.PhoneNumber = PhoneNumber;
+            user.PhoneNumber = phoneNumber;
             user.CreatedAt = DateTime.UtcNow;
             user.UpdatedAt = DateTime.UtcNow;
             _context.Users.Add(user);

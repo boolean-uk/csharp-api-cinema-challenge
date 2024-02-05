@@ -9,7 +9,7 @@ namespace api_cinema_challenge.Repository
     public interface IRepository
     {
         //User
-        Task<User> CreateUser(string name, string email, string PhoneNumber); //create
+        Task<User> CreateUser(string name, string email, string phoneNumber); //create
         Task<IEnumerable<User>> GetUsers(); //get
         Task<User> UpdateUser(int id, UpdateUserPayload Updatedata); //update
         Task<User> DeleteUser(int id); //delete
