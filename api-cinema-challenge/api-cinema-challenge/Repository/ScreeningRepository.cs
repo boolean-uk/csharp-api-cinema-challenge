@@ -35,7 +35,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Screening?> GetScreeningById(int id)
         {
-            Screening? screening = await _databaseContext.Screenings.Where(s => s.Id == id).FirstOrDefaultAsync();
+            Screening? screening = await _databaseContext.Screenings.Where(s => s.Id == id).SingleOrDefaultAsync();
             return screening;
         }
     }

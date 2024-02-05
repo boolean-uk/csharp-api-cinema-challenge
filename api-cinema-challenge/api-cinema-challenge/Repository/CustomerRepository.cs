@@ -48,8 +48,8 @@ namespace api_cinema_challenge.Repository
         public async Task<Customer?> GetCustomerById(int Customerid)
         {
             Customer? customer = await _databaseContext.Customers
-                           .Where(m => m.Id == Customerid)
-                           .FirstOrDefaultAsync();
+                            .Where(m => m.Id == Customerid)
+                            .SingleOrDefaultAsync();
             if (customer == null)
             {
                 return null;

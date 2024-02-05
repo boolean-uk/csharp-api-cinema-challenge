@@ -40,7 +40,7 @@ namespace api_cinema_challenge.Repository
             Movie? movie = await _databaseContext.Movies
                 .Where(m => m.Id == movieId)
                 .Include(m => m.Screenings)
-                .FirstOrDefaultAsync();
+                .SingleOrDefaultAsync();
             if (movie == null)
             {
                 return null;
@@ -50,7 +50,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Movie?> GetMovieById(int movieid)
         {
-            Movie? movie = await _databaseContext.Movies.Where(m => m.Id == movieid).FirstOrDefaultAsync();
+            Movie? movie = await _databaseContext.Movies.Where(m => m.Id == movieid).SingleOrDefaultAsync();
 
             if (movie == null)
             {
