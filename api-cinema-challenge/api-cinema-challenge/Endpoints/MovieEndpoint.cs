@@ -39,7 +39,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.BadRequest("RunTimeMinutes must be greater than 0");
             }
-            var movie = await repository.CreateMovie(payload.Title, payload.Rating, payload.Description, payload.RunTimeMinutes, payload);
+            var movie = await repository.CreateMovie(payload);
             return TypedResults.Ok(new MovieListResponseDTO("success", new List<Movie>(){movie}));
         }
 
@@ -61,7 +61,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.BadRequest("RunTimeMinutes must be greater than 0");
             }
-            var movie = await repository.UpdateMovie(id, payload.Title, payload.Rating, payload.Description, payload.RunTimeMinutes, payload);
+            var movie = await repository.UpdateMovie(id, payload);
             if (movie == null)
             {
                 return TypedResults.NotFound();

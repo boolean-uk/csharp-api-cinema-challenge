@@ -41,7 +41,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.BadRequest("StartTime is required");
             }
-            Screening? screening = await repository.CreateScreening(payload.MovieId, payload.ScreenNumber, payload.Capacity, payload.StartTime, payload);
+            Screening? screening = await repository.CreateScreening(payload);
 
             return TypedResults.Ok(new ScreeningResponseDTO("success", screening));
         }

@@ -9,10 +9,10 @@ namespace api_cinema_challenge.Endpoints
         public static void ConfigureCustomerEndpoint(this WebApplication app)
         {
             var cinema = app.MapGroup("cinema");
-            cinema.MapGet("customers", GetAllCustomers);
-            cinema.MapPost("customers", CreateCustomer);
-            cinema.MapPut("customers/{id}", UpdateCustomer);
-            cinema.MapDelete("customers/{id}", DeleteCustomer);
+            cinema.MapGet("/customers", GetAllCustomers);
+            cinema.MapPost("/customers", CreateCustomer);
+            cinema.MapPut("/customers/{id}", UpdateCustomer);
+            cinema.MapDelete("/customers/{id}", DeleteCustomer);
         }
 
         public static async Task<IResult> GetAllCustomers(ICinemaRepository repository)
@@ -35,7 +35,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.BadRequest("Phone is required");
             }
-            var customer = await repository.CreateCustomer(payload.Name, payload.Email, payload.Phone, payload);
+            var customer = await repository.CreateCustomer(payload);
             return TypedResults.Ok(new CustomerResponseDTO("success", new List<Customer>(){customer}));
         }
 
@@ -53,7 +53,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.BadRequest("Phone is required");
             }
-            var customer = await repository.UpdateCustomer(id, payload.Name, payload.Email, payload.Phone, payload);
+            var customer = await repository.UpdateCustomer(id, payload);
             if (customer == null)
             {
                 return TypedResults.NotFound();
