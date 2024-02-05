@@ -1,33 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using api_cinema_challenge.Models;
-
-namespace api_cinema_challenge.Models.DTOs
+﻿namespace api_cinema_challenge.Models.DTOs
 {
     public class ScreeningForBookingDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
     }
 
     public class BookingDTO
     {
         public int Id { get; set; }
-        public string TitleOfMovie { get; set; }
-        public string ScreenName { get; set; }
+        public string? TitleOfMovie { get; set; }
+        public string? ScreenName { get; set; }
 
-        public int NumberOfTickets { get; set; }
+        public int? NumberOfTickets { get; set; }
 
 
 
-        public DateTime StartTime  { get; set; }
-        public ScreeningForBookingDTO Screening { get; set; }
-        public List<TicketForBookingDTO> Tickets { get; set; }
+        public DateTime? StartTime { get; set; }
+        public ScreeningForBookingDTO? Screening { get; set; }
+        public List<TicketForBookingDTO> Tickets { get; set; } = new List<TicketForBookingDTO>();
 
 
         public static BookingDTO FromBooking(Booking Booking)
         {
+            if (!Booking.tickets.Any()) {
+                return new BookingDTO()
+                {
+                    Id = Booking.Id,
+                };
+            }
+
+
             return new BookingDTO
             {
                 Id = Booking.Id,
@@ -35,7 +38,8 @@ namespace api_cinema_challenge.Models.DTOs
                 ScreenName = Booking.tickets.First().seat.Screen.name,
                 NumberOfTickets = Booking.tickets.Count(),
                 StartTime = Booking.tickets.First().screening.StartsAt,
-                Screening = new ScreeningForBookingDTO( ){Id = Booking.tickets.First().screening.Id },
+                Screening = new ScreeningForBookingDTO() { Id =  Booking.tickets.FirstOrDefault().screening.Id },
+                Tickets = TicketForBookingDTO.FromTicketList(Booking.tickets)
 
 
             };
@@ -46,6 +50,7 @@ namespace api_cinema_challenge.Models.DTOs
             return Bookings.Select(FromBooking).ToList();
         }
     }
+
 
     public class TicketForBookingDTO
     {
@@ -59,6 +64,17 @@ namespace api_cinema_challenge.Models.DTOs
             Id = ticket.Id;
             SeatNumber = ticket.seat.seatNumber;
             rowNumber = ticket.seat.rowNumber;
+        }
+
+        public static List<TicketForBookingDTO> FromTicketList(List<Ticket> tickets)
+        {
+            List<TicketForBookingDTO> ticketForBookingDTOs = new List<TicketForBookingDTO>();
+            foreach (var t in tickets)
+            {
+                ticketForBookingDTOs.Add(new TicketForBookingDTO(t));
+            }
+            return ticketForBookingDTOs;
+
         }
     }
 }

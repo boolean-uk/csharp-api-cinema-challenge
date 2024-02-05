@@ -41,7 +41,10 @@ namespace api_cinema_challenge.Repository
                 Ticket t = await _databaseContext.Tickets.Where(ticket => ticket.Id == ticketId).FirstAsync();
                 t.bookingId = booking.Id;
             }
+
             
+            await SaveChangesAsync();
+            booking = await GetBookingById(booking.Id);
             return booking;
         }
 

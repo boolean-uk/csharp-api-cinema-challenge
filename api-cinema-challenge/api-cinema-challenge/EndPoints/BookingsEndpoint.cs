@@ -17,7 +17,7 @@ namespace workshop.wwwapi.Endpoints
 
         public bool AllFieldsFilled()
         {
-            return ScreeningId != null && NumberOfSeats > 0;
+            return CustomerId != null && ScreeningId != null && NumberOfSeats > 0;
         }
     }
 

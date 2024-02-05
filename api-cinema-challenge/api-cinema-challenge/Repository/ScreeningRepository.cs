@@ -71,7 +71,12 @@ namespace api_cinema_challenge.Repository
         public async Task<Screening?> DeleteScreening(int ScreeningId)
         {
             
-            Screening? screeningToDelete = _databaseContext.Screenings.FirstOrDefault(s => s.Id == ScreeningId);
+            Screening? screeningToDelete = _databaseContext.Screenings
+                .Include(s => s.Movie)
+                .Include(s => s.Tickets)
+                .Include(s => s.Screen).ThenInclude(s => s.Seats)
+                .FirstOrDefault(s => s.Id == ScreeningId);
+
             if (screeningToDelete == null) { return null; }
             _databaseContext.Screenings.Remove(screeningToDelete);
             SaveChanges();

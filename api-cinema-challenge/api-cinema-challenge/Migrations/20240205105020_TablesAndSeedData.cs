@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api_cinema_challenge.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTablesAndSeedData : Migration
+    public partial class TablesAndSeedData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -145,7 +145,8 @@ namespace api_cinema_challenge.Migrations
                 {
                     screeningId = table.Column<int>(type: "integer", nullable: false),
                     seatId = table.Column<int>(type: "integer", nullable: false),
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     bookingId = table.Column<int>(type: "integer", nullable: true),
                     price = table.Column<float>(type: "real", nullable: false),
                     createdAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -154,6 +155,7 @@ namespace api_cinema_challenge.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => new { x.screeningId, x.seatId });
+                    table.UniqueConstraint("AK_Tickets_Id", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Tickets_Bookings_bookingId",
                         column: x => x.bookingId,
@@ -178,39 +180,71 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "Id", "CreatedAt", "Email", "Name", "Phone", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), "john.doe@example.com", "John Doe", "123-456-7890", new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504) },
-                    { 2, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), "jane.smith@example.com", "Jane Smith", "098-765-4321", new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504) }
+                    { 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), "john.doe@example.com", "John Doe", "123-456-7890", new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) },
+                    { 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), "jane.smith@example.com", "Jane Smith", "098-765-4321", new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) },
+                    { 3, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), "alice.johnson@example.com", "Alice Johnson", "123-555-7890", new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) }
                 });
 
             migrationBuilder.InsertData(
                 table: "Movies",
                 columns: new[] { "Id", "CreatedAt", "Description", "Director", "Rating", "ReleaseDate", "Runtime", "Title", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), "An epic adventure.", "Alice Jones", "PG", new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2, 1, 1, 2, 0, 0, 0, DateTimeKind.Utc), "The Great Adventure", new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504) });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), "An epic adventure.", "Alice Jones", "PG", new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 2, 2, 0, 0, 0, DateTimeKind.Utc), "The Great Adventure", new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) },
+                    { 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), "A journey through space.", "Chris Nolan", "PG-13", new DateTime(2023, 11, 22, 0, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 1, 2, 2, 30, 0, 0, DateTimeKind.Utc), "Space Odyssey", new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) }
+                });
 
             migrationBuilder.InsertData(
                 table: "Screens",
                 columns: new[] { "id", "CreatedAt", "UpdatedAt", "name" },
-                values: new object[] { 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), "Screen 1" });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), "Screen 1" },
+                    { 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), "Screen 2" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Bookings",
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504) });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) },
+                    { 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) }
+                });
 
             migrationBuilder.InsertData(
                 table: "Screenings",
                 columns: new[] { "Id", "CreatedAt", "MovieId", "ScreenId", "StartsAt", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), 1, 1, new DateTime(2024, 2, 2, 11, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504) });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, 1, new DateTime(2024, 2, 5, 13, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) },
+                    { 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, 2, new DateTime(2024, 2, 5, 15, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) }
+                });
 
             migrationBuilder.InsertData(
                 table: "Seats",
                 columns: new[] { "Id", "CreatedAt", "ScreenId", "UpdatedAt", "rowNumber", "seatNumber" },
-                values: new object[] { 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), 1, 1 });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, 1 },
+                    { 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, 2 },
+                    { 3, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, 3 },
+                    { 4, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, 4 },
+                    { 5, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, 1 },
+                    { 6, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 1, 2 },
+                    { 7, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, 3 },
+                    { 8, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 2, 4 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Tickets",
                 columns: new[] { "screeningId", "seatId", "Id", "bookingId", "createdAt", "price", "updatedAt" },
-                values: new object[] { 1, 1, 1, 1, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504), 12.5f, new DateTime(2024, 2, 2, 8, 53, 18, 887, DateTimeKind.Utc).AddTicks(5504) });
+                values: new object[,]
+                {
+                    { 1, 1, 1, 1, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 12.5f, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) },
+                    { 1, 2, 2, null, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 12.5f, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) },
+                    { 2, 1, 3, 2, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353), 15f, new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353) }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_CustomerId",

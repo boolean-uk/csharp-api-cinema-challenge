@@ -34,7 +34,13 @@ namespace api_cinema_challenge.Data
             // Seed data for Seat
             modelBuilder.Entity<Seat>().HasData(
                 new Seat { Id = 1, ScreenId = 1, seatNumber = 1, rowNumber = 1, CreatedAt = timeNow, UpdatedAt = timeNow },
-                new Seat { Id = 2, ScreenId = 1, seatNumber = 2, rowNumber = 1, CreatedAt = timeNow, UpdatedAt = timeNow }
+                new Seat { Id = 2, ScreenId = 1, seatNumber = 2, rowNumber = 1, CreatedAt = timeNow, UpdatedAt = timeNow },
+                new Seat { Id = 3, ScreenId = 1, seatNumber = 3, rowNumber = 2, CreatedAt = timeNow, UpdatedAt = timeNow },
+                new Seat { Id = 4, ScreenId = 1, seatNumber = 4, rowNumber = 2, CreatedAt = timeNow, UpdatedAt = timeNow },
+                new Seat { Id = 5, ScreenId = 2, seatNumber = 1, rowNumber = 1, CreatedAt = timeNow, UpdatedAt = timeNow },
+                new Seat { Id = 6, ScreenId = 2, seatNumber = 2, rowNumber = 1, CreatedAt = timeNow, UpdatedAt = timeNow },
+                new Seat { Id = 7, ScreenId = 2, seatNumber = 3, rowNumber = 2, CreatedAt = timeNow, UpdatedAt = timeNow },
+                new Seat { Id = 8, ScreenId = 2, seatNumber = 4, rowNumber = 2, CreatedAt = timeNow, UpdatedAt = timeNow }
                 // Add more Seat entries as needed
             );
 

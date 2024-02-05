@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240202100817_AddAdditionalSeedData")]
-    partial class AddAdditionalSeedData
+    [Migration("20240205105020_TablesAndSeedData")]
+    partial class TablesAndSeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,16 +52,16 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             CustomerId = 1,
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             CustomerId = 2,
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         });
                 });
 
@@ -99,29 +99,29 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             Email = "john.doe@example.com",
                             Name = "John Doe",
                             Phone = "123-456-7890",
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             Email = "jane.smith@example.com",
                             Name = "Jane Smith",
                             Phone = "098-765-4321",
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             Email = "alice.johnson@example.com",
                             Name = "Alice Johnson",
                             Phone = "123-555-7890",
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         });
                 });
 
@@ -169,26 +169,26 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             Description = "An epic adventure.",
                             Director = "Alice Jones",
                             Rating = "PG",
                             ReleaseDate = new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             Runtime = new DateTime(2024, 1, 2, 2, 0, 0, 0, DateTimeKind.Utc),
                             Title = "The Great Adventure",
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             Description = "A journey through space.",
                             Director = "Chris Nolan",
                             Rating = "PG-13",
                             ReleaseDate = new DateTime(2023, 11, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             Runtime = new DateTime(2024, 1, 2, 2, 30, 0, 0, DateTimeKind.Utc),
                             Title = "Space Odyssey",
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         });
                 });
 
@@ -218,15 +218,15 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             id = 1,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             name = "Screen 1"
                         },
                         new
                         {
                             id = 2,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             name = "Screen 2"
                         });
                 });
@@ -266,20 +266,20 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             MovieId = 1,
                             ScreenId = 1,
-                            StartsAt = new DateTime(2024, 2, 2, 13, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            StartsAt = new DateTime(2024, 2, 5, 13, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             MovieId = 2,
                             ScreenId = 2,
-                            StartsAt = new DateTime(2024, 2, 2, 15, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            StartsAt = new DateTime(2024, 2, 5, 15, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         });
                 });
 
@@ -316,20 +316,74 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             ScreenId = 1,
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             rowNumber = 1,
                             seatNumber = 1
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             ScreenId = 1,
-                            UpdatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             rowNumber = 1,
                             seatNumber = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            ScreenId = 1,
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            rowNumber = 2,
+                            seatNumber = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            ScreenId = 1,
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            rowNumber = 2,
+                            seatNumber = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            ScreenId = 2,
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            rowNumber = 1,
+                            seatNumber = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            ScreenId = 2,
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            rowNumber = 1,
+                            seatNumber = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            ScreenId = 2,
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            rowNumber = 2,
+                            seatNumber = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            ScreenId = 2,
+                            UpdatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
+                            rowNumber = 2,
+                            seatNumber = 4
                         });
                 });
 
@@ -342,7 +396,10 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("bookingId")
                         .HasColumnType("integer");
@@ -358,6 +415,8 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("screeningId", "seatId");
 
+                    b.HasAlternateKey("Id");
+
                     b.HasIndex("bookingId");
 
                     b.HasIndex("seatId");
@@ -371,18 +430,18 @@ namespace api_cinema_challenge.Migrations
                             seatId = 1,
                             Id = 1,
                             bookingId = 1,
-                            createdAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            createdAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             price = 12.5f,
-                            updatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            updatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         },
                         new
                         {
                             screeningId = 1,
                             seatId = 2,
                             Id = 2,
-                            createdAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            createdAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             price = 12.5f,
-                            updatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            updatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         },
                         new
                         {
@@ -390,9 +449,9 @@ namespace api_cinema_challenge.Migrations
                             seatId = 1,
                             Id = 3,
                             bookingId = 2,
-                            createdAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482),
+                            createdAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353),
                             price = 15f,
-                            updatedAt = new DateTime(2024, 2, 2, 10, 8, 17, 219, DateTimeKind.Utc).AddTicks(482)
+                            updatedAt = new DateTime(2024, 2, 5, 10, 50, 20, 189, DateTimeKind.Utc).AddTicks(5353)
                         });
                 });
 
@@ -409,17 +468,19 @@ namespace api_cinema_challenge.Migrations
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
-                    b.HasOne("api_cinema_challenge.Models.Movie", null)
+                    b.HasOne("api_cinema_challenge.Models.Movie", "Movie")
                         .WithMany("Screenings")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("api_cinema_challenge.Models.Screen", "Screen")
-                        .WithMany()
+                        .WithMany("Screenings")
                         .HasForeignKey("ScreenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Movie");
 
                     b.Navigation("Screen");
                 });
@@ -477,6 +538,8 @@ namespace api_cinema_challenge.Migrations
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screen", b =>
                 {
+                    b.Navigation("Screenings");
+
                     b.Navigation("Seats");
                 });
 

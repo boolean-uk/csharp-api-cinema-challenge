@@ -17,6 +17,7 @@ namespace api_cinema_challenge.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString);
+            optionsBuilder.EnableSensitiveDataLogging(true);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,8 +26,15 @@ namespace api_cinema_challenge.Data
             DateTimeOffset dateTime = DateTimeOffset.Parse(dateString);
             DateTime dateTimeUtc = dateTime.UtcDateTime;
 
-            //Primary Composite key for SeatScreen
+            
+
+            //Primary Composite key for ticket
+            //Alternate keys for tickets
+           
             modelBuilder.Entity<Ticket>().HasKey(e => new {e.screeningId, e.seatId} );
+            modelBuilder.Entity<Ticket>().HasAlternateKey(e => e.Id);
+            modelBuilder.Entity<Ticket>().Property(e => e.Id).ValueGeneratedOnAdd();
+
 
             //Add test data
             Seeder.Seed(modelBuilder);
