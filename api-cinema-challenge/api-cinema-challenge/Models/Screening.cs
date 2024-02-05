@@ -25,5 +25,7 @@ namespace api_cinema_challenge.Models
         public int movieId { get; set; }
         public Movie Movie { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
+
+        public ICollection<Booking> Bookings { get; set; }
     }
 }

@@ -27,5 +27,7 @@ namespace api_cinema_challenge.Models
         // internal
         public ICollection<Ticket> Tickets { get; set; }
 
+        public ICollection<Booking> Bookings { get; set; }
+
     }
 }
