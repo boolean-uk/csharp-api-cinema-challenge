@@ -1,5 +1,4 @@
-﻿using api_cinema_challenge.Data;
-using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +29,7 @@ namespace api_cinema_challenge.Controllers
             }
             //Create the new movie
             var movie = new MovieDTO(await moviesRepository.CreateMovie(newData.Title,newData.Rating,newData.Description,newData.Runtime));
-            return TypedResults.Created($"/{movie.Id}", movie);
+            return TypedResults.Created($"movies/{movie.Id}", movie);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllMovies(IMoviesRepository moviesRepository)
@@ -64,7 +63,7 @@ namespace api_cinema_challenge.Controllers
                 runtime = movie.RuntimeMins;
             //Run the Update method
             movie = await moviesRepository.UpdateMovie(id, title, rating, description, runtime);
-            return TypedResults.Created($"/{movie.Id}", movie);
+            return TypedResults.Created($"movies/{movie.Id}", movie);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> DeleteMovies(IMoviesRepository moviesRepository, int id)
@@ -79,7 +78,6 @@ namespace api_cinema_challenge.Controllers
             movie = await moviesRepository.DeleteMovie(id);
             return TypedResults.Ok(movie);
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> CreateScreening(IScreeningsRepository screeningsRepository, ScreeningPostPayload newData, int movieId)
         {
@@ -90,7 +88,7 @@ namespace api_cinema_challenge.Controllers
             }
             //Create the new screening
             var screening = new ScreeningDTO(await screeningsRepository.CreateScreening(newData.ScreenNr, newData.Capacity, newData.StartsAt, movieId));
-            return TypedResults.Created($"/{screening.ScreenNr}", screening);
+            return TypedResults.Created($"movies/{screening.ScreenNr}", screening);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllScreenings(IScreeningsRepository screeningsRepository, int movieId)

@@ -2,7 +2,6 @@
 
 namespace api_cinema_challenge.Models
 {
-    public record TicketPostPayload(int SeatNr);
     [Table("tickets")]
     public class Tickets
     {

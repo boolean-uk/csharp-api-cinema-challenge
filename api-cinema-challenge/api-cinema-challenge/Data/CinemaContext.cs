@@ -24,7 +24,8 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movies>().HasKey(x => new { x.Id });
-            modelBuilder.Entity<Screenings>().HasKey(x => new { x.Id});
+            //modelBuilder.Entity<Screenings>().HasKey(x => new { x.ScreenNr, x.MoviesId, x.StartsAt});
+            modelBuilder.Entity<Screenings>().HasKey(x => new { x.Id });
             modelBuilder.Entity<Customer>().HasKey(x => new { x.Id});
 
             modelBuilder.Entity<Movies>().HasData(
@@ -32,8 +33,9 @@ namespace api_cinema_challenge.Data
                 new Movies { Id = 2, Title = "Texas Cowboy Rides Again", Description = "Western B-Movie", Rating = "PG-16", RuntimeMins =  120}
             );
             DateTime utc1 = DateTime.Now.ToUniversalTime();
+            DateTime utc2 = utc1.AddMinutes(120);
             modelBuilder.Entity<Screenings>().HasData(
-                new Screenings { Id = 1, ScreenNr = 1, Capacity = 64, StartsAt = utc1, MoviesId = 1 },
+                new Screenings { Id = 1, ScreenNr = 1, Capacity = 64, StartsAt = utc2, MoviesId = 1 },
                 new Screenings { Id = 2, ScreenNr = 2, Capacity = 64, StartsAt = utc1, MoviesId = 1 },
                 new Screenings { Id = 3, ScreenNr = 3, Capacity = 32, StartsAt = utc1, MoviesId = 2 }
             );

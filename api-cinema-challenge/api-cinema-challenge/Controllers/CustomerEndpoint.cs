@@ -1,5 +1,4 @@
-﻿using api_cinema_challenge.Data;
-using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.JSInterop;
@@ -27,7 +26,7 @@ namespace api_cinema_challenge.Controllers
             }
             //Create the new customer
             var customer = new CustomerDTO(await customerRepository.CreateCustomer(newData.Name, newData.Email, newData.PhoneNr, newData.ScreeningId));
-            return TypedResults.Created($"/{customer.Id}",customer);
+            return TypedResults.Created($"/customers/{customer.Id}",customer);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllCustomers(ICustomerRepository customerRepository)

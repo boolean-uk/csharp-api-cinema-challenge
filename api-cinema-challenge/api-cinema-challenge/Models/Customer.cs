@@ -2,8 +2,6 @@
 
 namespace api_cinema_challenge.Models
 {
-    public record CustomerPostPayload(string Name, string Email, string PhoneNr, int ScreeningId);
-    public record CustomerUpdatePayload(string? Name, string? Email, string? PhoneNr, int? ScreeningId);
     [Table("customers")]
     public class Customer
     {
