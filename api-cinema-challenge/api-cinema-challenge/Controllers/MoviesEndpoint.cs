@@ -35,6 +35,10 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> GetAllMovies(IMoviesRepository moviesRepository)
         {
             var movie = GetMovieDTO.FromRepository(await moviesRepository.GetMovies());
+            if(movie == null)
+            {
+                return TypedResults.BadRequest("No movies found");
+            }
             return TypedResults.Ok(movie);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]

@@ -22,6 +22,24 @@ namespace api_cinema_challenge.Controllers
             Updated = movie.UpdatedAt;
         }
     }
+    public class TicketDTO
+    {
+        public int Id { get; set; }
+        public int SeatNr { get; set; }
+        public int CustomerId { get; set; }
+        public int ScreeningId { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
+        public TicketDTO(Tickets ticket)
+        {
+            Id = ticket.Id;
+            SeatNr = ticket.SeatNr;
+            CustomerId = ticket.CustomerId;
+            ScreeningId = ticket.ScreeningId;
+            Created = ticket.CreatedAt;
+            Updated = ticket.UpdatedAt;
+        }
+    }
     public class ScreeningDTO
     {
         public int Id { get; set; }
@@ -76,6 +94,26 @@ namespace api_cinema_challenge.Controllers
             {
                 ScreeningDTO screeningDTO = new ScreeningDTO(screening);
                 results.Add(new GetScreeningDTO(screeningDTO));
+            }
+            return results;
+        }
+    }
+    public class GetTicketDTO
+    {
+        public string Status { get; set; }
+        public TicketDTO Data { get; set; }
+        public GetTicketDTO(TicketDTO ticket)
+        {
+            Status = "Success";
+            Data = ticket;
+        }
+        public static List<GetTicketDTO> FromRepository(IEnumerable<Tickets> tickets)
+        {
+            var results = new List<GetTicketDTO>();
+            foreach (var ticket in tickets)
+            {
+                TicketDTO ticketDTO = new TicketDTO(ticket);
+                results.Add(new GetTicketDTO(ticketDTO));
             }
             return results;
         }

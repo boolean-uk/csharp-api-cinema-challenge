@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api_cinema_challenge.Data;
@@ -11,9 +12,11 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    partial class CinemaContextModelSnapshot : ModelSnapshot
+    [Migration("20240205123820_addedPKToTicket")]
+    partial class addedPKToTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,32 +69,32 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9366),
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5358),
                             Email = "Victor@Adamson.se",
                             Name = "Victor Adamson",
                             PhoneNr = "070666123",
                             ScreeningId = 2,
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9373)
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5363)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9380),
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5376),
                             Email = "Phill@Collins.com",
                             Name = "Phill Collins",
                             PhoneNr = "321566322",
                             ScreeningId = 3,
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9381)
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5377)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9382),
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5378),
                             Email = "Real@Email.mars",
                             Name = "Person Humansson",
                             PhoneNr = "325666442",
                             ScreeningId = 1,
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9383)
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5378)
                         });
                 });
 
@@ -137,22 +140,22 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(8968),
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(4992),
                             Description = "Amazing but imaginary Hank Williams movie",
                             Rating = "PG-16",
                             RuntimeMins = 114,
                             Title = "So Lonesome I Could Cry",
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(8973)
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(4996)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(8982),
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5000),
                             Description = "Western B-Movie",
                             Rating = "PG-16",
                             RuntimeMins = 120,
                             Title = "Texas Cowboy Rides Again",
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(8982)
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5000)
                         });
                 });
 
@@ -198,31 +201,31 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             Capacity = 64,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9319),
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5327),
                             MoviesId = 1,
                             ScreenNr = 1,
-                            StartsAt = new DateTime(2024, 2, 5, 14, 48, 23, 132, DateTimeKind.Utc).AddTicks(9122),
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9321)
+                            StartsAt = new DateTime(2024, 2, 5, 14, 38, 20, 625, DateTimeKind.Utc).AddTicks(5193),
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5328)
                         },
                         new
                         {
                             Id = 2,
                             Capacity = 64,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9330),
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5331),
                             MoviesId = 1,
                             ScreenNr = 2,
-                            StartsAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9122),
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9330)
+                            StartsAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5193),
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5331)
                         },
                         new
                         {
                             Id = 3,
                             Capacity = 32,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9332),
+                            CreatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5333),
                             MoviesId = 2,
                             ScreenNr = 3,
-                            StartsAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9122),
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9332)
+                            StartsAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5193),
+                            UpdatedAt = new DateTime(2024, 2, 5, 12, 38, 20, 625, DateTimeKind.Utc).AddTicks(5333)
                         });
                 });
 
@@ -256,17 +259,6 @@ namespace api_cinema_challenge.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tickets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9415),
-                            CustomerId = 1,
-                            ScreeningId = 2,
-                            SeatNr = 0,
-                            UpdatedAt = new DateTime(2024, 2, 5, 12, 48, 23, 132, DateTimeKind.Utc).AddTicks(9417)
-                        });
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Customer", b =>

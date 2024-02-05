@@ -11,6 +11,7 @@ builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IScreeningsRepository, ScreeningsRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 var app = builder.Build();
 
@@ -24,5 +25,5 @@ AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 app.UseHttpsRedirection();
 app.ConfigureCustomerEndpoint();
 app.ConfigureMoviesEndpoint();
-//app.ConfigureScreeningsEndpoint();
+
 app.Run();

@@ -27,6 +27,7 @@ namespace api_cinema_challenge.Data
             //modelBuilder.Entity<Screenings>().HasKey(x => new { x.ScreenNr, x.MoviesId, x.StartsAt});
             modelBuilder.Entity<Screenings>().HasKey(x => new { x.Id });
             modelBuilder.Entity<Customer>().HasKey(x => new { x.Id});
+            modelBuilder.Entity<Tickets>().HasKey(x => new { x.Id });
 
             modelBuilder.Entity<Movies>().HasData(
                 new Movies { Id = 1, Title = "So Lonesome I Could Cry", Description = "Amazing but imaginary Hank Williams movie", Rating = "PG-16", RuntimeMins = 114},
@@ -44,8 +45,12 @@ namespace api_cinema_challenge.Data
                 new Customer { Id = 2, Name = "Phill Collins", Email = "Phill@Collins.com", PhoneNr = "321566322", ScreeningId = 3 },
                 new Customer { Id = 3, Name = "Person Humansson", Email = "Real@Email.mars", PhoneNr = "325666442", ScreeningId = 1 }
             );
+            modelBuilder.Entity<Tickets>().HasData(
+                new Tickets { Id = 1, ScreeningId = 2, CustomerId = 1 }
+            );
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Tickets> Tickets { get; set; }
         public DbSet<Screenings> Screenings { get; set; }
         public DbSet<Movies> Movies { get; set; }
     }

@@ -15,6 +15,8 @@ namespace api_cinema_challenge.Controllers
             customerGroup.MapGet("/", GetAllCustomers);
             customerGroup.MapPut("/{customerId}", UpdateCustomer);
             customerGroup.MapDelete("/{customerId}", DeleteCustomer);
+            customerGroup.MapPost("/{customerId}/screenings/{screeningId}", CreateTicket);
+            customerGroup.MapGet("/{customerId}/screenings/{screeningId}", GetAllTickets);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> CreateCustomer(ICustomerRepository customerRepository, CustomerPostPayload newData)
@@ -32,6 +34,10 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> GetAllCustomers(ICustomerRepository customerRepository)
         {
             var customer = GetCustomerDTO.FromRepository(await customerRepository.GetCustomers());
+            if(customer == null)
+            {
+                return TypedResults.BadRequest("No customers found.");
+            }
             return TypedResults.Ok(customer);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -74,6 +80,29 @@ namespace api_cinema_challenge.Controllers
             //Run the Delete method
             customer = await customerRepository.DeleteCustomer(id);
             return TypedResults.Ok(customer);
+        }
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> CreateTicket(TicketRepository ticketRepository, TicketPostPayload newTicketData)
+        {
+            //Check that newTicketData has all values
+            if (newTicketData.SeatNr > 0 || newTicketData.CustomerId > 0 || newTicketData.ScreeningId > 0)
+            {
+                return TypedResults.BadRequest("Your booking does not exist.");
+            }
+            //Create the new ticket
+            var ticket = new TicketDTO(await ticketRepository.CreateTicket(newTicketData.SeatNr, newTicketData.ScreeningId, newTicketData.CustomerId));
+            //return TypedResults, remember the path and such
+            return TypedResults.Created($"/customer/{ticket.CustomerId}/screenings/{ticket.ScreeningId}", ticket);
+        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetAllTickets(TicketRepository ticketRepository, int screeningId)
+        {
+            var ticket = GetTicketDTO.FromRepository(await ticketRepository.GetAllTickets());
+            if(ticket == null)
+            {
+                return TypedResults.BadRequest("No tickets found.");
+            }
+            return TypedResults.Ok(ticket);
         }
     }
 }

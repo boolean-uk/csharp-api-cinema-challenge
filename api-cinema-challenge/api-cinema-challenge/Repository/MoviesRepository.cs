@@ -1,8 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Xml.Linq;
 
 namespace api_cinema_challenge.Repository
 {
@@ -13,6 +11,7 @@ namespace api_cinema_challenge.Repository
         {
             _db = db;
         }
+
         public async Task<Movies?> CreateMovie(string title, string rating, string description, int runtime)
         {
             //Create movie to return
