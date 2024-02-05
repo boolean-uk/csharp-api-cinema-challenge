@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
-builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
 
 var app = builder.Build();
 
@@ -19,6 +19,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureCinemaEndpoint();
+app.ConfigureCustomerEndpoint();
+app.ConfigureMovieEndpoint();
+app.ConfigureScreeningEndpoint();
+app.ConfigureTicketEndpoint();
+
 app.UseHttpsRedirection();
 app.Run();

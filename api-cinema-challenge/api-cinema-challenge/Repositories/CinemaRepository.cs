@@ -2,20 +2,18 @@ using api_cinema_challenge.Models;
 using api_cinema_challenge.Endpoints;
 using api_cinema_challenge.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 
 namespace api_cinema_challenge.Repositories
 {
-    public class Repository: IRepository
+    public class CinemaRepository: ICinemaRepository
     {
         private CinemaContext _context;
 
-        public Repository(CinemaContext db)
+        public CinemaRepository(CinemaContext db)
         {
             _context = db;
         }
-
 
         public async Task<IEnumerable<Customer>> GetAllCustomers()
         {

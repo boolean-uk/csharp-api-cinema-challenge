@@ -10,7 +10,7 @@ namespace api_cinema_challenge.Repositories
         PreloadRelations
     }
 
-    public interface IRepository
+    public interface ICinemaRepository
     {
         Task<IEnumerable<Customer>> GetAllCustomers();
 
