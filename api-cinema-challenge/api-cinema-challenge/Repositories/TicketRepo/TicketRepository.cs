@@ -25,7 +25,7 @@ namespace api_cinema_challenge.Reposities.TicketRepo
         {
             return await _db.Tickets.Include(a => a.User)
                 .Include(a => a.Screening)
-                .Where(a => a.UserId == user_id && a.ScreeningId == screening_id)
+                .Where(a => a.userId == user_id && a.screeningId == screening_id)
                 .ToListAsync();
         }
 

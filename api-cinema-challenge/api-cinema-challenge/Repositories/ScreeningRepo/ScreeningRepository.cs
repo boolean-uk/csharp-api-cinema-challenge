@@ -27,7 +27,7 @@ namespace api_cinema_challenge.Reposities.ScreeningRepo
                 ScreenNumber = screenNumber,
                 Capacity = capacity,
                 StartsAt = startsAt,
-                MovieId = id,
+                movieId = id,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
             };
@@ -39,7 +39,7 @@ namespace api_cinema_challenge.Reposities.ScreeningRepo
 
         public async Task<Screening?> getScreeningByMovieId(int id)
         {
-            return await _db.Screenings.FirstOrDefaultAsync(m => m.MovieId == id);
+            return await _db.Screenings.FirstOrDefaultAsync(m => m.movieId == id);
             //return await _db.Screenings.FindAsync(id);
         }
 

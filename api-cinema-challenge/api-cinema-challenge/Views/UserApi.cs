@@ -116,8 +116,8 @@ namespace api_cinema_challenge.Views
 
             var newTicket = new Ticket
             {
-                UserId = user_id,
-                ScreeningId = screening_id,
+                userId = user_id,
+                screeningId = screening_id,
                 SeatNumber = payload.num_seats,
 
                 CreatedAt = DateTime.UtcNow,

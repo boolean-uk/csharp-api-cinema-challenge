@@ -4,6 +4,7 @@ using api_cinema_challenge.Reposities.TicketRepo;
 using api_cinema_challenge.Reposities.UserRepo;
 using api_cinema_challenge.Data;
 using api_cinema_challenge.Views;
+using api_cinema_challenge.Repositories.SeatRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IScreeningRepository, ScreeningRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 
 var app = builder.Build();
 

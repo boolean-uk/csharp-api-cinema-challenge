@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240202101822_CreatingAllTablesAndPlusTicket")]
-    partial class CreatingAllTablesAndPlusTicket
+    [Migration("20240205103648_CreateTablesWithChanges")]
+    partial class CreateTablesWithChanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,102 +69,102 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             MovieId = 1,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2739),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4479),
                             Description = "A computer hacker learns about the true nature of his reality",
                             Rating = "R",
                             RuntimeMins = 136,
                             Title = "The Matrix",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2740)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4479)
                         },
                         new
                         {
                             MovieId = 2,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2741),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4547),
                             Description = "A thief who enters the dreams of others to steal their secrets",
                             Rating = "PG-13",
                             RuntimeMins = 148,
                             Title = "Inception",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2742)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4547)
                         },
                         new
                         {
                             MovieId = 3,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2743),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4549),
                             Description = "Two imprisoned men bond over a number of years",
                             Rating = "R",
                             RuntimeMins = 142,
                             Title = "The Shawshank Redemption",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2743)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4549)
                         },
                         new
                         {
                             MovieId = 4,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2744),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4550),
                             Description = "Various interconnected stories of criminals in Los Angeles",
                             Rating = "R",
                             RuntimeMins = 154,
                             Title = "Pulp Fiction",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2745)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4551)
                         },
                         new
                         {
                             MovieId = 5,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2746),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4552),
                             Description = "The aging patriarch of an organized crime dynasty transfers control to his son",
                             Rating = "R",
                             RuntimeMins = 175,
                             Title = "The Godfather",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2746)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4553)
                         },
                         new
                         {
                             MovieId = 6,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2747),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4555),
                             Description = "A man with a low IQ witnesses and unwittingly influences several defining historical events",
                             Rating = "PG-13",
                             RuntimeMins = 142,
                             Title = "Forrest Gump",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2747)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4555)
                         },
                         new
                         {
                             MovieId = 7,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2748),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4557),
                             Description = "A masked vigilante battles the criminal underworld in Gotham City",
                             Rating = "PG-13",
                             RuntimeMins = 152,
                             Title = "The Dark Knight",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2749)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4557)
                         },
                         new
                         {
                             MovieId = 8,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2750),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4559),
                             Description = "An insomniac office worker and a soapmaker form an underground fight club",
                             Rating = "R",
                             RuntimeMins = 139,
                             Title = "Fight Club",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2750)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4559)
                         },
                         new
                         {
                             MovieId = 9,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2751),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4560),
                             Description = "A young FBI cadet must receive the help of an incarcerated and manipulative cannibal killer",
                             Rating = "R",
                             RuntimeMins = 118,
                             Title = "The Silence of the Lambs",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2752)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4561)
                         },
                         new
                         {
                             MovieId = 10,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2753),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4562),
                             Description = "In Nazi-occupied France, a group of Jewish-American soldiers plan to assassinate Hitler",
                             Rating = "R",
                             RuntimeMins = 153,
                             Title = "Inglourious Basterds",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2753)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4563)
                         });
                 });
 
@@ -185,9 +185,6 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("MovieId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("ScreenNumber")
                         .HasColumnType("integer")
                         .HasColumnName("screen_numbers");
@@ -200,9 +197,13 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
+                    b.Property<int>("movieId")
+                        .HasColumnType("integer")
+                        .HasColumnName("movie_id");
+
                     b.HasKey("ScreeningId");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("movieId");
 
                     b.ToTable("screenings");
                 });
@@ -220,25 +221,27 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("NumSeats")
+                    b.Property<int>("SeatNumber")
                         .HasColumnType("integer")
                         .HasColumnName("num_seats");
-
-                    b.Property<int>("ScreeningId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<int>("screeningId")
+                        .HasColumnType("integer")
+                        .HasColumnName("screening_id");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
                     b.HasKey("TicketId");
 
-                    b.HasIndex("ScreeningId");
+                    b.HasIndex("screeningId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("userId");
 
                     b.ToTable("tickets");
                 });
@@ -283,92 +286,92 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             UserId = 1,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2575),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4254),
                             Email = "john.doe@example.com",
                             Name = "John Doe",
                             Phone = "+1234567890",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2581)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4258)
                         },
                         new
                         {
                             UserId = 2,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2582),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4261),
                             Email = "jane.smith@example.com",
                             Name = "Jane Smith",
                             Phone = "+9876543210",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2583)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4262)
                         },
                         new
                         {
                             UserId = 3,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2584),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4263),
                             Email = "alice.johnson@example.com",
                             Name = "Alice Johnson",
                             Phone = "+1122334455",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2584)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4266)
                         },
                         new
                         {
                             UserId = 4,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2585),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4267),
                             Email = "bob.anderson@example.com",
                             Name = "Bob Anderson",
                             Phone = "+9988776655",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2586)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4268)
                         },
                         new
                         {
                             UserId = 5,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2587),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4270),
                             Email = "eva.white@example.com",
                             Name = "Eva White",
                             Phone = "+6677889900",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2587)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4270)
                         },
                         new
                         {
                             UserId = 6,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2588),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4271),
                             Email = "david.brown@example.com",
                             Name = "David Brown",
                             Phone = "+1122337788",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2588)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4272)
                         },
                         new
                         {
                             UserId = 7,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2631),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4274),
                             Email = "sophia.miller@example.com",
                             Name = "Sophia Miller",
                             Phone = "+9988771122",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2631)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4274)
                         },
                         new
                         {
                             UserId = 8,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2632),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4278),
                             Email = "michael.wilson@example.com",
                             Name = "Michael Wilson",
                             Phone = "+4455667788",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2632)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4278)
                         },
                         new
                         {
                             UserId = 9,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2633),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4280),
                             Email = "olivia.davis@example.com",
                             Name = "Olivia Davis",
                             Phone = "+1122334466",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2634)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4280)
                         },
                         new
                         {
                             UserId = 10,
-                            Created_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2635),
+                            Created_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4283),
                             Email = "daniel.taylor@example.com",
                             Name = "Daniel Taylor",
                             Phone = "+9988775544",
-                            Updated_at = new DateTime(2024, 2, 2, 10, 18, 19, 552, DateTimeKind.Utc).AddTicks(2635)
+                            Updated_at = new DateTime(2024, 2, 5, 10, 36, 45, 589, DateTimeKind.Utc).AddTicks(4283)
                         });
                 });
 
@@ -376,7 +379,7 @@ namespace api_cinema_challenge.Migrations
                 {
                     b.HasOne("api_cinema_challenge.Models.Movie", "Movie")
                         .WithMany("Screenings")
-                        .HasForeignKey("MovieId")
+                        .HasForeignKey("movieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -387,13 +390,13 @@ namespace api_cinema_challenge.Migrations
                 {
                     b.HasOne("api_cinema_challenge.Models.Screening", "Screening")
                         .WithMany("Tickets")
-                        .HasForeignKey("ScreeningId")
+                        .HasForeignKey("screeningId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("api_cinema_challenge.Models.User", "User")
                         .WithMany("Tickets")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

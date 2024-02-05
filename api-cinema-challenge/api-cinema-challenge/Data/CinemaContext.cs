@@ -26,11 +26,11 @@ namespace api_cinema_challenge.Data
 
             modelBuilder.Entity<Ticket>().HasOne(u => u.User)
                 .WithMany(t => t.Tickets)
-                .HasForeignKey(fk => fk.UserId);
+                .HasForeignKey(fk => fk.userId);
 
             modelBuilder.Entity<Ticket>().HasOne(s => s.Screening)
                 .WithMany(t => t.Tickets)
-                .HasForeignKey(fk => fk.ScreeningId);
+                .HasForeignKey(fk => fk.screeningId);
 
             modelBuilder.Entity<User>().HasData(
                 new User() { UserId = 1, Name = "John Doe", Email = "john.doe@example.com", Phone = "+1234567890", Created_at = DateTime.UtcNow, Updated_at = DateTime.UtcNow },
