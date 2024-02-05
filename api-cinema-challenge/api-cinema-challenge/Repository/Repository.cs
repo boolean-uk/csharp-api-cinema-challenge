@@ -33,6 +33,22 @@ namespace api_cinema_challenge.Repository
             _databaseContext.SaveChanges();
             return screening;
         }
+        public async Task<Ticket?> BookATicket(Ticket ticket, Customer customer, Screening screening)
+        {
+            int takenSeats = 0;
+            Screening? loadTickets = await _databaseContext.Screenings.Include(s => s.Tickets).FirstOrDefaultAsync(s => s.Id == screening.Id);
+            if(loadTickets == null) { return null; }
+            foreach (Ticket ticketcount in loadTickets.Tickets)
+            {
+                takenSeats += ticketcount.NumSeats;
+            }
+            if(takenSeats > screening.Capacity){return null;}
+            customer.Tickets.Add(ticket);
+            screening.Tickets.Add(ticket);
+            await _databaseContext.Tickets.AddAsync(ticket);
+            _databaseContext.SaveChanges();
+            return ticket;
+        }
 
         public async Task<Customer?> DeleteCustomer(int customerId)
         {
@@ -87,9 +103,9 @@ namespace api_cinema_challenge.Repository
             Customer? customerToUpdate = await GetCustomer(customerId);
             if (customerToUpdate == null) { return null; }
 
-            customerToUpdate.Name = customer.Name;
-            customerToUpdate.Email = customer.Email;
-            customerToUpdate.Phone = customer.Phone;
+            customerToUpdate.Name = customer.Name ?? customerToUpdate.Name;
+            customerToUpdate.Email = customer.Email ?? customerToUpdate.Email;
+            customerToUpdate.Phone = customer.Phone ?? customerToUpdate.Phone;
             customerToUpdate.UpdatedAt = DateTime.UtcNow;
             _databaseContext.SaveChanges();
             return customerToUpdate;
@@ -100,13 +116,21 @@ namespace api_cinema_challenge.Repository
             Movie? movieToUpdate = await GetMovie(movieId);
             if (movieToUpdate == null) { return null; }
 
-            movieToUpdate.Title = movie.Title;
-            movieToUpdate.Rating = movie.Rating;
-            movieToUpdate.Description = movie.Description;
-            movieToUpdate.RunTimeMins = movie.RunTimeMins;
+            movieToUpdate.Title = movie.Title ?? movieToUpdate.Title;
+            movieToUpdate.Rating = movie.Rating ?? movieToUpdate.Rating;
+            movieToUpdate.Description = movie.Description ?? movieToUpdate.Description;
+            if (movie.RunTimeMins != 0)
+            {
+                movieToUpdate.RunTimeMins = movie.RunTimeMins;
+            }
             movieToUpdate.UpdatedAt = DateTime.UtcNow;
             _databaseContext.SaveChanges();
             return movieToUpdate;
         }
+        public async Task<IEnumerable<Ticket>?> GetCustomerTicketsForScreening(int customerId, int screeningId)
+        {
+            return await _databaseContext.Tickets.Where(t => t.customerId == customerId && t.screeningId == screeningId).ToListAsync();
+        }
+        
     }
 }

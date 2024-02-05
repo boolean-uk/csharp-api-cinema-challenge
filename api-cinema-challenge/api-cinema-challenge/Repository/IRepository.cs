@@ -17,5 +17,7 @@ namespace api_cinema_challenge.Repository
         Task<Screening?> CreateScreening(Movie movie, Screening screening);
         Task<Screening?> GetScreening(int screeningId);
         Task<IEnumerable<Screening>?> GetScreeningsForMovie(int movieId);
+        Task<Ticket?> BookATicket (Ticket ticket, Customer customer, Screening screening);
+        Task<IEnumerable<Ticket>?> GetCustomerTicketsForScreening(int customerId, int screeningId);
     }
 }

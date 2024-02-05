@@ -16,6 +16,7 @@ namespace api_cinema_challenge.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Customer>().HasData(
                 new Customer { Id = 1, Name = "John Doe", Email = "JohnDoe@gmail.com", Phone = "+2434234255", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow},
                 new Customer { Id = 2, Name = "Jane Doe", Email = "JaneJane@Jane.com", Phone = "+8888888888", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
@@ -35,5 +36,6 @@ namespace api_cinema_challenge.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets {  get; set; }
     }
 }

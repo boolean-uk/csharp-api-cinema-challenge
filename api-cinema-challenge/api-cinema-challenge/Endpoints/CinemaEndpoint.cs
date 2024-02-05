@@ -13,8 +13,8 @@ namespace api_cinema_challenge.Endpoints
         {
             app.MapGet("/customers", GetCustomers);
             app.MapPost("/customers", CreateCustomer);
-            app.MapPut("/customer/{id}", UpdateCustomer);
-            app.MapDelete("/customer/{id}", DeleteCustomer);
+            app.MapPut("/customer/{customer_id}", UpdateCustomer);
+            app.MapDelete("/customer/{customer_id}", DeleteCustomer);
         }
         public static void ConfigureMovieEndpoint(this WebApplication app)
         {
@@ -25,8 +25,13 @@ namespace api_cinema_challenge.Endpoints
         }
         public static void ConfigureScreeningEndpoint(this WebApplication app) 
         {
-            app.MapGet("/movies/{id}/screenings",GetScreeningsForMovie);
-            app.MapPost("/movies/{id}/screenings", CreateScreening);
+            app.MapGet("/movies/{movie_id}/screenings",GetScreeningsForMovie);
+            app.MapPost("/movies/{movie_id}/screenings", CreateScreening);
+        }
+        public static void ConfigureTicketEndpoint(this WebApplication app)
+        {
+            app.MapPost("/customers/{customer_id}/screenings/{screening_id}", BookATicket);
+            app.MapGet("/customer/{customer_id}/screenings/{screening_id}", GetCustomerTicketsForScreening);
         }
         public static async Task<IResult> GetCustomers(IRepository repository)
         {
@@ -36,7 +41,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 customersDTO.Add(new CustomerDTO(customer));
             }
-            return TypedResults.Ok(customersDTO);
+            return TypedResults.Ok(new CustomersOutput(customersDTO));
         }
         public static async Task<IResult> CreateCustomer(IRepository repository, CreateCustomerPayload payload) 
         {
@@ -47,7 +52,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.BadRequest();
             }
-            return TypedResults.Ok(new CustomerDTO(result));
+            return TypedResults.Ok(new CustomerOutput(new CustomerDTO(result)));
         }
         public static async Task<IResult> UpdateCustomer(IRepository repository, UpdateCustomerPayload payload, int customerId)
         {
@@ -59,7 +64,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok(new CustomerDTO(result));
+            return TypedResults.Ok(new CustomerOutput(new CustomerDTO(result)));
         }
         public static async Task<IResult> DeleteCustomer(IRepository repository, int customerId)
         {
@@ -67,7 +72,7 @@ namespace api_cinema_challenge.Endpoints
             if(customer == null) { return TypedResults.BadRequest(); }
             var result = await repository.DeleteCustomer(customerId);
             if(result == null) { return TypedResults.NotFound(); }
-            return TypedResults.Ok(new CustomerDTO(result));
+            return TypedResults.Ok(new CustomerOutput(new CustomerDTO(result)));
         }
         public static async Task<IResult> GetMovies(IRepository repository)
         {
@@ -77,14 +82,19 @@ namespace api_cinema_challenge.Endpoints
             {
                 moviesDTO.Add(new MovieDTO(movie));
             }
-            return TypedResults.Ok(moviesDTO);
+            return TypedResults.Ok(new MoviesOutput(moviesDTO));
         }
         public static async Task<IResult> CreateMovie(IRepository repository, CreateMoviePayload payload)
         {
             Movie movie = new Movie { Title = payload.title, Rating = payload.rating, Description = payload.description, RunTimeMins = payload.runtime, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow };
             var result = await repository.CreateMovie(movie);
             if (result == null) { return TypedResults.BadRequest(); }
-            return TypedResults.Ok(new MovieDTO(result));
+            foreach (CreateScreeningPayload startscreen in payload.startScreens)
+            {
+                Screening screening = new Screening { ScreenNumber = startscreen.screennumber, Capacity = startscreen.capacity, StartsAt = startscreen.startsAt, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow };
+                await repository.CreateScreening(movie, screening);
+            }
+            return TypedResults.Ok(new MovieOutput(new MovieDTO(result)));
         }
         public static async Task<IResult> UpdateMovie(IRepository repository, UpdateMoviePayload payload, int movieId)
         {
@@ -96,7 +106,7 @@ namespace api_cinema_challenge.Endpoints
             {
                 return TypedResults.NotFound();
             }
-            return TypedResults.Ok(new MovieDTO(result));
+            return TypedResults.Ok(new MovieOutput(new MovieDTO(result)));
         }
         public static async Task<IResult> DeleteMovie(IRepository repository, int movieId)
         {
@@ -104,7 +114,7 @@ namespace api_cinema_challenge.Endpoints
             if (movie == null) { return TypedResults.BadRequest(); }
             var result = await repository.DeleteMovie(movieId);
             if (result == null) { return TypedResults.NotFound(); }
-            return TypedResults.Ok(new MovieDTO(result));
+            return TypedResults.Ok(new MovieOutput(new MovieDTO(result)));
         }
         public static async Task<IResult> CreateScreening(IRepository repository, CreateScreeningPayload payload, int movieId)
         {
@@ -113,7 +123,7 @@ namespace api_cinema_challenge.Endpoints
             if(movie == null) { return TypedResults.NotFound("Could not find movie."); }
             var result = await repository.CreateScreening(movie, screening);
             if (result == null) { return TypedResults.BadRequest(); }
-            return TypedResults.Ok(new ScreeningDTO(result));
+            return TypedResults.Ok(new ScreeningOutput(new ScreeningDTO(result)));
         }
         public static async Task<IResult> GetScreeningsForMovie(IRepository repository, int movieId)
         {
@@ -127,7 +137,30 @@ namespace api_cinema_challenge.Endpoints
             {
                 screeningsDTO.Add(new ScreeningDTO(screening));
             }
-            return TypedResults.Ok(screeningsDTO);
+            return TypedResults.Ok(new ScreeningsOutput(screeningsDTO));
+        }
+        public static async Task<IResult> BookATicket(IRepository repository, BookATicketPayload payload, int customerId, int screeningId)
+        {
+            Screening? screening = await repository.GetScreening(screeningId);
+            Customer? customer = await repository.GetCustomer(customerId);
+
+            if (screening == null) { return TypedResults.NotFound("Could not find screening."); }
+            if(customer == null) { return TypedResults.NotFound("Could not find customer."); }
+            Ticket ticket = new Ticket() { NumSeats = payload.numberofSeats, customerId = customer.Id, Customer = customer, screeningId = screening.Id, Screening = screening, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow};
+            var result = await repository.BookATicket(ticket, customer, screening);
+            if (result == null) { return TypedResults.BadRequest("Not enough seats available."); }
+            return TypedResults.Ok(new TicketOutput(new TicketDTO(result)));
+        }
+        public static async Task<IResult> GetCustomerTicketsForScreening(IRepository repository, int customerId, int screeningId)
+        {
+            var tickets = await repository.GetCustomerTicketsForScreening(customerId, screeningId);
+            if(tickets == null) { return TypedResults.BadRequest(); }
+            var ticketsDTO = new List<TicketDTO>();
+            foreach(Ticket ticket in tickets)
+            {
+                ticketsDTO.Add(new TicketDTO(ticket));
+            }
+            return TypedResults.Ok(new TicketsOutput(ticketsDTO));
         }
     }
 }

@@ -19,5 +19,7 @@ namespace api_cinema_challenge.Models
         public DateTime UpdatedAt { get; set; }
         [Column("movie_id")]
         public int MovieId { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

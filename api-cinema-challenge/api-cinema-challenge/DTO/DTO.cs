@@ -2,8 +2,36 @@
 
 namespace api_cinema_challenge.DTO
 {
-     class CustomerDTO
+    class CustomersOutput
     {
+        public string status { get; set; }
+
+        public List<CustomerDTO> data { get; set; }
+
+
+        public CustomersOutput(List<CustomerDTO> customersDTO)
+        {
+            status = "success";
+            data = customersDTO;
+        }
+
+    }
+    class CustomerOutput
+    {
+        public string status { get; set; }
+
+        public CustomerDTO data { get; set; }
+
+        public CustomerOutput(CustomerDTO customerDTO)
+        {
+            status = "success";
+            data = customerDTO;
+        }
+
+    }
+    class CustomerDTO
+    {
+        
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
@@ -41,6 +69,33 @@ namespace api_cinema_challenge.DTO
             updatedAt = movie.UpdatedAt;
         }
     }
+    class MoviesOutput
+    {
+        public string status { get; set; }
+
+        public List<MovieDTO> data { get; set; }
+
+
+        public MoviesOutput(List<MovieDTO> moviesDTO)
+        {
+            status = "success";
+            data = moviesDTO;
+        }
+
+    }
+    class MovieOutput
+    {
+        public string status { get; set; }
+
+        public MovieDTO data { get; set; }
+
+        public MovieOutput(MovieDTO movieDTO)
+        {
+            status = "success";
+            data = movieDTO;
+        }
+
+    }
     class ScreeningDTO
     {
         public int Id { get; set; }
@@ -58,6 +113,74 @@ namespace api_cinema_challenge.DTO
             CreatedAt = screening.CreatedAt;
             UpdatedAt = screening.UpdatedAt;
         }
+    }
+    class ScreeningsOutput
+    {
+        public string status { get; set; }
+
+        public List<ScreeningDTO> data { get; set; }
+
+
+        public ScreeningsOutput(List<ScreeningDTO> screeningsDTO)
+        {
+            status = "success";
+            data = screeningsDTO;
+        }
+
+    }
+    class ScreeningOutput
+    {
+        public string status { get; set; }
+
+        public ScreeningDTO data { get; set; }
+
+        public ScreeningOutput(ScreeningDTO screeningDTO)
+        {
+            status = "success";
+            data = screeningDTO;
+        }
+
+    }
+    class TicketDTO
+    {
+        public int Id { get; set; }
+        public int NumSeats { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public TicketDTO(Ticket ticket)
+        {
+            Id = ticket.Id;
+            NumSeats = ticket.NumSeats;
+            CreatedAt = ticket.CreatedAt;
+            UpdatedAt = ticket.UpdatedAt;
+        }
+    }
+    class TicketsOutput
+    {
+        public string status { get; set; }
+
+        public List<TicketDTO> data { get; set; }
+
+
+        public TicketsOutput(List<TicketDTO> ticketsDTO)
+        {
+            status = "success";
+            data = ticketsDTO;
+        }
+
+    }
+    class TicketOutput
+    {
+        public string status { get; set; }
+
+        public TicketDTO data { get; set; }
+
+        public TicketOutput(TicketDTO ticketDTO)
+        {
+            status = "success";
+            data = ticketDTO;
+        }
+
     }
 
 
