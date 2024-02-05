@@ -44,10 +44,6 @@ namespace api_cinema_tests
         [Test]
         public async Task CreateAndDeleteUser()
         {
-            //Arrange
-            var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => { });
-            var client = factory.CreateClient();
-
             //Act
             var expectedPayload = new Customer()
             {
@@ -57,7 +53,7 @@ namespace api_cinema_tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(expectedPayload), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/customers", content);
+            var response = await _client.PostAsync("/customers", content);
 
             //Assert
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));
@@ -68,10 +64,12 @@ namespace api_cinema_tests
             Assert.That(createdCustomer.Name, Is.EqualTo(expectedPayload.Name));
             Assert.That(createdCustomer.Email, Is.EqualTo(expectedPayload.Email));
             Assert.That(createdCustomer.Phone, Is.EqualTo(expectedPayload.Phone));
+            Assert.That(createdCustomer.CreatedAt, Is.LessThan(DateTime.UtcNow));
+            Assert.That(createdCustomer.UpdatedAt, Is.LessThan(DateTime.UtcNow));
             Assert.That(createdCustomer.Id, Is.Positive);
 
-            //var deleteRespone = await client.DeleteAsync($"/customers/{createdCustomer.Id}");
-            //Assert.That(deleteRespone.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
+            var deleteRespone = await _client.DeleteAsync($"/customers/{createdCustomer.Id}");
+            Assert.That(deleteRespone.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
         }
     }
 }
