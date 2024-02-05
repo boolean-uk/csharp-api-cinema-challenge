@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using api_cinema_challenge.
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.tests;
 [TestFixture]
