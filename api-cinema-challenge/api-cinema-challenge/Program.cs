@@ -16,8 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IRepository, Repository>();
-builder.Services.AddScoped<IMovie, MovieRepository>();
-builder.Services.AddScoped<ICustomer, CustomerRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 builder.Services.Configure<MvcOptions>(options =>
 {

@@ -14,10 +14,10 @@ namespace api_cinema_challenge.Endpoints
 
         public static void ConfigureCinemaEndpoints(this WebApplication app)
         {
-            var cinemaGroup = app.MapGroup("cinema");
+            var cinemaGroup = app.MapGroup("cinema/movies");
 
-            cinemaGroup.MapPost("/movies/{id}/screenings", CreateScreening);
-            cinemaGroup.MapGet("/movies/{id}/screenings", GetScreenings);
+            cinemaGroup.MapPost("/{id}/screenings", CreateScreening);
+            cinemaGroup.MapGet("/{id}/screenings", GetScreenings);
 
             cinemaGroup.MapPost("/customers/{customerId}/screenings/{screeningId}", CreateTicket);
             cinemaGroup.MapGet("/customers/{customerId}/screenings/{screeningId}", GetTickets);
@@ -56,7 +56,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Non-empty fields are required");
             }
 
-            if (HelperFunctions.correctDateTimeFormat(payload.startsAt) == false) 
+            if (ValidationHelpers.correctDateTimeFormat(payload.startsAt) == false) 
             {
                 return Results.BadRequest("Give datetime in the correct format: YYYY-MM-DD HH:MM:SS");
             }

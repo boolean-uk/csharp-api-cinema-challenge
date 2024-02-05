@@ -4,7 +4,7 @@ using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.Repository
 {
-    public class MovieRepository : IMovie
+    public class MovieRepository : IMovieRepository
     {
         private CinemaContext _db;
 

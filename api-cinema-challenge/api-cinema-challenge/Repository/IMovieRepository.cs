@@ -2,7 +2,7 @@
 
 namespace api_cinema_challenge.Repository
 {
-    public interface IMovie
+    public interface IMovieRepository
     {
 
         // MOVIES

@@ -4,7 +4,7 @@ using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.Repository
 {
-    public class CustomerRepository : ICustomer
+    public class CustomerRepository : ICustomerRepository
     {
         private CinemaContext _db;
 

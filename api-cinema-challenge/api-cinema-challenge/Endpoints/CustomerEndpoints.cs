@@ -27,7 +27,7 @@ namespace api_cinema_challenge.Endpoints
 
         /// CUSTOMERS
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetCustomers(ICustomer repository)
+        public static async Task<IResult> GetCustomers(ICustomerRepository repository)
         { 
 
             var customers = await repository.GetCustomers();
@@ -48,7 +48,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> CreateCustomer(CreateCustomerPayload payload, ICustomer repository)
+        public static async Task<IResult> CreateCustomer(CreateCustomerPayload payload, ICustomerRepository repository)
         {
 
             if (payload.Name == "" || payload.Phone == "" || payload.Email == "")
@@ -61,7 +61,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Non-null fields are required.");
             }
 
-            if (HelperFunctions.IsValidEmail(payload.Email) == false)
+            if (ValidationHelpers.IsValidEmail(payload.Email) == false)
             {
                 return Results.BadRequest("Email needs to be in correct format.");
             }
@@ -83,7 +83,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> DeleteCustomer(int id, ICustomer repository)
+        public static async Task<IResult> DeleteCustomer(int id, ICustomerRepository repository)
         {
 
             Customer? customer = await repository.DeleteCustomer(id, PreloadPolicy.PreloadRelations);
@@ -105,7 +105,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> UpdateCustomer(int id, UpdateCustomerPayload payload, ICustomer repository)
+        public static async Task<IResult> UpdateCustomer(int id, UpdateCustomerPayload payload, ICustomerRepository repository)
         {
 
             var ogcust = repository.GetCustomers().Result.FirstOrDefault(x => x.Id == id);
@@ -122,10 +122,10 @@ namespace api_cinema_challenge.Endpoints
 
             string newName  = (payload.name != null && payload.name.Length > 0) ? payload.name : ogcust.Name;
             string newPhone = (payload.phone != null && payload.phone.Length > 0) ? payload.phone : ogcust.Phone;
-            string newEmail = (payload.email != null && payload.email.Length > 0 && HelperFunctions.IsValidEmail(payload.email)) ? payload.email : ogcust.Email;
+            string newEmail = (payload.email != null && payload.email.Length > 0 && ValidationHelpers.IsValidEmail(payload.email)) ? payload.email : ogcust.Email;
 
             // Email was changed, but the format was wrong
-            if (payload.email != "" && HelperFunctions.IsValidEmail(payload.email) == false)
+            if (payload.email != "" && ValidationHelpers.IsValidEmail(payload.email) == false)
             {
                 return Results.BadRequest("Email format was incorrect!");
             }

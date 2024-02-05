@@ -2,7 +2,7 @@
 
 namespace api_cinema_challenge.Repository
 {
-    public interface ICustomer
+    public interface ICustomerRepository
     {
         Task<IEnumerable<Customer>> GetCustomers();
         Task<Customer?> GetCustomer(int CustomerId, PreloadPolicy preloadPolicy = PreloadPolicy.DoNotPreloadRelations);

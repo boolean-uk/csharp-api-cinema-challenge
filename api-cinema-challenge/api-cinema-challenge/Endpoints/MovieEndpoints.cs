@@ -26,7 +26,7 @@ namespace api_cinema_challenge.Endpoints
 
         /// MOVIES
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetMovies(IMovie repository)
+        public static async Task<IResult> GetMovies(IMovieRepository repository)
         { 
 
             var movies = await repository.GetMovies();
@@ -48,7 +48,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> CreateMovie(CreateMoviePayload payload, IMovie movieRepository, IRepository repository)
+        public static async Task<IResult> CreateMovie(CreateMoviePayload payload, IMovieRepository movieRepository, IRepository repository)
         {
 
             List<Screening> scrs = new List<Screening>();
@@ -77,7 +77,7 @@ namespace api_cinema_challenge.Endpoints
                 foreach(CreateScreeningPayload sc in payload.Screenings)
                 {
 
-                    if (HelperFunctions.correctDateTimeFormat(sc.startsAt) == false) 
+                    if (ValidationHelpers.correctDateTimeFormat(sc.startsAt) == false) 
                     {
                         return Results.BadRequest("Give datetime in the correct format: YYYY-MM-DD HH:MM:SS");
                     }
@@ -108,7 +108,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> DeleteMovie(int id, IMovie repository)
+        public static async Task<IResult> DeleteMovie(int id, IMovieRepository repository)
         {
 
             Movie? movie = await repository.DeleteMovie(id, PreloadPolicy.PreloadRelations);
@@ -128,7 +128,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> UpdateMovie(int id, UpdateMoviePayload payload, IMovie repository)
+        public static async Task<IResult> UpdateMovie(int id, UpdateMoviePayload payload, IMovieRepository repository)
         {
 
 

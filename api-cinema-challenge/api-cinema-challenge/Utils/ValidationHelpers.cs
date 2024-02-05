@@ -2,7 +2,7 @@
 
 namespace api_cinema_challenge.Endpoints
 {
-    public class HelperFunctions
+    public class ValidationHelpers
     {
 
         public static bool IsValidEmail(string email)
