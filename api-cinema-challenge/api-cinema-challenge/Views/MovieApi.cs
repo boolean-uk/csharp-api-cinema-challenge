@@ -28,7 +28,7 @@ namespace api_cinema_challenge.Views
 
         private static async Task<IResult> GetAllMovies(IMovieRepository movieRepository)
         {
-            var result = await movieRepository.GetAllMovies();
+            var result = await movieRepository.getAllMovies();
             if (result == null)
             {
                 return TypedResults.NotFound("No movies could be found ");
@@ -60,7 +60,7 @@ namespace api_cinema_challenge.Views
                 return TypedResults.BadRequest($"A movies runtime can not be less or equal to 0, you entered: {payload.runtime}");
             }
 
-            var result = await movieRepository.CreateMovie(payload.title, payload.rating, payload.description, payload.runtime);
+            var result = await movieRepository.createMovie(payload.title, payload.rating, payload.description, payload.runtime);
             if (result == null)
             {
                 return TypedResults.BadRequest();
@@ -86,7 +86,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.BadRequest("Updated runtime can not be 0 or less");
             }
-            var result = await movieRepository.UpdateMovie(id, payload.title, payload.rating, payload.description, payload.runtime);
+            var result = await movieRepository.updateMovie(id, payload.title, payload.rating, payload.description, payload.runtime);
             if (result == null)
             {
                 return TypedResults.BadRequest($"Internal error");
@@ -98,7 +98,7 @@ namespace api_cinema_challenge.Views
         }
         private static async Task<IResult> DeleteMovie(int id, IMovieRepository movieRepository)
         {
-            var result = await movieRepository.DeleteMovie(id);
+            var result = await movieRepository.deleteMovie(id);
             if (result == null)
             {
                 return TypedResults.NotFound($"Movie with given id {id} was not found");
@@ -110,7 +110,7 @@ namespace api_cinema_challenge.Views
 
         private static async Task<IResult> CreateScreening(int movie_id, ScreeningPostPayload payload, IScreeningRepository screeningRepository)
         {
-            var result = await screeningRepository.CreateScreening(movie_id, payload.screenNumber, payload.capacity, payload.startsAt);
+            var result = await screeningRepository.createScreening(movie_id, payload.screenNumber, payload.capacity, payload.startsAt);
             if ( result == null )
             {
                 return TypedResults.NotFound($"Could not find movie with {movie_id}");
@@ -121,7 +121,7 @@ namespace api_cinema_challenge.Views
 
         private static async Task<IResult> GetScreeningByMovieId(int movie_id, IScreeningRepository screeningRepository)
         {
-            var result = await screeningRepository.GetScreeningByMovieId(movie_id);
+            var result = await screeningRepository.getScreeningByMovieId(movie_id);
             if (result == null)
             {
                 return TypedResults.NotFound($"Movie with id {movie_id} has no screening");

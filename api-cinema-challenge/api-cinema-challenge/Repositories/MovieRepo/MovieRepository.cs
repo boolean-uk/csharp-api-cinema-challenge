@@ -15,7 +15,7 @@ namespace api_cinema_challenge.Reposities.MovieRepo
         {
             _db = db;
         }
-        public async Task<Movie?> CreateMovie(string title, string rating, string description, int runtime)
+        public async Task<Movie?> createMovie(string title, string rating, string description, int runtime)
         {
             if (title == null || title == "")
             {
@@ -39,9 +39,9 @@ namespace api_cinema_challenge.Reposities.MovieRepo
             return result;
         }
 
-        public async Task<Movie?> DeleteMovie(int movie_id)
+        public async Task<Movie?> deleteMovie(int movie_id)
         {
-            var result = await GetMovieById(movie_id);
+            var result = await getMovieById(movie_id);
             if (result == null)
             {
                 return null;
@@ -51,19 +51,19 @@ namespace api_cinema_challenge.Reposities.MovieRepo
             return result;
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMovies()
+        public async Task<IEnumerable<Movie>> getAllMovies()
         {
             return await _db.Movies.ToListAsync();
         }
 
-        public async Task<Movie?> GetMovieById(int id)
+        public async Task<Movie?> getMovieById(int id)
         {
             return await _db.Movies.FindAsync(id);
         }
 
-        public async Task<Movie?> UpdateMovie(int movie_id, string? title, string? rating, string? description, int? runtime)
+        public async Task<Movie?> updateMovie(int movie_id, string? title, string? rating, string? description, int? runtime)
         {
-            Movie? movie = await GetMovieById(movie_id);
+            Movie? movie = await getMovieById(movie_id);
             if (movie == null)
             {
                 return null;

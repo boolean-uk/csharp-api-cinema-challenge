@@ -14,7 +14,7 @@ namespace api_cinema_challenge.Reposities.ScreeningRepo
             _db = db;
         }
 
-        public async Task<Screening?> CreateScreening(int id, int screenNumber, int capacity, DateTime startsAt)
+        public async Task<Screening?> createScreening(int id, int screenNumber, int capacity, DateTime startsAt)
         {
 
             var movie = await _db.Movies.FindAsync(id);
@@ -37,13 +37,13 @@ namespace api_cinema_challenge.Reposities.ScreeningRepo
             return screening;
         }
 
-        public async Task<Screening?> GetScreeningByMovieId(int id)
+        public async Task<Screening?> getScreeningByMovieId(int id)
         {
             return await _db.Screenings.FirstOrDefaultAsync(m => m.MovieId == id);
             //return await _db.Screenings.FindAsync(id);
         }
 
-        public async Task<Screening?> GetScreeningById(int id)
+        public async Task<Screening?> getScreeningById(int id)
         {
             return await _db.Screenings.FindAsync(id);
         }

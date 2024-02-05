@@ -6,11 +6,11 @@ namespace api_cinema_challenge.Reposities.UserRepo
     public interface IUserRepository
     {
 
-        Task<IEnumerable<User>> GetAllUsers();
-        Task<User?> GetUserById(int id);
-        Task<User?> CreateUser(string name, string email, string phonenumber);
-        Task<User?> UpdateUser(int user_id, string? name, string? email, string? phonenumber);
-        Task<User?> DeleteUser(int user_id);
+        Task<IEnumerable<User>> getAllUsers();
+        Task<User?> getUserById(int id);
+        Task<User?> createUser(string name, string email, string phonenumber);
+        Task<User?> updateUser(int user_id, string? name, string? email, string? phonenumber);
+        Task<User?> deleteUser(int user_id);
 
     
     }

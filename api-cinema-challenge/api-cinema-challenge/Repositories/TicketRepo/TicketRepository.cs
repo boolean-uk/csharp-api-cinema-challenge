@@ -14,14 +14,14 @@ namespace api_cinema_challenge.Reposities.TicketRepo
             _db = db;
         }
 
-        public async Task<Ticket?> SaveTicket(Ticket ticket)
+        public async Task<Ticket?> saveTicket(Ticket ticket)
         {
             _db.Tickets.Add(ticket);
             await _db.SaveChangesAsync();
             return ticket; 
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTickets(int user_id, int screening_id)
+        public async Task<IEnumerable<Ticket>> getAllTickets(int user_id, int screening_id)
         {
             return await _db.Tickets.Include(a => a.User)
                 .Include(a => a.Screening)

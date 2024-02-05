@@ -5,9 +5,9 @@ namespace api_cinema_challenge.Reposities.ScreeningRepo
     public interface IScreeningRepository
     {
 
-        Task<Screening?> CreateScreening(int id, int screenNumber, int capacity, DateTime startsAt);
-        Task<Screening?> GetScreeningByMovieId(int movieId);
-        Task<Screening?> GetScreeningById(int screening_id);
+        Task<Screening?> createScreening(int id, int screenNumber, int capacity, DateTime startsAt);
+        Task<Screening?> getScreeningByMovieId(int movieId);
+        Task<Screening?> getScreeningById(int screening_id);
 
     }
 }

@@ -13,7 +13,7 @@ namespace api_cinema_challenge.Reposities.UserRepo
         {
             _db = db;
         }
-        public async Task<User?> CreateUser(string name, string email, string phonenumber)
+        public async Task<User?> createUser(string name, string email, string phonenumber)
         {
             if (name == null || name == "")
             {
@@ -34,9 +34,9 @@ namespace api_cinema_challenge.Reposities.UserRepo
             return result;
         }
 
-        public async Task<User?> DeleteUser(int user_id)
+        public async Task<User?> deleteUser(int user_id)
         {
-            var result = await GetUserById(user_id);
+            var result = await getUserById(user_id);
             if (result == null)
             {
                 return null;
@@ -47,19 +47,19 @@ namespace api_cinema_challenge.Reposities.UserRepo
 
         }
 
-        public async Task<IEnumerable<User>> GetAllUsers()
+        public async Task<IEnumerable<User>> getAllUsers()
         {
             return await _db.Users.ToListAsync();
         }
 
-        public async Task<User?> GetUserById(int id)
+        public async Task<User?> getUserById(int id)
         {
             return await _db.Users.FindAsync(id);
         }
 
-        public async Task<User?> UpdateUser(int user_id, string? name, string? email, string? phonenumber)
+        public async Task<User?> updateUser(int user_id, string? name, string? email, string? phonenumber)
         {
-            User? user = await GetUserById(user_id);
+            User? user = await getUserById(user_id);
             if (user == null)
             {
                 return null;

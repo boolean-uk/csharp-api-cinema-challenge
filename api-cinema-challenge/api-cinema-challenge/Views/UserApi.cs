@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Views
 
         private static async Task<IResult> GetAllUsers(IUserRepository userRepository)
         {
-            var result = await userRepository.GetAllUsers();
+            var result = await userRepository.getAllUsers();
             if (result == null)
             {
                 return TypedResults.NotFound("There are no users in the database");
@@ -59,7 +59,7 @@ namespace api_cinema_challenge.Views
                 return TypedResults.BadRequest($"Phonenumber must be a non-empty value! You entered: {payload.phonenumber}");
             }
 
-            var result = await userRepository.CreateUser(payload.name, payload.email, payload.phonenumber);
+            var result = await userRepository.createUser(payload.name, payload.email, payload.phonenumber);
 
             if (result == null)
             {
@@ -82,7 +82,7 @@ namespace api_cinema_challenge.Views
             {
                 return TypedResults.BadRequest("Updated phonenumber can not be of type empty");
             }
-            var result = await userRepository.UpdateUser(id, payload.name, payload.email, payload.phonenumber);
+            var result = await userRepository.updateUser(id, payload.name, payload.email, payload.phonenumber);
             if (result == null)
             {
                 return TypedResults.NotFound($"User with id: {id} could not be found");
@@ -92,7 +92,7 @@ namespace api_cinema_challenge.Views
 
         private static async Task<IResult> DeleteUser(int id, IUserRepository userRepository)
         {
-            var result = await userRepository.DeleteUser(id);
+            var result = await userRepository.deleteUser(id);
             if ( result == null )
             {
                 return TypedResults.NotFound($"User with id: {id} could not be found");
@@ -103,8 +103,8 @@ namespace api_cinema_challenge.Views
 
         private static async Task<IResult> BookTicket(IUserRepository userRepository, ITicketRepository ticketRepository, IScreeningRepository screeningRepository, int user_id, int screening_id, TicketPostPayload payload)
         {
-            var user = await userRepository.GetUserById(user_id);
-            var screening = await screeningRepository.GetScreeningById(screening_id);
+            var user = await userRepository.getUserById(user_id);
+            var screening = await screeningRepository.getScreeningById(screening_id);
             if (user == null)
             {
                 return TypedResults.NotFound($"Could not find user with id {user_id}");
@@ -124,7 +124,7 @@ namespace api_cinema_challenge.Views
                 UpdatedAt = DateTime.UtcNow,
             };
 
-            var savedTicket = await ticketRepository.SaveTicket(newTicket);
+            var savedTicket = await ticketRepository.saveTicket(newTicket);
             if ( savedTicket == null )
             {
                 return TypedResults.NotFound();
@@ -137,17 +137,17 @@ namespace api_cinema_challenge.Views
         private static async Task<IResult> GetAllTickets(IUserRepository userRepository, ITicketRepository ticketRepository, IScreeningRepository screeningRepository, int user_id, int screening_id)
         {
 
-            var user = await userRepository.GetUserById(user_id);
+            var user = await userRepository.getUserById(user_id);
             if (user == null)
             {
                 return TypedResults.NotFound($"Nu such user could be found");
             }
-            var screening = await screeningRepository.GetScreeningById(screening_id);
+            var screening = await screeningRepository.getScreeningById(screening_id);
             if ( screening == null )
             {
                 return TypedResults.NotFound($"");
             }
-            var result = await ticketRepository.GetAllTickets(user_id, screening_id);
+            var result = await ticketRepository.getAllTickets(user_id, screening_id);
             
          
             if ( result == null )
