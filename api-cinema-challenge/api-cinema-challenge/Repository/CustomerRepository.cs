@@ -35,7 +35,7 @@ namespace api_cinema_challenge.Repository
 
             for (int i = 0; i < nrCustomers; i++)
             {
-                if (customers[i].Name == name)
+                if (customers[i].Email == email)
                     return null;
             }
 

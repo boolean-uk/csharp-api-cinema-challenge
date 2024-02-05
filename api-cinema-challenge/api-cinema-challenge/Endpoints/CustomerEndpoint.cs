@@ -18,7 +18,7 @@ namespace api_cinema_challenge.Endpoints
 
             customerGroup.MapGet("/", GetCustomers);
             customerGroup.MapPost("/", CreateCustomer);
-            customerGroup.MapPut("/", UpdateCustomer);
+            customerGroup.MapPut("/{id}", UpdateCustomer);
             customerGroup.MapDelete("/{id}", DeleteCustomer);
         }
 
@@ -31,14 +31,35 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> CreateCustomer(ICustomerRepository repository, CustomerPostPayload payload)
         {
-            if (payload.name == null || payload.name == "" ||
-                payload.email == null || payload.email == "" ||
-                payload.phone == null || payload.phone == "")
-                return Results.BadRequest("Must have all inputs");
+            //Handling missing inputs
+            bool somethingWrong = false;
+            string message = "";
 
+            if (payload.name == null || payload.name == "")
+            {
+                message += "Name is missing.\n";
+                somethingWrong = true;
+            }
+
+            if (payload.email == null || payload.email == "")
+            {
+                message += "Email is missing.\n";
+                somethingWrong = true;
+            }
+
+            if (payload.phone == null || payload.phone == "")
+            {
+                message += "Phone number is missing.";
+                somethingWrong = true;
+            }
+
+            if (somethingWrong)
+                return Results.BadRequest(message);
+
+            //Creates the customer
             Customer? customer = await repository.CreateCustomer(payload.name, payload.email, payload.phone);
             if (customer == null)
-                return Results.BadRequest("Name already exists");
+                return Results.BadRequest("Customer already exists");
 
             CustomerResponseDTO custom = CustomerResponseDTO.FromARepository(customer);
             return TypedResults.Created($"/customers{custom.Status} {custom.Datas}", custom);
