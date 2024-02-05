@@ -1,6 +1,5 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
@@ -22,20 +21,20 @@ namespace api_cinema_challenge.Repository
             screening.MovieId = MovieId;
 
             _databaseContext.Screenings.Add(screening);
-           
-            
 
-           
-            
+
+
+
+
 
             SaveChanges();
-            
+
             //Create tickets for new screening
 
-             List<Seat> seatsInScreeningRoom = await _databaseContext.Seats.Where(S => S.ScreenId == screening.ScreenId).ToListAsync();
-            List<Ticket> tickets = new List<Ticket>();    
-            foreach(Seat seat in seatsInScreeningRoom)
-                    { tickets.Add(new Ticket() { screeningId = screening.Id, seatId = seat.Id, price = 15f, createdAt=DateTime.UtcNow, updatedAt=DateTime.UtcNow }); }
+            List<Seat> seatsInScreeningRoom = await _databaseContext.Seats.Where(S => S.ScreenId == screening.ScreenId).ToListAsync();
+            List<Ticket> tickets = new List<Ticket>();
+            foreach (Seat seat in seatsInScreeningRoom)
+            { tickets.Add(new Ticket() { screeningId = screening.Id, seatId = seat.Id, price = screening.price, createdAt = DateTime.UtcNow, updatedAt = DateTime.UtcNow }); }
 
 
             _databaseContext.Tickets.AddRange(tickets);
@@ -67,10 +66,9 @@ namespace api_cinema_challenge.Repository
             _databaseContext.SaveChanges();
             return true;
         }
-
         public async Task<Screening?> DeleteScreening(int ScreeningId)
         {
-            
+
             Screening? screeningToDelete = _databaseContext.Screenings
                 .Include(s => s.Movie)
                 .Include(s => s.Tickets)

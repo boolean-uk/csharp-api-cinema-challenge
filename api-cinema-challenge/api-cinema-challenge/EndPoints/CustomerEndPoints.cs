@@ -80,7 +80,7 @@ namespace workshop.wwwapi.Endpoints
                 Name = payload.name,
                 Email = payload.email,
                 Phone = payload.phone,
-                CreatedAt = now,
+                //CreatedAt = now,
                 UpdatedAt = now
             };
 

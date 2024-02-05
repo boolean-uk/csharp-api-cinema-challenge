@@ -26,11 +26,13 @@ namespace api_cinema_challenge.Data
             DateTimeOffset dateTime = DateTimeOffset.Parse(dateString);
             DateTime dateTimeUtc = dateTime.UtcDateTime;
 
-            
-
+            //AutoCreationTime for customer table
+            modelBuilder.Entity<Customer>()
+            .Property(b => b.CreatedAt)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
             //Primary Composite key for ticket
             //Alternate keys for tickets
-           
+
             modelBuilder.Entity<Ticket>().HasKey(e => new {e.screeningId, e.seatId} );
             modelBuilder.Entity<Ticket>().HasAlternateKey(e => e.Id);
             modelBuilder.Entity<Ticket>().Property(e => e.Id).ValueGeneratedOnAdd();
@@ -38,6 +40,10 @@ namespace api_cinema_challenge.Data
             //Alternate key for seats
             modelBuilder.Entity<Seat>().HasAlternateKey(e => new { e.ScreenId, e.seatNumber});
 
+            //Alternate key to avoid duplicate screenings
+            modelBuilder.Entity<Screening>().HasAlternateKey(e => new { e.ScreenId, e.StartsAt });
+            modelBuilder.Entity<Screening>().Property(e => e.price).HasDefaultValue(100); ;
+            
 
             //Add test data
             Seeder.Seed(modelBuilder);

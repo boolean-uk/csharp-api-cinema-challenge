@@ -42,8 +42,8 @@ namespace api_cinema_challenge.DTO
     public class CustomerBookingDTO
     {
         public int Id { get; set; }
-        public string FilmTitle { get; set; }
-        public TimeOnly RunTime { get; set; }
+        public string? FilmTitle { get; set; }
+        public TimeOnly? RunTime { get; set; }
         public DateTime Time { get; set; }
         public List<TicketDTO> tickets { get; set; } = new List<TicketDTO>();
 
@@ -51,8 +51,12 @@ namespace api_cinema_challenge.DTO
         {
 
             Id = booking.Id;
-            FilmTitle = booking.tickets.FirstOrDefault().screening.Movie.Title;
-            RunTime = TimeOnly.FromDateTime(booking.tickets.FirstOrDefault().screening.Movie.Runtime);
+            if (booking.tickets.Any()) {
+                FilmTitle = booking.tickets.FirstOrDefault().screening.Movie.Title;
+                RunTime = TimeOnly.FromDateTime(booking.tickets.FirstOrDefault().screening.Movie.Runtime);
+            }
+            
+            
 
             foreach (Ticket t in booking.tickets)
             {

@@ -18,6 +18,8 @@ namespace api_cinema_challenge.Repository
 
             _databaseContext.Customers.Add(customer);
             SaveChanges();
+
+            GetCustomerById(customer.Id);
             return customer;
         }
 
@@ -60,7 +62,12 @@ namespace api_cinema_challenge.Repository
         }
         public async Task<Customer?> GetCustomerById(int id)
         {
-            Customer? response = await _databaseContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+            Customer? response = await _databaseContext.Customers
+                    .Include(c => c.Bookings).ThenInclude(b => b.tickets)
+                    .ThenInclude(t => t.seat)
+                    .Include(c => c.Bookings).ThenInclude(b => b.tickets)
+                    .ThenInclude(t => t.screening).ThenInclude(s => s.Movie)
+                    .FirstOrDefaultAsync(c => c.Id == id);
             if(response == null) { return null; }
             return response;
         }

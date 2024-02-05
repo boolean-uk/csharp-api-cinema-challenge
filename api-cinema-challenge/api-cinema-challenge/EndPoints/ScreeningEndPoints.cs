@@ -11,7 +11,7 @@ namespace workshop.wwwapi.Endpoints
 
 
         public int? ScreenId { get; set; }
-
+        public int? price { get; set; }
 
         public DateTime? StartsAt { get; set; }
 
@@ -21,6 +21,7 @@ namespace workshop.wwwapi.Endpoints
 
 
             if(!ScreenId.HasValue) { return false; }
+            if(!price.HasValue) { return false; }
             if(!StartsAt.HasValue) { return false; }
 
 
@@ -75,6 +76,7 @@ namespace workshop.wwwapi.Endpoints
                 MovieId = MovieId,
                 ScreenId = payload.ScreenId.Value,
                 StartsAt = payload.StartsAt.Value,
+                price = payload.price.Value,
 
             };
 

@@ -12,6 +12,7 @@ namespace api_cinema_challenge.Models
         public string Phone { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        
 
         public List<Booking> Bookings { get; set; } 
 
