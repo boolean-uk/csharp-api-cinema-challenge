@@ -36,7 +36,7 @@ namespace api_cinema_challenge.Repository
             var existingCustomer = await _context.Customers.FindAsync(id);
             if (existingCustomer != null)
             {
-                existingCustomer.Name = customer.Name;
+                existingCustomer.Name = customer.Name; //takes already existing customers and updates the customer
                 existingCustomer.Email = customer.Email;
                 existingCustomer.Phone = customer.Phone;
                 await _context.SaveChangesAsync();
