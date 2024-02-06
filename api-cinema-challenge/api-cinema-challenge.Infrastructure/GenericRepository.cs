@@ -42,6 +42,7 @@ namespace api_cinema_challenge.Infrastructure
         public async Task<T> UpdateById(T entity, int id)
         {
             T dbEntity = await GetById(id);
+            dbEntity.UpdatedAt = DateTime.Now;
             dbEntity = entity;
             _context.Update(dbEntity);
             await _context.SaveChangesAsync();
