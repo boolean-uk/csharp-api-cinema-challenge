@@ -112,7 +112,7 @@ namespace api_cinema_challenge.Repository
             return await _context.Screenings
                 .Include(s => s.Movie)
                 .Where(s => s.MovieId == movieId) // Filter by movieId
-                .ToListAsync();
+                .ToListAsync(); // Might also want to add the movieTitle to the response later.
         }
 
         public async Task<Screening> CreateScreening(int movieId, CreateScreeningPayload payload)
@@ -134,7 +134,27 @@ namespace api_cinema_challenge.Repository
             await _context.SaveChangesAsync();
             return screening;
         }
-    }
 
-    //Ticket
+        //Ticket
+        public async Task<List<Ticket>> GetTicketsByCustomerId(int customerId)
+        {
+            return await _context.Tickets
+                .Where(t => t.CustomerId == customerId)
+                .ToListAsync();
+        }
+
+        public async Task<Ticket> AddTicket(Ticket ticket)
+        {
+            _context.Tickets.Add(ticket);
+            await _context.SaveChangesAsync();
+            return ticket;
+        }
+
+        public async Task<Screening> GetScreeningById(int screeningId)
+        {
+            return await _context.Screenings.FindAsync(screeningId);
+        }
+
+
+    }
 }

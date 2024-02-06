@@ -3,7 +3,6 @@ using api_cinema_challenge.DTO.Payloads;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -11,19 +10,23 @@ namespace api_cinema_challenge.Endpoints
     {
         public static void ConfigureCinemaEndpoints(this IEndpointRouteBuilder app)
         {
+            //Customer
             app.MapGet("/cinema/customers", GetAllCustomers);
             app.MapGet("/cinema/customers/{id}", GetCustomer);
             app.MapPost("/cinema/customers", AddCustomer);
             app.MapPut("/cinema/customers/{id}", UpdateCustomer);
             app.MapDelete("/cinema/customers/{id}", DeleteCustomer);
-
+            //Movie
             app.MapGet("/cinema/movies", GetAllMovies);
             app.MapPost("/cinema/movies", AddMovie);
             app.MapPut("/cinema/movies/{id}", UpdateMovie);
             app.MapDelete("/cinema/movies/{id}", DeleteMovie);
-
+            //Screening
             app.MapGet("/cinema/movies/{id}/screenings", GetAllScreenings);
             app.MapPost("/cinema/movies/{id}/screenings", CreateScreening);
+            //Ticket
+            app.MapGet("/cinema/customers/{customerId}/tickets", GetAllTicketsForCustomer);
+            app.MapPost("/cinema/customers/{customerId}/tickets", CreateTicket);
         }
 
 
@@ -212,24 +215,68 @@ namespace api_cinema_challenge.Endpoints
         }
 
         //Ticket
-        /*public static async Task<IActionResult> GetAllTicketsForCustomer(int customerId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetAllTicketsForCustomer(IRepository repository, int customerId)
         {
             var tickets = await repository.GetTicketsByCustomerId(customerId);
-            var ticketDtos = tickets.Select(t => new TicketDto
+            if (tickets == null || tickets.Count == 0)
             {
-                Id = t.Id,
-                NumSeats = t.NumSeats,
-                CreatedAt = t.CreatedAt,
-                UpdatedAt = t.UpdatedAt
-            }).ToList();
+                return TypedResults.NotFound("No tickets found for this customer!");
+            }
+            else
+            {
+                var ticketDtos = tickets.Select(ticket => new TicketDto
+                {
+                    Id = ticket.Id,
+                    NumSeats = ticket.NumSeats,
+                    CreatedAt = ticket.CreatedAt,
+                    UpdatedAt = ticket.UpdatedAt
+                }).ToList();
 
-            var responseData = new GetAllTicketsResponseDto
+                var responseData = new GetAllTicketsResponseDto
+                {
+                    Status = "success",
+                    Data = ticketDtos
+                };
+                return TypedResults.Ok(responseData);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public static async Task<IResult> CreateTicket(IRepository repository, DTO.CreateTicketPayload payload)
+        {
+            // Check if the customer and screening exist
+            var customer = await repository.GetCustomerById(payload.CustomerId);
+            if (customer == null)
             {
-                Status = "success",
-                Data = ticketDtos
+                return TypedResults.NotFound("Customer not found");
+            }
+
+            var screening = await repository.GetScreeningById(payload.ScreeningId);
+            if (screening == null)
+            {
+                return TypedResults.NotFound("Screening not found");
+            }
+
+            // Check if there are enough seats available - screening model ->
+            if (payload.NumSeats > screening.AvailableSeats)
+            {
+                return TypedResults.BadRequest("Not enough seats available for booking");
+            }
+
+            // Creating the new ticket
+            var ticket = new Ticket
+            {
+                CustomerId = payload.CustomerId,
+                ScreeningId = payload.ScreeningId,
+                NumSeats = payload.NumSeats
             };
-            return Ok(responseData);
-        }*/
+
+            var addedTicket = await repository.AddTicket(ticket);
+            return TypedResults.Created($"Ticket created successfully. Ticket ID: {addedTicket.Id}");
+        }
 
     }
 }

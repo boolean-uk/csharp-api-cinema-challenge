@@ -13,5 +13,10 @@ namespace api_cinema_challenge.Models
         public DateTime CreatedAt { get; set; }
         [Column ("updated_at")]
         public DateTime UpdatedAt { get; set; }
+        [Column ("customer_id")]
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
+        [Column ("screening_id")]
+        public int ScreeningId { get; set; }
     }
 }

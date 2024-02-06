@@ -7,5 +7,6 @@
     public record UpdateMoviePayload(string Title, string Rating, string Description, int RuntimeMins);
 
     public record CreateScreeningPayload(int ScreenNumber, int Capacity, DateTime StartsAt);
+    public record CreateTicketPayload(int CustomerId, int ScreeningId, int NumSeats); //also added customer and screeningid, could maybe pass in customer_id and screening_id as params
 
 }

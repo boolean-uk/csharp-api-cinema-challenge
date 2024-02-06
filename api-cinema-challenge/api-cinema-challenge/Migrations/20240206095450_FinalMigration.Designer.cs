@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240206081723_pleaseFixScreenings")]
-    partial class pleaseFixScreenings
+    [Migration("20240206095450_FinalMigration")]
+    partial class FinalMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,20 +65,20 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1058),
+                            CreatedAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7633),
                             Email = "john@example.com",
                             Name = "Henrik Rosenkilde",
                             Phone = "1234567890",
-                            UpdatedAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1061)
+                            UpdatedAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7636)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1063),
+                            CreatedAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7637),
                             Email = "john@example.com",
                             Name = "Anette Mari Rosenkilde",
                             Phone = "1234567890",
-                            UpdatedAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1063)
+                            UpdatedAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7638)
                         });
                 });
 
@@ -126,22 +126,22 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1129),
+                            CreatedAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7752),
                             Description = "A computer hacker learns about the true nature of reality and his role in the war against its controllers.",
                             Rating = "R",
                             RuntimeMins = 136,
                             Title = "The Matrix",
-                            UpdatedAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1129)
+                            UpdatedAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7752)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1131),
+                            CreatedAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7754),
                             Description = "A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home, and the gold within it, from the dragon Smaug.",
                             Rating = "PG-13",
                             RuntimeMins = 169,
                             Title = "The Hobbit",
-                            UpdatedAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1131)
+                            UpdatedAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7754)
                         });
                 });
 
@@ -188,8 +188,44 @@ namespace api_cinema_challenge.Migrations
                             Capacity = 40,
                             MovieId = 1,
                             ScreenNumber = 5,
-                            StartsAt = new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1143)
+                            StartsAt = new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7765)
                         });
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
+
+                    b.Property<int>("NumSeats")
+                        .HasColumnType("integer")
+                        .HasColumnName("num_seats");
+
+                    b.Property<int>("ScreeningId")
+                        .HasColumnType("integer")
+                        .HasColumnName("screening_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("ticket");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
@@ -205,6 +241,17 @@ namespace api_cinema_challenge.Migrations
                         .IsRequired();
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.HasOne("api_cinema_challenge.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Customer", b =>

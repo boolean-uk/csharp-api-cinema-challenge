@@ -91,8 +91,8 @@ namespace api_cinema_challenge.DTO
             StartsAt = screening.StartsAt;
         }
     }
-    //Ticket
-   /* public class TicketDto
+    // Ticket
+    public class TicketDto
     {
         public int Id { get; set; }
         public int NumSeats { get; set; }
@@ -112,5 +112,4 @@ namespace api_cinema_challenge.DTO
         public string Status { get; set; }
         public List<TicketDto> Data { get; set; }
     }
-   */
 }

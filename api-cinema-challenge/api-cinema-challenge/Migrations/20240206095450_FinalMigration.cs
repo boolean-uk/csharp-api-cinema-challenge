@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api_cinema_challenge.Migrations
 {
     /// <inheritdoc />
-    public partial class pleaseFixScreenings : Migration
+    public partial class FinalMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,6 +50,29 @@ namespace api_cinema_challenge.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ticket",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    num_seats = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    customer_id = table.Column<int>(type: "integer", nullable: false),
+                    screening_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ticket", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ticket_customer_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customer",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "screening",
                 columns: table => new
                 {
@@ -82,8 +105,8 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "id", "created_at", "email", "name", "phone", "updated_at" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1058), "john@example.com", "Henrik Rosenkilde", "1234567890", new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1061) },
-                    { 2, new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1063), "john@example.com", "Anette Mari Rosenkilde", "1234567890", new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1063) }
+                    { 1, new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7633), "john@example.com", "Henrik Rosenkilde", "1234567890", new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7636) },
+                    { 2, new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7637), "john@example.com", "Anette Mari Rosenkilde", "1234567890", new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7638) }
                 });
 
             migrationBuilder.InsertData(
@@ -91,14 +114,14 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "id", "created_at", "description", "rating", "runtime_mins", "title", "updated_at" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1129), "A computer hacker learns about the true nature of reality and his role in the war against its controllers.", "R", 136, "The Matrix", new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1129) },
-                    { 2, new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1131), "A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home, and the gold within it, from the dragon Smaug.", "PG-13", 169, "The Hobbit", new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1131) }
+                    { 1, new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7752), "A computer hacker learns about the true nature of reality and his role in the war against its controllers.", "R", 136, "The Matrix", new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7752) },
+                    { 2, new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7754), "A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home, and the gold within it, from the dragon Smaug.", "PG-13", 169, "The Hobbit", new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7754) }
                 });
 
             migrationBuilder.InsertData(
                 table: "screening",
                 columns: new[] { "id", "capacity", "CustomerId", "movie_id", "screen_number", "starts_at" },
-                values: new object[] { 1, 40, null, 1, 5, new DateTime(2024, 2, 6, 8, 17, 22, 442, DateTimeKind.Utc).AddTicks(1143) });
+                values: new object[] { 1, 40, null, 1, 5, new DateTime(2024, 2, 6, 9, 54, 49, 699, DateTimeKind.Utc).AddTicks(7765) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_screening_CustomerId",
@@ -109,6 +132,11 @@ namespace api_cinema_challenge.Migrations
                 name: "IX_screening_movie_id",
                 table: "screening",
                 column: "movie_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ticket_customer_id",
+                table: "ticket",
+                column: "customer_id");
         }
 
         /// <inheritdoc />
@@ -118,10 +146,13 @@ namespace api_cinema_challenge.Migrations
                 name: "screening");
 
             migrationBuilder.DropTable(
-                name: "customer");
+                name: "ticket");
 
             migrationBuilder.DropTable(
                 name: "movie");
+
+            migrationBuilder.DropTable(
+                name: "customer");
         }
     }
 }

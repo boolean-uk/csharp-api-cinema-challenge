@@ -26,6 +26,8 @@ namespace api_cinema_challenge.Repository
         Task<Screening> AddScreening(Screening screening);
 
         //Ticket
-        //Task<List<Ticket>> GetTicketsByCustomerId(int customerId);
+        Task<List<Ticket>> GetTicketsByCustomerId(int customerId);
+        Task<Screening> GetScreeningById(int screeningId);
+        Task<Ticket> AddTicket(Ticket ticket);
     }
 }
