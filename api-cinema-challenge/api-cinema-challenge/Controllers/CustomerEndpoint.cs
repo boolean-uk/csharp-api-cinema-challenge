@@ -12,7 +12,7 @@ namespace api_cinema_challenge.Controllers
         {
             var customers = app.MapGroup("customers");
 
-            customers.MapPost("/{id}", AddCustomer);
+            customers.MapPost("", AddCustomer);
             customers.MapGet("", GetAllCustomers);
             customers.MapPut("/{id}", UpdateCustomer);
             customers.MapDelete("/{id}", DeleteCustomer);
@@ -24,7 +24,7 @@ namespace api_cinema_challenge.Controllers
         {
             if (customer == null || customer.Name == null || customer.Email == null || customer.PhoneNumber == null)
             {
-                return TypedResults.BadRequest("Invalid input");
+                return TypedResults.BadRequest("Invalid input, all fields must be provided");
             }
 
             Customer newCustomer = new Customer
@@ -52,9 +52,9 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> UpdateCustomer(ICustomerRespository repository, int id, CustomerPost customer)
         {
-            if (customer == null)
+            if (customer == null || customer.Name == null || customer.Email == null || customer.PhoneNumber == null)
             {
-                return TypedResults.BadRequest("Invalid input");
+                return TypedResults.BadRequest("Invalid input, all fields must be provided");
             }
 
             var changedCustomer = await repository.UpdateCustomer(id, customer);
@@ -63,7 +63,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Customer with id {id} was not found");
             }
 
-            return TypedResults.Created($"{changedCustomer.Id}", changedCustomer.ToDTO());
+            return TypedResults.Created($"/{changedCustomer.Id}", changedCustomer.ToDTO());
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]

@@ -26,7 +26,7 @@ namespace api_cinema_challenge.Repository
             movie.Screenings.Add(screening);
 
             await _db.Screenings.AddAsync(screening);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return screening;
         }
 

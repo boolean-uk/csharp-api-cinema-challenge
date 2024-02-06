@@ -17,7 +17,7 @@ namespace api_cinema_challenge.Repository
         public async Task<Customer> AddCustomer(Customer customer)
         {
             await _db.Customers.AddAsync(customer);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return customer;
         }
 
@@ -39,7 +39,7 @@ namespace api_cinema_challenge.Repository
             foundCustomer.PhoneNumber = customer.PhoneNumber;
             foundCustomer.UpdatedAt = DateTime.UtcNow;
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return foundCustomer;
         }
 
@@ -52,7 +52,7 @@ namespace api_cinema_challenge.Repository
             }
 
             _db.Remove(foundCustomer);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return foundCustomer;
         }
     }

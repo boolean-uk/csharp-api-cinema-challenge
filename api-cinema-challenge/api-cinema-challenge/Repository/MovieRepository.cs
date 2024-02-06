@@ -17,7 +17,7 @@ namespace api_cinema_challenge.Repository
         public async Task<Movie> AddMovie(Movie movie)
         {
             await _db.Movies.AddAsync(movie);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return movie;
         }
 
@@ -40,7 +40,7 @@ namespace api_cinema_challenge.Repository
             if (movie.Runtime != null) { foundMovie.Runtime = (int)movie.Runtime; }
             foundMovie.UpdatedAt = DateTime.UtcNow;
 
-            _db.SaveChanges();
+           await  _db.SaveChangesAsync();
             return foundMovie;
         }
 
@@ -53,7 +53,7 @@ namespace api_cinema_challenge.Repository
             }
 
             _db.Remove(foundMovie);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return foundMovie;
         }
     }

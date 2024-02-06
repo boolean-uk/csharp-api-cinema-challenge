@@ -12,7 +12,7 @@ namespace api_cinema_challenge.Controllers
         {
             var movies = app.MapGroup("movies");
 
-            movies.MapPost("/{id}", AddMovie);
+            movies.MapPost("", AddMovie);
             movies.MapGet("", GetAllMovies);
             movies.MapPut("/{id}", UpdateMovie);
             movies.MapDelete("{id}", DeleteMovie);
@@ -92,7 +92,7 @@ namespace api_cinema_challenge.Controllers
 
             var movieDTO = new MovieResponseDTO { Status="success", Data=changedMovie.ToDTO() };
 
-            return TypedResults.Created($"{changedMovie.Id}", movieDTO);
+            return TypedResults.Created($"/{changedMovie.Id}", movieDTO);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
