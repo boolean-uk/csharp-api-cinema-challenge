@@ -7,7 +7,7 @@ namespace api_cinema_challenge.Models
     public class Screening
     {
         [Key]
-        [Column("screening_id")]
+        [Column("id")]
         public int Id { get; set; }
 
         [Column("screennumber")]
@@ -28,5 +28,7 @@ namespace api_cinema_challenge.Models
         [Column("movie_id")]
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

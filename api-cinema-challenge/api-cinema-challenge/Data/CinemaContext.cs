@@ -22,7 +22,11 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Screening>().HasKey(e => new { e.Id, e.MovieId });
+            
+
+            modelBuilder.Entity<Ticket>().HasOne(t => t.Screening).WithMany(s => s.Tickets).HasForeignKey(t => new { t.ScreeningId });
+            modelBuilder.Entity<Ticket>().HasOne(t => t.Customer).WithMany(c => c.Tickets).HasForeignKey(t => t.CustomerId);
+
 
             modelBuilder.Entity<Customer>().HasData(
                new Customer { Id = 1, Name = "Jensemann", Email ="Amail@email.no", Phone = "12345678", CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime() },
@@ -42,14 +46,18 @@ namespace api_cinema_challenge.Data
                 new Screening { Id = 2, ScreenNumber = 2, Capacity = 90, StartsAt = DateTime.UtcNow.AddDays(1), CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime(), MovieId = 2 },
                 new Screening { Id = 3, ScreenNumber = 1, Capacity = 60, StartsAt = DateTime.UtcNow.AddDays(2), CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime(), MovieId = 3 },
                 new Screening { Id = 4, ScreenNumber = 2, Capacity = 90, StartsAt = DateTime.UtcNow.AddDays(2), CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime(), MovieId = 4 }
-
                 );
+            modelBuilder.Entity<Ticket>().HasData(
+            new Ticket { Id = 1, CustomerId= 1, ScreeningId = 1, numSeats = 1, CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime() },
+            new Ticket { Id = 2, CustomerId = 2, ScreeningId = 2,numSeats = 3, CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime() },
+            new Ticket { Id = 3, CustomerId = 3, ScreeningId = 3,numSeats = 1, CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt = DateTime.Now.ToUniversalTime() }
+            );
 
-           
         }
 
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Screening> Screenings { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
     }
 }

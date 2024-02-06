@@ -23,8 +23,39 @@ namespace api_cinema_challenge.Controllers
 
             CinemaGroup.MapGet("/Screenings", GetScreenings);
             CinemaGroup.MapPost("/Screenings", CreateScreening);
+
+            CinemaGroup.MapGet("", GetTicketsById);
+            CinemaGroup.MapPost("", CreateTicket);
+
+
+
+        }
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        private static async Task<IResult> CreateTicket(IRepository repository, CreateTicketDTO createTicketDTO)
+        {
+            var createdTicket = await repository.CreateTicket(createTicketDTO);
+            if (createdTicket != null)
+            {
+                return TypedResults.Ok(createdTicket);
+            }
+            else
+            {
+                return Results.NotFound("Failed to create the Ticket.");
+            }
         }
 
+        private static async Task<IResult> GetTicketsById(IRepository repository, int CustomerId, int ScreeningId)
+        {
+            var TicketDTO = await repository.GetTicketById(CustomerId, ScreeningId);
+
+            if (TicketDTO == null)
+            {
+                return Results.NotFound($"Screenings with Customer id = {CustomerId} and Screening id = {ScreeningId} not found.");
+            }
+
+            return TypedResults.Ok(TicketDTO);
+        }
 
         private static async Task<IResult> GetCustomers(IRepository repository)
         {

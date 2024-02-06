@@ -272,5 +272,53 @@ namespace api_cinema_challenge.Repositories
             return screeningDTOs;
         }
 
+        public async Task<TicketDTO> GetTicketById(int customerId, int screeningId)
+        {
+            var ticket = await _cinemaContext.Tickets.FirstOrDefaultAsync(t => t.CustomerId == customerId && t.ScreeningId == screeningId);
+
+            if (ticket == null)
+            {
+                return null;
+            }
+
+            var ticketDTO = new TicketDTO
+            {
+                CustomerId = ticket.CustomerId,
+                ScreeningId = ticket.ScreeningId,
+                NumSeats = ticket.numSeats,
+                CreatedAt = ticket.CreatedAt,
+                UpdatedAt = ticket.UpdatedAt
+            };
+
+            return ticketDTO;
+        }
+        public async Task<TicketDTO> CreateTicket(CreateTicketDTO createTicketDTO)
+        {
+            var newTicket = new Ticket
+            {
+                CustomerId = createTicketDTO.CustomerId,
+                ScreeningId = createTicketDTO.ScreeningId,
+                numSeats = createTicketDTO.NumSeats,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                UpdatedAt = DateTime.Now.ToUniversalTime()
+            };
+
+            _cinemaContext.Tickets.Add(newTicket);
+            await _cinemaContext.SaveChangesAsync();
+
+            var createdTicketDTO = new TicketDTO
+            {
+                CustomerId = newTicket.CustomerId,
+                ScreeningId = newTicket.ScreeningId,
+                NumSeats = newTicket.numSeats,
+                CreatedAt = newTicket.CreatedAt,
+                UpdatedAt = newTicket.UpdatedAt
+            };
+
+            return createdTicketDTO;
+        }
     }
 }
+
+
+
