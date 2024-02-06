@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\api-cinema-challenge.Data\api-cinema-challenge.Data.csproj" />
+    <ProjectReference Include="..\api-cinema-challenge.Infrastructure\api-cinema-challenge.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

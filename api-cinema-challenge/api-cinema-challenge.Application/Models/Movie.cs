@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace api_cinema_challenge.Application.Models
 {
     [Table("movies")]
-    public class Movie
+    public class Movie : IEntity
     {
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

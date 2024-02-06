@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\api-cinema-challenge.Application\api-cinema-challenge.Application.csproj" />
+    <ProjectReference Include="..\api-cinema-challenge.Data\api-cinema-challenge.Data.csproj" />
+  </ItemGroup>
+
 </Project>

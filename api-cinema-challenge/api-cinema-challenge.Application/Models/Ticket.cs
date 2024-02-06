@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace api_cinema_challenge.Application.Models
 {
     [Table("tickets")]
-    public class Ticket
+    public class Ticket : IEntity
     {
+        [Key, Column("id")]
+        public int Id { get; set; }
         [ForeignKey("Screening")]
         [Column("screening_id")]
         public int ScreeningId { get; set; }
@@ -17,6 +19,6 @@ namespace api_cinema_challenge.Application.Models
         [Column("created_at", TypeName = "date")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Column("updated_at", TypeName = "date")]
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }
