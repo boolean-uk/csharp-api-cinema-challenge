@@ -19,15 +19,15 @@ namespace api_cinema_challenge.Endpoints
         {
             if (payload.SeatNumber <= 0)
             {
-                return TypedResults.BadRequest("SeatNumber must be greater than 0");
+                return TypedResults.BadRequest("Invalid SeatNumber");
             }
             if (payload.CustomerId <= 0)
             {
-                return TypedResults.BadRequest("CustomerId must be greater than 0");
+                return TypedResults.BadRequest("Invalid CustomerId");
             }
             if (payload.ScreeningId <= 0)
             {
-                return TypedResults.BadRequest("ScreeningId must be greater than 0");
+                return TypedResults.BadRequest("Invalid ScreeningId");
             }
             Ticket? ticket = await repository.CreateTicket(payload);
             return TypedResults.Ok(new TicketResponseDTO("success", ticket));
