@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api_cinema_challenge.Data;
@@ -11,9 +12,11 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Data.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    partial class CinemaContextModelSnapshot : ModelSnapshot
+    [Migration("20240206123539_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,90 +65,90 @@ namespace api_cinema_challenge.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9301),
-                            Email = "Elisabeth@email.com",
-                            Name = "Elisabeth",
-                            Phone = "56122811"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5088),
+                            Email = "David@email.com",
+                            Name = "David",
+                            Phone = "60728988"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9330),
-                            Email = "David@email.com",
-                            Name = "David",
-                            Phone = "32734109"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5120),
+                            Email = "Frank@email.com",
+                            Name = "Frank",
+                            Phone = "77744006"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9336),
-                            Email = "David@email.com",
-                            Name = "David",
-                            Phone = "51967771"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5125),
+                            Email = "Frank@email.com",
+                            Name = "Frank",
+                            Phone = "58548887"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9341),
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5129),
                             Email = "Ruben@email.com",
                             Name = "Ruben",
-                            Phone = "99968378"
+                            Phone = "28438558"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9345),
-                            Email = "Frank@email.com",
-                            Name = "Frank",
-                            Phone = "41371165"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5134),
+                            Email = "David@email.com",
+                            Name = "David",
+                            Phone = "32090007"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9356),
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5140),
                             Email = "Frank@email.com",
                             Name = "Frank",
-                            Phone = "16530955"
+                            Phone = "56613342"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9361),
-                            Email = "David@email.com",
-                            Name = "David",
-                            Phone = "89877089"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5145),
+                            Email = "Piotr@email.com",
+                            Name = "Piotr",
+                            Phone = "32297558"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9365),
-                            Email = "David@email.com",
-                            Name = "David",
-                            Phone = "34166824"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5149),
+                            Email = "Ruben@email.com",
+                            Name = "Ruben",
+                            Phone = "83332048"
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9370),
-                            Email = "Ruben@email.com",
-                            Name = "Ruben",
-                            Phone = "37350938"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5153),
+                            Email = "David@email.com",
+                            Name = "David",
+                            Phone = "55505102"
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9376),
-                            Email = "George@email.com",
-                            Name = "George",
-                            Phone = "25439371"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5158),
+                            Email = "Piotr@email.com",
+                            Name = "Piotr",
+                            Phone = "24937168"
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9380),
-                            Email = "Ruben@email.com",
-                            Name = "Ruben",
-                            Phone = "82323535"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5162),
+                            Email = "Frank@email.com",
+                            Name = "Frank",
+                            Phone = "64015786"
                         });
                 });
 
@@ -192,128 +195,128 @@ namespace api_cinema_challenge.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9496),
-                            Description = "A movie about a Policeman that is quite Fast",
-                            Rating = 3,
-                            RuntimeMins = 122,
-                            Title = "The Fast Policeman"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5220),
+                            Description = "A movie about a Policeman that is quite Seethrough",
+                            Rating = 1,
+                            RuntimeMins = 81,
+                            Title = "The Seethrough Policeman"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9636),
-                            Description = "A movie about a Piper that is quite Seethrough",
-                            Rating = 1,
-                            RuntimeMins = 89,
-                            Title = "The Seethrough Piper"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5351),
+                            Description = "A movie about a Leopard that is quite Fast",
+                            Rating = 3,
+                            RuntimeMins = 166,
+                            Title = "The Fast Leopard"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9643),
-                            Description = "A movie about a Piper that is quite Round",
-                            Rating = 2,
-                            RuntimeMins = 252,
-                            Title = "The Round Piper"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5356),
+                            Description = "A movie about a Piper that is quite Amazing",
+                            Rating = 0,
+                            RuntimeMins = 42,
+                            Title = "The Amazing Piper"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9648),
-                            Description = "A movie about a Policeman that is quite Purple",
-                            Rating = 0,
-                            RuntimeMins = 208,
-                            Title = "The Purple Policeman"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5361),
+                            Description = "A movie about a Piper that is quite Purple",
+                            Rating = 3,
+                            RuntimeMins = 195,
+                            Title = "The Purple Piper"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9652),
-                            Description = "A movie about a Phone that is quite Mad",
-                            Rating = 0,
-                            RuntimeMins = 203,
-                            Title = "The Mad Phone"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5366),
+                            Description = "A movie about a Swan that is quite Amazing",
+                            Rating = 3,
+                            RuntimeMins = 208,
+                            Title = "The Amazing Swan"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9658),
-                            Description = "A movie about a Computer that is quite Mad",
-                            Rating = 1,
-                            RuntimeMins = 172,
-                            Title = "The Mad Computer"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5370),
+                            Description = "A movie about a Phone that is quite Fast",
+                            Rating = 0,
+                            RuntimeMins = 175,
+                            Title = "The Fast Phone"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9662),
-                            Description = "A movie about a Policeman that is quite Round",
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5375),
+                            Description = "A movie about a Piper that is quite Mad",
                             Rating = 0,
-                            RuntimeMins = 194,
-                            Title = "The Round Policeman"
+                            RuntimeMins = 60,
+                            Title = "The Mad Piper"
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9667),
-                            Description = "A movie about a Computer that is quite Round",
-                            Rating = 0,
-                            RuntimeMins = 212,
-                            Title = "The Round Computer"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5379),
+                            Description = "A movie about a Leopard that is quite Purple",
+                            Rating = 3,
+                            RuntimeMins = 85,
+                            Title = "The Purple Leopard"
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9671),
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5383),
                             Description = "A movie about a Swan that is quite Round",
-                            Rating = 3,
-                            RuntimeMins = 241,
+                            Rating = 0,
+                            RuntimeMins = 89,
                             Title = "The Round Swan"
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9676),
-                            Description = "A movie about a Phone that is quite Round",
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5388),
+                            Description = "A movie about a Leopard that is quite Slow",
                             Rating = 2,
-                            RuntimeMins = 83,
-                            Title = "The Round Phone"
+                            RuntimeMins = 87,
+                            Title = "The Slow Leopard"
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9681),
-                            Description = "A movie about a Computer that is quite Amazing",
-                            Rating = 2,
-                            RuntimeMins = 222,
-                            Title = "The Amazing Computer"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5393),
+                            Description = "A movie about a Piper that is quite Amazing",
+                            Rating = 1,
+                            RuntimeMins = 153,
+                            Title = "The Amazing Piper"
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9685),
-                            Description = "A movie about a Computer that is quite Seethrough",
-                            Rating = 3,
-                            RuntimeMins = 185,
-                            Title = "The Seethrough Computer"
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5397),
+                            Description = "A movie about a Phone that is quite Amazing",
+                            Rating = 2,
+                            RuntimeMins = 99,
+                            Title = "The Amazing Phone"
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9690),
-                            Description = "A movie about a Computer that is quite Round",
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5401),
+                            Description = "A movie about a Swan that is quite Fast",
                             Rating = 1,
-                            RuntimeMins = 219,
-                            Title = "The Round Computer"
+                            RuntimeMins = 192,
+                            Title = "The Fast Swan"
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9694),
-                            Description = "A movie about a Swan that is quite Slow",
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5435),
+                            Description = "A movie about a Swan that is quite Fast",
                             Rating = 1,
-                            RuntimeMins = 224,
-                            Title = "The Slow Swan"
+                            RuntimeMins = 208,
+                            Title = "The Fast Swan"
                         });
                 });
 
@@ -348,43 +351,43 @@ namespace api_cinema_challenge.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Capacity = 58,
-                            MovieId = 8,
+                            Capacity = 3,
+                            MovieId = 7,
                             StartsAt = new DateTime(2024, 2, 12, 0, 0, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
                             Id = 2,
-                            Capacity = 54,
-                            MovieId = 9,
+                            Capacity = 1,
+                            MovieId = 10,
                             StartsAt = new DateTime(2024, 2, 12, 0, 0, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
                             Id = 3,
-                            Capacity = 32,
-                            MovieId = 1,
+                            Capacity = 2,
+                            MovieId = 4,
                             StartsAt = new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
                             Id = 4,
-                            Capacity = 38,
-                            MovieId = 10,
-                            StartsAt = new DateTime(2024, 2, 11, 0, 0, 0, 0, DateTimeKind.Local)
+                            Capacity = 2,
+                            MovieId = 3,
+                            StartsAt = new DateTime(2024, 2, 12, 0, 0, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
                             Id = 5,
-                            Capacity = 55,
-                            MovieId = 8,
+                            Capacity = 2,
+                            MovieId = 2,
                             StartsAt = new DateTime(2024, 2, 9, 0, 0, 0, 0, DateTimeKind.Local)
                         },
                         new
                         {
                             Id = 6,
-                            Capacity = 56,
-                            MovieId = 2,
+                            Capacity = 1,
+                            MovieId = 1,
                             StartsAt = new DateTime(2024, 2, 9, 0, 0, 0, 0, DateTimeKind.Local)
                         });
                 });
@@ -407,7 +410,7 @@ namespace api_cinema_challenge.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("num_seats");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("date")
                         .HasColumnName("updated_at");
 
@@ -422,25 +425,22 @@ namespace api_cinema_challenge.Data.Migrations
                         {
                             CustomerId = 1,
                             ScreeningId = 3,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9829),
-                            NumSeats = 4,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5550),
+                            NumSeats = 4
                         },
                         new
                         {
                             CustomerId = 3,
                             ScreeningId = 4,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9833),
-                            NumSeats = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5553),
+                            NumSeats = 2
                         },
                         new
                         {
                             CustomerId = 2,
                             ScreeningId = 1,
-                            CreatedAt = new DateTime(2024, 2, 6, 13, 42, 37, 769, DateTimeKind.Local).AddTicks(9836),
-                            NumSeats = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(2024, 2, 6, 13, 35, 38, 918, DateTimeKind.Local).AddTicks(5555),
+                            NumSeats = 1
                         });
                 });
 

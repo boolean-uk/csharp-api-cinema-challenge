@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Application.Models;
+using api_cinema_challenge.Data.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -25,6 +26,11 @@ namespace api_cinema_challenge.Data
                 .HasMany(c => c.Screenings)
                 .WithMany(s => s.Customers)
                 .UsingEntity<Ticket>();
+
+            modelBuilder.Entity<Customer>().HasData(CustomerSeeder.Generate(10));
+            modelBuilder.Entity<Movie>().HasData(MovieSeeder.Generate(13));
+            modelBuilder.Entity<Screening>().HasData(ScreeningSeeder.Generate(6, 13));
+            modelBuilder.Entity<Ticket>().HasData(TicketSeeder.Generate());
         }
 
         DbSet<Customer> Customers { get; set; }

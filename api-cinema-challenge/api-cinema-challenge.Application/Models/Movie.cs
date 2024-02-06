@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using api_cinema_challenge.Application.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Application.Models
@@ -7,6 +8,7 @@ namespace api_cinema_challenge.Application.Models
     public class Movie
     {
         [Column("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
         [Column("title")]
@@ -14,7 +16,7 @@ namespace api_cinema_challenge.Application.Models
         [Column("description")]
         public string Description { get; set; }
         [Column("rating")]
-        public string Rating { get; set; }
+        public RatingsEnum Rating { get; set; }
         [Column("runtime_mins")]
         public int RuntimeMins { get; set; }
         [Column("created_at", TypeName = "date")]

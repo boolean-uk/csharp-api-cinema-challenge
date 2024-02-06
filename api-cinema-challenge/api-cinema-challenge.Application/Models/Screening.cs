@@ -7,6 +7,7 @@ namespace api_cinema_challenge.Application.Models
     public class Screening
     {
         [Column("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
         [Column("movie_id")]

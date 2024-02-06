@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Application.Models
 {
@@ -16,6 +17,6 @@ namespace api_cinema_challenge.Application.Models
         [Column("created_at", TypeName = "date")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Column("updated_at", TypeName = "date")]
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }
