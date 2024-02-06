@@ -7,6 +7,7 @@ namespace api_cinema_challenge.Application.Models
     public class Ticket : IEntity
     {
         [Key, Column("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [ForeignKey("Screening")]
         [Column("screening_id")]

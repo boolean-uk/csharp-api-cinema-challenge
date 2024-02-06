@@ -23,5 +23,7 @@ namespace api_cinema_challenge.Application.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         [Column("updated_at", TypeName = "date")]
         public DateTime? UpdatedAt { get; set; }
+        [Column("screening_id")]
+        public List<Screening> screenings { get; set; }
     }
 }

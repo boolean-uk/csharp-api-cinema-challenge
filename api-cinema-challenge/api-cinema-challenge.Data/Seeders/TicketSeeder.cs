@@ -15,18 +15,21 @@ namespace api_cinema_challenge.Data.Seeders
             List<Ticket> tickets = [
                 new Ticket()
                 {
+                    Id = 1,
                     CustomerId = 1,
                     ScreeningId = 3,
                     NumSeats = 4,
                 },
                 new Ticket()
                 {
+                    Id = 2,
                     CustomerId = 3,
                     ScreeningId = 4,
                     NumSeats = 2,
                 },
                 new Ticket()
                 {
+                    Id = 3,
                     CustomerId = 2, 
                     ScreeningId = 1, 
                     NumSeats = 1,
