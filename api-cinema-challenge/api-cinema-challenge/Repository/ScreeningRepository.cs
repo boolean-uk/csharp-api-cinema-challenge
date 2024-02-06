@@ -30,7 +30,7 @@ namespace api_cinema_challenge.Repository
             return screening;
         }
 
-        public async Task<IEnumerable<Screening>?> GetAllScreenings(int id)
+        public async Task<ICollection<Screening>?> GetAllScreenings(int id)
         {
             var movie = await _db.Movies.Include(movie => movie.Screenings)
                 .FirstOrDefaultAsync(x => x.Id == id);

@@ -1,4 +1,4 @@
-﻿using api_cinema_challenge.Models.DTOs;
+﻿using api_cinema_challenge.Models.DTOs.Ticket;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
@@ -10,10 +10,10 @@ namespace api_cinema_challenge.Models
         public int Id { get; set; }
         [Column("customer_id")]
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+        public Customer? Customer { get; set; }
         [Column("screening_id")]
         public int ScreeningId { get; set; }
-        public Screening Screening { get; set; }
+        public Screening? Screening { get; set; }
         [Column("number_of_seats")]
         public int NumberOfSeats { get; set; }
         [Column("created_at")]
@@ -21,15 +21,34 @@ namespace api_cinema_challenge.Models
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        public TicketDTO ToDTO()
+        public static TicketResponseDTO ToDTO(Ticket ticket)
         {
-            return new TicketDTO
+            var ticketDTO = new TicketDTO
             {
-                Id = Id,
-                NumberOfSeats = NumberOfSeats,
-                CreatedAt = CreatedAt,
-                UpdatedAt = UpdatedAt
+                Id = ticket.Id,
+                NumberOfSeats = ticket.NumberOfSeats,
+                CreatedAt = ticket.CreatedAt,
+                UpdatedAt = ticket.UpdatedAt
             };
+
+            return new TicketResponseDTO { Data = ticketDTO };
+        }
+
+        public static TicketResponseListDTO ToDTO(ICollection<Ticket> tickets)
+        {
+            List<TicketDTO> ticketsDTO = new List<TicketDTO>();
+            foreach (var ticket in tickets)
+            {
+                ticketsDTO.Add(new TicketDTO
+                {
+                    Id = ticket.Id,
+                    NumberOfSeats = ticket.NumberOfSeats,
+                    CreatedAt = ticket.CreatedAt,
+                    UpdatedAt = ticket.UpdatedAt
+                });
+            }
+
+            return new TicketResponseListDTO { Data = ticketsDTO };
         }
     }
 }

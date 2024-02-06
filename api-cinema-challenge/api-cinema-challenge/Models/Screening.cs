@@ -1,4 +1,4 @@
-﻿using api_cinema_challenge.Models.DTOs;
+﻿using api_cinema_challenge.Models.DTOs.Screening;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,28 +16,47 @@ namespace api_cinema_challenge.Models
         public int Capacity { get; set;}
         [Column("movie_id")]
         public int MovieId { get; set;}
-        public Movie Movie { get; set;}
+        public Movie? Movie { get; set;}
         [Column("starts_at")]
         public DateTime StartsAt { get; set;} = DateTime.UtcNow;
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public ICollection<Ticket> Tickets { get; set;}
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 
-        public ScreeningDTO ToDTO()
+        public static ScreeningResponseDTO ToDTO(Screening screening)
         {
             var screeningDTO = new ScreeningDTO
             {
-                Id = Id,
-                ScreenNumber = ScreenNumber,
-                Capacity = Capacity,
-                StartsAt = StartsAt,
-                CreatedAt = CreatedAt,
-                UpdatedAt = UpdatedAt
+                Id = screening.Id,
+                ScreenNumber = screening.ScreenNumber,
+                Capacity = screening.Capacity,
+                StartsAt = screening.StartsAt,
+                CreatedAt = screening.CreatedAt,
+                UpdatedAt = screening.UpdatedAt
             };
 
-            return screeningDTO;
+            return new ScreeningResponseDTO { Data = screeningDTO };
+        }
+
+        public static ScreeningResponseListDTO ToDTO(ICollection<Screening> screenings)
+        {
+            List<ScreeningDTO> screeningsDTO = new List<ScreeningDTO>();
+            foreach (Screening screening in screenings)
+            {
+                screeningsDTO.Add(new ScreeningDTO
+                {
+                    Id = screening.Id,
+                    ScreenNumber = screening.ScreenNumber,
+                    Capacity = screening.Capacity,
+                    StartsAt = screening.StartsAt,
+                    CreatedAt = screening.CreatedAt,
+                    UpdatedAt = screening.UpdatedAt
+                });
+            }
+
+            return new ScreeningResponseListDTO { Data = screeningsDTO };
         }
     }
 }

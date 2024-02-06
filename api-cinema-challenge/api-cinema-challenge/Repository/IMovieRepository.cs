@@ -6,7 +6,7 @@ namespace api_cinema_challenge.Repository
     public interface IMovieRepository
     {
         public Task<Movie> AddMovie(Movie movie);
-        public Task<IEnumerable<Movie>> GetAllMovies();
+        public Task<ICollection<Movie>> GetAllMovies();
         public Task<Movie?> UpdateMovie(int id, MoviePut movie);
         public Task<Movie?> DeleteMovie(int id);
     }

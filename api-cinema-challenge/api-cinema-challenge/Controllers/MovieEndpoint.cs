@@ -24,7 +24,23 @@ namespace api_cinema_challenge.Controllers
         {
             if (movie == null)
             {
-                return TypedResults.BadRequest("Invalid input");
+                return TypedResults.BadRequest("Invalid input: missing movie");
+            }
+            if (string.IsNullOrEmpty(movie.Title))
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a title");
+            }
+            if (string.IsNullOrEmpty(movie.Rating))
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a rating");
+            }
+            if (string.IsNullOrEmpty(movie.Description))
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a description");
+            }
+            if (movie.Runtime == null)
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a runtime");
             }
 
             Movie newMovie = new Movie
@@ -39,11 +55,28 @@ namespace api_cinema_challenge.Controllers
             {
                 foreach (var screening in movie.Screenings)
                 {
+                    if (screening == null)
+                    {
+                        return TypedResults.BadRequest("Invalid input: missing screening");
+                    }
+                    if (screening.ScreenNumber == null)
+                    {
+                        return TypedResults.BadRequest("Invalid input: please enter a screen number");
+                    }
+                    if (screening.Capacity == null)
+                    {
+                        return TypedResults.BadRequest("Invalid input: please enter a capactiy");
+                    }
+                    if (screening.StartsAt == null)
+                    {
+                        return TypedResults.BadRequest("Invalid input: please enter a starting time");
+                    }
+
                     var newScreening = new Screening
                     {
-                        ScreenNumber = screening.ScreenNumber,
-                        Capacity = screening.Capacity,
-                        StartsAt = screening.StartsAt,
+                        ScreenNumber = screening.ScreenNumber.Value,
+                        Capacity = screening.Capacity.Value,
+                        StartsAt = screening.StartsAt.Value,
                         MovieId = newMovie.Id,
                         Movie = newMovie
                     };
@@ -53,25 +86,16 @@ namespace api_cinema_challenge.Controllers
             }
 
             var addedMovie = await repository.AddMovie(newMovie);
-            var movieDTO = addedMovie.ToDTO();
-            var responseDTO = new MovieResponseDTO { Status = "success", Data = movieDTO };
 
-            return TypedResults.Created($"/{newMovie.Id}", responseDTO);
+            return TypedResults.Created($"/{newMovie.Id}", Movie.ToDTO(addedMovie));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllMovies(IMovieRepository repository)
         {
             var movies = await repository.GetAllMovies();
-            List<MovieDTO> moviesDTO = new List<MovieDTO>();
 
-            foreach (var mov in movies)
-            {
-                moviesDTO.Add(mov.ToDTO());
-            }
-            var responseDTO = new MovieResponseListDTO { Status = "success", Data = moviesDTO };
-
-            return TypedResults.Ok(responseDTO);
+            return TypedResults.Ok(Movie.ToDTO(movies));
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -81,7 +105,7 @@ namespace api_cinema_challenge.Controllers
         {
             if (movie == null)
             {
-                return TypedResults.BadRequest("Invalid input");
+                return TypedResults.BadRequest("Invalid input: missing movie");
             }
 
             var changedMovie = await repository.UpdateMovie(id, movie);
@@ -90,9 +114,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Movie with id {id} was not found");
             }
 
-            var movieDTO = new MovieResponseDTO { Status="success", Data=changedMovie.ToDTO() };
-
-            return TypedResults.Created($"/{changedMovie.Id}", movieDTO);
+            return TypedResults.Created($"/{changedMovie.Id}", Movie.ToDTO(changedMovie));
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -105,9 +127,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Movie with id {id} was not found");
             }
 
-            var movieDTO = new MovieResponseDTO { Status="success", Data=deletedMovie.ToDTO() };
-
-            return TypedResults.Ok(movieDTO);
+            return TypedResults.Ok(Movie.ToDTO(deletedMovie));
         }
     }
 }

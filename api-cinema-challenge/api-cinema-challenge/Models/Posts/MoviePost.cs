@@ -2,10 +2,10 @@
 {
     public class MoviePost
     {
-        public string Title { get; set; }
-        public string Rating { get; set; }
-        public string Description { get; set; }
-        public int Runtime { get; set; }
+        public required string? Title { get; set; }
+        public required string? Rating { get; set; }
+        public required string? Description { get; set; }
+        public required int? Runtime { get; set; }
         public ICollection<ScreeningPost>? Screenings { get; set; }
     }
 }

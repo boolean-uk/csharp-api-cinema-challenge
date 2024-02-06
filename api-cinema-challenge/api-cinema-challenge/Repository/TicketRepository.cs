@@ -42,7 +42,7 @@ namespace api_cinema_challenge.Repository
             return ticket;
         }
 
-        public async Task<IEnumerable<Ticket>?> GetTickets(int id)
+        public async Task<ICollection<Ticket>?> GetTickets(int id)
         {
             var customer = await _db.Customers.Include(c => c.Tickets).FirstOrDefaultAsync(x => x.Id == id);
             if (customer == null)

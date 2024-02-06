@@ -34,9 +34,9 @@ namespace api_cinema_challenge.Repository
                 return null;
             }
 
-            foundCustomer.Name = customer.Name;
-            foundCustomer.Email = customer.Email;
-            foundCustomer.PhoneNumber = customer.PhoneNumber;
+            if (!string.IsNullOrEmpty(customer.Name)) { foundCustomer.Name = customer.Name; }
+            if (!string.IsNullOrEmpty(customer.Email)) { foundCustomer.Email = customer.Email; }
+            if (!string.IsNullOrEmpty(customer.PhoneNumber)) { foundCustomer.PhoneNumber = customer.PhoneNumber; }
             foundCustomer.UpdatedAt = DateTime.UtcNow;
 
             await _db.SaveChangesAsync();

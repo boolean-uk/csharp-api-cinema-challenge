@@ -5,6 +5,6 @@ namespace api_cinema_challenge.Repository
     public interface ITicketRepository
     {
         public Task<Ticket?> AddTicket(int customerId, int screeningId, int numOfSeats);
-        public Task<IEnumerable<Ticket>?> GetTickets(int id);
+        public Task<ICollection<Ticket>?> GetTickets(int id);
     }
 }

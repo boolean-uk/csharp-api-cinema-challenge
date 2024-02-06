@@ -23,14 +23,26 @@ namespace api_cinema_challenge.Controllers
         {
             if (screening == null)
             {
-                return TypedResults.BadRequest("Invalid input");
+                return TypedResults.BadRequest("Invalid input: missing screening");
+            }
+            if (screening.ScreenNumber == null)
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a screen number");
+            }
+            if (screening.Capacity == null)
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a capactiy");
+            }
+            if (screening.StartsAt == null)
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a starting time");
             }
 
             Screening newScreening = new Screening
             {
-                ScreenNumber = screening.ScreenNumber,
-                Capacity = screening.Capacity,
-                StartsAt = screening.StartsAt,
+                ScreenNumber = screening.ScreenNumber.Value,
+                Capacity = screening.Capacity.Value,
+                StartsAt = screening.StartsAt.Value,
             };
 
             var addedScreening = await repository.AddScreening(id, newScreening);
@@ -40,7 +52,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Movie with id {id} was not found");
             }
 
-            return TypedResults.Created($"/{addedScreening.Id}", addedScreening.ToDTO());
+            return TypedResults.Created($"/{addedScreening.Id}", Screening.ToDTO(addedScreening));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,14 +65,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.Ok($"Movie with id {id} was not found");
             }
 
-            List<ScreeningDTO> screeningDTO = new List<ScreeningDTO>();
-
-            foreach (var screening in screenings)
-            {
-                screeningDTO.Add(screening.ToDTO());
-            }
-
-            return TypedResults.Ok(screeningDTO);
+            return TypedResults.Ok(Screening.ToDTO(screenings));
         }
     }
 }

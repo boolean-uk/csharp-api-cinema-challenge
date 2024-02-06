@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace api_cinema_challenge.Models.DTOs
+﻿namespace api_cinema_challenge.Models.DTOs.Ticket
 {
     public class TicketDTO
     {

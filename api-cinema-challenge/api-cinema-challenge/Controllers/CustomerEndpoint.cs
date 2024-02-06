@@ -22,9 +22,21 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> AddCustomer(ICustomerRespository repository, CustomerPost customer)
         {
-            if (customer == null || customer.Name == null || customer.Email == null || customer.PhoneNumber == null)
+            if (customer == null)
             {
-                return TypedResults.BadRequest("Invalid input, all fields must be provided");
+                return TypedResults.BadRequest("Invalid input: missing customer");
+            }
+            if (string.IsNullOrEmpty(customer.Name))
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a name");
+            }
+            if (string.IsNullOrEmpty(customer.Email))
+            {
+                return TypedResults.BadRequest("Invalid input: please enter an email");
+            }
+            if (string.IsNullOrEmpty(customer.PhoneNumber))
+            {
+                return TypedResults.BadRequest("Invalid input: please enter a phone number");
             }
 
             Customer newCustomer = new Customer
@@ -36,15 +48,14 @@ namespace api_cinema_challenge.Controllers
 
             var addedCustomer = await repository.AddCustomer(newCustomer);
 
-            return TypedResults.Created($"/{newCustomer.Id}", addedCustomer.ToDTO());
+            return TypedResults.Created($"/{newCustomer.Id}", Customer.ToDTO(addedCustomer));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllCustomers(ICustomerRespository repository)
         {
             var customers = await repository.GetAllCustomers();
-            var customerDTO = new CustomerListDTO { Status = "success", Data = customers };
-            return TypedResults.Ok(customerDTO);
+            return TypedResults.Ok(Customer.ToDTO(customers));
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -52,9 +63,9 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> UpdateCustomer(ICustomerRespository repository, int id, CustomerPost customer)
         {
-            if (customer == null || customer.Name == null || customer.Email == null || customer.PhoneNumber == null)
+            if (customer == null)
             {
-                return TypedResults.BadRequest("Invalid input, all fields must be provided");
+                return TypedResults.BadRequest("Invalid input: missing customer");
             }
 
             var changedCustomer = await repository.UpdateCustomer(id, customer);
@@ -63,10 +74,10 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Customer with id {id} was not found");
             }
 
-            return TypedResults.Created($"/{changedCustomer.Id}", changedCustomer.ToDTO());
+            return TypedResults.Created($"/{changedCustomer.Id}", Customer.ToDTO(changedCustomer));
         }
 
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> DeleteCustomer(ICustomerRespository repository, int id)
         {
@@ -76,7 +87,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"Customer with id {id} was not found");
             }
 
-            return TypedResults.Ok(deletedCustomer.ToDTO());
+            return TypedResults.Ok(Customer.ToDTO(deletedCustomer));
         }
     }
 }

@@ -21,7 +21,7 @@ namespace api_cinema_challenge.Repository
             return movie;
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMovies()
+        public async Task<ICollection<Movie>> GetAllMovies()
         {
             return await _db.Movies.Include(movie => movie.Screenings).ToListAsync();
         }
