@@ -45,7 +45,7 @@ namespace api_cinema_challenge.Repository
             var movie = await _context.Movies.FindAsync(id);
             if(movie == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(movie) , "Movie cannot be null.");
             }
 
             movie.Title = title;

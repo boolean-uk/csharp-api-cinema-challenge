@@ -44,7 +44,7 @@ namespace api_cinema_challenge.Repository
             var customer = await _context.Customers.FindAsync(id);
             if(customer == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(customer) , "Customer cannot be null.");
             }
 
             customer.Name = name;

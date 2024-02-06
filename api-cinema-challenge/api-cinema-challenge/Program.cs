@@ -1,4 +1,5 @@
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Endoints;
 using api_cinema_challenge.Endpoints;
 using api_cinema_challenge.Repository;
 using api_cinema_challenge.Repository.Interfaces;
@@ -16,6 +17,11 @@ builder.Services.AddDbContext<CinemaContext>(options => options.UseNpgsql(connec
 builder.Services.AddScoped<IMovieRepository , MovieRepository>();
 builder.Services.AddScoped<IScreeningRepository , ScreeningRepository>();
 builder.Services.AddScoped<ICustomerRepository , CustomerRepository>();
+builder.Services.AddScoped<ITicketRepository , TicketRepository>();
+builder.Services.AddScoped<IBookingRepository , BookingRepository>();
+builder.Services.AddScoped<IScreenRepository , ScreenRepository>();
+builder.Services.AddScoped<ISeatRepository , SeatRepository>();
+
 
 var app = builder.Build();
 
@@ -29,6 +35,10 @@ if(app.Environment.IsDevelopment())
 app.ConfigureCustomerEndpoint();
 app.ConfigureMovieEndpoint();
 app.ConfigureScreeningEndpoint();
+app.ConfigureBookingEndpoint();
+app.ConfigureSeatEndpoint();
+app.ConfigureTicketEndpoint();
+app.ConfigureScreenEndpoint();
 
 app.UseHttpsRedirection();
 app.Run();

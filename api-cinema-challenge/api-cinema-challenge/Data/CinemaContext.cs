@@ -17,6 +17,10 @@ namespace api_cinema_challenge.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Screen> Screens { get; set; }
+        public DbSet<Seat> Seats { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,6 +35,7 @@ namespace api_cinema_challenge.Data
                 .HasOne(s => s.Movie)
                 .WithMany(m => m.Screenings)
                 .HasForeignKey(s => s.MovieId);
+
 
             // Seed data
             modelBuilder.Entity<Movie>().HasData(
