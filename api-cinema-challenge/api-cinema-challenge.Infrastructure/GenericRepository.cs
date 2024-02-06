@@ -44,9 +44,8 @@ namespace api_cinema_challenge.Infrastructure
             T dbEntity = await GetById(id);
             dbEntity.UpdatedAt = DateTime.Now;
             dbEntity = entity;
-            _context.Update(dbEntity);
             await _context.SaveChangesAsync();
-            return entity;
+            return await GetById(id);
         }
     }
 }

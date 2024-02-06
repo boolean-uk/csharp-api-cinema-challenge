@@ -29,6 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ConfigureCustomerEndpoint();
+app.ConfigureMovieEndpoint();
 
 app.UseHttpsRedirection();
 app.Run();
