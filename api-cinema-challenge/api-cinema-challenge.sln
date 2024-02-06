@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api-cinema-challenge", "api-cinema-challenge\api-cinema-challenge.csproj", "{E407EDC9-D711-4E04-84D0-98D84EBE42D1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3C371BAA-344D-4C8A-AF08-7829816D726F}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api-cinema-challenge.Data", "api-cinema-challenge.Data\api-cinema-challenge.Data.csproj", "{09D9D42F-44DF-4ACD-BD4B-2147D2C038C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api-cinema-challenge.Infrastructure", "api-cinema-challenge.Infrastructure\api-cinema-challenge.Infrastructure.csproj", "{CB78A6B0-0779-4132-B022-C01A442AB37F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api-cinema-challenge.Application", "api-cinema-challenge.Application\api-cinema-challenge.Application.csproj", "{C19F98DD-BF5B-498D-BCCA-7EDBB6F7F43F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api-cinema-challenge.Presentation", "api-cinema-challenge.Presentation\api-cinema-challenge.Presentation.csproj", "{11BB0387-B0A5-42E5-9B15-71FE9EB7D9B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +23,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E407EDC9-D711-4E04-84D0-98D84EBE42D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E407EDC9-D711-4E04-84D0-98D84EBE42D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E407EDC9-D711-4E04-84D0-98D84EBE42D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E407EDC9-D711-4E04-84D0-98D84EBE42D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D9D42F-44DF-4ACD-BD4B-2147D2C038C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D9D42F-44DF-4ACD-BD4B-2147D2C038C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D9D42F-44DF-4ACD-BD4B-2147D2C038C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D9D42F-44DF-4ACD-BD4B-2147D2C038C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB78A6B0-0779-4132-B022-C01A442AB37F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB78A6B0-0779-4132-B022-C01A442AB37F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB78A6B0-0779-4132-B022-C01A442AB37F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB78A6B0-0779-4132-B022-C01A442AB37F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C19F98DD-BF5B-498D-BCCA-7EDBB6F7F43F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C19F98DD-BF5B-498D-BCCA-7EDBB6F7F43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C19F98DD-BF5B-498D-BCCA-7EDBB6F7F43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C19F98DD-BF5B-498D-BCCA-7EDBB6F7F43F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11BB0387-B0A5-42E5-9B15-71FE9EB7D9B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11BB0387-B0A5-42E5-9B15-71FE9EB7D9B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11BB0387-B0A5-42E5-9B15-71FE9EB7D9B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11BB0387-B0A5-42E5-9B15-71FE9EB7D9B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
