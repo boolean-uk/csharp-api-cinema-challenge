@@ -3,6 +3,7 @@ using api_cinema_challenge.Data;
 using api_cinema_challenge.Models.CustomerModels;
 using api_cinema_challenge.Models.MovieModels;
 using api_cinema_challenge.Models.ScreeningModels;
+using api_cinema_challenge.Models.TicketModels;
 using api_cinema_challenge.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 
 
 var app = builder.Build();

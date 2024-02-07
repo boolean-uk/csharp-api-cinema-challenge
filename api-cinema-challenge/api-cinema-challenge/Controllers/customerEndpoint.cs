@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models.CustomerModels;
+using api_cinema_challenge.Models.TicketModels;
 using api_cinema_challenge.Repositories;
 using api_cinema_challenge.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,8 @@ namespace api_cinema_challenge.Controllers
             group.MapPost("", Create);
             group.MapPut("{id}", Update);
             group.MapDelete("{id}", Delete);
+            group.MapGet("{customerId}/screenings/{screeningId}", GetTickets);
+            group.MapPost("{customerId}/screenings/{screeningId}", CreateTicket);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -55,6 +58,28 @@ namespace api_cinema_challenge.Controllers
         private static async Task<Customer> Delete(int id, IRepository<Customer> repository)
         {
             return await repository.Delete(id);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        private static async Task<IResult> GetTickets(int customerId, int screeningId, IRepository<Ticket> repository)
+        {
+            IEnumerable<Ticket> tickets = await repository.GetWhere(t => t.CustomerId == customerId && t.ScreeningId == screeningId);
+
+            IEnumerable<OutputTicket> outputTickets = TicketDtoManager.Convert(tickets);
+            return TypedResults.Ok(outputTickets);
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        private static async Task<IResult> CreateTicket(int customerId, int screeningId, InputTicket inputTicket, IRepository<Ticket> repository)
+        {
+            Ticket newTicket = TicketDtoManager.Convert(inputTicket);
+            newTicket.CustomerId = customerId;
+            newTicket.ScreeningId = screeningId;
+
+            Ticket result = await repository.Create(newTicket);
+
+            OutputTicket outputTicket = TicketDtoManager.Convert(result);
+            return TypedResults.Created("url", outputTicket);
         }
     }
 }

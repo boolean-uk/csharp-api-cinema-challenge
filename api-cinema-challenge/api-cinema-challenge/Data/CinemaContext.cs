@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.Models.CustomerModels;
 using api_cinema_challenge.Models.MovieModels;
 using api_cinema_challenge.Models.ScreeningModels;
+using api_cinema_challenge.Models.TicketModels;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -28,6 +29,7 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
+            modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
 
             modelBuilder.Entity<Movie>()
                 .HasMany(m => m.Screenings)
@@ -38,5 +40,6 @@ namespace api_cinema_challenge.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }
