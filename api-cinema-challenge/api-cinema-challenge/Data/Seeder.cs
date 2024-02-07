@@ -154,19 +154,27 @@ namespace api_cinema_challenge.Data
                 screening.Id = i;
                 screening.ScreenNumber = screeningRandom.Next(1, 10);
                 screening.MovieId = screeningRandom.Next(1, 99);
-                screening.Capacity = _capacities[screeningRandom.Next(_capacities.Count)];
+                int capacity = _capacities[screeningRandom.Next(_capacities.Count)];
+                screening.Capacity = capacity;
+                screening.AvailableSeats = capacity;
                 screening.StartsAt = DateTime.UtcNow.AddDays(screeningRandom.Next(1, 10));
                 _screenings.Add(screening);
             }
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < 100; i++)
             {
                 Ticket ticket = new Ticket();
                 ticket.Id = i;
                 ticket.CustomerId = ticketRandom.Next(1, 99);
-                ticket.ScreeningId = ticketRandom.Next(1, 10);
+                ticket.ScreeningId = ticketRandom.Next(1, 99);
                 ticket.NumberOfSeats = ticketRandom.Next(1, 5);
+                Screening screening = Screenings.First(s => s.Id == ticket.ScreeningId);
+                if (screening.AvailableSeats - ticket.NumberOfSeats < 0)
+                {
+                    continue;
+                }
                 _tickets.Add(ticket);
+                screening.AvailableSeats -= ticket.NumberOfSeats;
             }
         }
         public List<Movie> Movies { get => _movies; }

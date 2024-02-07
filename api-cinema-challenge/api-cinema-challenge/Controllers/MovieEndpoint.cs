@@ -76,6 +76,7 @@ namespace api_cinema_challenge.Controllers
                     {
                         ScreenNumber = screening.ScreenNumber.Value,
                         Capacity = screening.Capacity.Value,
+                        AvailableSeats = screening.Capacity.Value,
                         StartsAt = screening.StartsAt.Value,
                         MovieId = newMovie.Id,
                         Movie = newMovie

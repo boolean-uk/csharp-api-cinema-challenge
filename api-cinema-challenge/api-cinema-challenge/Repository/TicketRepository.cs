@@ -13,18 +13,23 @@ namespace api_cinema_challenge.Repository
             _db = db;
         }
 
-        public async Task<Ticket?> AddTicket(int customerId, int screeningId, int numberOfSeats)
+        public async Task<Ticket> AddTicket(int customerId, int screeningId, int numberOfSeats)
         {
             var customer = await _db.Customers.Include(customer => customer.Tickets).FirstOrDefaultAsync(x => x.Id == customerId);
             if (customer == null)
             {
-                return null;
+                throw new Exception($"Customer with customer id {customerId} could not be found");
             }
 
             var screening = await _db.Screenings.Include(screening => screening.Tickets).FirstOrDefaultAsync(x => x.Id ==  screeningId);
             if (screening == null)
             {
-                return null;
+                throw new Exception($"Screening with screening id {screeningId} could not be found");
+            }
+
+            if (screening.AvailableSeats - numberOfSeats < 0)
+            {
+                throw new Exception($"Not enough tickets available for this screening: only {screening.AvailableSeats} available");
             }
 
             Ticket ticket = new Ticket
@@ -38,6 +43,7 @@ namespace api_cinema_challenge.Repository
 
             customer.Tickets.Add(ticket);
             screening.Tickets.Add(ticket);
+            screening.AvailableSeats -= numberOfSeats;
             await _db.SaveChangesAsync();
             return ticket;
         }

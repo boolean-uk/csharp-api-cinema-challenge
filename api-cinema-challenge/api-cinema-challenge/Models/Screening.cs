@@ -14,6 +14,8 @@ namespace api_cinema_challenge.Models
         public int ScreenNumber { get; set;}
         [Column("capacity")]
         public int Capacity { get; set;}
+        [Column("available_seats")]
+        public int AvailableSeats { get; set; }
         [Column("movie_id")]
         public int MovieId { get; set;}
         public Movie? Movie { get; set;}

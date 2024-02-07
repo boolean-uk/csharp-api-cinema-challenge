@@ -19,14 +19,15 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> AddTicket(ITicketRepository repository, int customerId, int screeningId, int numSeats)
         {
-            var ticket = await repository.AddTicket(customerId, screeningId, numSeats);
-
-            if (ticket == null)
+            try
             {
-                return TypedResults.NotFound($"Customer with id {customerId} or screening with id {screeningId} was not found");
+                var ticket = await repository.AddTicket(customerId, screeningId, numSeats);
+                return TypedResults.Created($"/{customerId}/screenings/{screeningId}", Ticket.ToDTO(ticket));
             }
-
-            return TypedResults.Created($"/{customerId}/screenings/{screeningId}", Ticket.ToDTO(ticket));
+            catch (Exception error)
+            {
+                return TypedResults.NotFound(error);
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
