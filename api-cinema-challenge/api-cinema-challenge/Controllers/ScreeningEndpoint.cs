@@ -19,12 +19,14 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> GetScreenings(IRepository repository, int id)
         {
             throw new NotImplementedException();
+            //TODO: Return IEnumerable<DTScreening>
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> AddScreening(IRepository repository, PostScreening model)
         {
             throw new NotImplementedException();
+            //TODO: Return DTScreening
         }
 
     }

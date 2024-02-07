@@ -9,5 +9,7 @@ namespace api_cinema_challenge.Models
         [Column]
         public string Name { get; set; }
 
+        //TODO: complete members
+        //TODO: Define entities in CinemaContext
     }
 }

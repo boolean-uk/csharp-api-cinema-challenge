@@ -12,20 +12,40 @@ namespace api_cinema_challenge.Controllers
     public static void ConfigureMovieEndpoint(this WebApplication app)
     {
     var movieGroup = app.MapGroup("movies");
-    var customerGroup = app.MapGroup("customers");
 
-      //  movieGroup.MapGet("/", GetAllMovies);
-    //movieGroup.MapPost("/", AddMovie);
-    //movieGroup.MapPut("/{id}", EditMovie);
-    //movieGroup.MapDelete("/{id}", DeleteMovie);
-    //customerGroup.MapGet("/", GetAllCustomers);
-    // customerGroup.MapPost("/", AddCustomer);
-    // customerGroup.MapPut("/{id}", EditCustomer);
-    // customerGroup.MapDelete("/{id}", DeleteCustomer);
-    //movieGroup.MapPost("/{id}/screenings", AddScreening);
-    //movieGroup.MapGet("/{id}/screenings", GetScreenings);
+        movieGroup.MapGet("/", GetAllMovies);
+        movieGroup.MapPost("/", AddMovie);    
+        movieGroup.MapPut("/{id}", EditMovie);
+        movieGroup.MapDelete("/{id}", DeleteMovie);
 
     }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetAllMovies(IRepository repository, int id)
+        {
+            throw new NotImplementedException();
+            //TODO: Return IEnumerable<DTMovie>
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> AddMovie(IRepository repository, PostScreening model)//TODO: Add PostMovie model
+        {
+            throw new NotImplementedException();
+            //TODO: Return DTMovie
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> EditMovie(IRepository repository, int id, PostScreening model)//TODO: Add PostMovie model
+        {
+            throw new NotImplementedException();
+            //TODO: Return DTMovie
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> DeleteMovie(IRepository repository, int id)
+        {
+            throw new NotImplementedException();
+            //TODO: Return DTMovie
+        }
 
 
 
@@ -43,9 +63,5 @@ namespace api_cinema_challenge.Controllers
 
 
 
-
-
-
-
-}    
+    }
 }
