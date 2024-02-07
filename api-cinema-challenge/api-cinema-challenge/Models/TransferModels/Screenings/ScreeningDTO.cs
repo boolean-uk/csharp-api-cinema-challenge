@@ -6,7 +6,7 @@ namespace api_cinema_challenge.Models.TransferModels.Screenings
 {
     public class ScreeningDTO(int Id, int ScreenNumber, int Capacity, DateTime Starts, DateTime Created, DateTime Updated)
     {
-        public int ScreeningId { get; set; } = Id;
+        public int Id { get; set; } = Id;
 
         public int ScreenNumber { get; set; } = ScreenNumber;
 

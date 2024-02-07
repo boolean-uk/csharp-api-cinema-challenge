@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models.TransferModels.Customer
+﻿namespace api_cinema_challenge.Models.TransferModels.Customers
 {
     public class CustomerDTO(int Id, string Name, string Email, string Phone, DateTime created, DateTime updated)
     {

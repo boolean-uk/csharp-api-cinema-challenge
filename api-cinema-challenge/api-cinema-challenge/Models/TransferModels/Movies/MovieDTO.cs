@@ -5,7 +5,7 @@ namespace api_cinema_challenge.Models.TransferModels.Movies
 {
     public class MovieDTO(int Id, string Title, string Rating, string Description, int Runtime, DateTime Created, DateTime Updated)
     {
-        public int MovieId { get; set; } = Id;
+        public int Id { get; set; } = Id;
 
         public string Title { get; set; } = Title;
 
@@ -13,7 +13,7 @@ namespace api_cinema_challenge.Models.TransferModels.Movies
 
         public string Description { get; set; } = Description;
 
-        public int RuntimeMinutes { get; set; } = Runtime;
+        public int RuntimeMins { get; set; } = Runtime;
 
         public string CreatedAt { get; set; } = Created.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
 
