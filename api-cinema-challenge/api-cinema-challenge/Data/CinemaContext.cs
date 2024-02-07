@@ -8,15 +8,15 @@ namespace api_cinema_challenge.Data
         private string _connectionString;
         public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
         {
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
-            this.Database.EnsureCreated();
+//            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+//            _connectionString = configuration.GetValue<string>("ConnectionStrings:DockerConnectionString")!;
+//            this.Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseNpgsql(_connectionString);
+            //optionsBuilder.UseNpgsql(_connectionString);
             //optionsBuilder.LogTo(message => Debug.WriteLine("DEBUGGING " + message));
         }
 
