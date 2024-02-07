@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.Conventions;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.PostModels;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Builder;
 
@@ -29,14 +30,14 @@ namespace api_cinema_challenge.Controllers
          }
 
          [ProducesResponseType(StatusCodes.Status201Created)]
-         public static async Task<IResult> AddCustomer(IRepository repository, PostScreening model)//TODO: Add PostCustomer model
+         public static async Task<IResult> AddCustomer(IRepository repository, PMScreening model)//TODO: Add PostCustomer model
          {
              throw new NotImplementedException();
              //TODO: Return DTCustomer
          }
 
          [ProducesResponseType(StatusCodes.Status201Created)]
-         public static async Task<IResult> EditCustomer(IRepository repository, int id, PostScreening model)//TODO: Add PostCustomer model
+         public static async Task<IResult> EditCustomer(IRepository repository, int id, PMScreening model)//TODO: Add PostCustomer model
          {
              throw new NotImplementedException();
                  //TODO: Return DTCustomer

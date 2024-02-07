@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.Conventions;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.PostModels;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Builder;
 
@@ -23,7 +24,7 @@ namespace api_cinema_challenge.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> AddScreening(IRepository repository, PostScreening model)
+        public static async Task<IResult> AddScreening(IRepository repository, PMScreening model, int id)
         {
             throw new NotImplementedException();
             //TODO: Return DTScreening

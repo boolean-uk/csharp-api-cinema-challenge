@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.Conventions;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.PostModels;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Builder;
 
@@ -27,16 +28,15 @@ namespace api_cinema_challenge.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> AddMovie(IRepository repository, PostScreening model)//TODO: Add PostMovie model
+        public static async Task<IResult> AddMovie(IRepository repository, PMMovie model)
         {
             throw new NotImplementedException();
             //TODO: Return DTMovie
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> EditMovie(IRepository repository, int id, PostScreening model)//TODO: Add PostMovie model
-        {
-            throw new NotImplementedException();
+        public static async Task<IResult> EditMovie(IRepository repository, int id, PMMovie model)
+        {   throw new NotImplementedException();
             //TODO: Return DTMovie
         }
 

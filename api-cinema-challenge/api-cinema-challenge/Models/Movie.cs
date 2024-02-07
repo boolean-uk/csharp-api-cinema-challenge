@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
@@ -6,6 +7,8 @@ namespace api_cinema_challenge.Models
     [Table("movies")]
     public class Movie
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         [Column("id")]
         public int Id { get; set; }
         [Column("title")]
@@ -22,6 +25,8 @@ namespace api_cinema_challenge.Models
         [Column("updated_at")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+
+        public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
 
     }
 }

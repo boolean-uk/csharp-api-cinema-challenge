@@ -22,17 +22,50 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            //PrimaryKeys
+            modelBuilder.Entity<Customer>().HasKey(c => c.Id);
+            modelBuilder.Entity<Ticket>().HasKey(t => new{t.ScreeningId,t.CustomerId });
+            modelBuilder.Entity<Screening>().HasKey(s => s.Id);
+            modelBuilder.Entity<Movie>().HasKey(m => m.Id);
+
+            // Many-To-Many relations
+            modelBuilder.Entity<Customer>().HasMany(c => c.Tickets).WithOne(t=>t.Customer).HasForeignKey(t => t.CustomerId);
+            modelBuilder.Entity<Screening>().HasMany( s => s.Tickets).WithOne(s=>s.Screening).HasForeignKey(s => s.ScreeningId);
+            modelBuilder.Entity<Movie>().HasMany(m => m.Screenings).WithOne(s=>s.Movie).HasForeignKey(s => s.MovieId);
+
+            //Movie entites
             modelBuilder.Entity<Movie>().Property(m => m.CreatedAt).ValueGeneratedOnAdd();
             modelBuilder.Entity<Movie>().Property(m => m.UpdatedAt).ValueGeneratedOnAddOrUpdate().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
             modelBuilder.Entity<Movie>().Property(m => m.UpdatedAt).ValueGeneratedOnAdd();
-            modelBuilder.Entity<Movie>().HasData(new Movie() { Id = 1, Title = "Empty Relations", Description = "Horror movie by famous programmer Steven", Rating = 3, RunTime = 124 });
+            modelBuilder.Entity<Movie>().HasData(new Movie() {Id=1, Title = "Empty Relations", Description = "Horror movie by famous programmer Steven", Rating = 3, RunTime = 124 });
+            
+            //Customer
+            modelBuilder.Entity<Customer>().Property(c => c.CreatedAt).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Customer>().Property(c => c.UpdatedAt).ValueGeneratedOnAddOrUpdate().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
+            modelBuilder.Entity<Customer>().Property(c => c.UpdatedAt).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Customer>().HasData(new Customer() { Id =1, Name = "Oscar Olsson", Email = "Oscar@Olsson.com", Phone="09876543"});
+
+            //Screening
+            modelBuilder.Entity<Screening>().Property(c => c.CreatedAt).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Screening>().Property(c => c.UpdatedAt).ValueGeneratedOnAddOrUpdate().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
+            modelBuilder.Entity<Screening>().Property(c => c.UpdatedAt).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Screening>().HasData(new Screening() {Id=1,MovieId = 1, Capacity = 320, ScreenNumber = 2, StartsAt = new DateTime(2024, 04, 10, 08, 10, 00, DateTimeKind.Utc)});
+
+            //Ticket
+            modelBuilder.Entity<Ticket>().Property(c => c.CreatedAt).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Ticket>().Property(c => c.UpdatedAt).ValueGeneratedOnAddOrUpdate().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
+            modelBuilder.Entity<Ticket>().Property(c => c.UpdatedAt).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Ticket>().HasData(new Ticket() { CustomerId = 1, ScreeningId = 1 });
 
         }
 
-       // public DbSet<Customer> Customers { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        //public DbSet<Screening> Screenings { get; set; }
-        //public DbSet<Ticket> Tickets { get; set; }
+
+
+       public DbSet<Customer> Customers { get; set; }
+       public DbSet<Movie> Movies { get; set; }
+       public DbSet<Screening> Screenings { get; set; }
+       public DbSet<Ticket> Tickets { get; set; }
         
     }
 }
