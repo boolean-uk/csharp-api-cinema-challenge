@@ -9,8 +9,8 @@ namespace api_cinema_challenge.Data
         public int j = 1;
         private List<string> _prefix = new List<string>()
         {
-            "The",
-            "A",
+            "The ",
+            "A ",
             "",
             "",
             ""
@@ -18,17 +18,17 @@ namespace api_cinema_challenge.Data
 
         private List<string> _firstMovieWord = new List<string>() 
         {
-            "Fantastical", 
-            "Mystical",
-            "Legendary",
-            "Obtuse", 
-            "Stubborn", 
-            "Happy",
-            "Angry",
-            "Sad",
-            "Depressing",
-            "Depressed",
-            "Flimsy",
+            "Fantastical ", 
+            "Mystical ",
+            "Legendary ",
+            "Obtuse ", 
+            "Stubborn ", 
+            "Happy ",
+            "Angry ",
+            "Sad ",
+            "Depressing ",
+            "Depressed ",
+            "Flimsy ",
             "",
             "",
         };
@@ -153,8 +153,8 @@ namespace api_cinema_challenge.Data
                 Movie movie = new Movie();
                 movie.MovieId = i;
                 movie.Title = $"" +
-                    $"{_prefix[rngMov.Next(_prefix.Count)]} " +
-                    $"{_firstMovieWord[rngMov.Next(_firstMovieWord.Count)]} " +
+                    $"{_prefix[rngMov.Next(_prefix.Count)]}" +
+                    $"{_firstMovieWord[rngMov.Next(_firstMovieWord.Count)]}" +
                     $"{_secondMovieWord[rngMov.Next(_secondMovieWord.Count)]}";
                 movie.Rating = _ratings[rngMov.Next(_ratings.Count)];
                 movie.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in gravida neque. Aenean varius justo tellus, eget sodales quam tristique et. Sed tempor ipsum augue, non ultrices elit tempor sed. Praesent est neque, bibendum vitae quam pharetra, tincidunt volutpat odio. Phasellus a aliquam urna, faucibus auctor purus. Etiam nec urna lobortis, dictum nulla eu, euismod felis. Donec vitae urna condimentum, tristique est in, elementum erat. Vivamus enim dolor, tempor in augue ac, varius consequat ipsum. ";
@@ -176,7 +176,7 @@ namespace api_cinema_challenge.Data
                 customer.CustomerId = i;
                 customer.CustomerName = $"{firstName} {lastName}";
                 customer.Email = $"{firstName}.{lastName}@{_domain[rngCus.Next(_domain.Count)]}";
-                customer.PhoneNumber = $"+{rngCus.Next(0,998):D2} {rngCus.Next(Int32.MaxValue):D8}";
+                customer.PhoneNumber = $"+{rngCus.Next(0,998):D2}{rngCus.Next(Int32.MaxValue):D8}";
 
                 customer.CreatedAt = DateTime.SpecifyKind(
                     new DateTime(
