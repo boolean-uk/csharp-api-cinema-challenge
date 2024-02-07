@@ -2,6 +2,7 @@
 using api_cinema_challenge.Data;
 using api_cinema_challenge.Models.PureModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
 namespace api_cinema_challenge.Repository
@@ -23,6 +24,18 @@ namespace api_cinema_challenge.Repository
             return await _table_T.FindAsync(id);
         }
 
+        public async Task<T?> GetIncluding(int id, string keyName, params Expression<Func<T, object>>[] includes) 
+        {
+            IQueryable<T> query = _table_T;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(entity => EF.Property<int>(entity, keyName) == id);
+        }
+
         /// <inheritdoc/>
         public async Task<IEnumerable<T>> GetAll()
         {
@@ -30,26 +43,58 @@ namespace api_cinema_challenge.Repository
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<T>> GetAllIncluding((Expression<Func<T, object>> include, Expression<Func<object, object>>? thenInclude)[] includes)
+        public async Task<IEnumerable<T>> GetAllIncluding()
         {
             IQueryable<T> query = _table_T.AsNoTracking();
 
-            foreach (var include in includes)
+            if (typeof(T) == typeof(Movie))
             {
-                if (include.thenInclude != null)
-                {
-                    query = query.Include(include.include).ThenInclude(include.thenInclude);
-                } else 
-                {
-                    query = query.Include(include.include);
-                }
-                
+                query = query
+                    .Include(m => (m as Movie).Screenings)
+                        .ThenInclude(s => (s as Screening).Tickets)
+                            .ThenInclude(t => (t as Ticket).Customer);
+            }
+            else if (typeof(T) == typeof(Screening))
+            {
+                query = query
+                    .Include(s => (s as Screening).Tickets)
+                        .ThenInclude(t => (t as Ticket).Customer)
+                    .Include(s => (s as Screening).Movie);
+            }
+            else if (typeof(T) == typeof(Customer)) 
+            {
+                query = query
+                    .Include(c => (c as Customer).Tickets)
+                        .ThenInclude(t => (t as Ticket).Screening)
+                            .ThenInclude(s => s.Movie);
+            }
+            else if (typeof(T) == typeof(Ticket))
+            {
+                query = query
+                    .Include(t => (t as Ticket).Screening)
+                        .ThenInclude(s => s.Movie)
+                    .Include(t => (t as Ticket).Customer);
             }
 
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllSimpleIncluding(params Expression<Func<T, object>>[] includes)
+        private static IQueryable<T> ThenInclude<T>(IQueryable<T> source, Expression<Func<T, object>> navigationPropertyPath)
+        {
+            var thenIncludeMethodInfo = typeof(EntityFrameworkQueryableExtensions)
+                .GetMethods()
+                .FirstOrDefault(m => m.Name == "ThenInclude" && m.GetParameters().Length == 2);
+
+            if (thenIncludeMethodInfo != null)
+            {
+                var genericThenInclude = thenIncludeMethodInfo.MakeGenericMethod(typeof(T), navigationPropertyPath.ReturnType);
+                return (IQueryable<T>)genericThenInclude.Invoke(null, new object[] { source, navigationPropertyPath });
+            }
+
+            return source;
+        }
+
+        public async Task<IEnumerable<T>> GetAllIncluding(params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _table_T.AsNoTracking();
 

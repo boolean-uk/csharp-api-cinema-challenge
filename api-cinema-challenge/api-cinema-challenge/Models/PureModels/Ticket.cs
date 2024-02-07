@@ -20,6 +20,8 @@ namespace api_cinema_challenge.Models.PureModels
         [ForeignKey("ScreeningId")]
         public int ScreeningId { get; set; }
 
+        public Screening Screening { get; set; }
+
         [Column("number_of_seats")]
         public int NumberOfSeats { get; set; }
 
