@@ -1,10 +1,9 @@
-﻿using api_cinema_challenge.Models.InputModels;
-using api_cinema_challenge.Models.PureModels;
-using api_cinema_challenge.Models.TransferModels.Movies;
+﻿using api_cinema_challenge.Models.PureModels;
 using api_cinema_challenge.Models.TransferModels;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 using api_cinema_challenge.Models.TransferModels.Screenings;
+using api_cinema_challenge.Models.InputModels.Screening;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -65,7 +64,7 @@ namespace api_cinema_challenge.Controllers
 
             ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
-            return TypedResults.Created($"/{screeningOut.ScreeningId}", payload);
+            return TypedResults.Created($"/{screeningOut.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -94,7 +93,7 @@ namespace api_cinema_challenge.Controllers
 
             ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
-            return TypedResults.Created($"/{screeningOut.ScreeningId}",payload);
+            return TypedResults.Created($"/{screeningOut.Id}",payload);
         }
 
 
