@@ -14,7 +14,9 @@ namespace api_cinema_challenge.Repository
         /// Example of Include(Property) but no ThenInclude (u => u.Property, null)
         /// </param>
         /// <returns>IEnumerable of entities</returns>
-        Task<IEnumerable<T>> GetAllIncluding((Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)[] includes);
+        Task<IEnumerable<T>> GetAllIncluding((Expression<Func<T, object>> include, Expression<Func<object, object>>? thenInclude)[] includes);
+
+        Task<IEnumerable<T>> GetAllSimpleIncluding(params Expression<Func<T, object>>[] includes);
 
         Task<T?> Get(int id);
 

@@ -33,5 +33,7 @@ namespace api_cinema_challenge.Models.PureModels
         [MaxLength(31)]
         public DateTime UpdatedAt { get; set; }
 
+        public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
+
     }
 }

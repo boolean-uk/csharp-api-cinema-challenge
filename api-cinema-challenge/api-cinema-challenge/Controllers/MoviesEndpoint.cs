@@ -6,6 +6,7 @@ using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 using api_cinema_challenge.Models.TransferModels.Movies;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Linq.Expressions;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -17,6 +18,7 @@ namespace api_cinema_challenge.Controllers
 
             moviesGroup.MapGet("/", GetMovies);
             moviesGroup.MapGet("/{id}", GetMovie);
+            moviesGroup.MapGet("/testing/{id}", GetMovie2);
             moviesGroup.MapPost("/", PostMovie);
             moviesGroup.MapPut("/{id}", PutMovie);
             moviesGroup.MapDelete("/{id}", DeleteMovie);
@@ -26,7 +28,9 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> GetMovies(IRepository<Movie> repo)
         {
-            IEnumerable<Movie> movies = await repo.GetAll();
+            IEnumerable<Movie> movies = await repo.GetAllSimpleIncluding(
+                m => m.Screenings
+                );
 
             IEnumerable<MovieDTO> moviesOut = movies.Select(m => new MovieDTO(m.MovieId, m.Title, m.Rating, m.Description, m.RuntimeMinutes, m.CreatedAt, m.UpdatedAt));
             Payload<IEnumerable<MovieDTO>> payload = new Payload<IEnumerable<MovieDTO>>(moviesOut);
@@ -46,6 +50,19 @@ namespace api_cinema_challenge.Controllers
 
             MovieDTO movieOut = new MovieDTO(movie.MovieId, movie.Title, movie.Rating, movie.Description, movie.RuntimeMinutes, movie.CreatedAt, movie.UpdatedAt);
             Payload<MovieDTO> payload = new Payload<MovieDTO>(movieOut);
+            return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        private static async Task<IResult> GetMovie2(IRepository<Movie> repo, int id)
+        {
+            IEnumerable<Movie> movies = await repo.GetAllSimpleIncluding(
+                m => m.Screenings
+                );
+
+            IEnumerable<MovieWithScreeningDTO> moviesOut = movies.Select(m => new MovieWithScreeningDTO(m.MovieId, m.Title, m.Rating, m.Description, m.RuntimeMinutes, m.CreatedAt, m.UpdatedAt, m.Screenings));
+            Payload<IEnumerable<MovieWithScreeningDTO>> payload = new Payload<IEnumerable<MovieWithScreeningDTO>>(moviesOut);
             return TypedResults.Ok(payload);
         }
 

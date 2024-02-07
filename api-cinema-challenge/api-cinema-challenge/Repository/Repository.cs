@@ -1,5 +1,6 @@
 ﻿
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Models.PureModels;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -29,7 +30,7 @@ namespace api_cinema_challenge.Repository
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<T>> GetAllIncluding((Expression<Func<T, object>> include, Expression<Func<object, object>> thenInclude)[] includes)
+        public async Task<IEnumerable<T>> GetAllIncluding((Expression<Func<T, object>> include, Expression<Func<object, object>>? thenInclude)[] includes)
         {
             IQueryable<T> query = _table_T.AsNoTracking();
 
@@ -43,6 +44,18 @@ namespace api_cinema_challenge.Repository
                     query = query.Include(include.include);
                 }
                 
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllSimpleIncluding(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _table_T.AsNoTracking();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
             }
 
             return await query.ToListAsync();

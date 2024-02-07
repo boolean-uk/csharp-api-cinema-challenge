@@ -27,7 +27,7 @@ namespace api_cinema_challenge.Controllers
         {
             IEnumerable<Screening> screenings = await repo.GetAll();
 
-            IEnumerable<ScreeningDTO> screeningsOut = screenings.Select(s => new ScreeningDTO(s.ScreeningId, s.ScreenNumber, s.Capacity, s.Starts, s.Created, s.Updated));
+            IEnumerable<ScreeningDTO> screeningsOut = screenings.Select(s => new ScreeningDTO(s.ScreeningId, s.ScreenNumber, s.Capacity, s.Starts, s.CreatedAt, s.UpdatedAt));
             Payload<IEnumerable<ScreeningDTO>> payload = new Payload<IEnumerable<ScreeningDTO>>(screeningsOut);
             return TypedResults.Ok(payload);
         }
@@ -43,7 +43,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"No screening with ID {id} found.");
             }
 
-            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.Created, screening.Updated);
+            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
             return TypedResults.Ok(payload);
         }
@@ -58,12 +58,12 @@ namespace api_cinema_challenge.Controllers
                 Capacity = screeningPost.Capacity,
                 Starts = screeningPost.Starts,
                 MovieId = screeningPost.MovieId,
-                Created = DateTime.Now,
-                Updated = DateTime.Now
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
             Screening screening = await repo.Insert(inputScreening);
 
-            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.Created, screening.Updated);
+            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
             return TypedResults.Created($"/{screeningOut.ScreeningId}", payload);
         }
@@ -86,13 +86,13 @@ namespace api_cinema_challenge.Controllers
                 Capacity = screeningPut.Capacity,
                 Starts = screeningPut.Starts,
                 MovieId = screeningPut.MovieId,
-                Created = screening.Created,
-                Updated = DateTime.Now
+                CreatedAt = screening.CreatedAt,
+                UpdatedAt = DateTime.Now
             };
 
             screening = await repo.Update(id, inputScreening);
 
-            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.Created, screening.Updated);
+            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
             return TypedResults.Created($"/{screeningOut.ScreeningId}",payload);
         }
@@ -111,7 +111,7 @@ namespace api_cinema_challenge.Controllers
 
             screening = await repo.Delete(id);
 
-            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.Created, screening.Updated);
+            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
             return TypedResults.Ok(payload);
         }
