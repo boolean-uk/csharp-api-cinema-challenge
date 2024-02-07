@@ -27,6 +27,6 @@ namespace api_cinema_challenge.Models.MovieModels
         [Column("runtime")]
         public string Runtime { get; set; }
 
-        IEnumerable<Screening> Screenings { get; set; }
+        public ICollection<Screening> Screenings { get; set; }
     }
 }

@@ -19,26 +19,38 @@ namespace api_cinema_challenge.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        private static async Task<IEnumerable<Screening>> GetAll(IRepository<Screening> repository)
+        private static async Task<IResult> GetAll(IRepository<Screening> repository)
         {
-            return await repository.Get();
+            IEnumerable<Screening> screenings = await repository.Get();
+
+            IEnumerable<OutputScreening> outputScreenings = ScreeningDtoManager.Convert(screenings);
+            return TypedResults.Ok(outputScreenings);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        private static async Task<Screening> Get(int id, IRepository<Screening> repository)
+        private static async Task<IResult> Get(int id, IRepository<Screening> repository)
         {
-            return await repository.Get(id);
+            Screening? screening = await repository.Get(id);
+            if (screening == null)
+                return Results.NotFound();
+
+            OutputScreening outputScreening = ScreeningDtoManager.Convert(screening);
+            return TypedResults.Ok(outputScreening);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<Screening> Create(InputScreening screening, IRepository<Screening> repository)
+        private static async Task<IResult> Create(InputScreening screening, IRepository<Screening> repository)
         {
             Screening newScreening = ScreeningDtoManager.Convert(screening); 
-            return await repository.Create(newScreening);
+
+            Screening result = await repository.Create(newScreening);
+
+            OutputScreening outputScreening = ScreeningDtoManager.Convert(result);
+            return TypedResults.Created("url", outputScreening);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        private static async Task<Screening> Update(int id, InputScreening screening, IRepository<Screening> repository)
+        private static async Task<IResult> Update(int id, InputScreening screening, IRepository<Screening> repository)
         {
             Screening screeningToUpdate = await repository.Get(id);
 
@@ -47,13 +59,19 @@ namespace api_cinema_challenge.Controllers
             screeningToUpdate.ScreenNumber = screening.ScreenNumber;
             screeningToUpdate.Capacity = screening.Capacity;
 
-            return await repository.Update(screeningToUpdate);
+            Screening result = await repository.Update(screeningToUpdate);
+
+            OutputScreening outputScreening = ScreeningDtoManager.Convert(result);
+            return TypedResults.Ok(result);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        private static async Task<Screening> Delete(int id, IRepository<Screening> repository)
+        private static async Task<IResult> Delete(int id, IRepository<Screening> repository)
         {
-            return await repository.Delete(id);
+            Screening result = await repository.Delete(id);
+
+            OutputScreening outputScreening = ScreeningDtoManager.Convert(result);
+            return TypedResults.Ok(outputScreening);
         }
     }
 }

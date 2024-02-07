@@ -1,4 +1,6 @@
-﻿namespace api_cinema_challenge.Models.MovieModels
+﻿using api_cinema_challenge.Models.ScreeningModels;
+
+namespace api_cinema_challenge.Models.MovieModels
 {
     public class InputMovie
     {
@@ -9,5 +11,6 @@
         public string Rating { get; set; }
 
         public string Runtime { get; set; }
+        public IEnumerable<InputScreening> Screenings { get; set; }
     }
 }

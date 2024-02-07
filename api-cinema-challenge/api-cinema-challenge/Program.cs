@@ -36,7 +36,7 @@ if (app.Environment.IsDevelopment())
 // TODO: Handle endpoints
 app.ConfigureCustomerEndpoint();
 app.ConfigureMovieEndpoint();
-app.ConfigureScreeningEndpoint();
+//app.ConfigureScreeningEndpoint();
 
 app.UseHttpsRedirection();
 app.Run();

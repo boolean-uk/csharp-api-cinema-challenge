@@ -25,7 +25,9 @@ namespace api_cinema_challenge.Controllers
         private static async Task<IResult> GetAll(IRepository<Movie> repository)
         {
             IEnumerable<Movie> movies = await repository.Get();
-            return TypedResults.Ok(movies);
+
+            IEnumerable<OutputMovie> outputMovies = MovieDtoManager.Convert(movies);
+            return TypedResults.Ok(outputMovies);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,15 +37,19 @@ namespace api_cinema_challenge.Controllers
             if (movie == null)
                 return Results.NotFound();
 
-            return TypedResults.Ok(movie);
+            OutputMovie outputMovie = MovieDtoManager.Convert(movie);
+            return TypedResults.Ok(outputMovie);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> Create(InputMovie movie, IRepository<Movie> repository)
         {
             Movie newMovie = MovieDtoManager.Convert(movie); 
+
             Movie result = await repository.Create(newMovie);
-            return TypedResults.Created("url", result);
+
+            OutputMovie outputMovie = MovieDtoManager.Convert(result);
+            return TypedResults.Created("url", outputMovie);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,7 +64,9 @@ namespace api_cinema_challenge.Controllers
             movieToUpdate.Description = inputMovie.Description;
 
             Movie? result = await repository.Update(movieToUpdate);
-            return TypedResults.Ok(result);
+
+            OutputMovie outputMovie = MovieDtoManager.Convert(result);
+            return TypedResults.Ok(outputMovie);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -70,7 +78,8 @@ namespace api_cinema_challenge.Controllers
 
             Movie result = await repository.Delete(id);
 
-            return TypedResults.Ok(result);
+            OutputMovie outputMovie = MovieDtoManager.Convert(result);
+            return TypedResults.Ok(outputMovie);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

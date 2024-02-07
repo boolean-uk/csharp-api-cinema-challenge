@@ -29,7 +29,10 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
 
-
+            modelBuilder.Entity<Movie>()
+                .HasMany(m => m.Screenings)
+                .WithOne(s => s.Movie)
+                .HasForeignKey(s => s.MovieId);
         }
 
         public DbSet<Movie> Movies { get; set; }

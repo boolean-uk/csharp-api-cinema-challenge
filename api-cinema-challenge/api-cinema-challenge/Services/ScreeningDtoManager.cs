@@ -14,6 +14,11 @@ namespace api_cinema_challenge.Services
             };
         }
 
+        public static ICollection<Screening> Convert(IEnumerable<InputScreening> inputScreenings)
+        {
+            return inputScreenings.Select(Convert).ToList();
+        }
+
         public static OutputScreening Convert(Screening screening)
         {
             return new OutputScreening
