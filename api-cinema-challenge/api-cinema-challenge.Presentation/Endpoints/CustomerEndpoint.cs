@@ -1,7 +1,9 @@
 ﻿using api_cinema_challenge.Application.Models;
 using api_cinema_challenge.Infrastructure;
 using api_cinema_challenge.Presentation.DTOs.Customers;
+using api_cinema_challenge.Presentation.DTOs.Tickets;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Presentation.Endpoints
 {
@@ -16,6 +18,10 @@ namespace api_cinema_challenge.Presentation.Endpoints
             group.MapPost("/", Add);
             group.MapDelete("/{id}", Delete);
             group.MapPut("/{id}", Put);
+
+            // Tickets
+            group.MapPost("/{customerId}/screenings/{screeningId}", AddTicket);
+            group.MapGet("/{customerId}/screenings/{screeningId}", GetTicket);
         }
 
         public async static Task<IResult> Get(IRepository<Customer> repository, int id, IMapper mapper)
@@ -101,6 +107,53 @@ namespace api_cinema_challenge.Presentation.Endpoints
                 return TypedResults.Ok(response);
             }
             catch (ArgumentException ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(response);
+            }
+        }
+
+        public async static Task<IResult> AddTicket(IRepository<Ticket> repository,
+            [FromHeader(Name = "customerId")] int customerId,
+            [FromHeader(Name = "screeningId")] int screeningId,
+            [FromBody] AddTicketDTO ticketDTO, 
+            IMapper mapper)
+        {
+            ServiceResponse<GetTicketDTO> response = new();
+            try
+            {
+                Ticket ticket = new();
+                ticket = mapper.Map<Ticket>(ticketDTO)!;
+                ticket.ScreeningId = screeningId;
+                ticket.CustomerId = customerId;
+                ticket = await repository.Add(ticket);
+                response.Data = mapper.Map<GetTicketDTO>(ticket);
+                return TypedResults.Ok(response);
+            } catch (ArgumentException ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(response);
+            }
+        }
+
+        public async static Task<IResult> GetTicket(IRepository<Ticket> repository,
+            [FromHeader(Name = "customerId")] int customerId,
+            [FromHeader(Name = "screeningId")] int screeningId,
+            IMapper mapper)
+        {
+            ServiceResponse<List<GetTicketDTO>> response = new();
+            try
+            {
+                List<Ticket> tickets = await repository.GetAll();
+                List<GetTicketDTO> getTicketDTOs = tickets
+                    .Where(t => t.CustomerId == customerId && t.ScreeningId == screeningId)
+                    .Select(mapper.Map<GetTicketDTO>)
+                    .ToList()!;
+                response.Data = getTicketDTOs;
+                return TypedResults.Ok(response);
+            } catch (ArgumentException ex)
             {
                 response.Success = false;
                 response.Message = ex.Message;
