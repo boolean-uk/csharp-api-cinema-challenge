@@ -11,6 +11,9 @@ namespace api_cinema_challenge.Models
         [Column("custommer_id")]
         public int Id { get; set; }
 
+        [Column("name")]
+        public string Name { get; set; }
+
         [Column("email")]
         public string Email { get; set; }
 
@@ -24,7 +27,7 @@ namespace api_cinema_challenge.Models
         public DateTime? UpdatedAt { get; set;}
 
         [Column("tickets")]
-        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 
     }
 }

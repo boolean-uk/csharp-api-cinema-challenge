@@ -16,6 +16,12 @@ namespace api_cinema_challenge.Models
         [Column("rating")]
         public string Rating { get; set; }
 
+        [Column("description")]
+        public string Description { get; set; }
+
+        [Column("runtime")]
+        public int Runtime { get; set; }
+
         [Column("created_at", TypeName = "Date")]
         public DateTime CreatedAt { get; set; }
 

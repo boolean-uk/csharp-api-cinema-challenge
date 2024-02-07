@@ -2,8 +2,8 @@
 {
     public class ServiceResponse<T>
     {
-        public bool Status { get; set; }
+        public string Status { get; set; }
         public T Data { get; set; }
-        public string Messenge { get; set; }   
+        //public string Messenge { get; set; }   
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using api_cinema_challenge.Seeder;
 
 namespace api_cinema_challenge.Data
 {
@@ -25,9 +26,17 @@ namespace api_cinema_challenge.Data
         {
            
             // Add many to many relationship between screening and custommer in ticket:
-            modelBuilder.Entity<Ticket>().HasKey(a => new { a.ScreeningId, a.CustommerId });
+            modelBuilder.Entity<Ticket>().HasKey(a => new { a.ScreeningId, a.CustommerId, a.CreatedAt });
             // Add one to many relationship between custommer and ticket:
             modelBuilder.Entity<Custommer>().HasMany(t => t.Tickets).WithOne(c => c.Custommer).HasForeignKey(t => t.CustommerId);
+
+            //Seeding: 
+            Seeders seeder = new Seeders();
+
+            modelBuilder.Entity<Custommer>().HasData(seeder.custommers);
+            modelBuilder.Entity<Movie>().HasData(seeder.movies);
+            modelBuilder.Entity<Screening>().HasData(seeder.screenings);
+            modelBuilder.Entity<Ticket>().HasData(seeder.tickets);
 
         }
 
