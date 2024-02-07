@@ -1,7 +1,9 @@
 ﻿using api_cinema_challenge.Application.Models;
 using api_cinema_challenge.Infrastructure;
 using api_cinema_challenge.Presentation.DTOs.Movies;
+using api_cinema_challenge.Presentation.DTOs.Screenings;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Presentation.Endpoints
 {
@@ -16,6 +18,10 @@ namespace api_cinema_challenge.Presentation.Endpoints
             group.MapPost("/", Add);
             group.MapDelete("/{id}", Delete);
             group.MapPut("/{id}", Put);
+
+            // Screening
+            group.MapPost("/{movieId}/screenings", AddScreening);
+            group.MapGet("/{id}/screenings", GetScreenings);
         }
 
         public static async Task<IResult> Get(IRepository<Movie> repository, int id, IMapper mapper)
@@ -109,6 +115,48 @@ namespace api_cinema_challenge.Presentation.Endpoints
                 response.Success = false;
                 response.Message = ex.Message;
                 return TypedResults.BadRequest(response);
+            }
+        }
+
+        public static async Task<IResult> AddScreening(IRepository<Screening> repository, 
+            [FromBody] AddScreeningDTO screeningDTO,
+            [FromHeader] int id,
+            IMapper mapper)
+        {
+            ServiceResponse<GetScreeningDTO> response = new();
+            try
+            {
+                Screening screening = new();
+                screening = mapper.Map<Screening>(screeningDTO)!;
+                screening.MovieId = id;
+                screening = await repository.Add(screening);
+                response.Data = mapper.Map<GetScreeningDTO>(screening);
+                return TypedResults.Created(nameof(AddScreening), response);
+            } catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return TypedResults.BadRequest(response);
+            }
+        }
+
+        public static async Task<IResult> GetScreenings(IRepository<Screening> repository, int id, IMapper mapper)
+        {
+            ServiceResponse<List<GetScreeningDTO>> response = new();
+            try
+            {
+                List<Screening> screenings = await repository.GetAll();
+                List<GetScreeningDTO> screeningDTOs = screenings
+                    .Where(s => s.MovieId == id)
+                    .Select(mapper.Map<GetScreeningDTO>)
+                    .ToList()!;
+                response.Data = screeningDTOs;
+                return TypedResults.Ok(response);
+            } catch (ArgumentException ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return TypedResults.NotFound(response);
             }
         }
     }
