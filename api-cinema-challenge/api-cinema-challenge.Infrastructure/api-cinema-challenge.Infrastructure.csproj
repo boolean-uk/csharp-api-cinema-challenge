@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>api_cinema_challenge.Infrastructure</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\api-cinema-challenge.Application\api-cinema-challenge.Application.csproj" />
+    <ProjectReference Include="..\api-cinema-challenge.Data\api-cinema-challenge.Data.csproj" />
+  </ItemGroup>
+
+</Project>

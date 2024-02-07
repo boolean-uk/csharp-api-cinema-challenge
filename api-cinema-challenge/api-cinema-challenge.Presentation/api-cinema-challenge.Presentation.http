@@ -1,0 +1,6 @@
+@api_cinema_challenge.Presentation_HostAddress = http://localhost:5210
+
+GET {{api_cinema_challenge.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
