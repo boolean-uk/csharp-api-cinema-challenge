@@ -11,7 +11,6 @@ namespace api_cinema_challenge.Data
             : base(options)
         {
             _configuration = configuration;
-            this.Database.EnsureCreated();
         }
 
         public DbSet<Movie> Movies { get; set; }

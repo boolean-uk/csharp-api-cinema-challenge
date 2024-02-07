@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+
+WORKDIR /src
+
+COPY ["api-cinema-challenge/api-cinema-challenge.csproj", "./api-cinema-challenge/"]
+RUN dotnet restore "api-cinema-challenge/api-cinema-challenge.csproj"
+
+COPY . ./
+WORKDIR "/src/api-cinema-challenge"
+RUN dotnet build "api-cinema-challenge.csproj" -c Release -o /app/build
+
+FROM build-env AS publish
+RUN dotnet publish "api-cinema-challenge.csproj" -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "api-cinema-challenge.dll"]
+
+EXPOSE 5059
+EXPOSE 7195

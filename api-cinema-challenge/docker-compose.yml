@@ -1,0 +1,42 @@
+version: "3.4"
+
+services:
+  api_cinema_challenge:
+    image: api_cinema_challenge
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5059:5059"
+      - "7195:7195"
+    networks:
+      - api_cinema_challenge-network
+    depends_on:
+      cinema_challenge.database:
+        condition: service_healthy
+  cinema_challenge.database:
+    container_name: "cinema_challenge.database"
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ctatftqt
+      POSTGRES_USER: ctatftqt
+      POSTGRES_PASSWORD: FGBToeC5o7nIfgt61mQgqqmb2tGVcBx3
+    ports:
+      - 5432:5432
+    networks:
+      - api_cinema_challenge-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "ctatftqt", "-U", "ctatftqt"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  api_cinema_challenge-network:
+    driver: bridge

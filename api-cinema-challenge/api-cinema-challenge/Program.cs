@@ -40,5 +40,5 @@ app.ConfigureSeatEndpoint();
 app.ConfigureTicketEndpoint();
 app.ConfigureScreenEndpoint();
 
-app.UseHttpsRedirection();
+app.ApplyProjectMigrations();
 app.Run();
