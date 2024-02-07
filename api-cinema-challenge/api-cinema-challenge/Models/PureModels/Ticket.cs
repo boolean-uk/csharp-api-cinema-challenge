@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using api_cinema_challenge.Models.JunctionModels;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.PureModels
@@ -13,6 +14,7 @@ namespace api_cinema_challenge.Models.PureModels
         [Column("customer_id")]
         [ForeignKey("CustomerId")]
         public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
 
         [Column("screening_id")]
         [ForeignKey("ScreeningId")]
@@ -20,5 +22,12 @@ namespace api_cinema_challenge.Models.PureModels
 
         [Column("number_of_seats")]
         public int NumberOfSeats { get; set; }
+
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set;}
+
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; set;}
+
     }
 }

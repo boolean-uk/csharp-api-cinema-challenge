@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using api_cinema_challenge.Models.JunctionModels;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.PureModels
@@ -27,5 +28,8 @@ namespace api_cinema_challenge.Models.PureModels
 
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set;}
+
+        [ForeignKey("CustomerId")]
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

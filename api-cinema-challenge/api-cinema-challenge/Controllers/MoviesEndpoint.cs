@@ -49,7 +49,7 @@ namespace api_cinema_challenge.Controllers
             return TypedResults.Ok(payload);
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> PostMovie(IRepository<Movie> repo, MovieInputDTO moviePost)
         {
 
@@ -66,10 +66,10 @@ namespace api_cinema_challenge.Controllers
 
             MovieDTO movieOut = new MovieDTO(movie.MovieId, movie.Title, movie.Rating, movie.Description, movie.RuntimeMinutes, movie.CreatedAt, movie.UpdatedAt);
             Payload<MovieDTO> payload = new Payload<MovieDTO>(movieOut);
-            return TypedResults.Ok(payload);
+            return TypedResults.Created($"/{movieOut.MovieId}", payload);
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> PutMovie(IRepository<Movie> repo, int id, MovieInputDTO moviePut)
         {
@@ -94,7 +94,7 @@ namespace api_cinema_challenge.Controllers
 
             MovieDTO movieOut = new MovieDTO(movie.MovieId, movie.Title, movie.Rating, movie.Description, movie.RuntimeMinutes, movie.CreatedAt, movie.UpdatedAt);
             Payload<MovieDTO> payload = new Payload<MovieDTO>(movieOut);
-            return TypedResults.Ok(payload);
+            return TypedResults.Created($"/{movieOut.MovieId}", payload);
         }
 
 

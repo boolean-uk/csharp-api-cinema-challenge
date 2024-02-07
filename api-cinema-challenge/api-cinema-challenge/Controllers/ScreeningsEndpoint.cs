@@ -48,7 +48,7 @@ namespace api_cinema_challenge.Controllers
             return TypedResults.Ok(payload);
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> PostScreening(IRepository<Screening> repo, ScreeningInputDTO screeningPost)
         {
 
@@ -65,10 +65,10 @@ namespace api_cinema_challenge.Controllers
 
             ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.Created, screening.Updated);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
-            return TypedResults.Ok(payload);
+            return TypedResults.Created($"/{screeningOut.ScreeningId}", payload);
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> PutScreening(IRepository<Screening> repo, int id, ScreeningInputDTO screeningPut)
         {
@@ -94,7 +94,7 @@ namespace api_cinema_challenge.Controllers
 
             ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.Created, screening.Updated);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
-            return TypedResults.Ok(payload);
+            return TypedResults.Created($"/{screeningOut.ScreeningId}",payload);
         }
 
 

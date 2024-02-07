@@ -20,10 +20,10 @@ namespace api_cinema_challenge.Models.PureModels
         public DateTime Starts { get; set; }
 
         [Column("created_at")]
-        public DateTime Created { get; set;}
+        public DateTime CreatedAt { get; set;}
 
         [Column("updated_at")]
-        public DateTime Updated { get; set;}
+        public DateTime UpdatedAt { get; set;}
 
         [Column("movie_id")]
         [ForeignKey("MovieId")]
