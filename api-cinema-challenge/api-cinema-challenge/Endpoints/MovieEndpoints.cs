@@ -15,6 +15,7 @@ namespace api_cinema_challenge.Endpoints
             surgeryGroup.MapGet("/", GetMovies);
             surgeryGroup.MapPost("/", PostMovie);
             surgeryGroup.MapPut("/{id}", PutMovie);
+            surgeryGroup.MapDelete("/{id}", DeleteMovie);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetMovies(IRepository repository)
@@ -42,6 +43,13 @@ namespace api_cinema_challenge.Endpoints
         {
             Payload<MovieDTO> payload = new Payload<MovieDTO>();
             payload.data = CreateMovieDTO(await repository.UpdateMovie(input,id));
+            return TypedResults.Ok(payload);
+        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> DeleteMovie(IRepository repository, int id)
+        {
+            Payload<MovieDTO> payload = new Payload<MovieDTO>();
+            payload.data = CreateMovieDTO(await repository.DeleteMovie(id));
             return TypedResults.Ok(payload);
         }
 
