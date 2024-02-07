@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.DTOs.Custommer;
 using api_cinema_challenge.DTOs.Movie;
+using api_cinema_challenge.DTOs.Screening;
 using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -85,41 +86,44 @@ namespace api_cinema_challenge.Repository
             }
             else
             {
-               Movie movie = new Movie()
+                Movie movie = new Movie()
                 {
-                   Title = newMovie.Title,
-                   Rating = newMovie.Rating,
-                   Description = newMovie.Description,
-                   Runtime = newMovie.Runtime,
+                    Title = newMovie.Title,
+                    Rating = newMovie.Rating,
+                    Description = newMovie.Description,
+                    Runtime = newMovie.Runtime,
                     CreatedAt = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz")),
-                   
+
                 };
                 await _databaseContext.Movies.AddAsync(movie);
                 await _databaseContext.SaveChangesAsync();
 
-                if (newMovie.Screenings != null) {
+                if (newMovie.Screenings != null)
+                {
                     // Find screening 
                     foreach (var item in newMovie.Screenings)
                     {
-                        int screenNumber =  _databaseContext.Screenings.FirstOrDefault(s => s.ScreenNumber == item.ScreenNumber).ScreenNumber;      //LOL, WHY?
+                        int screenNumber = _databaseContext.Screenings.FirstOrDefault(s => s.ScreenNumber == item.ScreenNumber).ScreenNumber;      //LOL, WHY?
                         // Add movie to that screen number
-                        Screening newScreening = new Screening() { ScreenNumber = screenNumber, 
+                        Screening newScreening = new Screening()
+                        {
+                            ScreenNumber = screenNumber,
                             Capacity = item.Capacity,
-                            StartAt = item.StartAt, 
+                            StartAt = item.StartAt,
                             MovieId = movie.Id,
                             CreatedAt = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz"))
                         };
 
                         await _databaseContext.Screenings.AddAsync(newScreening);
-                      
+
                     };
 
                     await _databaseContext.SaveChangesAsync();
                 }
 
-                
+
                 return movie;
-                
+
             }
         }
 
@@ -128,7 +132,7 @@ namespace api_cinema_challenge.Repository
         public async Task<Movie> DeleteMovie(int id)
         {
 
-           Movie movie = _databaseContext.Movies.FirstOrDefault(m => m.Id == id);
+            Movie movie = _databaseContext.Movies.FirstOrDefault(m => m.Id == id);
             if (movie == null)
             {
                 throw new Exception("Not found");
@@ -152,7 +156,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Movie> UpdateMovie(int id, InMovieDTO2 newMovie)
         {
-           Movie movie = _databaseContext.Movies.FirstOrDefault(m => m.Id == id);
+            Movie movie = _databaseContext.Movies.FirstOrDefault(m => m.Id == id);
 
             if (movie == null)
             {
@@ -173,5 +177,52 @@ namespace api_cinema_challenge.Repository
             };
 
         }
+
+
+        // SCREENING:
+        public async Task<IEnumerable<Screening>> GetScreeningMovies(int id)
+        {
+            List<Screening> screenings = await _databaseContext.Screenings.Where(s => s.MovieId == id).ToListAsync();
+
+            if (screenings == null) throw new Exception("Not found");
+
+            return screenings;
+        }
+
+
+        public async Task<Screening> AddScreening(int id, InScreeningDTO newScreening)
+        {
+            int movieID =  _databaseContext.Movies.FirstOrDefault(m => m.Id == id).Id;
+
+            if (movieID == 0) {
+                throw new Exception("Not found");
+            }
+
+           /* else if (_databaseContext.Screenings.Any(s => s.ScreenNumber != newScreening.ScreenNumber))
+            {
+                throw new BadHttpRequestException("Same sacreen");
+            }*/
+
+            else
+            {                                                                                                                           // Add movie to that screen number
+                Screening screening = new Screening()
+                {
+                    ScreenNumber = newScreening.ScreenNumber,
+                    Capacity = newScreening.Capacity,
+                    StartAt = newScreening.StartAt,
+                    MovieId = movieID,
+                    UpdatedAt = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz"))
+
+            };
+
+                await _databaseContext.Screenings.AddAsync(screening);
+                await _databaseContext.SaveChangesAsync();
+                return screening;
+            };
+
+          
+        }
+            
+        
     }
 }

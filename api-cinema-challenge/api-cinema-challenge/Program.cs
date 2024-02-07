@@ -22,7 +22,7 @@ if (app.Environment.IsDevelopment())
 
 app.ConfigureCustommerEndpoint();
 app.ConfigureMovieEndpoint();
-//app.ConfigureScreeningEndpoint();
+//app.ConfigureScreenningsEndpoint();
 //app.ConfigureTicketEndpoint();
 
 app.UseHttpsRedirection();

@@ -1,6 +1,7 @@
 ﻿
 using api_cinema_challenge.DTOs.Custommer;
 using api_cinema_challenge.DTOs.Movie;
+using api_cinema_challenge.DTOs.Screening;
 using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.Repository
@@ -18,5 +19,9 @@ namespace api_cinema_challenge.Repository
         Task<Movie> DeleteMovie(int id);
         Task<IEnumerable<Movie>> GetMovies();
         Task<Movie> UpdateMovie(int id, InMovieDTO2 newMovie);
+
+        // Screening
+        Task<IEnumerable<Screening>> GetScreeningMovies(int id);
+        Task<Screening> AddScreening(int id, InScreeningDTO newScreening);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.DTOs.Custommer;
 using api_cinema_challenge.DTOs.Movie;
+using api_cinema_challenge.DTOs.Screening;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using api_cinema_challenge.ServiceResponse;
@@ -18,6 +19,9 @@ namespace api_cinema_challenge.Endpoints
             movieGroup.MapPut("/{id}", UpdateMovie);
             movieGroup.MapDelete("/{id}", DeleteMovie);
 
+            // For screening:
+            movieGroup.MapGet("/{id}/screenings", GetScreenings);
+            movieGroup.MapPost("/{id}/screenings", CreateScreening);
 
 
         }
@@ -188,6 +192,109 @@ namespace api_cinema_challenge.Endpoints
             }
         }
 
+        // FOR SCREENING:
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetScreenings(IRepository repository, int id)
+        {
+
+            try { 
+            //Soruce:
+            var source = await repository.GetScreeningMovies(id);
+
+            //Target & Transferring:
+
+            List<OutScreeningDTO> outData = source.Select(s => new OutScreeningDTO
+            {
+                Id = s.Id,
+                ScreenNumber = s.ScreenNumber,
+                Capacity = s.Capacity,
+                StartAt = s.StartAt,
+                CreatedAt = s.CreatedAt,
+                UpdatedAt = s.UpdatedAt
+
+            }).ToList();
+
+            // Use the wrapper class to create a consisten response:
+            var response = new ServiceResponse<List<OutScreeningDTO>>
+            {
+                Data = outData,
+                Status = "Success"
+            };
+
+            return TypedResults.Ok(response);
+            }
+
+            catch (Exception ex)
+
+            {
+                var response = new ServiceResponse<object>
+                {
+
+                    Status = "Unsuccess"
+                };
+                return TypedResults.NotFound(response);
+
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> CreateScreening(IRepository repository,int id, [FromBody] InScreeningDTO newScreening)
+        {
+            try
+            {
+                //Soruce:
+                Screening source = await repository.AddScreening(id, newScreening);
+
+                // Transferring:
+                OutScreeningDTO outData = new OutScreeningDTO
+                {
+                    Id = source.Id,
+                    ScreenNumber = source.ScreenNumber,
+                    Capacity = source.Capacity,
+                    StartAt = source.StartAt,
+                    CreatedAt = source.CreatedAt,
+                    UpdatedAt = source.UpdatedAt
+                };
+
+                //Reponse:
+                var response = new ServiceResponse<OutScreeningDTO>
+                {
+                    Data = outData,
+                    Status = "Success"
+                };
+
+                return TypedResults.Created(nameof(CreateMovie), response);
+            }
+
+          /*  catch (BadHttpRequestException ex)
+            {//Reponse:
+                var response = new ServiceResponse<object>
+                {
+                   
+                    Status = "Unsuccess"
+                };
+
+                return TypedResults.BadRequest(response);
+            }*/
+
+            catch (Exception ex)
+
+            {
+                var response = new ServiceResponse<object>
+                {
+
+                    Status = "Unsuccess"
+                };
+                return TypedResults.NotFound(response);
+
+            }
+
+
+        }
 
 
     }
