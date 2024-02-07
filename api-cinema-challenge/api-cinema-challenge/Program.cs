@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddDbContext<CinemaContext>(
+
+    opt => { opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+    });
+
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -32,12 +37,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.ApplyProjectMigrations();
+
 }
 
 app.UseHttpsRedirection();
 app.ConfigureMovieEndpoints();
 app.ConfigureCustomerEndpoints();
 app.ConfigureCinemaEndpoints();
+app.ApplyProjectMigrations();
 app.Run();
 
 public partial class Program { }

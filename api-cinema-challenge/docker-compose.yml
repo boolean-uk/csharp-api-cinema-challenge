@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+  api-cinema-challenge:
+    image: ${DOCKER_REGISTRY-}apicinemachallenge
+    build:
+      context: .
+      dockerfile: api-cinema-challenge/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"   
+    networks:
+      - cinema-network
+    depends_on:
+      cinema.database:
+        condition: service_healthy
+  cinema.database:
+    container_name: "cinema.database" # host url for my postgres db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    networks:
+      - cinema-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  cinema-network:
+    driver: bridge
