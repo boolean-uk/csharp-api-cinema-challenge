@@ -38,6 +38,12 @@ namespace api_cinema_challenge.Repository
         Task<Screening> CreateScreening(int screenNumber, int capacity, DateTime datetime, int movieId);
         Task<IEnumerable<Screening>> GetAllScreenings();
 
+
+        //****************** Ticket ****************************************
+        Task<Ticket> CreateTicket(int numSeat,int customerId, int screeningId, DateTime Date);
+
+        Task<IEnumerable<Ticket>> GetAllTickets();
+
         void SaveChanges();
 
     }

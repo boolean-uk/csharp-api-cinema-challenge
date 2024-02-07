@@ -20,8 +20,10 @@ namespace api_cinema_challenge.Models
         [Column("run_time")]
         public int Runtime { get; set; }
 
-        [Column("created")]
+        [Column("created_time")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        [Column("utdated_time")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<Screening> Screenings { get; set;} = new List<Screening>();
 

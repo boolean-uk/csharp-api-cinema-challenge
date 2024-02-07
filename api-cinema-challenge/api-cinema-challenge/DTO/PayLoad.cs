@@ -2,6 +2,7 @@
 
 using api_cinema_challenge.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.DTO
 {
@@ -60,5 +61,15 @@ namespace api_cinema_challenge.DTO
 
         }
 
+    }
+
+    public record TicketPayload
+    {
+        public int NumSeat { get; set; }
+
+        public TicketPayload(int numSeat) 
+        {
+            NumSeat = numSeat;
+        }
     }
 }

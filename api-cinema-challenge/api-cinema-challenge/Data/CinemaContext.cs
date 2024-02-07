@@ -27,9 +27,24 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Screening>().HasOne(s => s.Movie)
+            modelBuilder.Entity<Screening>()
+                .HasOne(s => s.Movie)
                 .WithMany(m => m.Screenings)
                 .HasForeignKey(s => s.MovieId);
+
+
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Customer)
+                .WithMany(c => c.Tickets)
+                .HasForeignKey(t => t.customerId);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Screening)
+                .WithMany(s => s.Tickets)
+                .HasForeignKey(t => t.screeningId);
+
+
 
 
             Seeder seeder = new Seeder();
@@ -37,6 +52,7 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
+            modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
 
             //modelBuilder.Entity<Customer>().HasData(
             //   new Customer { Id = 1, Name = "Robert Ole", Email = "Robert_Ole@gmail.com", Phone = "+4748371611" },
@@ -61,5 +77,7 @@ namespace api_cinema_challenge.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

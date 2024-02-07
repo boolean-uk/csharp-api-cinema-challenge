@@ -33,6 +33,8 @@ namespace api_cinema_challenge.Models
         //public DateTime EndsAt { get; set;}
         public Movie? Movie { get; set; }
 
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+
 
 
     }

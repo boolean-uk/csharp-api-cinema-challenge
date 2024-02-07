@@ -210,134 +210,46 @@ namespace api_cinema_challenge.Repository
             _db.SaveChanges();
         }
 
-      
+
+        //***************************** Ticket *****************************
+        public async Task<Ticket> CreateTicket(int numSeat, int customerId, int screeningId, DateTime Date)
+        {
+            if (numSeat <= 0)
+            {
+                return null;
+            }
+
+            Ticket ticket = new Ticket
+            {
+                numSeat = numSeat,
+                customerId = customerId,
+                screeningId = screeningId,
+                CreatedAt = Date,
+                UpdatedAt = Date
+                
+            };
+
+            await _db.Tickets.AddAsync(ticket);
+
+            await _db.SaveChangesAsync();
+            return ticket;
+        }
+
+        public async Task<IEnumerable<Ticket>> GetAllTickets()
+        {
+            return await _db.Tickets.ToListAsync();
+        }
 
 
 
 
 
-        //*****************************   Customer *****************************
-        //****************************** Create a new customer *******************
+
+
+        
+
+
 
 
     }
 }
-
-
-
-
-
-
-/*
-  public Task<Movie> CreateMovie(string title, string rating, string description, int runtime)
-        {
-            throw new NotImplementedException();
-        }
-            public async Task<Customer> CreateCustomer(Customer customer)
-        {
-            await _db.AddAsync(customer);
-            _db.SaveChanges();  
-            return customer;
-        }
-
-
-        // ***************************** get all customers **********************
-        public async Task<IEnumerable<Customer>> GetAllCustomer()
-        {
-            return await _db.Customers.ToListAsync();
-        }
-
-
-
-        // ***************************** get all customers **********************
-        public async Task<Customer> UpdateCustomer(int id, CustomerDto customer)
-        {
-            var found = await _db.Customers.FirstOrDefaultAsync(x => x.Id == id);
-            if (found == null)
-            {
-                throw new Exception("Customer with the given Id does not exist");
-            }
-
-            found.Name = customer.Name;
-            found.Email = customer.Email;
-            found.Phone = customer.Phone;
-            _db.SaveChanges();
-            return found;
-            
-        }
-
-        // ***************************** Delete a customer **********************
-
-        public async Task<Customer> DeleteCustomer(int id)
-        {
-            var found = await _db.Customers.FirstOrDefaultAsync(x => x.Id == id);
-            if (found == null)
-            {
-                throw new Exception($"customer with the {id} does not exist");
-
-            }
-
-            _db.Remove(found);
-            _db.SaveChanges();
-
-            return found;
-            
-
-
-        }
-        //************************ Movie ***********************
-        //*********************** Create movie *******************
-        public Task<Movie> CreateMovie(Movie movie)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Movie>> GetAllMovies()
-        {
-            return await _db.Movies.ToListAsync();
-        }
-
-        public async Task<Movie> UpdateMovie(int id, MovieDto movie)
-        {
-            var found = await _db.Movies.FirstOrDefaultAsync(x => x.Id == id);
-            if (found == null)
-            {
-                throw new Exception($"Movie with the id: {id} does not exist");
-            };
-
-            found.Title = movie.Title;
-            found.Rating = movie.Rating;
-            found.Description = movie.Description;
-            found.Runtime = movie.Runtime;
-
-            _db.SaveChanges();
-            return found;
-        }
-
-        public async Task<Movie> DeleteMovie(int id)
-        {
-            var found = await _db.Movies.FirstOrDefaultAsync(m => m.Id == id);
-            if(found == null)
-            { 
-                throw new Exception("Movie with the given id does not exist");
-            }
-
-            _db.Movies.Remove(found);
-            _db.SaveChanges();
-            return found;
-        }
-
-
-        //************************** Screening *************************************
-
-        public async Task<Screening> CreateScreening(Screening screening)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Screening>> GetAllScreenings()
-        {
-            return await _db.Screenings.ToListAsync
-
-
-*/

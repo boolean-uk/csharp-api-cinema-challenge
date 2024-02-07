@@ -50,12 +50,14 @@ namespace exercise.webapi.Data
         private List<Customer> _customers = new List<Customer>();
         private List<Movie> _movies = new List<Movie>();
         private List<Screening> _screenings = new List<Screening>();
+        private List<Ticket> _tickets = new List<Ticket>();
 
         public Seeder()
         {
             Random customerRandom = new Random();
             Random movieRandom = new Random();
             Random screeningRandom = new Random();
+            Random ticketRandom = new Random();
 
             // Seed Customers
             for (int i = 1; i <= 250; i++)
@@ -91,11 +93,27 @@ namespace exercise.webapi.Data
                 screening.StartsAt = DateTime.UtcNow.AddDays(screeningRandom.Next(1, 30));
                 _screenings.Add(screening);
             }
+
+            // Seed Tickets
+            for (int l = 1; l <= 100; l++) // Adjust the number of tickets as needed
+            {
+                Ticket ticket = new Ticket();
+                ticket.Id = l;
+                ticket.numSeat = ticketRandom.Next(1, 200);
+                ticket.customerId = _customers[ticketRandom.Next(_customers.Count)].Id;
+                ticket.screeningId = _screenings[ticketRandom.Next(_screenings.Count)].Id;
+                ticket.CreatedAt = DateTime.UtcNow.AddDays(ticketRandom.Next(-30, 0)); 
+                _tickets.Add(ticket);
+            }
+
+
         }
 
         public List<Customer> Customers { get { return _customers; } }
         public List<Movie> Movies { get { return _movies; } }
         public List<Screening> Screenings { get { return _screenings; } }
+
+        public List<Ticket> Tickets { get { return _tickets; } }
 
         private string GenerateRandomString()
         {
