@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models.DatabaseModels;
+using api_cinema_challenge.Models.Dto;
 using api_cinema_challenge.Models.Dto.GenericDto;
 using api_cinema_challenge.Models.Input;
 using api_cinema_challenge.Repository;
@@ -46,8 +47,15 @@ namespace api_cinema_challenge.Endpoint
         public static async Task<IResult> GetMovies(IRepository<Movie> repository)
         {
             var result = await repository.GetAll();
-            Payload<IEnumerable<Movie>> payload = new Payload<IEnumerable<Movie>>();
-            payload.data = result;
+
+            List<MovieDto> movieDtos = new List<MovieDto>();
+            foreach (var item in result)
+            {
+                MovieDto movieDto = MovieDtoFactory(item);
+                movieDtos.Add(movieDto);
+            }
+            Payload<List<MovieDto>> payload = new Payload<List<MovieDto>>();
+            payload.data = movieDtos;
             return TypedResults.Ok(payload);
         }
 
@@ -111,9 +119,46 @@ namespace api_cinema_challenge.Endpoint
         public static async Task<IResult> GetScreenings(IRepository<Screening> repository, int id)
         {
             var result = await repository.GetAll();
-            Payload<IEnumerable<Screening>> payload = new Payload<IEnumerable<Screening>>();
-            payload.data = result.Where(p=>p.MovieId == id);
+
+            List<ScreeningDto> screeningDtos = new List<ScreeningDto>();
+            foreach (var item in result.Where(p => p.MovieId == id))
+            {
+                ScreeningDto screeningDto = ScreeningDtoFactory(item);
+                screeningDtos.Add(screeningDto);
+            }
+            Payload<List<ScreeningDto>> payload = new Payload<List<ScreeningDto>>();
+            payload.data = screeningDtos;
             return TypedResults.Ok(payload);
+        }
+
+
+
+        private static MovieDto MovieDtoFactory(Movie input)
+        {
+            MovieDto movieDto = new MovieDto()
+            {
+                Id = input.Id,
+                Title = input.Title,
+                Rating = input.Rating,
+                Description = input.Description,
+                Runtime = input.Runtime,
+                CreatedAt = input.CreatedAt,
+                UpdateddAt = input.UpdateddAt
+            };
+            return movieDto;
+        }
+        private static ScreeningDto ScreeningDtoFactory(Screening input)
+        {
+            ScreeningDto screeningDto = new ScreeningDto()
+            {
+                Id = input.Id,
+                ScreenNumber = input.ScreenNumber,
+                Capacity = input.Capacity,
+                StartsAt= input.StartsAt,
+                CreatedAt = input.CreatedAt,
+                UpdateddAt = input.UpdateddAt
+            };
+            return screeningDto;
         }
     }
 }
