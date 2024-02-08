@@ -6,13 +6,23 @@ namespace api_cinema_challenge.Repository
     public class Repository<T> : IRepository<T> where T: BaseEntity
     {
         private DbContext _db;
+        private DbSet<T> _table;
         public Repository(DbContext db) 
         {
             _db = db;
+            _table = _db.Set<T>();
         }
         public async Task<T> Create(T entity)
         {
-            throw new NotImplementedException();
+            entity.Id = _table.Max(x => x.Id) + 1;
+            entity.CreatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            await _db.AddAsync(entity);
+            await _db.SaveChangesAsync();
+            
+            return entity;
+
         }
 
 
@@ -21,14 +31,22 @@ namespace api_cinema_challenge.Repository
             return await _db.Set<T>().ToListAsync();
         }
 
-        public Task<T> Update(T entity)
+        public async Task<T> Update(T entity)
         {
-            throw new NotImplementedException();
+            _table.Attach(entity);
+            entity.UpdatedAt = DateTime.UtcNow;
+            _db.Entry(entity).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+            return entity;
         }
 
-        public Task<T> Delete(int id)
+        public async Task<T> Delete(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _table.FindAsync(id);
+            _table.Remove(entity);
+            await _db.SaveChangesAsync();
+
+            return entity;
         }
 
         public void Save()
