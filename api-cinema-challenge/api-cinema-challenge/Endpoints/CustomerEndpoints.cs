@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.DataClasses;
 using api_cinema_challenge.Models.DTO;
 using api_cinema_challenge.Models.NewFolder;
 using api_cinema_challenge.Repository;
@@ -16,7 +17,9 @@ namespace api_cinema_challenge.Endpoints
             customerGroup.MapPost("/", PostCustomer);
             customerGroup.MapPut("/{id}", PutCustomer);
             customerGroup.MapDelete("/{id}", DeleteCustomer);
-            
+            customerGroup.MapGet("/{customerID}/screening/{screeningId}", GetTickets);
+            customerGroup.MapPost("/{customerID}/screening/{screeningId}", PostTicket);
+
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetCustomers(ICustomerRepository repository)
@@ -53,7 +56,29 @@ namespace api_cinema_challenge.Endpoints
             payload.data = CreateCustomerDTO(await repository.DeleteCustomer(id));
             return TypedResults.Ok(payload);
         }
-        
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetTickets(ICustomerRepository repository, int customerid, int screeningid)
+        {
+            Payload<IEnumerable<TicketDTO>> payload = new Payload<IEnumerable<TicketDTO>>();
+            List<TicketDTO> ticketDTOs = new List<TicketDTO>();
+
+            var tickets = await repository.GetTicket(customerid,screeningid);
+            foreach (var ticket in tickets)
+            {
+                ticketDTOs.Add(CreateTicketDTO(ticket));
+            }
+            payload.data = ticketDTOs;
+            return TypedResults.Ok(payload);
+        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> PostTicket(ICustomerRepository repository, int customerid,int screeningid, TicketInputDTO input)
+        {
+            Payload<TicketDTO> payload = new Payload<TicketDTO>();
+            payload.data = CreateTicketDTO(await repository.CreateTicket(customerid,screeningid,input));
+            return TypedResults.Ok(payload);
+        }
+
 
         public static CustomerDTO CreateCustomerDTO (Customer customer)
         {
@@ -65,6 +90,16 @@ namespace api_cinema_challenge.Endpoints
                 Phone = customer.Phone,
                 CreatedAt = customer.CreatedAt,
                 UpdatedAt = customer.UpdatedAt
+            };
+        }
+        public static TicketDTO CreateTicketDTO(Ticket ticket)
+        {
+            return new TicketDTO
+            {
+                Id = ticket.Id,
+                NumSeats = ticket.NumSeats,
+                CreatedAt = ticket.CreatedAt,
+                UpdatedAt = ticket.UpdatedAt
             };
         }
     }
