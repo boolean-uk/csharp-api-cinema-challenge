@@ -26,7 +26,8 @@ namespace api_cinema_challenge.Data
         {
            
             // Add many to many relationship between screening and custommer in ticket:
-            modelBuilder.Entity<Ticket>().HasKey(a => new { a.ScreeningId, a.CustommerId, a.CreatedAt });
+            //modelBuilder.Entity<Ticket>().HasKey(a => new { a.ScreeningId, a.CustommerId, a.CreatedAt });
+
             // Add one to many relationship between custommer and ticket:
             modelBuilder.Entity<Custommer>().HasMany(t => t.Tickets).WithOne(c => c.Custommer).HasForeignKey(t => t.CustommerId);
 

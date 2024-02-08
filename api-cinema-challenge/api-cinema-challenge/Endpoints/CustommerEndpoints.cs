@@ -20,6 +20,9 @@ namespace api_cinema_challenge.Endpoints
             custommerGroup.MapPut("/{id}", UpdateCustommer);
             custommerGroup.MapDelete("/{id}", DeleteCustommer);
 
+            //TICKET
+            custommerGroup.MapGet("{customerId}/screenings/{screeningId}", GetTickets);
+            custommerGroup.MapPost("{custommerId}/screenings/{screeningId}", BookTicket);
 
 
         }
@@ -187,6 +190,89 @@ namespace api_cinema_challenge.Endpoints
         }
 
 
+
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetTickets(IRepository repository, int custommerId, int screeningId)
+        {
+
+            try { 
+            //Soruce:
+            var source = await repository.GetTickets(custommerId, screeningId);
+
+            //Target & Transferring:
+
+            List<OutTicketDTO> outData = source.Select(c => new OutTicketDTO
+            {
+                Id = c.Id,
+                SeatNumber = c.SeatNumber,
+                CreatedAt = c.CreatedAt,
+                UpdatedAt = c.UpdatedAt           
+
+            }).ToList();
+
+            // Use the wrapper class to create a consisten response:
+            var response = new ServiceResponse<List<OutTicketDTO>>
+            {
+                Data = outData,
+                Status = "Success"
+            };
+
+            return TypedResults.Ok(response);
+            }
+
+            catch (Exception ex)
+            {
+                var response = new ServiceResponse<OutTicketDTO>
+                {
+
+                    Status = "Unsuccess"
+                };
+
+                return TypedResults.NotFound(response);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> BookTicket(IRepository repository, int custommerId, int screeningId, [FromBody] int numSeats)
+        {
+            try
+            {
+                //Soruce:
+                var source = await repository.BookTicket(custommerId, screeningId, numSeats);
+
+                // Transferring:
+               OutTicketDTO outData = new OutTicketDTO
+               {
+                   Id = source.Id,
+                   SeatNumber = source.SeatNumber,
+                   CreatedAt = source.CreatedAt,
+                   UpdatedAt = source.UpdatedAt
+               };
+
+                //Reponse:
+                var response = new ServiceResponse<OutTicketDTO>
+                {
+                    Data = outData,
+                    Status = "Success"
+                };
+
+                return TypedResults.Created(nameof(BookTicket), response);
+            }
+
+            catch (BadHttpRequestException ex)
+            {//Reponse:
+                var response = new ServiceResponse<OutTicketDTO>
+                {
+                    Status = "Unsuccess"
+                };
+
+                return TypedResults.BadRequest(response);
+            }
+
+        }
 
     }
 }

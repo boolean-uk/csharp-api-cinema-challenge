@@ -7,6 +7,7 @@ namespace api_cinema_challenge.Models
     public class Ticket
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ticket_id")]
         public int Id { get; set; }
 

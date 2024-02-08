@@ -150,7 +150,7 @@ namespace api_cinema_challenge.Seeder
             for (int y = 1; y < 20; y++) { 
 
                 Ticket _ticket = new Ticket();
-                _ticket.Id = y;
+                _ticket.Id = y+1;
                 _ticket.SeatNumber = new Random().Next(0, 51);
                 _ticket.CustommerId = new Random().Next(1, 5);
                 _ticket.ScreeningId = new Random().Next(1, 20);

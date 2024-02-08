@@ -192,16 +192,17 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Screening> AddScreening(int id, InScreeningDTO newScreening)
         {
-            int movieID =  _databaseContext.Movies.FirstOrDefault(m => m.Id == id).Id;
+            int movieID = _databaseContext.Movies.FirstOrDefault(m => m.Id == id).Id;
 
-            if (movieID == 0) {
+            if (movieID == 0)
+            {
                 throw new Exception("Not found");
             }
 
-           /* else if (_databaseContext.Screenings.Any(s => s.ScreenNumber != newScreening.ScreenNumber))
-            {
-                throw new BadHttpRequestException("Same sacreen");
-            }*/
+            /* else if (_databaseContext.Screenings.Any(s => s.ScreenNumber != newScreening.ScreenNumber))
+             {
+                 throw new BadHttpRequestException("Same sacreen");
+             }*/
 
             else
             {                                                                                                                           // Add movie to that screen number
@@ -213,16 +214,80 @@ namespace api_cinema_challenge.Repository
                     MovieId = movieID,
                     UpdatedAt = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz"))
 
-            };
+                };
 
                 await _databaseContext.Screenings.AddAsync(screening);
                 await _databaseContext.SaveChangesAsync();
                 return screening;
             };
 
-          
+
         }
-            
+
+        public async Task<IEnumerable<Ticket>> GetTickets(int custommerId, int screeningId)
+        {
+            Custommer custommer = await _databaseContext.Custommers.Include(t => t.Tickets).FirstOrDefaultAsync(c => c.Id == custommerId);
+
+            // If custommerId does not exist
+            if (custommer == null) { throw new Exception("Not found"); }
+
+            else
+            {
+                List<Ticket> tickets = custommer.Tickets.Where(t => t.ScreeningId == screeningId).ToList();
+
+                if (tickets.Count() == 0)
+                {
+                    throw new Exception("Not found");
+                }
+
+                else
+                {
+                    return tickets;
+                }
+            }
+
+        }
+
+        public async Task<Ticket> BookTicket(int custommerId, int screeningId, int numSeats)
+        {
+            Custommer custommer = await _databaseContext.Custommers.Include(t => t.Tickets).FirstOrDefaultAsync(c => c.Id == custommerId);
+
+            /*// Validate input parameters
+            if (customerId <= 0 || screeningId <= 0 || numSeats <= 0)
+            {
+                throw new ArgumentException("Invalid input parameters");
+            }*/
+
+            // If custommerId does not exist
+            if (custommer == null) { throw new Exception("Not found"); }    // //throw new NotFoundException($"Customer with ID {customerId} not found");
         
+
+            else
+            {
+                /*screeningExists = await _databaseContext.Screenings
+        .AnyAsync(s => s.Id == screeningId);*/
+
+                if (await _databaseContext.Screenings.AnyAsync(s => s.Id == screeningId))      
+                {
+                    Ticket newTicket = new Ticket()
+                    {
+                        CustommerId = custommerId,
+                        CreatedAt = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz")),
+                        ScreeningId = screeningId,
+                        SeatNumber = numSeats
+                    };
+
+                    await _databaseContext.Tickets.AddAsync(newTicket);
+                    await _databaseContext.SaveChangesAsync();
+                    return newTicket;
+                }
+
+
+                else
+                {
+                    throw new Exception("Not found");
+                }
+            }
+        }
     }
 }
