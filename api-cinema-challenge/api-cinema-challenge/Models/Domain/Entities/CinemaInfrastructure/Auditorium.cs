@@ -12,5 +12,7 @@ namespace api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure
 
         [Column("name")]
         public string Name { get; set; }
+
+        public ICollection<Seat> Seats { get; set; }
     }
 }

@@ -36,5 +36,7 @@ namespace api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings
 
         [Column("rating")]
         public MovieRating Rating { get; set; }
+
+        public ICollection<Screening> Screenings { get; set; }
     }
 }

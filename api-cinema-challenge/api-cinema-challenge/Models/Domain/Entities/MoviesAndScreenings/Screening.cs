@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
+using api_cinema_challenge.Models.Domain.Junctions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,5 +20,7 @@ namespace api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings
 
         [Column("starts_at")]
         public DateTime StartsAt { get; set; }
+
+        public ICollection<TicketSeat> TicketSeats { get; set; }
     }
 }
