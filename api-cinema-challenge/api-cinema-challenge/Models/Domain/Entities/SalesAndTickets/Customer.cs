@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api_cinema_challenge.Models.Domain.Entities
+namespace api_cinema_challenge.Models.Domain.Entities.SalesAndTickets
 {
     [Table("customers")]
     public class Customer
@@ -19,5 +19,10 @@ namespace api_cinema_challenge.Models.Domain.Entities
         [Column("phone")]
         public string Phone { get; set; }
 
+        [Column("age")]
+        public int Age { get; set; }
+
+        [Column("weight_in_kg")]
+        public int Weight { get; set; }
     }
 }

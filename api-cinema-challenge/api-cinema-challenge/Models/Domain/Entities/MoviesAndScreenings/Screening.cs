@@ -12,11 +12,6 @@ namespace api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("auditoium_id")]
-        [ForeignKey("AuditoriumId")]
-        public int AuditoriumId { get; set; }
-        public Auditorium Auditorium { get; set; }
-
         [Column("movie_id")]
         [ForeignKey("MovieId")]
         public int MovieId { get; set; }

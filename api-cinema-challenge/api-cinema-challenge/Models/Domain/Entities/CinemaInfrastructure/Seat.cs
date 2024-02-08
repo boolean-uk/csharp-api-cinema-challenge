@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure
 {
     [Table("auditorium_seats")]
-    public class AuditoriumSeat
+    public class Seat
     {
-        [Key]
         [Column("id")]
         public int Id { get; set; }
 
@@ -20,5 +19,8 @@ namespace api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure
 
         [Column("seat_number")]
         public int SeatNumber { get; set; }
+
+        [Column("max_weight_in_kg")]
+        public int MaxWeight { get; set; }
     }
 }
