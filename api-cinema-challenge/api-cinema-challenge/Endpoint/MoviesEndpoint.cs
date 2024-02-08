@@ -16,6 +16,9 @@ namespace api_cinema_challenge.Endpoint
             movieGroup.MapGet("/", GetMovies);
             movieGroup.MapPut("/{id}", UpdateMovie);
             movieGroup.MapDelete("/{id}", DeleteMovie);
+
+            movieGroup.MapPost("/{id}/screenings", CreateScreening);
+            movieGroup.MapGet("/{id}/screenings", GetScreenings);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -81,6 +84,36 @@ namespace api_cinema_challenge.Endpoint
             }
             var result = repository.Delete(id);
             return result != null ? TypedResults.Ok(result) : Results.NotFound();
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public static async Task<IResult> CreateScreening(IRepository<Screening> repository, int id, ScreeningInput input)
+        {
+            var screenings = await repository.GetAll();
+            DateTime creationTime = DateTime.UtcNow;
+
+            var entity = new Screening()
+            {
+                Id = (screenings.Count() == 0 ? 0 : screenings.Max(patient => patient.Id) + 1),
+                MovieId = id,
+                ScreenNumber = input.ScreenNumber,
+                Capacity = input.Capacity,
+                StartsAt = input.StartsAt,
+                CreatedAt = creationTime,
+                UpdateddAt = creationTime
+            };
+            repository.Insert(entity);
+            return TypedResults.Created($"/{entity.Id}", entity);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetScreenings(IRepository<Screening> repository, int id)
+        {
+            var result = await repository.GetAll();
+            Payload<IEnumerable<Screening>> payload = new Payload<IEnumerable<Screening>>();
+            payload.data = result.Where(p=>p.MovieId == id);
+            return TypedResults.Ok(payload);
         }
     }
 }
