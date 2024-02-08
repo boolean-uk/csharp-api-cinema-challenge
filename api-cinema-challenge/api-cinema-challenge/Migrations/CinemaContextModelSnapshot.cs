@@ -201,6 +201,10 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("fk_movie_id");
 
+                    b.Property<int>("ScreenNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("screening_screen_number");
+
                     b.Property<DateTime>("StartsAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("screening_starts_at");
@@ -222,6 +226,7 @@ namespace api_cinema_challenge.Migrations
                             Capacity = 30,
                             CreatedAt = new DateTime(2024, 8, 14, 22, 0, 0, 0, DateTimeKind.Utc),
                             MovieId = 1,
+                            ScreenNumber = 1,
                             StartsAt = new DateTime(2024, 9, 24, 22, 0, 0, 0, DateTimeKind.Utc),
                             UpdatedAt = new DateTime(2024, 8, 14, 22, 0, 0, 0, DateTimeKind.Utc)
                         },
@@ -231,6 +236,7 @@ namespace api_cinema_challenge.Migrations
                             Capacity = 40,
                             CreatedAt = new DateTime(2024, 9, 4, 22, 0, 0, 0, DateTimeKind.Utc),
                             MovieId = 2,
+                            ScreenNumber = 5,
                             StartsAt = new DateTime(2024, 10, 9, 22, 0, 0, 0, DateTimeKind.Utc),
                             UpdatedAt = new DateTime(2024, 9, 4, 22, 0, 0, 0, DateTimeKind.Utc)
                         },
@@ -240,6 +246,7 @@ namespace api_cinema_challenge.Migrations
                             Capacity = 25,
                             CreatedAt = new DateTime(2024, 10, 19, 22, 0, 0, 0, DateTimeKind.Utc),
                             MovieId = 3,
+                            ScreenNumber = 2,
                             StartsAt = new DateTime(2024, 10, 31, 23, 0, 0, 0, DateTimeKind.Utc),
                             UpdatedAt = new DateTime(2024, 10, 19, 22, 0, 0, 0, DateTimeKind.Utc)
                         });

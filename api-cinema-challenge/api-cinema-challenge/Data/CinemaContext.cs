@@ -117,6 +117,7 @@ namespace api_cinema_challenge.Data
                     MovieId = 1,
                     StartsAt = new DateTime(2024, 9, 25).ToUniversalTime(),
                     Capacity = 30,
+                    ScreenNumber = 1,
                     CreatedAt = new DateTime(2024, 8, 15).ToUniversalTime(),
                     UpdatedAt = new DateTime(2024, 8, 15).ToUniversalTime()
                 },
@@ -126,6 +127,7 @@ namespace api_cinema_challenge.Data
                     MovieId = 2,
                     StartsAt = new DateTime(2024, 10, 10).ToUniversalTime(),
                     Capacity = 40,
+                    ScreenNumber = 5,
                     CreatedAt = new DateTime(2024, 9, 5).ToUniversalTime(),
                     UpdatedAt = new DateTime(2024, 9, 5).ToUniversalTime()
                 },
@@ -135,6 +137,7 @@ namespace api_cinema_challenge.Data
                     MovieId = 3,
                     StartsAt = new DateTime(2024, 11, 1).ToUniversalTime(),
                     Capacity = 25,
+                    ScreenNumber = 2,
                     CreatedAt = new DateTime(2024, 10, 20).ToUniversalTime(),
                     UpdatedAt = new DateTime(2024, 10, 20).ToUniversalTime()
                 }

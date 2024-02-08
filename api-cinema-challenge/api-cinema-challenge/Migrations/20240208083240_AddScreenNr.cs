@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api_cinema_challenge.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class AddScreenNr : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,6 +56,7 @@ namespace api_cinema_challenge.Migrations
                     screening_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     fk_movie_id = table.Column<int>(type: "integer", nullable: false),
+                    screening_screen_number = table.Column<int>(type: "integer", nullable: false),
                     screening_capacity = table.Column<int>(type: "integer", nullable: false),
                     screening_starts_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     screening_created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -96,12 +97,12 @@ namespace api_cinema_challenge.Migrations
 
             migrationBuilder.InsertData(
                 table: "Screenings",
-                columns: new[] { "screening_id", "screening_capacity", "screening_created_at", "fk_movie_id", "screening_starts_at", "screening_updated_at" },
+                columns: new[] { "screening_id", "screening_capacity", "screening_created_at", "fk_movie_id", "screening_screen_number", "screening_starts_at", "screening_updated_at" },
                 values: new object[,]
                 {
-                    { 1, 30, new DateTime(2024, 8, 14, 22, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2024, 9, 24, 22, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 8, 14, 22, 0, 0, 0, DateTimeKind.Utc) },
-                    { 2, 40, new DateTime(2024, 9, 4, 22, 0, 0, 0, DateTimeKind.Utc), 2, new DateTime(2024, 10, 9, 22, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 9, 4, 22, 0, 0, 0, DateTimeKind.Utc) },
-                    { 3, 25, new DateTime(2024, 10, 19, 22, 0, 0, 0, DateTimeKind.Utc), 3, new DateTime(2024, 10, 31, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 10, 19, 22, 0, 0, 0, DateTimeKind.Utc) }
+                    { 1, 30, new DateTime(2024, 8, 14, 22, 0, 0, 0, DateTimeKind.Utc), 1, 1, new DateTime(2024, 9, 24, 22, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 8, 14, 22, 0, 0, 0, DateTimeKind.Utc) },
+                    { 2, 40, new DateTime(2024, 9, 4, 22, 0, 0, 0, DateTimeKind.Utc), 2, 5, new DateTime(2024, 10, 9, 22, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 9, 4, 22, 0, 0, 0, DateTimeKind.Utc) },
+                    { 3, 25, new DateTime(2024, 10, 19, 22, 0, 0, 0, DateTimeKind.Utc), 3, 2, new DateTime(2024, 10, 31, 23, 0, 0, 0, DateTimeKind.Utc), new DateTime(2024, 10, 19, 22, 0, 0, 0, DateTimeKind.Utc) }
                 });
 
             migrationBuilder.CreateIndex(

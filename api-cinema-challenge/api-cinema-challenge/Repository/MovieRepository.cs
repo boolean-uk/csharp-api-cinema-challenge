@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
 {
-    public class Repository : IRepository
+    public class MovieRepository : IMovieRepository
     {
         private CinemaContext _db;
-        public Repository(CinemaContext db)
+        public MovieRepository(CinemaContext db)
         {
             _db = db;
         }
@@ -54,6 +54,30 @@ namespace api_cinema_challenge.Repository
             _db.Movies.Remove(Org);
             _db.SaveChanges();
             return Org;
+        }
+
+        public async Task<IEnumerable<Screening>> GetSCreenings(int id)
+        {
+            return await _db.Screenings.Where(s=>s.MovieId == id).ToListAsync();
+        }
+
+        public async Task<Screening> CreateScreening(ScreeningInputDTO input, int id)
+        {
+            if (!_db.Movies.Any(x => x.Id == id)) return null;
+
+            Screening screening = new()
+            {
+                Id = _db.Screenings.Max(x => x.Id) + 1,
+                Capacity = input.Capacity,
+                StartsAt = input.StartsAt,
+                ScreenNumber = input.ScreenNumber,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                UpdatedAt = DateTime.Now.ToUniversalTime(),
+                MovieId = id
+            };
+            _db.Screenings.Add(screening);
+            _db.SaveChanges();
+            return screening;
         }
     }
 }
