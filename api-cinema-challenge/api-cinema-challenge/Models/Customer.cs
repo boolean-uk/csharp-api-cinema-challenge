@@ -52,7 +52,7 @@ namespace api_cinema_challenge.Models
                 });
             }
 
-            return new CustomerResponseListDTO { Data = customerResponses };
+            return new CustomerResponseListDTO { Data = customerResponses.OrderBy(x => x.Id).ToList() };
         }
     }
 }

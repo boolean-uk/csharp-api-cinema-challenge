@@ -19,7 +19,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> AddScreening(IScreeningRepository repository, int id, ScreeningPost screening)
+        public static async Task<IResult> AddScreening(IRepository<Screening> screeningRepository, IRepository<Movie> movieRepository, int id, ScreeningPost screening)
         {
             if (screening == null)
             {
@@ -38,34 +38,42 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest("Invalid input: please enter a starting time");
             }
 
+            var movie = await movieRepository.Get(id);
+            if (movie == null)
+            {
+                return TypedResults.NotFound($"Movie with id {id} was not found");
+            }
+
             Screening newScreening = new Screening
             {
                 ScreenNumber = screening.ScreenNumber.Value,
                 Capacity = screening.Capacity.Value,
+                AvailableSeats = screening.Capacity.Value,
+                Movie = movie,
+                MovieId = id,
                 StartsAt = screening.StartsAt.Value,
             };
 
-            var addedScreening = await repository.AddScreening(id, newScreening);
+            movie.Screenings.Add(newScreening);
 
-            if (addedScreening == null)
-            {
-                return TypedResults.NotFound($"Movie with id {id} was not found");
-            }
+            var addedScreening = await screeningRepository.Add(newScreening);
 
             return TypedResults.Created($"/{addedScreening.Id}", Screening.ToDTO(addedScreening));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAllScreenings(IScreeningRepository repository, int id)
+        public static async Task<IResult> GetAllScreenings(IRepository<Movie> repository, IRepository<Screening> screeningRepository, int id)
         {
-            var screenings = await repository.GetAllScreenings(id);
+            var movie = await repository.Get(id);
 
-            if (screenings == null)
+            if (movie == null)
             {
                 return TypedResults.Ok($"Movie with id {id} was not found");
             }
 
-            return TypedResults.Ok(Screening.ToDTO(screenings));
+            var screenings = await screeningRepository.GetAll();
+
+            return TypedResults.Ok(Screening.ToDTO(screenings.Where(x => x.MovieId == movie.Id).ToList()));
         }
     }
 }

@@ -17,29 +17,49 @@ namespace api_cinema_challenge.Controllers
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> AddTicket(ITicketRepository repository, int customerId, int screeningId, int numSeats)
+        public static async Task<IResult> AddTicket(IRepository<Ticket> ticketRepository, 
+            IRepository<Customer> customerRepository, IRepository<Screening> screeningRepository,  
+            int customerId, int screeningId, int numSeats)
         {
-            try
+            var customer = await customerRepository.Get(customerId);
+            if (customer == null)
             {
-                var ticket = await repository.AddTicket(customerId, screeningId, numSeats);
-                return TypedResults.Created($"/{customerId}/screenings/{screeningId}", Ticket.ToDTO(ticket));
+                return TypedResults.NotFound($"Customer with id {customerId} was not found");
             }
-            catch (Exception error)
+
+            var screening = await screeningRepository.Get(screeningId);
+            if (screening == null)
             {
-                return TypedResults.NotFound(error);
+                return TypedResults.NotFound($"Screening with id {screeningId} was not found");
             }
+
+            var ticket = new Ticket
+            {
+                CustomerId = customerId,
+                Customer = customer,
+                Screening = screening,
+                ScreeningId = screeningId,
+                NumberOfSeats = numSeats
+            };
+
+            var newTicket = await ticketRepository.Add(ticket);
+
+            return TypedResults.Created($"/{customerId}/screenings/{screeningId}", Ticket.ToDTO(newTicket));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> GetTickets(ITicketRepository repository, int customerId)
+        public static async Task<IResult> GetTickets(IRepository<Customer> customerRepository, IRepository<Ticket> ticketRepository, int customerId)
         {
-            var tickets = await repository.GetTickets(customerId);
+            var customer = await customerRepository.Get(customerId);
 
-            if (tickets == null)
+            if (customer == null)
             {
                 return TypedResults.NotFound($"Customer with id {customerId} was not found");
             }
+
+            var allTickets = await ticketRepository.GetAll();
+            var tickets = allTickets.Where(x => x.CustomerId == customerId).ToList();
 
             return TypedResults.Created($"/{customerId}/screenings/", Ticket.ToDTO(tickets));
         }

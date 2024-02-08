@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Controllers
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> AddMovie(IMovieRepository repository, MoviePost movie)
+        public static async Task<IResult> AddMovie(IRepository<Movie> repository, MoviePost movie)
         {
             if (movie == null)
             {
@@ -86,15 +86,15 @@ namespace api_cinema_challenge.Controllers
                 }
             }
 
-            var addedMovie = await repository.AddMovie(newMovie);
+            var addedMovie = await repository.Add(newMovie);
 
             return TypedResults.Created($"/{newMovie.Id}", Movie.ToDTO(addedMovie));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAllMovies(IMovieRepository repository)
+        public static async Task<IResult> GetAllMovies(IRepository<Movie> repository)
         {
-            var movies = await repository.GetAllMovies();
+            var movies = await repository.GetAll();
 
             return TypedResults.Ok(Movie.ToDTO(movies));
         }
@@ -102,27 +102,36 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> UpdateMovie(IMovieRepository repository, int id, MoviePut movie)
+        public static async Task<IResult> UpdateMovie(IRepository<Movie> repository, int id, MoviePut movie)
         {
             if (movie == null)
             {
                 return TypedResults.BadRequest("Invalid input: missing movie");
             }
 
-            var changedMovie = await repository.UpdateMovie(id, movie);
-            if (changedMovie == null)
+            Movie? oldMovie = await repository.Get(id);
+
+            if (oldMovie == null)
             {
                 return TypedResults.NotFound($"Movie with id {id} was not found");
             }
 
-            return TypedResults.Created($"/{changedMovie.Id}", Movie.ToDTO(changedMovie));
+            if (movie.Title != null) { oldMovie.Title = movie.Title; }
+            if (movie.Rating != null) { oldMovie.Rating = movie.Rating; }
+            if (movie.Description != null) { oldMovie.Description = movie.Description; }
+            if (movie.Runtime != null) { oldMovie.Runtime = (int)movie.Runtime; }
+            oldMovie.UpdatedAt = DateTime.UtcNow;
+
+            await repository.Update(oldMovie);
+
+            return TypedResults.Created($"/{id}", Movie.ToDTO(oldMovie));
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> DeleteMovie(IMovieRepository repository, int id)
+        public static async Task<IResult> DeleteMovie(IRepository<Movie> repository, int id)
         {
-            var deletedMovie = await repository.DeleteMovie(id);
+            var deletedMovie = await repository.Delete(id);
             if (deletedMovie == null)
             {
                 return TypedResults.NotFound($"Movie with id {id} was not found");

@@ -48,7 +48,7 @@ namespace api_cinema_challenge.Models
                 });
             }
 
-            return new TicketResponseListDTO { Data = ticketsDTO };
+            return new TicketResponseListDTO { Data = ticketsDTO.OrderBy(x => x.Id).ToList() };
         }
     }
 }
