@@ -1,11 +1,13 @@
-﻿using api_cinema_challenge.Models.PureModels;
+﻿using api_cinema_challenge.Models.JunctionModel;
+using api_cinema_challenge.Models.PureModels;
 
 namespace api_cinema_challenge.Data
 {
     public class Seeder
     {
-        public int displayId = 1;
-        public int ticketId = 1;
+        private int displayId = 1;
+        private int ticketId = 1;
+        private int globalSeatId = 1;
         private List<string> _prefix = new List<string>()
         {
             "The ",
@@ -110,35 +112,15 @@ namespace api_cinema_challenge.Data
             "gov.ru"
         };
 
-        private List<Tuple<int, int>> _rooms = new List<Tuple<int, int>>() 
-        {
-            new Tuple<int, int>(1, 15),
-            new Tuple<int, int>(2, 25),
-            new Tuple<int, int>(3, 73),
-            new Tuple<int, int>(4, 32),
-            new Tuple<int, int>(5, 24),
-            new Tuple<int, int>(6, 73),
-            new Tuple<int, int>(7, 22),
-            new Tuple<int, int>(8, 92),
-            new Tuple<int, int>(9, 8),
-            new Tuple<int, int>(10, 62),
-            new Tuple<int, int>(11, 52),
-            new Tuple<int, int>(12, 38),
-            new Tuple<int, int>(13, 42),
-            new Tuple<int, int>(14, 29),
-            new Tuple<int, int>(15, 62),
-            new Tuple<int, int>(16, 23),
-            new Tuple<int, int>(17, 67),
-            new Tuple<int, int>(18, 52),
-            new Tuple<int, int>(19, 72),
-            new Tuple<int, int>(20, 79)
-        };
+        private List<Tuple<int, int>> _rooms = new List<Tuple<int, int>>();
 
         private List<Display> _displays = new List<Display>();
         private List<Customer> _customers = new List<Customer>();
         private List<Movie> _movies = new List<Movie>();
         private List<Screening> _screenings = new List<Screening>();
         private List<Ticket> _tickets = new List<Ticket>();
+        private List<Seat> _seats = new List<Seat>();
+        private List<TicketSeat> _ticketSeats = new List<TicketSeat>();
 
         public Seeder() 
         {
@@ -147,6 +129,29 @@ namespace api_cinema_challenge.Data
             Random rngTime = new Random(6789);
             Random rngScr = new Random(9876);
             Random rngTic = new Random(1289);
+            Random rngSeat = new Random(152);
+
+            for (int i = 1; i < 20; i++)
+            {
+
+                int seats = rngSeat.Next(12, 150);
+                int rows = rngSeat.Next(3, Math.Max(6, (int)seats / 6));
+                int seatPerRow = (int)(seats/rows);
+
+                for (int j = 1; j <= seats; j++)
+                {
+                    int RowNumber = (int)(j -1 / seatPerRow) + 1;
+                    int seatNumber = (j - 1) % seatPerRow + 1;
+
+                    int seatId = (i * 10000) + j;
+
+                    Seat seat = new Seat() { SeatId = globalSeatId++, RowNumber = RowNumber, SeatNumber = seatNumber , DisplayId = i};
+                    _seats.Add(seat);
+                    
+                }
+                _rooms.Add(new Tuple<int, int>(i, seats));
+            }
+
 
             for (int i = 1; i < 30; i++)
             {
@@ -196,7 +201,7 @@ namespace api_cinema_challenge.Data
             foreach (Tuple<int, int> room in _rooms)
             {
                 Display display = new Display();
-                display.DisplayId = displayId++;
+                display.DisplayId = room.Item1;
                 display.ScreenNumber = room.Item1;
                 display.Capacity = room.Item2;
 
@@ -258,12 +263,38 @@ namespace api_cinema_challenge.Data
                     int seatsTaken = 0;
                     if (ticketsLeft > 4)
                     {
-                         seatsTaken = rngTic.Next(1, 4);
+                         seatsTaken = rngTic.Next(1, 5);
                     } 
                     else 
                     {
                         seatsTaken = rngTic.Next(1, ticketsLeft);
                     }
+
+                    List<int> selectedSeats = new List<int>();
+
+                    for (int i = 0; i < seatsTaken; i++)
+                    {
+                        List<int> availableSeats = _seats
+                            .Where(s => s.DisplayId == display.DisplayId && !selectedSeats.Contains(s.SeatId))
+                            .Select(s => s.SeatId)
+                            .ToList();
+                        if (availableSeats.Count() > 0)
+                        {
+                            int selectedSeatIndex = rngTic.Next(0, availableSeats.Count);
+                            int selectedSeatId = availableSeats[selectedSeatIndex];
+                            selectedSeats.Add(selectedSeatId);
+                            availableSeats.RemoveAt(selectedSeatIndex);
+
+                            TicketSeat ticketSeat = new TicketSeat()
+                            {
+                                TicketId = ticket.TicketId,
+                                SeatId = selectedSeatId,
+                                DisplayId = display.DisplayId
+                            };
+                            _ticketSeats.Add(ticketSeat);
+                        }
+                    }
+
                     ticketsLeft -= seatsTaken;
                     ticket.NumberOfSeats = seatsTaken;
 
@@ -278,6 +309,8 @@ namespace api_cinema_challenge.Data
                         ), DateTimeKind.Utc);
                     ticket.UpdatedAt = ticket.CreatedAt;
 
+                    
+
                     _tickets.Add(ticket);
                 }
             }
@@ -291,5 +324,9 @@ namespace api_cinema_challenge.Data
         public List<Ticket> Tickets { get { return _tickets; } }
 
         public List<Display> Displays { get { return _displays; } }
+
+        public List<Seat> Seats { get { return _seats; } }
+
+        public List<TicketSeat> TicketSeats {  get { return _ticketSeats; } }
     }
 }
