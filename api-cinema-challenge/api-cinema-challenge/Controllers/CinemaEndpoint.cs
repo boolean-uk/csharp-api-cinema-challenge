@@ -2,6 +2,7 @@
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace api_cinema_challenge.Controllers
@@ -26,7 +27,8 @@ namespace api_cinema_challenge.Controllers
             cinemaGroup.MapPost("movies/{id}/screenings", CreateScreening);
             cinemaGroup.MapGet("movies/{id}/screenings", GetScreenings);
         }
-
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateCustomer(IRepository repository, CustomerPost customer)
         {
             if (customer == null)
@@ -45,10 +47,12 @@ namespace api_cinema_challenge.Controllers
             };
             return TypedResults.Created($"{customerDTO.Name}", customerDTO);
         }
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetCustomers(IRepository repository)
         {
             return TypedResults.Ok(await repository.GetCustomers());
         }
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> UpdateCustomer(IRepository repository, CustomerPut customer, int id)
         {
             var updated = await repository.UpdateCustomer(customer, id);
@@ -64,12 +68,14 @@ namespace api_cinema_challenge.Controllers
             };
             return TypedResults.Created($"{customerDTO.Name}", customerDTO);
         }
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> DeleteCustomer(IRepository repository, int id)
         {
             return TypedResults.Ok(await repository.DeleteCustomer(id));
         }
 
-
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateMovie(IRepository repository, MoviePost movie)
         {
             if (movie == null)
@@ -89,14 +95,21 @@ namespace api_cinema_challenge.Controllers
             };
             return TypedResults.Created($"{movieDTO.Title}", movieDTO);
         }
-
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetMovies(IRepository repository)
         {
             return TypedResults.Ok(await repository.GetMovies());
         }
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> UpdateMovie(IRepository repository, MoviePut movie, int id)
         {
             var updated = await repository.UpdateMovie(movie, id);
+
+            if (updated == null)
+            {
+                return TypedResults.BadRequest();
+            }
             var movieDTO = new MovieDTO()
             {
                 Id =updated.Id,
@@ -109,12 +122,14 @@ namespace api_cinema_challenge.Controllers
             };
             return TypedResults.Created($"{movieDTO.Title}", movieDTO);
         }
-
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> DeleteMovie(IRepository repository, int id)
         {
             return TypedResults.Ok(await repository.DeleteMovie(id));
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateScreening(IRepository repository, ScreeningPost screening, int movieId)
         {
             if (screening == null)
@@ -133,7 +148,7 @@ namespace api_cinema_challenge.Controllers
             };
             return TypedResults.Created($"{screeningDTO.ScreenNumber}", screeningDTO);
         }
-
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetScreenings(IRepository repository, int id)
         {
             return TypedResults.Ok(await repository.GetScreenings(id));
