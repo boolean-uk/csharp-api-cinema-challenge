@@ -3,6 +3,7 @@ using api_cinema_challenge.Models.ScreeningModels;
 using api_cinema_challenge.Repositories;
 using api_cinema_challenge.Services;
 using Microsoft.AspNetCore.Mvc;
+using workshop.wwwapi.Models;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -27,7 +28,8 @@ namespace api_cinema_challenge.Controllers
             IEnumerable<Movie> movies = await repository.Get();
 
             IEnumerable<OutputMovie> outputMovies = MovieDtoManager.Convert(movies);
-            return TypedResults.Ok(outputMovies);
+            var payload = new Payload<IEnumerable<OutputMovie>>(outputMovies);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,27 +37,31 @@ namespace api_cinema_challenge.Controllers
         {
             Movie? movie = await repository.Get(id);
             if (movie == null)
-                return Results.NotFound();
+                return TypedResults.NotFound(new Payload<Movie>(movie));
 
             OutputMovie outputMovie = MovieDtoManager.Convert(movie);
-            return TypedResults.Ok(outputMovie);
+            var payload = new Payload<OutputMovie>(outputMovie);
+            return TypedResults.Ok(payload);
         }
 
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Create(InputMovie movie, IRepository<Movie> repository)
         {
-            Movie newMovie = MovieDtoManager.Convert(movie); 
+            Movie newMovie = MovieDtoManager.Convert(movie);
 
             Movie result = await repository.Create(newMovie);
 
             OutputMovie outputMovie = MovieDtoManager.Convert(result);
-            return TypedResults.Created("url", outputMovie);
+            var payload = new Payload<OutputMovie>(outputMovie);
+            return TypedResults.Created("url", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Update(int id, InputMovie inputMovie, IRepository<Movie> repository)
         {
             Movie movieToUpdate = await repository.Get(id);
+            if (movieToUpdate == null)
+                return TypedResults.NotFound(new Payload<Movie>(movieToUpdate));
 
             movieToUpdate.UpdatedAt = DateTime.UtcNow;
             movieToUpdate.Title = inputMovie.Title;
@@ -66,42 +72,52 @@ namespace api_cinema_challenge.Controllers
             Movie? result = await repository.Update(movieToUpdate);
 
             OutputMovie outputMovie = MovieDtoManager.Convert(result);
-            return TypedResults.Ok(outputMovie);
+            var payload = new Payload<OutputMovie>(outputMovie);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Delete(int id, IRepository<Movie> repository)
         {
-            Movie? movie = await repository.Get(id);
+            Movie? movie = await repository.Delete(id);
             if (movie == null)
-                return Results.NotFound();
+                return TypedResults.NotFound(new Payload<Movie>(movie));
 
-            Movie result = await repository.Delete(id);
-
-            OutputMovie outputMovie = MovieDtoManager.Convert(result);
-            return TypedResults.Ok(outputMovie);
+            OutputMovie outputMovie = MovieDtoManager.Convert(movie);
+            var payload = new Payload<OutputMovie>(outputMovie);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        private static async Task<IResult> GetScreenings(int id, IRepository<Screening> screeningRepository)
+        private static async Task<IResult> GetScreenings(int id, IRepository<Screening> screeningRepository, IRepository<Movie> movieRepository)
         {
+            Movie? movie = await movieRepository.Get(id);
+            if (movie == null)
+                return TypedResults.NotFound($"Movie with id {id} not found");
+
             IEnumerable<Screening> screenings = await screeningRepository.GetWhere(s => s.MovieId == id);
 
             IEnumerable<OutputScreening> outputScreenings = ScreeningDtoManager.Convert(screenings);
-            return TypedResults.Ok(outputScreenings);
+            var payload = new Payload<IEnumerable<OutputScreening>>(outputScreenings);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> CreateScreening(int id, InputScreening inputScreening, IRepository<Screening> screeningRepository)
+        private static async Task<IResult> CreateScreening(int id, InputScreening inputScreening, IRepository<Screening> screeningRepository, IRepository<Movie> movieRepository)
         {
-            Screening newScreening = ScreeningDtoManager.Convert(inputScreening); 
+            Movie? movie = await movieRepository.Get(id);
+            if (movie == null)
+                return TypedResults.NotFound($"Movie with id {id} not found");
+
+            Screening newScreening = ScreeningDtoManager.Convert(inputScreening);
 
             newScreening.MovieId = id;
 
             Screening result = await screeningRepository.Create(newScreening);
 
             OutputScreening outputScreening = ScreeningDtoManager.Convert(result);
-            return TypedResults.Created("url", outputScreening);
+            var payload = new Payload<OutputScreening>(outputScreening);
+            return TypedResults.Created("url", payload);
         }
     }
 }

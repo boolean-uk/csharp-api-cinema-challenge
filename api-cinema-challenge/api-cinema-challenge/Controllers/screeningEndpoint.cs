@@ -1,7 +1,9 @@
-﻿using api_cinema_challenge.Models.ScreeningModels;
+﻿using api_cinema_challenge.Models.MovieModels;
+using api_cinema_challenge.Models.ScreeningModels;
 using api_cinema_challenge.Repositories;
 using api_cinema_challenge.Services;
 using Microsoft.AspNetCore.Mvc;
+using workshop.wwwapi.Models;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -24,7 +26,8 @@ namespace api_cinema_challenge.Controllers
             IEnumerable<Screening> screenings = await repository.Get();
 
             IEnumerable<OutputScreening> outputScreenings = ScreeningDtoManager.Convert(screenings);
-            return TypedResults.Ok(outputScreenings);
+            var payload = new Payload<IEnumerable<OutputScreening>>(outputScreenings);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,27 +35,31 @@ namespace api_cinema_challenge.Controllers
         {
             Screening? screening = await repository.Get(id);
             if (screening == null)
-                return Results.NotFound();
+                return TypedResults.NotFound(new Payload<Screening>(screening));
 
             OutputScreening outputScreening = ScreeningDtoManager.Convert(screening);
-            return TypedResults.Ok(outputScreening);
+            var payload = new Payload<OutputScreening>(outputScreening);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> Create(InputScreening screening, IRepository<Screening> repository)
         {
-            Screening newScreening = ScreeningDtoManager.Convert(screening); 
+            Screening newScreening = ScreeningDtoManager.Convert(screening);
 
             Screening result = await repository.Create(newScreening);
 
             OutputScreening outputScreening = ScreeningDtoManager.Convert(result);
-            return TypedResults.Created("url", outputScreening);
+            var payload = new Payload<OutputScreening>(outputScreening);
+            return TypedResults.Created("url", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Update(int id, InputScreening screening, IRepository<Screening> repository)
         {
             Screening screeningToUpdate = await repository.Get(id);
+            if (screeningToUpdate == null)
+                return TypedResults.NotFound(new Payload<Screening>(screeningToUpdate));
 
             screeningToUpdate.UpdatedAt = DateTime.UtcNow;
             screeningToUpdate.StartsAt = screening.StartsAt;
@@ -62,16 +69,20 @@ namespace api_cinema_challenge.Controllers
             Screening result = await repository.Update(screeningToUpdate);
 
             OutputScreening outputScreening = ScreeningDtoManager.Convert(result);
-            return TypedResults.Ok(result);
+            var payload = new Payload<OutputScreening>(outputScreening);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Delete(int id, IRepository<Screening> repository)
         {
-            Screening result = await repository.Delete(id);
+            Screening screening = await repository.Delete(id);
+            if (screening == null)
+                return TypedResults.NotFound(new Payload<Screening>(screening));
 
-            OutputScreening outputScreening = ScreeningDtoManager.Convert(result);
-            return TypedResults.Ok(outputScreening);
+            OutputScreening outputScreening = ScreeningDtoManager.Convert(screening);
+            var payload = new Payload<OutputScreening>(outputScreening);
+            return TypedResults.Ok(payload);
         }
     }
 }
