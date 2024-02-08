@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Repository
         {
             Movie movie = new Movie
             {
-                Id = _db.Movies.Max(x => x.Id)+1,
+                Id = await _db.Movies.MaxAsync(x => x.Id)+1,
                 CreatedAt = DateTime.Now.ToUniversalTime(),
                 UpdatedAt = DateTime.Now.ToUniversalTime(),
                 Title = m.Title,
@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Repository
                 Runtime = m.Runtime,
             };
             _db.Movies.Add(movie);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return movie;
         }
 
@@ -52,7 +52,7 @@ namespace api_cinema_challenge.Repository
             Movie Org = await _db.Movies.FirstOrDefaultAsync(x => x.Id == id);
             if (Org == null) { return null; }
             _db.Movies.Remove(Org);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return Org;
         }
 
@@ -76,7 +76,7 @@ namespace api_cinema_challenge.Repository
                 MovieId = id
             };
             _db.Screenings.Add(screening);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return screening;
         }
     }
