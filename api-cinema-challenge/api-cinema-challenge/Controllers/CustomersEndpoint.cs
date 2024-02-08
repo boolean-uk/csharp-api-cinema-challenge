@@ -137,9 +137,9 @@ namespace api_cinema_challenge.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> GetTicketForScreeningForCustomer(IRepository<Customer> repo, int customerId, int screeningId)
+        private static async Task<IResult> GetTicketForScreeningForCustomer(IRepository<Customer> customerRepo, int customerId, int screeningId)
         {
-            Customer? customer = await repo.GetIncluding(customerId, "CustomerId", (c => c.Tickets));
+            Customer? customer = await customerRepo.GetIncluding(customerId, "CustomerId", (c => c.Tickets));
             if (customer == null)
             {
                 return TypedResults.NotFound($"No customer with ID {customerId} found.");
@@ -158,10 +158,31 @@ namespace api_cinema_challenge.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> PostTicketForCustomer(IRepository<Ticket> repo, int customerId, int screeningId, TicketInputDTO ticketPost)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        private static async Task<IResult> PostTicketForCustomer(IRepository<Customer> customerRepo, IRepository<Screening> screeningRepo, IRepository<Ticket> ticketRepo, int customerId, int screeningId, TicketInputDTO ticketPost)
         {
-            int availableTickets = repo.GetIncluding()
+            // VALIDATE THE DATA
+            Customer? customer = await customerRepo.GetIncluding(customerId, "CustomerId", (c => c.Tickets));
+            if (customer == null)
+            {
+                return TypedResults.NotFound($"No customer with ID {customerId} found.");
+            }
 
+            Screening? screening = await screeningRepo.GetIncluding(screeningId, "ScreeningId", (s => s.Tickets));
+            if (screening == null)
+            {
+                return TypedResults.NotFound($"No screening with ID {screeningId} found.");
+            }
+
+            int seatsAvailable = screening.Display.Capacity - screening.Tickets.Sum(t => t.NumberOfSeats);
+            if (seatsAvailable < ticketPost.numSeats) 
+            {
+                return TypedResults.BadRequest($"The provided screening only has {seatsAvailable} seats left, therefore you were denied your purchase of {ticketPost.numSeats} seats.");
+            }
+
+            // DATA OK
+            // GENERATING AND INSERTING TICKET
             Ticket inputTicket = new Ticket()
             {
                 NumberOfSeats = ticketPost.numSeats,
@@ -170,7 +191,7 @@ namespace api_cinema_challenge.Controllers
                 CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
             };
-            Ticket ticket = await repo.Insert(inputTicket);
+            Ticket ticket = await ticketRepo.Insert(inputTicket);
 
             TicketDTO ticketOut = new TicketDTO(ticket.TicketId, ticket.NumberOfSeats, ticket.CreatedAt, ticket.UpdatedAt);
             Payload<TicketDTO> payload = new Payload<TicketDTO>(ticketOut);
