@@ -41,7 +41,6 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
-            modelBuilder.Entity<Movie>().Navigation(m => m.Screenings);
         }
 
         public DbSet<Customer> Customers { get; set; }

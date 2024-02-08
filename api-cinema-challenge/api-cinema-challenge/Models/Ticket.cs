@@ -1,4 +1,4 @@
-﻿using api_cinema_challenge.Models.DTOs.Ticket;
+﻿using api_cinema_challenge.Models.DTOs;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
@@ -21,7 +21,7 @@ namespace api_cinema_challenge.Models
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        public static TicketResponseDTO ToDTO(Ticket ticket)
+        public static PayLoad<TicketDTO> ToDTO(Ticket ticket)
         {
             var ticketDTO = new TicketDTO
             {
@@ -31,10 +31,10 @@ namespace api_cinema_challenge.Models
                 UpdatedAt = ticket.UpdatedAt
             };
 
-            return new TicketResponseDTO { Data = ticketDTO };
+            return new PayLoad<TicketDTO> { Data = ticketDTO };
         }
 
-        public static TicketResponseListDTO ToDTO(ICollection<Ticket> tickets)
+        public static PayLoad<List<TicketDTO>> ToDTO(ICollection<Ticket> tickets)
         {
             List<TicketDTO> ticketsDTO = new List<TicketDTO>();
             foreach (var ticket in tickets)
@@ -48,7 +48,7 @@ namespace api_cinema_challenge.Models
                 });
             }
 
-            return new TicketResponseListDTO { Data = ticketsDTO.OrderBy(x => x.Id).ToList() };
+            return new PayLoad<List<TicketDTO>> { Data = ticketsDTO.OrderBy(x => x.Id).ToList() };
         }
     }
 }

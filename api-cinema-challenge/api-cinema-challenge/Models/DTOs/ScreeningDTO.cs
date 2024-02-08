@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models.DTOs.Screening
+﻿namespace api_cinema_challenge.Models.DTOs
 {
     public class ScreeningDTO
     {

@@ -1,4 +1,4 @@
-﻿using api_cinema_challenge.Models.DTOs.Movie;
+﻿using api_cinema_challenge.Models.DTOs;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,7 +24,7 @@ namespace api_cinema_challenge.Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public virtual ICollection<Screening> Screenings { get; set; } = new List<Screening>();
 
-        public static MovieResponseDTO ToDTO(Movie movie)
+        public static PayLoad<MovieDTO> ToDTO(Movie movie)
         {
             var movieDTO = new MovieDTO
             {
@@ -37,10 +37,10 @@ namespace api_cinema_challenge.Models
                 UpdatedAt = movie.UpdatedAt
             };
 
-            return new MovieResponseDTO { Data= movieDTO };
+            return new PayLoad<MovieDTO> { Data= movieDTO };
         }
 
-        public static MovieResponseListDTO ToDTO(ICollection<Movie> movies)
+        public static PayLoad<List<MovieDTO>> ToDTO(ICollection<Movie> movies)
         {
             List<MovieDTO> moviesDTO = new List<MovieDTO>();
             foreach (var movie in movies)
@@ -57,7 +57,7 @@ namespace api_cinema_challenge.Models
                 });
             } 
 
-            return new MovieResponseListDTO { Data = moviesDTO };
+            return new PayLoad<List<MovieDTO>> { Data = moviesDTO };
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models.DTOs.Movie
+﻿namespace api_cinema_challenge.Models.DTOs
 {
     public class MovieDTO
     {
