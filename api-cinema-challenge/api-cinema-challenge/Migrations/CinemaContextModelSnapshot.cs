@@ -17,7 +17,7 @@ namespace api_cinema_challenge.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -31,6 +31,10 @@ namespace api_cinema_challenge.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
@@ -41,11 +45,7 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("text")
                         .HasColumnName("phone");
 
-                    b.Property<DateTime>("createdAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<DateTime>("updatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
@@ -57,18 +57,18 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
+                            CreatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3313),
                             Name = "Bill Crosby",
                             Phone = "78707870",
-                            createdAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2315),
-                            updatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2316)
+                            UpdatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3314)
                         },
                         new
                         {
                             Id = 2,
+                            CreatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3314),
                             Name = "Neil Young",
                             Phone = "78707870",
-                            createdAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2317),
-                            updatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2317)
+                            UpdatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3315)
                         });
                 });
 
@@ -116,22 +116,22 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2301),
+                            CreatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3296),
                             Description = "One of the movies of all time",
                             Rating = "PG-13",
                             RuntimeMins = 2000,
                             Title = "Great Movie 4",
-                            UpdatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2304)
+                            UpdatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3303)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2304),
+                            CreatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3303),
                             Description = "One more of the movies of all time",
                             Rating = "PG-13",
                             RuntimeMins = 200,
                             Title = "Great Movie 5",
-                            UpdatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2305)
+                            UpdatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3305)
                         });
                 });
 
@@ -179,21 +179,21 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             Capacity = 190,
-                            CreatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2310),
+                            CreatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3306),
                             MovieId = 1,
                             ScreenNumber = 1,
-                            StartsAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2311),
-                            UpdatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2311)
+                            StartsAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3307),
+                            UpdatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3308)
                         },
                         new
                         {
                             Id = 2,
                             Capacity = 140,
-                            CreatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2312),
+                            CreatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3309),
                             MovieId = 2,
                             ScreenNumber = 3,
-                            StartsAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2313),
-                            UpdatedAt = new DateTime(2024, 2, 7, 14, 10, 19, 225, DateTimeKind.Utc).AddTicks(2313)
+                            StartsAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3310),
+                            UpdatedAt = new DateTime(2024, 2, 8, 14, 10, 58, 264, DateTimeKind.Utc).AddTicks(3311)
                         });
                 });
 

@@ -57,14 +57,14 @@ namespace api_cinema_challenge.Data
                 Id=1,
                 Name="Bill Crosby",
                 Phone="78707870",
-                updatedAt= DateTime.UtcNow,
+                UpdatedAt= DateTime.UtcNow,
             };
             Customer customer2 = new Customer()
             {
                 Id = 2,
                 Name = "Neil Young",
                 Phone = "78707870",
-                updatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
             };
 
             _customers.Add(customer1);
