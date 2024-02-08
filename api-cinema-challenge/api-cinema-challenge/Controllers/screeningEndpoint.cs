@@ -1,5 +1,4 @@
-﻿using api_cinema_challenge.Models.MovieModels;
-using api_cinema_challenge.Models.ScreeningModels;
+﻿using api_cinema_challenge.Models.ScreeningModels;
 using api_cinema_challenge.Repositories;
 using api_cinema_challenge.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,7 @@ using workshop.wwwapi.Models;
 
 namespace api_cinema_challenge.Controllers
 {
-    public static class screeningEndpoint
+    public static class ScreeningEndpoint
     {
         public static void ConfigureScreeningEndpoint(this WebApplication app)
         {
@@ -57,7 +56,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Update(int id, InputScreening screening, IRepository<Screening> repository)
         {
-            Screening screeningToUpdate = await repository.Get(id);
+            Screening? screeningToUpdate = await repository.Get(id);
             if (screeningToUpdate == null)
                 return TypedResults.NotFound(new Payload<Screening>(screeningToUpdate));
 
@@ -76,7 +75,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Delete(int id, IRepository<Screening> repository)
         {
-            Screening screening = await repository.Delete(id);
+            Screening? screening = await repository.Delete(id);
             if (screening == null)
                 return TypedResults.NotFound(new Payload<Screening>(screening));
 

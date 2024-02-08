@@ -27,7 +27,7 @@ namespace api_cinema_challenge.Repositories
             return await _entities.Where(predicate).ToListAsync();
         }
 
-        public async Task<T> Delete(int id)
+        public async Task<T?> Delete(int id)
         {
             var entity = await Get(id);
             if (entity == null)
@@ -46,12 +46,12 @@ namespace api_cinema_challenge.Repositories
             return await _entities.ToListAsync();
         }
 
-        public async Task<T> Get(int id)
+        public async Task<T?> Get(int id)
         {
             return await _entities.FindAsync(id);
         }
 
-        public async Task<T> Update(T entity)
+        public async Task<T?> Update(T entity)
         {
             _entities.Update(entity);
             await _db.SaveChangesAsync();

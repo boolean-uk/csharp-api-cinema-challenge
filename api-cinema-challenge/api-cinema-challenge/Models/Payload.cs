@@ -8,13 +8,13 @@
 
     public class Payload<T> where T : class
     {
-        public Payload(T data)
+        public Payload(T? data)
         {
             Data = data;
             Status = data == null ? ApiStatus.NotFound : ApiStatus.Success;
         }
 
         public string Status { get; set; }
-        public T Data { get; set; }
+        public T? Data { get; set; }
     }
 }

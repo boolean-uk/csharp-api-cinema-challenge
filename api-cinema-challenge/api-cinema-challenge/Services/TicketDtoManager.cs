@@ -20,11 +20,13 @@ namespace api_cinema_challenge.Services
             return tickets.Select(Convert);
         }
 
-        public static Ticket Convert(InputTicket ticket)
+        public static Ticket Convert(InputTicket ticket, int customerId, int screeningId)
         {
             return new Ticket
             {
-                NumSeats = ticket.NumSeats
+                NumSeats = ticket.NumSeats,
+                CustomerId = customerId,
+                ScreeningId = screeningId
             };
         }
     }

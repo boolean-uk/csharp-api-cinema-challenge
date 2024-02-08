@@ -15,12 +15,12 @@ namespace api_cinema_challenge.Models.CustomerModels
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         [Column("name")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [Column("phone")]
-        public string Phone { get; set; }
+        public required string Phone { get; set; }
 
         [Column("email")]
-        public string Email { get; set; }
+        public required string Email { get; set; }
     }
 }

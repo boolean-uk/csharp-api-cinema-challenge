@@ -8,7 +8,7 @@ using workshop.wwwapi.Models;
 
 namespace api_cinema_challenge.Controllers
 {
-    public static class customerEndpoint
+    public static class CustomerEndpoint
     {
         public static void ConfigureCustomerEndpoint(this WebApplication app)
         {
@@ -38,7 +38,7 @@ namespace api_cinema_challenge.Controllers
         {
             Customer? customer = await repository.Get(id);
             if (customer == null)
-                return TypedResults.NotFound(new Payload<Customer>(customer));
+                return TypedResults.NotFound(new Payload<Customer>(null));
 
             //OutputCustomer outputCustomer = CustomerDtoManager.Convert(customer);
             var payload = new Payload<Customer>(customer);
@@ -60,7 +60,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Update(int id, InputCustomer inputCustomer, IRepository<Customer> repository)
         {
-            Customer customerToUpdate = await repository.Get(id);
+            Customer? customerToUpdate = await repository.Get(id);
             if (customerToUpdate == null)
                 return TypedResults.NotFound(new Payload<Customer>(customerToUpdate));
 
@@ -79,7 +79,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Delete(int id, IRepository<Customer> repository)
         {
-            Customer customer = await repository.Delete(id);
+            Customer? customer = await repository.Delete(id);
             if (customer == null)
                 return TypedResults.NotFound(new Payload<Customer>(customer));
 
@@ -117,9 +117,7 @@ namespace api_cinema_challenge.Controllers
             if (screening == null)
                 return Results.NotFound($"Screening with id {screeningId} not found");
 
-            Ticket newTicket = TicketDtoManager.Convert(inputTicket);
-            newTicket.CustomerId = customerId;
-            newTicket.ScreeningId = screeningId;
+            Ticket newTicket = TicketDtoManager.Convert(inputTicket, customerId, screeningId);
 
             Ticket result = await ticketRepository.Create(newTicket);
 

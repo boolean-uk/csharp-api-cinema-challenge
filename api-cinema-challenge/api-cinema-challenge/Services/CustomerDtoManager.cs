@@ -5,7 +5,7 @@ namespace api_cinema_challenge.Services
     public static class CustomerDtoManager
     {
         public static Customer Convert(InputCustomer inputCustomer)
-        {             
+        {
             return new Customer
             {
                 Name = inputCustomer.Name,

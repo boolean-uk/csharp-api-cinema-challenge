@@ -16,16 +16,16 @@ namespace api_cinema_challenge.Models.MovieModels
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         [Column("title")]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         [Column("description")]
-        public string Description { get; set; }
+        public required string Description { get; set; }
 
         [Column("rating")]
-        public string Rating { get; set; }
+        public required string Rating { get; set; }
 
         [Column("runtime")]
-        public string Runtime { get; set; }
+        public required string Runtime { get; set; }
 
         public ICollection<Screening> Screenings { get; set; }
     }

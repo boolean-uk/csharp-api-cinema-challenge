@@ -7,7 +7,7 @@ using workshop.wwwapi.Models;
 
 namespace api_cinema_challenge.Controllers
 {
-    public static class movieEndpoint
+    public static class MovieEndpoint
     {
         public static void ConfigureMovieEndpoint(this WebApplication app)
         {
@@ -59,7 +59,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> Update(int id, InputMovie inputMovie, IRepository<Movie> repository)
         {
-            Movie movieToUpdate = await repository.Get(id);
+            Movie? movieToUpdate = await repository.Get(id);
             if (movieToUpdate == null)
                 return TypedResults.NotFound(new Payload<Movie>(movieToUpdate));
 
@@ -69,7 +69,7 @@ namespace api_cinema_challenge.Controllers
             movieToUpdate.Rating = inputMovie.Rating;
             movieToUpdate.Description = inputMovie.Description;
 
-            Movie? result = await repository.Update(movieToUpdate);
+            Movie result = await repository.Update(movieToUpdate);
 
             OutputMovie outputMovie = MovieDtoManager.Convert(result);
             var payload = new Payload<OutputMovie>(outputMovie);
