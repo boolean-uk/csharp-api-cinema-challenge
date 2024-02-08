@@ -184,7 +184,9 @@ namespace api_cinema_challenge.Controllers
         {
 
             IEnumerable<Display> screeningRooms = await displayRepo.GetAll();
-            Display? screeningRoom = screeningRooms.Where(sr => sr.ScreenNumber == screeningPost.ScreenNumber).FirstOrDefault();
+            Display? screeningRoom = screeningRooms
+                .Where(sr => sr.ScreenNumber == screeningPost.ScreenNumber && sr.Capacity == screeningPost.Capacity)
+                .FirstOrDefault();
             if (screeningRoom == null)
             {
                 screeningRoom = new Display()
@@ -195,6 +197,7 @@ namespace api_cinema_challenge.Controllers
                     UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
 
                 };
+                screeningRoom = await displayRepo.Insert(screeningRoom);
             }
 
             Screening inputScreening = new Screening()
