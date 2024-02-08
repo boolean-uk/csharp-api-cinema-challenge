@@ -9,10 +9,10 @@ public static class CustomerEndpoint
 {
     public static void ConfigureCustomerEndpoint(this WebApplication app)
     {
-        var customerGroup = app.MapGroup("customer");
+        var customerGroup = app.MapGroup("customers");
 
         customerGroup.MapPost("/", CreateCustomer);
-        customerGroup.MapGet("/", GerCustomers);
+        customerGroup.MapGet("/", GetCustomers);
         customerGroup.MapPut("/{id}", UpdateCustomer);
         customerGroup.MapDelete("/{Id}", DeleteCustomer);
     }
@@ -33,7 +33,7 @@ public static class CustomerEndpoint
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public static async Task<IResult> GerCustomers(IRepository<Customer> repository)
+    public static async Task<IResult> GetCustomers(IRepository<Customer> repository)
     {
         return TypedResults.Ok(await repository.GetAll());
     }
