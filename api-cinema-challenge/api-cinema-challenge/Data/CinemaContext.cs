@@ -17,11 +17,13 @@ namespace api_cinema_challenge.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString);
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             Seeder seeder = new();
+            modelBuilder.Entity<Movie>().Navigation(x => x.Screenings).AutoInclude();
         }
 
         public DbSet<Customer> Customers { get; set; }
