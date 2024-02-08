@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.NewFolder
 {
     public class Screening
     {
+        [Key]
         [Column("screening_id")]
         public int Id { get; set; }
         [Column("fk_movie_id")]
-        [ForeignKey("Movie")]
+        [ForeignKey(nameof(Movie))]
         public int MovieId { get; set; }
         [Column("screening_screen_number")]
         public int ScreenNumber { get; set; }

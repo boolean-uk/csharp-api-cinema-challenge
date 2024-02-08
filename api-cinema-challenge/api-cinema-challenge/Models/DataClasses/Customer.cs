@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.NewFolder
 {
     public class Customer
     {
+        [Key]
         [Column("customer_id")]
         public int Id { get; set; }
         [Column("customer_name")]

@@ -22,6 +22,54 @@ namespace api_cinema_challenge.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("api_cinema_challenge.Models.DataClasses.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("ticket_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("ticket_created_at");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("fk_customer_id");
+
+                    b.Property<int>("NumSeats")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScreeningId")
+                        .HasColumnType("integer")
+                        .HasColumnName("fk_screening_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("ticket_updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ScreeningId");
+
+                    b.ToTable("Tickets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 8, 14, 22, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = 1,
+                            NumSeats = 3,
+                            ScreeningId = 1,
+                            UpdatedAt = new DateTime(2024, 8, 14, 22, 0, 0, 0, DateTimeKind.Utc)
+                        });
+                });
+
             modelBuilder.Entity("api_cinema_challenge.Models.NewFolder.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -250,6 +298,21 @@ namespace api_cinema_challenge.Migrations
                             StartsAt = new DateTime(2024, 10, 31, 23, 0, 0, 0, DateTimeKind.Utc),
                             UpdatedAt = new DateTime(2024, 10, 19, 22, 0, 0, 0, DateTimeKind.Utc)
                         });
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.DataClasses.Ticket", b =>
+                {
+                    b.HasOne("api_cinema_challenge.Models.NewFolder.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api_cinema_challenge.Models.NewFolder.Screening", null)
+                        .WithMany()
+                        .HasForeignKey("ScreeningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.NewFolder.Screening", b =>

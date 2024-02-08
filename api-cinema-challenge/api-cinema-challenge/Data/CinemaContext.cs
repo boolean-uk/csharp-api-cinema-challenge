@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.Models.NewFolder;
+﻿using api_cinema_challenge.Models.DataClasses;
+using api_cinema_challenge.Models.NewFolder;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
@@ -29,6 +30,16 @@ namespace api_cinema_challenge.Data
                 .HasOne<Movie>()
                 .WithMany()
                 .HasForeignKey(a => a.MovieId);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne<Customer>()
+                .WithMany()
+                .HasForeignKey(t => t.CustomerId);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne<Screening>()
+                .WithMany()
+                .HasForeignKey(t => t.ScreeningId);
 
             // Seeded data
             modelBuilder.Entity<Movie>().HasData(
@@ -143,10 +154,23 @@ namespace api_cinema_challenge.Data
                 }
             );
 
+            modelBuilder.Entity<Ticket>().HasData(
+                new Ticket
+                {
+                    Id = 1,
+                    ScreeningId = 1,
+                    NumSeats = 3,
+                    CustomerId = 1,
+                    CreatedAt = new DateTime(2024, 8, 15).ToUniversalTime(),
+                    UpdatedAt = new DateTime(2024, 8, 15).ToUniversalTime()
+                    
+                });
+
 
         }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }
