@@ -2,10 +2,8 @@
 
 namespace api_cinema_challenge.Models
 {
-    public class Customer
+    public class Customer : BaseEntity
     {
-        [Column("id")]
-        public int Id { get; set; }
 
         [Column("name")]
         public string Name { get; set; }
@@ -13,10 +11,5 @@ namespace api_cinema_challenge.Models
         [Column("phone")]
         public string Phone { get; set; }
 
-        [Column("created_at")]
-        public DateTime createdAt { get; set; } = DateTime.Now;
-
-        [Column("updated_at")]
-        public DateTime updatedAt { get; set; }
     }
 }
