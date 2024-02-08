@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models.TransferModels
+﻿namespace api_cinema_challenge.Models.TransferModels.Payload
 {
     public class Payload<T>(T Data) where T : class
     {
