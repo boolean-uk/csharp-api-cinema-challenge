@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Models.DatabaseModels;
 using api_cinema_challenge.Models.Dto.GenericDto;
+using api_cinema_challenge.Models.Input;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +19,24 @@ namespace api_cinema_challenge.Endpoint
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> CreateMovie(IRepository<Movie> repository)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public static async Task<IResult> CreateMovie(IRepository<Movie> repository, MovieInput input)
         {
-            throw new NotImplementedException();
+            var movies = await repository.GetAll();
+            DateTime creationTime = DateTime.UtcNow;
+
+            var entity = new Movie()
+            {
+                Id = (movies.Count() == 0 ? 0 : movies.Max(patient => patient.Id) + 1),
+                Title = input.Title,
+                Rating = input.Rating,
+                Description = input.Description,
+                Runtime = input.Runtime,
+                CreatedAt = creationTime,
+                UpdateddAt = creationTime
+            };
+            repository.Insert(entity);
+            return TypedResults.Created($"/{entity.Id}", entity);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -32,16 +48,39 @@ namespace api_cinema_challenge.Endpoint
             return TypedResults.Ok(payload);
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> UpdateMovie(IRepository<Movie> repository)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> UpdateMovie(IRepository<Movie> repository, int id, MovieInput input)
         {
-            throw new NotImplementedException();
+            var entity = await repository.GetById(id);
+            if (entity == null)
+            {
+                return TypedResults.NotFound(id);
+            }
+
+            DateTime updateTime = DateTime.UtcNow;
+
+            entity.Title = input.Title != null ? input.Title : entity.Title;
+            entity.Rating = input.Rating != null ? input.Rating : entity.Rating;
+            entity.Description = input.Description != null ? input.Description : entity.Description;
+            entity.Runtime = input.Runtime != null ? input.Runtime : entity.Runtime;
+            entity.UpdateddAt = updateTime;
+            repository.Update(entity);
+            return TypedResults.Created($"/{entity.Id}", entity);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> DeleteMovie(IRepository<Movie> repository)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> DeleteMovie(IRepository<Movie> repository, int id)
         {
-            throw new NotImplementedException();
+            var movie = await repository.GetById(id);
+            if (movie == null)
+            {
+                return TypedResults.NotFound("Customer not found.");
+            }
+            var result = repository.Delete(id);
+            return result != null ? TypedResults.Ok(result) : Results.NotFound();
         }
     }
 }

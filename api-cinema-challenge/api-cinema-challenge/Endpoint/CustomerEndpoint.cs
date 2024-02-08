@@ -82,8 +82,6 @@ namespace api_cinema_challenge.Endpoint
                 return TypedResults.NotFound(id);
             }
 
-            var customers = await repository.GetAll();
-
             DateTime updateTime = DateTime.UtcNow;
 
             entity.Name = input.Name != null ? input.Name : entity.Name;
