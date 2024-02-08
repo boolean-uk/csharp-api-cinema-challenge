@@ -48,7 +48,8 @@ namespace api_cinema_challenge.Models
                     Name = customer.Name,
                     Email = customer.Email,
                     PhoneNumber = customer.PhoneNumber,
-                    CreatedAt = customer.CreatedAt
+                    CreatedAt = customer.CreatedAt,
+                    UpdatedAt = customer.UpdatedAt
                 });
             }
 
