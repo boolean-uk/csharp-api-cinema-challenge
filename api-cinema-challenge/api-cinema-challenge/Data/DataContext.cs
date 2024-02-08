@@ -30,11 +30,6 @@ namespace api_cinema_challenge.Data
                 .HasForeignKey(ts => ts.TicketId );
 
             modelBuilder.Entity<TicketSeat>()
-                .HasOne(ts => ts.Display)
-                .WithMany(d => d.Seats)
-                .HasForeignKey(ts => ts.DisplayId);
-
-            modelBuilder.Entity<TicketSeat>()
                 .HasOne(ts => ts.Seat)
                 .WithOne(s => s.Ticket)
                 .HasForeignKey<TicketSeat>(ts => ts.SeatId);
