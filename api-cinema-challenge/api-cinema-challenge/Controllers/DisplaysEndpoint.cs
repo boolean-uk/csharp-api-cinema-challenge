@@ -1,6 +1,6 @@
 ﻿using api_cinema_challenge.Models.PureModels;
-using api_cinema_challenge.Models.TransferModels;
 using api_cinema_challenge.Models.TransferModels.Displays;
+using api_cinema_challenge.Models.TransferModels.Payload;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 
