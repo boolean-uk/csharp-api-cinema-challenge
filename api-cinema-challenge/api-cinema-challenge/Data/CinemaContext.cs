@@ -24,12 +24,8 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Screening>()
                 .HasOne(s => s.Movie)
                 .WithMany(m => m.Screenings)
-                .HasForeignKey(s => s.MovieId);
-
-            modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.Screening)
-                .WithMany(s => s.Tickets)
-                .HasForeignKey(t => t.ScreeningId);
+                .HasForeignKey(s => s.MovieId)
+                .IsRequired();
 
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Customer)

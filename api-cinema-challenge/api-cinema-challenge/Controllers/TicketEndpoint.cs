@@ -11,8 +11,10 @@ namespace api_cinema_challenge.Controllers
         {
             var tickets = app.MapGroup("tickets");
 
-            tickets.MapPost("", AddTicket);
+            tickets.MapPost("/{id}", AddTicket);
             tickets.MapGet("", GetTickets);
+            tickets.MapPut("/{id}", UpdateTicket);
+            tickets.MapDelete("/{id}", DeleteTicket);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -62,6 +64,47 @@ namespace api_cinema_challenge.Controllers
             var tickets = allTickets.Where(x => x.CustomerId == customerId).ToList();
 
             return TypedResults.Created($"/{customerId}/screenings/", Ticket.ToDTO(tickets));
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> UpdateTicket(IRepository<Ticket> ticketRepository, IRepository<Screening> screeningRepository, int ticketId, int numberOfSeats)
+        {
+            var ticket = await ticketRepository.Get(ticketId);
+            if (ticket == null)
+            {
+                return TypedResults.NotFound($"Ticket with id {ticketId} was not found");
+            }
+
+            Screening? screening = await screeningRepository.Get(ticket.ScreeningId);
+
+            int changedNumberOfSeats = numberOfSeats - ticket.NumberOfSeats;
+            if ((screening.AvailableSeats - changedNumberOfSeats) < 0)
+            {
+                return TypedResults.BadRequest($"Screening does not have enough seats for {numberOfSeats} seats. Only {screening.AvailableSeats} seats are available");
+            }
+
+            screening.AvailableSeats -= changedNumberOfSeats;
+            ticket.NumberOfSeats = numberOfSeats;
+
+            await screeningRepository.Update(screening);
+            var changedTicket = await ticketRepository.Update(ticket);
+
+            return TypedResults.Created($"/{ticketId}", Ticket.ToDTO(changedTicket));
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> DeleteTicket(IRepository<Ticket> repository, int ticketId)
+        {
+            var deletedTicket = await repository.Delete(ticketId);
+            if (deletedTicket == null)
+            {
+                return TypedResults.NotFound($"Screening with id {ticketId} was not found");
+            }
+
+            return TypedResults.Ok(Ticket.ToDTO(deletedTicket));
         }
     }
 }

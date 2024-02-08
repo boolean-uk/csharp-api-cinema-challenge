@@ -58,7 +58,7 @@ namespace api_cinema_challenge.Models
                 });
             }
 
-            return new PayLoad<List<ScreeningDTO>> { Data = screeningsDTO };
+            return new PayLoad<List<ScreeningDTO>> { Data = screeningsDTO.OrderBy(x => x.Id).ToList() };
         }
     }
 }

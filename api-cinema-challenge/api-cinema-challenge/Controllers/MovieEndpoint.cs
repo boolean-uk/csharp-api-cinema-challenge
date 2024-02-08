@@ -122,9 +122,9 @@ namespace api_cinema_challenge.Controllers
             if (movie.Runtime != null) { oldMovie.Runtime = (int)movie.Runtime; }
             oldMovie.UpdatedAt = DateTime.UtcNow;
 
-            await repository.Update(oldMovie);
+            var changedMovie = await repository.Update(oldMovie);
 
-            return TypedResults.Created($"/{id}", Movie.ToDTO(oldMovie));
+            return TypedResults.Created($"/{id}", Movie.ToDTO(changedMovie));
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
