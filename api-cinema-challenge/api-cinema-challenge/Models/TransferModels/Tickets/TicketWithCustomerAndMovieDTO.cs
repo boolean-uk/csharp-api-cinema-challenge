@@ -18,7 +18,7 @@ namespace api_cinema_challenge.Models.TransferModels.Tickets
 
         public CustomerDTO Customer { get; set; } = new CustomerDTO(customer.CustomerId, customer.CustomerName, customer.Email, customer.PhoneNumber, customer.CreatedAt, customer.UpdatedAt);
 
-        public ScreeningDTO Screening { get; set; } = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
+        public ScreeningDTO Screening { get; set; } = new ScreeningDTO(screening.ScreeningId, screening.Display.ScreenNumber, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
 
         public MovieDTO Movie { get; set; } = new MovieDTO(screening.Movie.MovieId, screening.Movie.Title, screening.Movie.Rating, screening.Movie.Description, screening.Movie.RuntimeMinutes, screening.Movie.CreatedAt, screening.Movie.UpdatedAt);
     }

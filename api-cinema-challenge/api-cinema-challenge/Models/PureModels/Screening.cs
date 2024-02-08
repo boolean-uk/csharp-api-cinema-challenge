@@ -10,11 +10,8 @@ namespace api_cinema_challenge.Models.PureModels
         [Column("screening_id")]
         public int ScreeningId { get; set; }
 
-        [Column("screen_numbers")]
-        public int ScreenNumber { get; set; }
-
-        [Column("capacity")]
-        public int Capacity { get; set; }
+        [Column("display_id")]
+        public int DisplayId { get; set; }
 
         [Column("startsAt")]
         public DateTime Starts { get; set; }
@@ -28,6 +25,8 @@ namespace api_cinema_challenge.Models.PureModels
         [Column("movie_id")]
         [ForeignKey("MovieId")]
         public int MovieId { get; set; }
+
+        public Display Display { get; set; }
 
         public Movie Movie { get; set; }
 

@@ -148,7 +148,7 @@ namespace api_cinema_challenge.Controllers
             Ticket? ticket = customer.Tickets.Where(t => t.ScreeningId == screeningId).FirstOrDefault();
             if (ticket == null) 
             {
-                return TypedResults.NotFound($"No ticket with ID {screeningId} found.");
+                return TypedResults.NotFound($"No ticket with screening ID {screeningId} found.");
             }
 
 
@@ -160,6 +160,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> PostTicketForCustomer(IRepository<Ticket> repo, int customerId, int screeningId, TicketInputDTO ticketPost)
         {
+            int availableTickets = repo.GetIncluding()
 
             Ticket inputTicket = new Ticket()
             {

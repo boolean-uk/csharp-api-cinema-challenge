@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api_cinema_challenge.Data;
@@ -11,9 +12,11 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240208090329_separateDisplayClass")]
+    partial class separateDisplayClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +62,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.ToTable("customers", (string)null);
+                    b.ToTable("customers");
 
                     b.HasData(
                         new
@@ -532,7 +535,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("DisplayId");
 
-                    b.ToTable("displays", (string)null);
+                    b.ToTable("displays");
 
                     b.HasData(
                         new
@@ -740,7 +743,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("MovieId");
 
-                    b.ToTable("movies", (string)null);
+                    b.ToTable("movies");
 
                     b.HasData(
                         new
@@ -1070,7 +1073,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("screenings", (string)null);
+                    b.ToTable("screenings");
 
                     b.HasData(
                         new
@@ -2001,7 +2004,7 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("ScreeningId");
 
-                    b.ToTable("tickets", (string)null);
+                    b.ToTable("tickets");
 
                     b.HasData(
                         new

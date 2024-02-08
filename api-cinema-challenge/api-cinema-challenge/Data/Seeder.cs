@@ -1,12 +1,11 @@
-﻿using api_cinema_challenge.Models.JunctionModels;
-using api_cinema_challenge.Models.PureModels;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using api_cinema_challenge.Models.PureModels;
 
 namespace api_cinema_challenge.Data
 {
     public class Seeder
     {
-        public int j = 1;
+        public int displayId = 1;
+        public int ticketId = 1;
         private List<string> _prefix = new List<string>()
         {
             "The ",
@@ -135,6 +134,7 @@ namespace api_cinema_challenge.Data
             new Tuple<int, int>(20, 79)
         };
 
+        private List<Display> _displays = new List<Display>();
         private List<Customer> _customers = new List<Customer>();
         private List<Movie> _movies = new List<Movie>();
         private List<Screening> _screenings = new List<Screening>();
@@ -192,13 +192,34 @@ namespace api_cinema_challenge.Data
                 _customers.Add(customer);
             }
 
+            // GENERATE DISPLAYS
+            foreach (Tuple<int, int> room in _rooms)
+            {
+                Display display = new Display();
+                display.DisplayId = displayId++;
+                display.ScreenNumber = room.Item1;
+                display.Capacity = room.Item2;
+
+                display.CreatedAt = DateTime.SpecifyKind(
+                    new DateTime(
+                        rngTime.Next(1898, DateTime.Now.Year + 1),
+                        rngTime.Next(1, 12),
+                        rngTime.Next(1, 29),
+                        rngTime.Next(0, 24),
+                        rngTime.Next(0, 60),
+                        rngTime.Next(0, 60)
+                    ), DateTimeKind.Utc);
+                display.UpdatedAt = display.CreatedAt;
+
+                _displays.Add(display);
+            }
+
+            // GENERATE SCREENINGS
             for (int i = 1; i < 100; i++) 
             {
                 Screening screening = new Screening();
-                Tuple<int, int> room = _rooms[rngScr.Next(_rooms.Count)];
                 screening.ScreeningId = i;
-                screening.ScreenNumber = room.Item1;
-                screening.Capacity = room.Item2;
+                screening.DisplayId = _displays[rngScr.Next(_displays.Count)].DisplayId;
                 screening.MovieId = _movies[rngScr.Next(_movies.Count)].MovieId;
 
                 DateTime createdTime = DateTime.SpecifyKind(
@@ -219,15 +240,16 @@ namespace api_cinema_challenge.Data
                 _screenings.Add(screening);
             }
 
-            
+            // GENERATE TICKETS
             foreach (Screening screening in _screenings) 
             {
-                int ticketsLeft = rngTic.Next((int)(screening.Capacity * 0.7));
+                Display display = _displays.Where(d => d.DisplayId == screening.DisplayId).First();
+                int ticketsLeft = rngTic.Next((int)(display.Capacity * 0.7));
                 while (ticketsLeft > 0)
                 {
                     Ticket ticket = new Ticket();
 
-                    ticket.TicketId = ++j;
+                    ticket.TicketId = ++ticketId;
 
                     Customer customer = _customers[rngTic.Next(_customers.Count)];
                     ticket.CustomerId = customer.CustomerId;
@@ -267,5 +289,7 @@ namespace api_cinema_challenge.Data
         public List<Screening> Screenings { get { return _screenings; } }
 
         public List<Ticket> Tickets { get { return _tickets; } }
+
+        public List<Display> Displays { get { return _displays; } }
     }
 }

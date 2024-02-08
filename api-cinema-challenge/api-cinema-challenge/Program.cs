@@ -1,6 +1,5 @@
 using api_cinema_challenge.Controllers;
 using api_cinema_challenge.Data;
-using api_cinema_challenge.Models.JunctionModels;
 using api_cinema_challenge.Models.PureModels;
 using api_cinema_challenge.Repository;
 
@@ -14,7 +13,7 @@ builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
-builder.Services.AddScoped<IRepository<CustomerTicket>, Repository<CustomerTicket>>();
+builder.Services.AddScoped<IRepository<Display>, Repository<Display>>();
 
 var app = builder.Build();
 
@@ -31,5 +30,6 @@ app.ConfigureCustomersEndpoint();
 app.ConfigureMoviesEndpoint();
 app.ConfigureScreeningsEndpoint();
 app.ConfigureTicketsEndpoint();
+app.ConfigureDisplaysEndpoint();
 
 app.Run();

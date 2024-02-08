@@ -1,7 +1,5 @@
-﻿using api_cinema_challenge.Models.JunctionModels;
-using api_cinema_challenge.Models.PureModels;
+﻿using api_cinema_challenge.Models.PureModels;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 
 namespace api_cinema_challenge.Data
 {
@@ -22,22 +20,12 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*
-            modelBuilder.Entity<CustomerTicket>().HasKey(ct => new { ct.CustomerId, ct.TicketId });
-
-            modelBuilder.Entity<CustomerTicket>()
-                .HasOne(ct => ct.Ticket)
-                .WithMany(t => t.CustomerTickets)
-                .HasForeignKey(ct => ct.TicketId);
-
-            modelBuilder.Entity<CustomerTicket>()
-                .HasOne(ct => ct.Customer)
-                .WithMany(c => c.CustomerTickets)
-                .HasForeignKey(ct => ct.CustomerId);
-            */
+            modelBuilder.Entity<Screening>().Navigation(d => d.Display).AutoInclude();
+            modelBuilder.Entity<Ticket>().Navigation(t => t.Customer).AutoInclude();
 
             // Seed data
             Seeder seeder = new Seeder();
+            modelBuilder.Entity<Display>().HasData(seeder.Displays);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);

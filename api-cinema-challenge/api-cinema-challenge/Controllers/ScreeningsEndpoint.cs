@@ -26,7 +26,7 @@ namespace api_cinema_challenge.Controllers
         {
             IEnumerable<Screening> screenings = await repo.GetAll();
 
-            IEnumerable<ScreeningDTO> screeningsOut = screenings.Select(s => new ScreeningDTO(s.ScreeningId, s.ScreenNumber, s.Capacity, s.Starts, s.CreatedAt, s.UpdatedAt));
+            IEnumerable<ScreeningDTO> screeningsOut = screenings.OrderByDescending(s => s.Starts).Select(s => new ScreeningDTO(s.ScreeningId, s.Display.ScreenNumber, s.Display.Capacity, s.Starts, s.CreatedAt, s.UpdatedAt));
             Payload<IEnumerable<ScreeningDTO>> payload = new Payload<IEnumerable<ScreeningDTO>>(screeningsOut);
             return TypedResults.Ok(payload);
         }
@@ -42,19 +42,33 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"No screening with ID {id} found.");
             }
 
-            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
+            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.Display.ScreenNumber, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
             return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> PostScreening(IRepository<Screening> repo, ScreeningInputDTO screeningPost)
+        private static async Task<IResult> PostScreening(IRepository<Screening> repo, IRepository<Display> displayRepo, ScreeningInputDTO screeningPost)
         {
+
+            IEnumerable<Display> screeningRooms = await displayRepo.GetAll();
+            Display? screeningRoom = screeningRooms.Where(sr => sr.ScreenNumber == screeningPost.ScreenNumber).FirstOrDefault();
+            if (screeningRoom == null)
+            {
+                screeningRoom = new Display()
+                {
+                    ScreenNumber = screeningPost.ScreenNumber,
+                    Capacity = screeningPost.Capacity,
+                    CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                    UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+
+                };
+            }
 
             Screening inputScreening = new Screening()
             {
-                ScreenNumber = screeningPost.ScreenNumber,
-                Capacity = screeningPost.Capacity,
+                DisplayId = screeningRoom.DisplayId,
+                Display = screeningRoom,
                 Starts = screeningPost.Starts,
                 MovieId = screeningPost.MovieId,
                 CreatedAt = DateTime.Now,
@@ -62,14 +76,14 @@ namespace api_cinema_challenge.Controllers
             };
             Screening screening = await repo.Insert(inputScreening);
 
-            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
+            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.Display.ScreenNumber, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
             return TypedResults.Created($"/{screeningOut.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> PutScreening(IRepository<Screening> repo, int id, ScreeningInputDTO screeningPut)
+        private static async Task<IResult> PutScreening(IRepository<Screening> repo, IRepository<Display> displayRepo, int id, ScreeningInputDTO screeningPut)
         {
             Screening? screening = await repo.Get(id);
 
@@ -78,11 +92,26 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"No screening with ID {id} found.");
             }
 
+            IEnumerable<Display> screeningRooms = await displayRepo.GetAll();
+            Display? screeningRoom = screeningRooms.Where(sr => sr.ScreenNumber == screeningPut.ScreenNumber).FirstOrDefault();
+            if (screeningRoom == null)
+            {
+                screeningRoom = new Display()
+                {
+                    ScreenNumber = screeningPut.ScreenNumber,
+                    Capacity = screeningPut.Capacity,
+                    CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                    UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+
+                };
+            }
+
+
             Screening inputScreening = new Screening()
             {
                 ScreeningId = id,
-                ScreenNumber = screeningPut.ScreenNumber,
-                Capacity = screeningPut.Capacity,
+                DisplayId = screeningRoom.DisplayId,
+                Display = screeningRoom,
                 Starts = screeningPut.Starts,
                 MovieId = screeningPut.MovieId,
                 CreatedAt = screening.CreatedAt,
@@ -91,7 +120,7 @@ namespace api_cinema_challenge.Controllers
 
             screening = await repo.Update(id, inputScreening);
 
-            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
+            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.Display.ScreenNumber, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
             return TypedResults.Created($"/{screeningOut.Id}",payload);
         }
@@ -110,7 +139,7 @@ namespace api_cinema_challenge.Controllers
 
             screening = await repo.Delete(id);
 
-            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.ScreenNumber, screening.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
+            ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.Display.ScreenNumber, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);
             return TypedResults.Ok(payload);
         }

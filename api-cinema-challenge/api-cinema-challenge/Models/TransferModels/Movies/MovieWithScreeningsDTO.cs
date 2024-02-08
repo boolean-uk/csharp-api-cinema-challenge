@@ -21,6 +21,6 @@ namespace api_cinema_challenge.Models.TransferModels.Movies
 
         public string UpdatedAt { get; set; } = Updated.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
 
-        public ICollection<ScreeningDTO> Screenings { get; set; } = screenings.Select(x => new ScreeningDTO(x.ScreeningId, x.ScreenNumber, x.Capacity, x.Starts, x.CreatedAt, x.UpdatedAt)).ToList();
+        public ICollection<ScreeningDTO> Screenings { get; set; } = screenings.Select(x => new ScreeningDTO(x.ScreeningId, x.Display.ScreenNumber, x.Display.Capacity, x.Starts, x.CreatedAt, x.UpdatedAt)).ToList();
     }
 }
