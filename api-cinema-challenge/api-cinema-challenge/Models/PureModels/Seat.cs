@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models.JunctionModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.PureModels
@@ -9,7 +10,6 @@ namespace api_cinema_challenge.Models.PureModels
         [Column("seat_id")]
         public int SeatId { get; set; }
 
-        public TicketSeat Ticket { get; set; }
 
         [Column("display_id")]
         [ForeignKey("DisplayId")]
@@ -22,5 +22,6 @@ namespace api_cinema_challenge.Models.PureModels
 
         [Column("seat_number")]
         public int SeatNumber { get; set; }
+        public ICollection<TicketSeat> Ticket { get; set; }
     }
 }

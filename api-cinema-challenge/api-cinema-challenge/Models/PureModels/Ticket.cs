@@ -22,9 +22,6 @@ namespace api_cinema_challenge.Models.PureModels
 
         public Screening Screening { get; set; }
 
-        [Column("number_of_seats")]
-        public int NumberOfSeats { get; set; }
-
         [Column("created_at")]
         public DateTime CreatedAt { get; set;}
 

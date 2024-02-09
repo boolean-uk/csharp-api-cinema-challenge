@@ -18,9 +18,15 @@ namespace api_cinema_challenge.Models.JunctionModel
 
         public Display Display { get; set; }
 
+        [Column("screening_id")]
+        [ForeignKey("ScreeningId")]
+        public int ScreeningId { get; set; }
+
+        public Screening Screening { get; set; }
+
         [Column("ticket_id")]
         [ForeignKey("TicketId")]
-        public int TicketId { get; set; }
+        public int? TicketId { get; set; }
 
         public Ticket Ticket { get; set; }
     }
