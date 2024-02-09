@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using api_cinema_challenge.Models.JunctionModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.PureModels
@@ -21,14 +22,12 @@ namespace api_cinema_challenge.Models.PureModels
 
         public Screening Screening { get; set; }
 
-        [Column("number_of_seats")]
-        public int NumberOfSeats { get; set; }
-
         [Column("created_at")]
         public DateTime CreatedAt { get; set;}
 
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set;}
 
+        public ICollection<TicketSeat> Seats { get; set; }
     }
 }

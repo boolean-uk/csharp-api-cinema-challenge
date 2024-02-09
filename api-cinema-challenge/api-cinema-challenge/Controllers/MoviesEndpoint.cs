@@ -1,5 +1,4 @@
 ﻿using api_cinema_challenge.Models.PureModels;
-using api_cinema_challenge.Models.TransferModels;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 using api_cinema_challenge.Models.TransferModels.Movies;
@@ -7,6 +6,8 @@ using api_cinema_challenge.Models.TransferModels.Screenings;
 using api_cinema_challenge.Models.InputModels.Screening;
 using api_cinema_challenge.Models.InputModels.Movie;
 using Microsoft.AspNetCore.Http.HttpResults;
+using api_cinema_challenge.Models.TransferModels.Payload;
+using api_cinema_challenge.Models.JunctionModel;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -58,6 +59,8 @@ namespace api_cinema_challenge.Controllers
             IRepository<Movie> repo, 
             IRepository<Screening> screeningRepo, 
             IRepository<Display> displayRepo, 
+            IRepository<Seat> seatRepo,
+            TicketSeatRepository tsRepo,
             MovieInputPostDTO moviePost)
         {
 
@@ -91,7 +94,6 @@ namespace api_cinema_challenge.Controllers
                             Capacity = screening.Capacity,
                             CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                             UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
-                            
                         };
                         screeningRoom.Screenings.Add(screeningGenerated);
                     }
@@ -103,17 +105,40 @@ namespace api_cinema_challenge.Controllers
                     screeningGenerated.CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
                     screeningGenerated.UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
                     screeningGenerated.MovieId = movie.MovieId;
+
+                    createdScreenings.Add(screeningGenerated);
                 }
 
                 foreach (Screening screening in createdScreenings)
                 {
-                    await screeningRepo.Insert(screening);
+                    Screening newScreening = await screeningRepo.Insert(screening);
+                    Random rng = new Random();
+                    int seats = screening.Display.Capacity;
+                    int rows = rng.Next(3, Math.Max(6, seats / 6));
+                    int seatPerRow = seats / rows;
+
+                    for (int j = 1; j <= seats; j++)
+                    {
+                        int RowNumber = j - 1 / seatPerRow + 1;
+                        int seatNumber = (j - 1) % seatPerRow + 1;
+
+                        Seat seat = new Seat();
+                        seat.SeatId = j;
+                        seat.RowNumber = RowNumber;
+                        seat.SeatNumber = seatNumber;
+                        seat.DisplayId = newScreening.DisplayId;
+                        await seatRepo.Insert(seat);
+
+                        TicketSeat ts = new TicketSeat() { SeatId = seat.SeatId, DisplayId = newScreening.DisplayId, ScreeningId = newScreening.ScreeningId};
+                        await tsRepo.Insert(ts);
+                    }
                 }
+
             }
 
-            MovieDTO movieOut = new MovieDTO(movie.MovieId, movie.Title, movie.Rating, movie.Description, movie.RuntimeMinutes, movie.CreatedAt, movie.UpdatedAt);
-            Payload<MovieDTO> payload = new Payload<MovieDTO>(movieOut);
-            return TypedResults.Created($"/{movieOut.Id}", payload);
+            MovieWithScreeningDTO movieOut = new MovieWithScreeningDTO(movie.MovieId, movie.Title, movie.Rating, movie.Description, movie.RuntimeMinutes, movie.CreatedAt, movie.UpdatedAt, movie.Screenings);
+            Payload<MovieWithScreeningDTO> payload = new Payload<MovieWithScreeningDTO>(movieOut);
+            return TypedResults.Created($"/{movieOut.MovieId}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -180,7 +205,13 @@ namespace api_cinema_challenge.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> PostScreeningOfMovie(IRepository<Screening> repo, IRepository<Display> displayRepo, int id, ScreeningInputAsMovieDTO screeningPost)
+        private static async Task<IResult> PostScreeningOfMovie(
+            IRepository<Screening> repo, 
+            IRepository<Display> displayRepo,
+            IRepository<Seat> seatRepo,
+            TicketSeatRepository tsRepo,
+            int id, 
+            ScreeningInputAsMovieDTO screeningPost)
         {
 
             IEnumerable<Display> screeningRooms = await displayRepo.GetAll();
@@ -212,6 +243,27 @@ namespace api_cinema_challenge.Controllers
 
             screeningRoom.Screenings.Add(inputScreening);
             Screening screening = await repo.Insert(inputScreening);
+
+            Random rng = new Random();
+            int seats = screening.Display.Capacity;
+            int rows = rng.Next(3, Math.Max(6, seats / 6));
+            int seatPerRow = seats / rows;
+
+            for (int j = 1; j <= seats; j++)
+            {
+                int RowNumber = j - 1 / seatPerRow + 1;
+                int seatNumber = (j - 1) % seatPerRow + 1;
+
+                Seat seat = new Seat();
+                seat.SeatId = j;
+                seat.RowNumber = RowNumber;
+                seat.SeatNumber = seatNumber;
+                seat.DisplayId = screening.DisplayId;
+                await seatRepo.Insert(seat);
+
+                TicketSeat ts = new TicketSeat() { SeatId = seat.SeatId, DisplayId = screening.DisplayId, ScreeningId = screening.ScreeningId };
+                await tsRepo.Insert(ts);
+            }
 
             ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.DisplayId, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
             Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>(screeningOut);

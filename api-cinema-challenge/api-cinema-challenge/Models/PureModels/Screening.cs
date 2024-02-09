@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using api_cinema_challenge.Models.JunctionModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.PureModels
@@ -29,6 +30,8 @@ namespace api_cinema_challenge.Models.PureModels
         public Display Display { get; set; }
 
         public Movie Movie { get; set; }
+
+        public ICollection<TicketSeat> TicketSeats { get; set; } = new List<TicketSeat>();
 
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }

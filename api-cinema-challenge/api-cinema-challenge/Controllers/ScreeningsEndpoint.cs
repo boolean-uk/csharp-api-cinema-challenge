@@ -1,9 +1,9 @@
 ﻿using api_cinema_challenge.Models.PureModels;
-using api_cinema_challenge.Models.TransferModels;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 using api_cinema_challenge.Models.TransferModels.Screenings;
 using api_cinema_challenge.Models.InputModels.Screening;
+using api_cinema_challenge.Models.TransferModels.Payload;
 
 namespace api_cinema_challenge.Controllers
 {
