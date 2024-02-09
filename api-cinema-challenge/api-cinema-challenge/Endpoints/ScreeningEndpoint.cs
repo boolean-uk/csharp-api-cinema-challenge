@@ -35,7 +35,7 @@ public static class ScreeningEndpoint
             UpdatedAt = DateTime.UtcNow,
         };
         var result = await repository.Create(newScreening);
-        return TypedResults.Created($"/{result.Id}", new Payload<ScreeningDTO>() { Data = ScreeningDTO.ToDTO(result) }s);
+        return TypedResults.Created($"/{result.Id}", new Payload<ScreeningDTO>() { Data = ScreeningDTO.ToDTO(result) });
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
