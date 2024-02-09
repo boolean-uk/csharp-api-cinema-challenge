@@ -1,38 +1,42 @@
-﻿using api_cinema_challenge.Models;
-using api_cinema_challenge.Models.DTOs;
+﻿using api_cinema_challenge.Models.DTOs;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Controllers
 {
-    public static class CustomerEndpoint
+    public static class MovieEndpoint
     {
-
-        public static void ConfigureCustomerEndpoint(this WebApplication app)
+        public static void ConfigureMovieEndpoint(this WebApplication app)
         {
-            var customerGroup = app.MapGroup("customer/");
+            var movieGroup = app.MapGroup("movie/");
 
-            customerGroup.MapPost("", CreateCustomer);
-            customerGroup.MapGet("", GetAllCustomers);
-            customerGroup.MapPut("{id}", UpdateCustomer);
-            customerGroup.MapDelete("{id}", DeleteCustomer);
+            movieGroup.MapPost("", CreateMovie);
+            //movieGroup.MapGet("", GetAllMovies);
+            //movieGroup.MapPut("{id}", UpdateMovie);
+            //movieGroup.MapDelete("{id}", DeleteMovie);
 
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> CreateCustomer(IRepository<Customer> customerRepo, PostCustomer model)
+        public static async Task<IResult> CreateMovie(IRepository<Movie> movieRepo, PostMovie model)
         {
-            var entity = new Customer() {Name = model.Name, Phone=model.Phone };
-            var create = await customerRepo.Create(entity);
+            var entity = new Movie() 
+            { 
+                Title = model.Title, 
+                Rating = model.Rating, 
+                Description=model.Description,
+                RuntimeMins = model.RuntimeMins,
+            };
+            var create = await movieRepo.Create(entity);
 
-            var result = new CustomerDTO() 
+            var result = new MovieDTO()
             {
-                Id = create.Id,
-                Name = create.Name,
-                Phone = create.Phone,
-                CreatedAt = create.CreatedAt,
-                UpdatedAt = create.UpdatedAt,
+                Title = model.Title,
+                Rating = model.Rating,
+                Description = model.Description,
+                RuntimeMins = model.RuntimeMins
             };
 
             return TypedResults.Ok(result);
@@ -56,7 +60,7 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> UpdateCustomer(IRepository<Customer> customerRepo, int id, PutCustomer model)
         {
             var entity = await customerRepo.GetById(id);
-            if(entity == null)
+            if (entity == null)
             {
                 return TypedResults.NotFound();
             }
@@ -83,3 +87,4 @@ namespace api_cinema_challenge.Controllers
 
     }
 }
+

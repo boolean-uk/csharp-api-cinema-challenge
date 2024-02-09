@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 
 var app = builder.Build();
 
@@ -24,6 +25,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.ConfigureCustomerEndpoint();
+app.ConfigureMovieEndpoint();
 app.Run();
 
 public partial class Program { } // needed for testing - please ignore
