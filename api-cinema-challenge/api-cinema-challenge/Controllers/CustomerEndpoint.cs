@@ -12,7 +12,7 @@ namespace api_cinema_challenge.Controllers
         {
             var customerGroup = app.MapGroup("customer/");
 
-            //customerGroup.MapPost("", CreateCustomer);
+            customerGroup.MapPost("", CreateCustomer);
             customerGroup.MapGet("", GetAllCustomers);
             //customerGroup.MapPut("{id}", UpdateCustomer);
             //customerGroup.MapDelete("{id}", DeleteCustomer);
@@ -21,10 +21,10 @@ namespace api_cinema_challenge.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> CreateCustomer(IRepository<Customer> customerRepo)
+        public static async Task<IResult> CreateCustomer(IRepository<Customer> customerRepo, PostCustomer model)
         {
-            Customer custom = new Customer() { };
-            var create = await customerRepo.Create(custom);
+            var entity = new Customer() {Name = model.Name, Phone=model.Phone };
+            var create = await customerRepo.Create(entity);
 
             var result = new CustomerDTO() 
             {

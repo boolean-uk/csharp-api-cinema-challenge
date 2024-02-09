@@ -1,13 +1,14 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.Data;
+using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
 {
-    public class Repository<T> : IRepository<T> where T: class
+    public class Repository<T> : IRepository<T> where T: BaseEntity
     {
         private DbContext _db;
         private DbSet<T> _table;
-        public Repository(DbContext db) 
+        public Repository(CinemaContext db) 
         {
             _db = db;
             _table = _db.Set<T>();
@@ -16,7 +17,7 @@ namespace api_cinema_challenge.Repository
         {
             //entity.Id = _table.Max(x => x.Id) + 1;
             //entity.CreatedAt = DateTime.UtcNow;
-            //entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = DateTime.UtcNow;
 
             await _db.AddAsync(entity);
             await _db.SaveChangesAsync();

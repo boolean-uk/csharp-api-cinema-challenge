@@ -10,13 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddDbContext<CinemaContext>();
-builder.Services.AddDbContext<CinemaContext>(opt =>
-{
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-    opt.LogTo(message => Debug.WriteLine(message));
-
-});
+builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 
 var app = builder.Build();
