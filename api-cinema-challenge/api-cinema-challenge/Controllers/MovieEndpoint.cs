@@ -14,7 +14,7 @@ namespace api_cinema_challenge.Controllers
             movieGroup.MapPost("", CreateMovie);
             movieGroup.MapGet("", GetAllMovies);
             movieGroup.MapPut("{id}", UpdateMovie);
-            //movieGroup.MapDelete("{id}", DeleteMovie);
+            movieGroup.MapDelete("{id}", DeleteMovie);
 
         }
 
@@ -84,13 +84,21 @@ namespace api_cinema_challenge.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> DeleteCustomer(IRepository<Customer> customerRepo, int id)
+        public static async Task<IResult> DeleteMovie(IRepository<Movie> movieRepo, int id)
         {
-            var result = await customerRepo.Delete(id);
+            var result = await movieRepo.Delete(id);
             if (result == null)
             {
                 return TypedResults.NotFound();
             }
+
+            var delete = new MovieDTO() 
+            {
+                Title = result.Title,
+                Rating = result.Rating,
+                Description = result.Description,
+                RuntimeMins = (int)result.RuntimeMins
+            };
             return TypedResults.Ok(result);
         }
 
