@@ -12,7 +12,7 @@ namespace api_cinema_challenge.Models
         [Column("id")]
         public int Id {  get; set; }
         [Column("num_seats")]
-        public int NumSeats { get; set; }
+        public int NumSeats { get; set; } = 1;
         [ForeignKey("Customer")]
         [Column("fk_customer_id")]
         public int CustomerId { get; set; }
