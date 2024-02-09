@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\" />
-    <Folder Include="Repository\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

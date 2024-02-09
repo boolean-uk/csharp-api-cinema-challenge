@@ -10,7 +10,7 @@
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public IEnumerable<Screening> Screenings { get; set; }
+        public List<Screening> Screenings { get; set; } = new();
 
     }
 }
