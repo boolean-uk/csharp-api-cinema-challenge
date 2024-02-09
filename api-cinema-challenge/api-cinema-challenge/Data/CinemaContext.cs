@@ -24,9 +24,9 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TicketSeat>().HasKey(ts => new { ts.SeatId, ts.ScreeningId });
+            modelBuilder.Entity<ScreeningSeat>().HasKey(ts => new { ts.SeatId, ts.ScreeningId });
             modelBuilder.Entity<Movie>().Property(m => m.Rating).HasConversion<string>();
-            modelBuilder.SeedDatabase();
+            modelBuilder.SeedDatabase(111);
         }
 
         public DbSet<Movie> Movies { get; set; }
@@ -35,6 +35,6 @@ namespace api_cinema_challenge.Data
         public DbSet<Screening> Screenings { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<TicketSeat> TicketSeats { get; set; }
+        public DbSet<ScreeningSeat> TicketSeats { get; set; }
     }
 }

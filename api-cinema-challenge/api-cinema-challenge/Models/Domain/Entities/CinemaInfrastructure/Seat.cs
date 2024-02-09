@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure
 {
-    [Table("auditorium_seats")]
+    [Table("seats")]
     public class Seat
     {
         [Column("id")]
@@ -24,6 +24,6 @@ namespace api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure
         [Column("max_weight_in_kg")]
         public int MaxWeight { get; set; }
 
-        public ICollection<TicketSeat> TicketSeats { get; set; }
+        public ICollection<ScreeningSeat> TicketSeats { get; set; }
     }
 }

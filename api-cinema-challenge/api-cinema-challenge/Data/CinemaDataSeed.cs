@@ -16,32 +16,35 @@ namespace api_cinema_challenge.Data
             "King",
             "Ultra HD 3D",
             "The",
-            "Magic",
+            "Magic 3DS Max",
             "The Oracle",
-            "The King",
             "Galactic",
-            "The Prince",
+            "Prince",
+            "Dreamspace Ultima",
             "The Velvet",
-            "The Nebula",
+            "Nebula",
             "The Grand",
-            "Futuristic 3D Max",
-            "Ultimate",
+            "Odyssey",
             "Ultra Max",
+            "Futuristic 3D Max",
+            "Ultra Max",
+            "The Grand",
             "Royal Imperial",
+            "Nebula Deluxe",
             "Starlight Deluxe",
-            "Celestial Cinema"
+            "Celestial Cinema",
+            "Bohemoth"
         };
         private static List<string> auditoriumNameEndings = new List<string>()
         {
             "Hall",
             "Sphere",
-            "Max",
+            "Cove",
             "Enclave",
             "Horizon",
-            "Loft",
             "Portal",
             "Ultra Screen",
-            "Chamber",
+            "Pit",
             "Arena",
             "Vault",
             "Nexus",
@@ -51,7 +54,9 @@ namespace api_cinema_challenge.Data
         };
         private static List<string> movieTitleBeginnings = new List<string>()
         {
+            "Space",
             "The",
+            "Ancient",
             "Dark",
             "True",
             "Gran",
@@ -65,11 +70,17 @@ namespace api_cinema_challenge.Data
             "12",
             "The Big",
             "Pulp",
-            "The Sixth",
+            "The Six",
             "The Legend of the",
+            "Top",
             "The Great",
             "War",
+            "Sunset",
+            "Under the",
+            "Rodeo",
             "Mystic",
+            "Hollywood",
+            "Beverly Hills",
             "Almost",
             "No",
             "Scandalous",
@@ -78,6 +89,7 @@ namespace api_cinema_challenge.Data
             "The Book of",
             "Law Abiding",
             "Return of the",
+            "The Lost",
             "A New",
             "The Phantom"
         };
@@ -92,7 +104,8 @@ namespace api_cinema_challenge.Data
             "Blow",
             "River",
             "Famous",
-            "Hollywood Star",
+            "Star",
+            "Drive",
             "Signs",
             "Country",
             "Odyssey",
@@ -102,10 +115,15 @@ namespace api_cinema_challenge.Data
             "Lincoln",
             "Departed",
             "Empire",
+            "Speed",
             "Menace",
+            "Jaws",
             "Winter",
             "Summer",
             "Revolover",
+            "Captian America",
+            "Batman",
+            "Boulevard",
             "House",
             "Pi",
             "Blood",
@@ -120,12 +138,13 @@ namespace api_cinema_challenge.Data
         private static List<string> movieTitleEndings = new List<string>()
         {
             "for Old Men",
-            ", Where Art Thou?",
+            "Where Art Thou?",
             "Hunting",
             "on Fire",
             "May Come",
             "of Men",
             "of Violence",
+            "Reloaded",
             "Z",
             "2",
             "3",
@@ -133,17 +152,24 @@ namespace api_cinema_challenge.Data
             "II",
             "III",
             "of Monte Cristo",
+            "Report",
             "of Life",
             "of the Worlds",
             "Club",
             "of the Dead",
             "Strikes Back",
+            "Auto",
             "Show",
+            "Trek",
             "Code",
             "Effect",
             "Part II",
             "Next Door",
-            "vs Evil"
+            "vs Evil",
+            "vs Zombies",
+            "Forever",
+            "Returns",
+            "First Blood"
         };
         private static List<string> movieDescriptions = new List<string>()
         {
@@ -156,7 +182,8 @@ namespace api_cinema_challenge.Data
             "The greatest movie ever made.",
             "Prepare for something like you have ever seen.",
             "Explosions, cars, skyscrapers.",
-            "Love, intrigue, romance."
+            "Love, intrigue, romance.",
+            "He is back. And he is not happy."
         };
         private static List<string> firstnames = new List<string>()
         {
@@ -216,29 +243,29 @@ namespace api_cinema_challenge.Data
             "Lucas",
             "Spielberg",
         };
-        private static int seed = 777;
-        private static Random random = new Random(seed);
-        public static void SeedDatabase(this ModelBuilder modelBuilder)
+        private static Random random;
+        public static void SeedDatabase(this ModelBuilder modelBuilder, int seed)
         {
-            int numMovies = 50;
-            int numCustomers = 200;
-            int numScreenings = 30;
-            int numAuditoriums = 8;
-            int numTickets = 500;
+            random = new Random(seed);
+            int numMovies = 40;
+            int numCustomers = 250;
+            int numScreenings = 10;
+            int numAuditoriums = 9;
+            int numTickets = 200;
             List<Auditorium> auditoriums = Enumerable.Range(1, numAuditoriums).Select(id => GenerateRandomAuditorium(id)).ToList();
             List<Movie> movies = Enumerable.Range(1, numMovies).Select(id => GenerateRandomMovie(id)).ToList();
             List<Customer> customers = Enumerable.Range(1, numCustomers).Select(id => GenerateRandomCustomer(id)).ToList();
             List<Screening> screenings = Enumerable.Range(1, numScreenings).Select(id => GenerateRandomScreening(id, movies)).ToList();
             List<Ticket> tickets = Enumerable.Range(1, numTickets).Select(id => GenerateRandomTicket(id, customers, screenings)).ToList();
             List<Seat> seats = GenerateRandomSeats(auditoriums);
-            List<TicketSeat> ticketSeats = GenerateRandomTicketSeats(screenings, auditoriums, seats, tickets);
+            List<ScreeningSeat> ticketSeats = GenerateRandomTicketSeats(screenings, auditoriums, seats, tickets);
             modelBuilder.Entity<Auditorium>().HasData(auditoriums);
             modelBuilder.Entity<Movie>().HasData(movies);
             modelBuilder.Entity<Customer>().HasData(customers);
             modelBuilder.Entity<Screening>().HasData(screenings);
             modelBuilder.Entity<Ticket>().HasData(tickets);
             modelBuilder.Entity<Seat>().HasData(seats);
-            modelBuilder.Entity<TicketSeat>().HasData(ticketSeats);
+            modelBuilder.Entity<ScreeningSeat>().HasData(ticketSeats);
         }
 
         private static Auditorium GenerateRandomAuditorium(int id)
@@ -311,19 +338,19 @@ namespace api_cinema_challenge.Data
             return ticket;
         }
 
-        private static List<TicketSeat> GenerateRandomTicketSeats(List<Screening> screeningList, List<Auditorium> auditoriumList, List<Seat> seatList, List<Ticket> ticketList)
+        private static List<ScreeningSeat> GenerateRandomTicketSeats(List<Screening> screeningList, List<Auditorium> auditoriumList, List<Seat> seatList, List<Ticket> ticketList)
         {
-            List<TicketSeat> ticketSeats = new List<TicketSeat>();
+            List<ScreeningSeat> ticketSeats = new List<ScreeningSeat>();
             foreach (Screening screening in screeningList)
             {
                 Auditorium auditorium = auditoriumList[random.Next(auditoriumList.Count)];
                 List<Seat> screeningSeats = seatList.Where(s => s.AuditoriumId == auditorium.Id).ToList();
-                foreach (Seat seat in screeningSeats) ticketSeats.Add(new TicketSeat() { ScreeningId = screening.Id, SeatId = seat.Id });
+                foreach (Seat seat in screeningSeats) ticketSeats.Add(new ScreeningSeat() { ScreeningId = screening.Id, SeatId = seat.Id });
             }
             foreach (Ticket ticket in ticketList)
             {
                 Screening screening = screeningList[random.Next(screeningList.Count)];
-                List<TicketSeat> availableSeats = ticketSeats.Where(ts => ts.ScreeningId == screening.Id && ts.TicketId == 0).ToList();
+                List<ScreeningSeat> availableSeats = ticketSeats.Where(ts => ts.ScreeningId == screening.Id && ts.TicketId == null).ToList();
                 int numSeatsIncludedInTicket = int.Min(random.Next(1, 7), availableSeats.Count);
                 for (int i = 0; i < numSeatsIncludedInTicket; i++)
                 {
@@ -356,11 +383,11 @@ namespace api_cinema_challenge.Data
         private static DateTime GenerateRandomDate()
         {
             DateTime minDate = new DateTime(2024, 1, 1);
-            DateTime maxDate = new DateTime(2026, 12, 31);
+            DateTime maxDate = new DateTime(2024, 3, 31);
             TimeSpan timeSpan = maxDate - minDate;
             int totalDays = timeSpan.Days;
             int randomDaysToAdd = random.Next(totalDays + 1);
-            DateTime randomDate = minDate.AddDays(randomDaysToAdd).AddHours(random.Next(13, 23)).AddMinutes(RoundInt(random.Next(0,55)));
+            DateTime randomDate = minDate.AddDays(randomDaysToAdd).AddHours(random.Next(18, 23)).AddMinutes(RoundInt(random.Next(0,55)));
             return DateTime.SpecifyKind(randomDate, DateTimeKind.Utc);
         }
 

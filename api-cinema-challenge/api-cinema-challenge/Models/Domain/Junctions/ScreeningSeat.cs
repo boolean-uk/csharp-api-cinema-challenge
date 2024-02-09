@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.Domain.Junctions
 {
-    [Table("ticket_seats")]
-    public class TicketSeat
+    [Table("screening_seats")]
+    public class ScreeningSeat
     {
         [Column("seat_id")]
         [ForeignKey("SeatId")]
@@ -14,13 +14,13 @@ namespace api_cinema_challenge.Models.Domain.Junctions
         public Seat Seat { get; set; }
 
         [Column("screening_id")]
-        [ForeignKey("ScreeingId")]
+        [ForeignKey("ScreeningId")]
         public int ScreeningId { get; set; }
         public Screening Screening { get; set; }
 
         [Column("ticket_id")]
         [ForeignKey("TicketId")]
-        public int TicketId { get; set; }
+        public int? TicketId { get; set; } = null;
         public Ticket Ticket { get; set; }
     }
 }

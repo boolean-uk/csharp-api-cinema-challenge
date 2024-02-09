@@ -17,6 +17,6 @@ namespace api_cinema_challenge.Models.Domain.Entities.SalesAndTickets
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
-        public ICollection<TicketSeat> TicketSeats { get; set; }
+        public ICollection<ScreeningSeat> TicketSeats { get; set; }
     }
 }

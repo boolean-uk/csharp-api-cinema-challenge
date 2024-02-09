@@ -21,6 +21,6 @@ namespace api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings
         [Column("starts_at")]
         public DateTime StartsAt { get; set; }
 
-        public ICollection<TicketSeat> TicketSeats { get; set; }
+        public ICollection<ScreeningSeat> TicketSeats { get; set; }
     }
 }
