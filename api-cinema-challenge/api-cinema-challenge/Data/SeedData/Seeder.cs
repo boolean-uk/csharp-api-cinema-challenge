@@ -9,6 +9,9 @@ namespace api_cinema_challenge.Data.SeedData
         private int ticketId = 1;
 
         private int numberOfDisplays = 20;
+        private int minimumSeatsPerDisplay = 12;
+        private int maximumSeatsPerDisplay = 150;
+
         private int numberOfMovies = 50;
         private int numberOfCustomers = 400;
         private int numberOfScreenings = 200;
@@ -52,7 +55,7 @@ namespace api_cinema_challenge.Data.SeedData
             for (int i = 1; i < numberOfDisplays; i++)
             {
 
-                int seats = rngSeat.Next(12, 150);
+                int seats = rngSeat.Next(minimumSeatsPerDisplay, maximumSeatsPerDisplay);
                 int rows = rngSeat.Next(3, Math.Max(6, seats / 6));
                 int seatPerRow = seats / rows;
 
@@ -69,7 +72,6 @@ namespace api_cinema_challenge.Data.SeedData
                     seat.DisplayId = i;
 
                     _seats.Add(seat);
-
                 }
                 _rooms.Add(new Tuple<int, int>(i, seats));
             }

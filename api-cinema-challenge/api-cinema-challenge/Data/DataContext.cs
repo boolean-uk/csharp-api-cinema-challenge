@@ -17,7 +17,7 @@ namespace api_cinema_challenge.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.EnableSensitiveDataLogging();
+            // optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.UseNpgsql(_connectionString);
         }
 
@@ -44,6 +44,7 @@ namespace api_cinema_challenge.Data
 
             modelBuilder.Entity<Screening>().Navigation(d => d.Display).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(t => t.Customer).AutoInclude();
+            modelBuilder.Entity<Ticket>().Navigation(t => t.Seats).AutoInclude();
             modelBuilder.Entity<TicketSeat>().Navigation(ts => ts.Seat).AutoInclude();
 
             // Seed data

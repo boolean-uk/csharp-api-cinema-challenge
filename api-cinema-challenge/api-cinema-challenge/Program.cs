@@ -14,6 +14,8 @@ builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 builder.Services.AddScoped<IRepository<Display>, Repository<Display>>();
+builder.Services.AddScoped<IRepository<Seat>, Repository<Seat>>();
+builder.Services.AddScoped<TicketSeatRepository>();
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models.InputModels;
+using api_cinema_challenge.Models.JunctionModel;
 using api_cinema_challenge.Models.PureModels;
 using api_cinema_challenge.Models.TransferModels.Customers;
 using api_cinema_challenge.Models.TransferModels.Payload;
@@ -31,7 +32,7 @@ namespace api_cinema_challenge.Controllers
         {
             IEnumerable<Customer> customers = await repo.GetAll();
 
-            IEnumerable<CustomerDTO> customersOut = customers.OrderBy(c => c.CustomerId).Select(c => new CustomerDTO(c.CustomerId, c.CustomerName, c.Email, c.PhoneNumber, c.CreatedAt, c.UpdatedAt));
+            IEnumerable<CustomerDTO> customersOut = customers.OrderBy(c => c.CustomerId).Select(c => new CustomerDTO(c));
             Payload<IEnumerable<CustomerDTO>> payload = new Payload<IEnumerable<CustomerDTO>>(customersOut);
             return TypedResults.Ok(payload);
         }
@@ -47,7 +48,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"No customer with ID {id} found.");
             }
 
-            CustomerDTO customerOut = new CustomerDTO(customer.CustomerId, customer.CustomerName, customer.Email, customer.PhoneNumber, customer.CreatedAt, customer.UpdatedAt);
+            CustomerDTO customerOut = new CustomerDTO(customer);
             Payload<CustomerDTO> payload = new Payload<CustomerDTO>(customerOut);
             return TypedResults.Ok(payload);
         }
@@ -66,7 +67,7 @@ namespace api_cinema_challenge.Controllers
             };
             Customer customer = await repo.Insert(inputCustomer);
 
-            CustomerDTO customerOut = new CustomerDTO(customer.CustomerId, customer.CustomerName, customer.Email, customer.PhoneNumber, customer.CreatedAt, customer.UpdatedAt);
+            CustomerDTO customerOut = new CustomerDTO(customer);
             Payload<CustomerDTO> payload = new Payload<CustomerDTO>(customerOut);
             return TypedResults.Created($"/{customerOut.Id}", payload);
         }
@@ -94,7 +95,7 @@ namespace api_cinema_challenge.Controllers
             
             customer = await repo.Update(id, inputCustomer);
 
-            CustomerDTO customerOut = new CustomerDTO(customer.CustomerId, customer.CustomerName, customer.Email, customer.PhoneNumber, customer.CreatedAt, customer.UpdatedAt);
+            CustomerDTO customerOut = new CustomerDTO(customer);
             Payload<CustomerDTO> payload = new Payload<CustomerDTO>(customerOut);
             return TypedResults.Created($"/{customerOut.Id}", payload);
         }
@@ -113,7 +114,7 @@ namespace api_cinema_challenge.Controllers
 
             customer = await repo.Delete(id);
 
-            CustomerDTO customerOut = new CustomerDTO(customer.CustomerId, customer.CustomerName, customer.Email, customer.PhoneNumber, customer.CreatedAt, customer.UpdatedAt);
+            CustomerDTO customerOut = new CustomerDTO(customer);
             Payload<CustomerDTO> payload = new Payload<CustomerDTO>(customerOut);
             return TypedResults.Ok(payload);
         }
@@ -160,7 +161,14 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> PostTicketForCustomer(IRepository<Customer> customerRepo, IRepository<Screening> screeningRepo, IRepository<Ticket> ticketRepo, int customerId, int screeningId, TicketInputDTO ticketPost)
+        private static async Task<IResult> PostTicketForCustomer(
+            IRepository<Customer> customerRepo, 
+            IRepository<Screening> screeningRepo, 
+            IRepository<Ticket> ticketRepo, 
+            TicketSeatRepository tsRepo,
+            int customerId, 
+            int screeningId, 
+            TicketInputDTO ticketPost)
         {
             // VALIDATE THE DATA
             Customer? customer = await customerRepo.GetIncluding(customerId, "CustomerId", (c => c.Tickets));
@@ -173,6 +181,11 @@ namespace api_cinema_challenge.Controllers
             if (screening == null)
             {
                 return TypedResults.NotFound($"No screening with ID {screeningId} found.");
+            }
+
+            if (ticketPost.numSeats == 0) 
+            {
+                return TypedResults.BadRequest($"You can't book 0 tickets...");
             }
 
             int seatsAvailable = screening.Display.Capacity - screening.Tickets.Sum(t => t.Seats.Count);
@@ -190,7 +203,21 @@ namespace api_cinema_challenge.Controllers
                 CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
             };
+
             Ticket ticket = await ticketRepo.Insert(inputTicket);
+
+            List<Seat> availableSeats = await tsRepo.GetAvailableSeats(ticket.Screening.DisplayId, ticket.ScreeningId);
+
+            Random rng = new Random((int)(DateTime.Now.Ticks / TimeSpan.TicksPerSecond));
+            availableSeats = availableSeats.OrderBy(x => rng.Next()).ToList();
+
+            for (int i = 0; i <= ticketPost.numSeats; i++) 
+            {
+                Seat seat = availableSeats[i];
+                TicketSeat? ts = await tsRepo.Get(seat.SeatId, ticket.Screening.DisplayId, ticket.ScreeningId);
+                ts.TicketId = ticket.TicketId;
+                await tsRepo.Update(ts);
+            }
 
             TicketDTO ticketOut = new TicketDTO(ticket.TicketId, ticket.Seats.Count, ticket.CreatedAt, ticket.UpdatedAt);
             Payload<TicketDTO> payload = new Payload<TicketDTO>(ticketOut);

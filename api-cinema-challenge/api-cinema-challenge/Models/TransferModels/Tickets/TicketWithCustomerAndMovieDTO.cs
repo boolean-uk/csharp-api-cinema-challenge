@@ -16,7 +16,7 @@ namespace api_cinema_challenge.Models.TransferModels.Tickets
 
         public string UpdatedAt { get; set; } = Updated.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
 
-        public CustomerDTO Customer { get; set; } = new CustomerDTO(customer.CustomerId, customer.CustomerName, customer.Email, customer.PhoneNumber, customer.CreatedAt, customer.UpdatedAt);
+        public CustomerDTO Customer { get; set; } = new CustomerDTO(customer);
 
         public ScreeningDTO Screening { get; set; } = new ScreeningDTO(screening.ScreeningId, screening.Display.ScreenNumber, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
 
