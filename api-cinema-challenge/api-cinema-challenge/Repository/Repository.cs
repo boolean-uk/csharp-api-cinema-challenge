@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Data;
+using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
@@ -18,17 +19,23 @@ namespace api_cinema_challenge.Repository
         {
             return await _table.ToListAsync();
         }
+
+        public async Task<T> GetById(object id)
+        {
+            return _table.Find(id);
+        }
+
         public async Task<T> Create(T entity)
         {
             await _table.AddAsync(entity);
-            Save();
+            _db.SaveChanges();
             return entity;
         }
         public async Task<T> Update(T entity)
         {
             _table.Attach(entity);
             _db.Entry(entity).State = EntityState.Modified;
-            Save();
+            _db.SaveChanges();
             return entity;
         }
 
@@ -36,7 +43,7 @@ namespace api_cinema_challenge.Repository
         {
             T entity = _table.Find(id);
             _table.Remove(entity);
-            Save();
+            _db.SaveChanges();
             return entity;
         }
 
