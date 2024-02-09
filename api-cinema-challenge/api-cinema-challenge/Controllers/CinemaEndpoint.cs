@@ -45,6 +45,8 @@ namespace api_cinema_challenge.Controllers
             }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> GetTicketsById(IRepository repository, int CustomerId, int ScreeningId)
         {
             var TicketDTO = await repository.GetTicketById(CustomerId, ScreeningId);
@@ -56,7 +58,7 @@ namespace api_cinema_challenge.Controllers
 
             return TypedResults.Ok(TicketDTO);
         }
-
+        [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> GetCustomers(IRepository repository)
         {
             var customers = await repository.GetCustomers();
@@ -65,6 +67,7 @@ namespace api_cinema_challenge.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         private static async Task<IResult> CreateCustomer(IRepository repository, CreateCustomerDTO createCustomerDTO)
         {
             var createdCustomer = await repository.CreateCustomer(createCustomerDTO);
@@ -78,6 +81,7 @@ namespace api_cinema_challenge.Controllers
             }
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> UpdateCustomer(IRepository repository, CreateCustomerDTO updateCustomerDTO,  int id)
         {
             {
@@ -91,6 +95,8 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.Ok(updatedCustomer);
             }
         }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> DeleteCustomer(IRepository repository, int id)
         {
             var deletedCustomer = await repository.DeleteCustomer(id);
@@ -102,7 +108,8 @@ namespace api_cinema_challenge.Controllers
 
             return TypedResults.Ok(deletedCustomer);
         }
-
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        
         private static async Task<IResult> GetMovies(IRepository repository)
         {
             var movies = await repository.GetMovies();
@@ -111,6 +118,7 @@ namespace api_cinema_challenge.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> CreateMovie(IRepository repository, CreateMovieDTO createMovieDTO)
         {
             var createdMovie = await repository.CreateMovie(createMovieDTO);
@@ -125,6 +133,7 @@ namespace api_cinema_challenge.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> UpdateMovie(IRepository repository, CreateMovieDTO updateMovieDTO, int id)
         {
             var updatedMovie = await repository.UpdateMovie(updateMovieDTO, id);
@@ -137,6 +146,8 @@ namespace api_cinema_challenge.Controllers
             return TypedResults.Ok(updatedMovie);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> DeleteMovie(IRepository repository, int id)
         {
             var deletedMovie = await repository.DeleteMovie(id);
@@ -149,6 +160,8 @@ namespace api_cinema_challenge.Controllers
             return TypedResults.Ok(deletedMovie);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> GetScreenings(IRepository repository, int id)
         {
             var screeningDTO = await repository.GetScreeningsById(id);
@@ -161,6 +174,7 @@ namespace api_cinema_challenge.Controllers
             return TypedResults.Ok(screeningDTO);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         private static async Task<IResult> CreateScreening(IRepository repository, CreateScreeningDTO createScreeningDTO)
         {
             var createdScreening = await repository.CreateScreening(createScreeningDTO);
