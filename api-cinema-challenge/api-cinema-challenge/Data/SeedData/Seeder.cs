@@ -1,119 +1,37 @@
-﻿using api_cinema_challenge.Models.JunctionModel;
+﻿using api_cinema_challenge.Data.SeedData.StaticData;
+using api_cinema_challenge.Models.JunctionModel;
 using api_cinema_challenge.Models.PureModels;
 
-namespace api_cinema_challenge.Data
+namespace api_cinema_challenge.Data.SeedData
 {
     public class Seeder
     {
-        private int displayId = 1;
         private int ticketId = 1;
-        private int globalSeatId = 1;
-        private List<string> _prefix = new List<string>()
-        {
-            "The ",
-            "A ",
-            "",
-            "",
-            ""
-        };
 
-        private List<string> _firstMovieWord = new List<string>() 
-        {
-            "Fantastical ", 
-            "Mystical ",
-            "Legendary ",
-            "Obtuse ", 
-            "Stubborn ", 
-            "Happy ",
-            "Angry ",
-            "Sad ",
-            "Depressing ",
-            "Depressed ",
-            "Flimsy ",
-            "",
-            "",
-        };
+        private int numberOfDisplays = 20;
+        private int numberOfMovies = 50;
+        private int numberOfCustomers = 400;
+        private int numberOfScreenings = 200;
 
-        private List<string> _secondMovieWord = new List<string>() 
-        {
-            "Goose",
-            "Building",
-            "Man",
-            "Woman",
-            "Dog",
-            "Car",
-            "Airplane",
-            "Donkey",
-            "Cat",
-            "Computer",
-            "Bread"
-        };
+        private List<string> _prefix = MovieInfo.MovieTitlePrefix;
 
-        private List<string> _ratings = new List<string>() 
-        {
-            "G", 
-            "PG", 
-            "PG-13", 
-            "R",
-            "NC-17"
-        };
+        private List<string> _firstMovieWord = MovieInfo.MovieAdjective;
 
-        private List<string> _firstNames = new List<string>() 
-        {
-            "Robert", 
-            "Rob", 
-            "Bob",
-            "Bobby",
-            "Jim",
-            "Cid",
-            "Allen",
-            "Jacob",
-            "Timothy",
-            "William",
-            "Will",
-            "Rudeus",
-            "Ellen",
-            "Sara",
-            "Elisabeth",
-            "Alice",
-            "Maria",
-            "Kate",
-            "Audrey"
-        };
+        private List<string> _secondMovieWord = MovieInfo.MovieNouns;
 
-        private List<string> _lastNames = new List<string>() 
-        {
-            "Smith",
-            "Johnson",
-            "Kagenou",
-            "Baker",
-            "Williams",
-            "Greyrat",
-            "Brown",
-            "Jones",
-            "Miller",
-            "Davis",
-            "Garcia",
-            "Rodriguez",
-            "Martinez"
-        };
+        private List<string> _ratings = MovieInfo.Ratings;
 
-        private List<string> _domain = new List<string>()
-        {
-            "bbc.co.uk",
-            "google.com",
-            "theworld.ca",
-            "something.com",
-            "tesla.com",
-            "nasa.org.us",
-            "gov.us",
-            "gov.gr",
-            "gov.nl",
-            "gov.ru"
-        };
+        private List<string> _movieDesc = MovieInfo.MovieDescriptions;
+
+        private List<string> _firstNames = GenericPeople.FirstNames;
+
+        private List<string> _lastNames = GenericPeople.LastNames;
+
+        private List<string> _domain = GenericPeople.Domains;
+
+
 
         private List<Tuple<int, int>> _rooms = new List<Tuple<int, int>>();
-
         private List<Display> _displays = new List<Display>();
         private List<Customer> _customers = new List<Customer>();
         private List<Movie> _movies = new List<Movie>();
@@ -122,7 +40,7 @@ namespace api_cinema_challenge.Data
         private List<Seat> _seats = new List<Seat>();
         private List<TicketSeat> _ticketSeats = new List<TicketSeat>();
 
-        public Seeder() 
+        public Seeder()
         {
             Random rngCus = new Random(1234);
             Random rngMov = new Random(4321);
@@ -131,47 +49,51 @@ namespace api_cinema_challenge.Data
             Random rngTic = new Random(1289);
             Random rngSeat = new Random(152);
 
-            for (int i = 1; i < 20; i++)
+            for (int i = 1; i < numberOfDisplays; i++)
             {
 
                 int seats = rngSeat.Next(12, 150);
-                int rows = rngSeat.Next(3, Math.Max(6, (int)seats / 6));
-                int seatPerRow = (int)(seats/rows);
+                int rows = rngSeat.Next(3, Math.Max(6, seats / 6));
+                int seatPerRow = seats / rows;
+
 
                 for (int j = 1; j <= seats; j++)
                 {
-                    int RowNumber = (int)(j -1 / seatPerRow) + 1;
+                    int RowNumber = j - 1 / seatPerRow + 1;
                     int seatNumber = (j - 1) % seatPerRow + 1;
 
-                    int seatId = (i * 10000) + j;
+                    Seat seat = new Seat();
+                    seat.SeatId = j;
+                    seat.RowNumber = RowNumber;
+                    seat.SeatNumber = seatNumber;
+                    seat.DisplayId = i;
 
-                    Seat seat = new Seat() { SeatId = globalSeatId++, RowNumber = RowNumber, SeatNumber = seatNumber , DisplayId = i};
                     _seats.Add(seat);
-                    
+
                 }
                 _rooms.Add(new Tuple<int, int>(i, seats));
             }
 
 
-            for (int i = 1; i < 30; i++)
+            for (int i = 1; i < numberOfMovies; i++)
             {
                 Movie movie = new Movie();
                 movie.MovieId = i;
                 movie.Title = $"" +
                     $"{_prefix[rngMov.Next(_prefix.Count)]}" +
-                    $"{_firstMovieWord[rngMov.Next(_firstMovieWord.Count)]}" +
+                    $"{_firstMovieWord[rngMov.Next(_firstMovieWord.Count)]} " +
                     $"{_secondMovieWord[rngMov.Next(_secondMovieWord.Count)]}";
                 movie.Rating = _ratings[rngMov.Next(_ratings.Count)];
-                movie.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in gravida neque. Aenean varius justo tellus, eget sodales quam tristique et. Sed tempor ipsum augue, non ultrices elit tempor sed. Praesent est neque, bibendum vitae quam pharetra, tincidunt volutpat odio. Phasellus a aliquam urna, faucibus auctor purus. Etiam nec urna lobortis, dictum nulla eu, euismod felis. Donec vitae urna condimentum, tristique est in, elementum erat. Vivamus enim dolor, tempor in augue ac, varius consequat ipsum. ";
+                movie.Description = _movieDesc[rngMov.Next(_movieDesc.Count)];
                 movie.RuntimeMinutes = rngMov.Next(90, 450);
 
-                movie.CreatedAt = DateTime.SpecifyKind(new DateTime(rngTime.Next(2000, DateTime.Now.Year+1), rngTime.Next(1, 12), rngTime.Next(1,29)), DateTimeKind.Utc);
+                movie.CreatedAt = DateTime.SpecifyKind(new DateTime(rngTime.Next(2000, DateTime.Now.Year + 1), rngTime.Next(1, 12), rngTime.Next(1, 29)), DateTimeKind.Utc);
                 movie.UpdatedAt = movie.CreatedAt;
 
                 _movies.Add(movie);
             }
 
-            for (int i = 1; i < 50; i++) 
+            for (int i = 1; i < numberOfCustomers; i++)
             {
                 Customer customer = new Customer();
 
@@ -181,15 +103,15 @@ namespace api_cinema_challenge.Data
                 customer.CustomerId = i;
                 customer.CustomerName = $"{firstName} {lastName}";
                 customer.Email = $"{firstName}.{lastName}@{_domain[rngCus.Next(_domain.Count)]}";
-                customer.PhoneNumber = $"+{rngCus.Next(0,998):D2}{rngCus.Next(Int32.MaxValue):D8}";
+                customer.PhoneNumber = $"+{rngCus.Next(0, 998):D2}{rngCus.Next(int.MaxValue):D8}";
 
                 customer.CreatedAt = DateTime.SpecifyKind(
                     new DateTime(
-                        rngTime.Next(1898, DateTime.Now.Year + 1), 
-                        rngTime.Next(1, 12), 
-                        rngTime.Next(1, 29), 
-                        rngTime.Next(0, 24), 
-                        rngTime.Next(0, 60), 
+                        rngTime.Next(1898, DateTime.Now.Year + 1),
+                        rngTime.Next(1, 12),
+                        rngTime.Next(1, 29),
+                        rngTime.Next(0, 24),
+                        rngTime.Next(0, 60),
                         rngTime.Next(0, 60)
                         ), DateTimeKind.Utc);
                 customer.UpdatedAt = customer.CreatedAt;
@@ -220,12 +142,14 @@ namespace api_cinema_challenge.Data
             }
 
             // GENERATE SCREENINGS
-            for (int i = 1; i < 100; i++) 
+            for (int i = 1; i < numberOfScreenings; i++)
             {
                 Screening screening = new Screening();
                 screening.ScreeningId = i;
-                screening.DisplayId = _displays[rngScr.Next(_displays.Count)].DisplayId;
+                Display display = _displays[rngScr.Next(_displays.Count)];
+                screening.DisplayId = display.DisplayId;
                 screening.MovieId = _movies[rngScr.Next(_movies.Count)].MovieId;
+
 
                 DateTime createdTime = DateTime.SpecifyKind(
                     new DateTime(
@@ -246,10 +170,22 @@ namespace api_cinema_challenge.Data
             }
 
             // GENERATE TICKETS
-            foreach (Screening screening in _screenings) 
+            foreach (Screening screening in _screenings)
             {
                 Display display = _displays.Where(d => d.DisplayId == screening.DisplayId).First();
-                int ticketsLeft = rngTic.Next((int)(display.Capacity * 0.7));
+
+                IEnumerable<Seat> seats = _seats.Where(s => s.DisplayId == display.DisplayId);
+                List<TicketSeat> seatsForScreening = seats
+                    .Select(s => new TicketSeat()
+                    {
+                        DisplayId = display.DisplayId,
+                        ScreeningId = screening.ScreeningId,
+                        SeatId = s.SeatId,
+                    })
+                    .ToList();
+                _ticketSeats.AddRange(seatsForScreening);
+
+                int ticketsLeft = rngTic.Next(0, (int)(display.Capacity * 0.8));
                 while (ticketsLeft > 0)
                 {
                     Ticket ticket = new Ticket();
@@ -263,40 +199,22 @@ namespace api_cinema_challenge.Data
                     int seatsTaken = 0;
                     if (ticketsLeft > 4)
                     {
-                         seatsTaken = rngTic.Next(1, 5);
-                    } 
-                    else 
+                        seatsTaken = rngTic.Next(1, 5);
+                    }
+                    else
                     {
                         seatsTaken = rngTic.Next(1, ticketsLeft);
                     }
 
-                    List<int> selectedSeats = new List<int>();
-
-                    for (int i = 0; i < seatsTaken; i++)
+                    for (int i = 0; i < seatsTaken && seatsForScreening.Count > 0; i++)
                     {
-                        List<int> availableSeats = _seats
-                            .Where(s => s.DisplayId == display.DisplayId && !selectedSeats.Contains(s.SeatId))
-                            .Select(s => s.SeatId)
-                            .ToList();
-                        if (availableSeats.Count() > 0)
-                        {
-                            int selectedSeatIndex = rngTic.Next(0, availableSeats.Count);
-                            int selectedSeatId = availableSeats[selectedSeatIndex];
-                            selectedSeats.Add(selectedSeatId);
-                            availableSeats.RemoveAt(selectedSeatIndex);
-
-                            TicketSeat ticketSeat = new TicketSeat()
-                            {
-                                TicketId = ticket.TicketId,
-                                SeatId = selectedSeatId,
-                                DisplayId = display.DisplayId
-                            };
-                            _ticketSeats.Add(ticketSeat);
-                        }
+                        int tsIndex = rngTic.Next(seatsForScreening.Count);
+                        TicketSeat ticketSeat = seatsForScreening[tsIndex];
+                        seatsForScreening.Remove(ticketSeat);
+                        ticketSeat.TicketId = ticket.TicketId;
                     }
 
                     ticketsLeft -= seatsTaken;
-                    ticket.NumberOfSeats = seatsTaken;
 
                     ticket.CreatedAt = DateTime.SpecifyKind(
                     new DateTime(
@@ -308,8 +226,6 @@ namespace api_cinema_challenge.Data
                         rngTime.Next(0, 60)
                         ), DateTimeKind.Utc);
                     ticket.UpdatedAt = ticket.CreatedAt;
-
-                    
 
                     _tickets.Add(ticket);
                 }
@@ -327,6 +243,6 @@ namespace api_cinema_challenge.Data
 
         public List<Seat> Seats { get { return _seats; } }
 
-        public List<TicketSeat> TicketSeats {  get { return _ticketSeats; } }
+        public List<TicketSeat> TicketSeats { get { return _ticketSeats; } }
     }
 }

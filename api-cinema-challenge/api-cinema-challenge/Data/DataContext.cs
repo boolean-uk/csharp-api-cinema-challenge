@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.Models.JunctionModel;
+﻿using api_cinema_challenge.Data.SeedData;
+using api_cinema_challenge.Models.JunctionModel;
 using api_cinema_challenge.Models.PureModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,20 +23,28 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TicketSeat>().HasKey(ts => new { ts.SeatId, ts.DisplayId, ts.TicketId});
+            modelBuilder.Entity<Seat>().HasKey(s => new { s.SeatId, s.DisplayId});
+
+            modelBuilder.Entity<TicketSeat>().HasKey(ts => new { ts.ScreeningId, ts.DisplayId, ts.SeatId});
 
             modelBuilder.Entity<TicketSeat>()
-                .HasOne(ts => ts.Ticket)
-                .WithMany(t => t.Seats)
-                .HasForeignKey(ts => ts.TicketId );
+                .HasOne(ts => ts.Screening)
+                .WithMany(t => t.TicketSeats)
+                .HasForeignKey(ts => ts.ScreeningId);
 
             modelBuilder.Entity<TicketSeat>()
                 .HasOne(ts => ts.Seat)
-                .WithOne(s => s.Ticket)
-                .HasForeignKey<TicketSeat>(ts => ts.SeatId);
+                .WithMany(s => s.Ticket)
+                .HasForeignKey(ts => new { ts.SeatId, ts.DisplayId});
+
+            modelBuilder.Entity<TicketSeat>()
+                .HasOne(ts => ts.Display)
+                .WithMany(d => d.Seats)
+                .HasForeignKey(ts => ts.DisplayId);
 
             modelBuilder.Entity<Screening>().Navigation(d => d.Display).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(t => t.Customer).AutoInclude();
+            modelBuilder.Entity<TicketSeat>().Navigation(ts => ts.Seat).AutoInclude();
 
             // Seed data
             Seeder seeder = new Seeder();
