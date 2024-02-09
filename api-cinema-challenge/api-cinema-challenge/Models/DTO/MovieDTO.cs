@@ -11,6 +11,7 @@ namespace api_cinema_challenge.Models.DTO
         public int Runtime { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public List<ScreeningInputDTO> Screenings { get; set; }
     }
 
     public class MovieInputDTO

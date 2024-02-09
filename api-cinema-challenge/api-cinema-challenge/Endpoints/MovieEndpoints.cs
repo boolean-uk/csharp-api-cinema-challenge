@@ -78,6 +78,15 @@ namespace api_cinema_challenge.Endpoints
 
         public static MovieDTO CreateMovieDTO (Movie movie)
         {
+            List<ScreeningInputDTO> screenings = new List<ScreeningInputDTO>();
+            foreach (var screening in movie.Screenings)
+            {
+                ScreeningInputDTO s = new ScreeningInputDTO();
+                s.StartsAt = screening.StartsAt;
+                s.Capacity = screening.Capacity;
+                s.ScreenNumber = screening.ScreenNumber;
+                screenings.Add(s);
+            }
             return new MovieDTO
             {
                 Id = movie.Id,
@@ -86,7 +95,8 @@ namespace api_cinema_challenge.Endpoints
                 Rating = movie.Rating,
                 CreatedAt = movie.CreatedAt,
                 UpdatedAt = movie.UpdatedAt,
-                Runtime = movie.Runtime
+                Runtime = movie.Runtime,
+                //Screenings = screenings
             };
         }
         public static ScreeningDTO CreateScreeningDTO(Screening screening)

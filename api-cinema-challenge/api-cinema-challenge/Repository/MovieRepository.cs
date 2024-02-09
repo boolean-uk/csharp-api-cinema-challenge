@@ -14,7 +14,7 @@ namespace api_cinema_challenge.Repository
         }
         public async Task<IEnumerable<Movie>> GetMovies()
         {
-            return await _db.Movies.OrderBy(m=>m.Id).ToListAsync();
+            return await _db.Movies.OrderBy(m=>m.Id).Include(m=>m.Screenings).ToListAsync();
         }
         public async Task<Movie> CreateMovie(MovieInputDTO m)
         {
