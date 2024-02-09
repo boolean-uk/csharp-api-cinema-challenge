@@ -14,34 +14,51 @@ namespace api_cinema_challenge.Repository
             _db = cinemaContext;
             _table = _db.Set<T>();
         }
-        public Task<T> Delete(int id)
+        public async Task<T> Delete(int id)
         {
-            throw new NotImplementedException();
+            T entity = _table.Find(id);
+            _table.Remove(entity);
+            _db.SaveChanges();
+            return entity;
+
         }
 
-        public Task<IEnumerable<T>> Get()
+        public async Task<IEnumerable<T>> Get()
         {
-            throw new NotImplementedException();
+            return await _table.ToListAsync();
         }
 
-        public Task<T> GetById(object id)
+        public async Task<T> Insert(T entity)
         {
-            throw new NotImplementedException();
+            await _table.AddAsync(entity);
+            await _db.SaveChangesAsync();
+            return entity;
         }
 
-        public Task<T> Insert(T entity)
+        public async Task<T> Update(T entity)
         {
-            throw new NotImplementedException();
+            _table.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+            return entity;
         }
 
-        public void Save()
+        public async Task<T> Delete(object id)
         {
-            throw new NotImplementedException();
+            T entity = _table.Find(id);
+            _table.Remove(entity);
+            _db.SaveChanges();
+            return entity;
         }
 
-        public Task<T> Update(T entity)
+        public async Task<T> GetById(object id)
         {
-            throw new NotImplementedException();
+            return _table.Find(id);
+        }
+
+        public async void Save()
+        {
+            await _db.SaveChangesAsync();
         }
     }
 }

@@ -28,8 +28,7 @@ namespace api_cinema_challenge.Data
 
             modelBuilder.Entity<Customer>().HasData(seed.Customers);
             modelBuilder.Entity<Movie>().HasData(seed.Movies);
-            //Seed data here
-            //Add keys here
+
 
             //TODO GET API RUNNING, START WITH CUSTOMER
         }

@@ -25,7 +25,6 @@ namespace api_cinema_challenge.Models
         public DateTime TimeUpdated { get; set; }
         
         [JsonIgnore]
-        [Column("tickets")] 
         public List<Ticket> Tickets { get; set; }
     }
 }
