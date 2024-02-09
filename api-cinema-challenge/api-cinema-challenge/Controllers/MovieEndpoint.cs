@@ -13,7 +13,7 @@ namespace api_cinema_challenge.Controllers
 
             movieGroup.MapPost("", CreateMovie);
             movieGroup.MapGet("", GetAllMovies);
-            //movieGroup.MapPut("{id}", UpdateMovie);
+            movieGroup.MapPut("{id}", UpdateMovie);
             //movieGroup.MapDelete("{id}", DeleteMovie);
 
         }
@@ -57,18 +57,27 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public static async Task<IResult> UpdateCustomer(IRepository<Customer> customerRepo, int id, PutCustomer model)
+        public static async Task<IResult> UpdateMovie(IRepository<Movie> movieRepo, int id, PutMovie model)
         {
-            var entity = await customerRepo.GetById(id);
+            var entity = await movieRepo.GetById(id);
             if (entity == null)
             {
                 return TypedResults.NotFound();
             }
-            entity.Name = model.Name;
-            entity.Phone = model.Phone;
-            var result = await customerRepo.Update(entity);
+            entity.Title = model.Title;
+            entity.Description = model.Description;
+            entity.Rating = model.Rating;
+            entity.RuntimeMins = (int)model.RuntimeMins;
+            var update = new MovieDTO()
+            {
+                Title = model.Title,
+                Rating = model.Rating,
+                Description = model.Description,
+                RuntimeMins = (int)model.RuntimeMins
+            };
+            var result = await movieRepo.Update(entity);
 
-            return TypedResults.Ok(result);
+            return TypedResults.Created("",update);
 
 
         }
