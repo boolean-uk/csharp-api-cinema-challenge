@@ -14,8 +14,8 @@ namespace api_cinema_challenge.Controllers
 
             customerGroup.MapPost("", CreateCustomer);
             customerGroup.MapGet("", GetAllCustomers);
-            //customerGroup.MapPut("{id}", UpdateCustomer);
-            //customerGroup.MapDelete("{id}", DeleteCustomer);
+            customerGroup.MapPut("{id}", UpdateCustomer);
+            customerGroup.MapDelete("{id}", DeleteCustomer);
 
         }
 
@@ -49,11 +49,25 @@ namespace api_cinema_challenge.Controllers
 
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public static async Task<IResult> UpdateCustomer(IRepository<Customer> customerRepo, int id, PutCustomer model)
         {
-            return TypedResults.Ok("");
+            //var entity = new Customer() {Name = model.Name, Phone = model.Phone};
+            var entity = await customerRepo.GetById(id);
+            if(entity == null)
+            {
+                return TypedResults.NotFound();
+            }
+            entity.Name = model.Name;
+            entity.Phone = model.Phone;
+            var result = await customerRepo.Update(entity);
+
+            return TypedResults.Ok(result);
+
+
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

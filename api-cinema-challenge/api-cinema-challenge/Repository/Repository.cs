@@ -16,7 +16,7 @@ namespace api_cinema_challenge.Repository
         public async Task<T> Create(T entity)
         {
             //entity.Id = _table.Max(x => x.Id) + 1;
-            //entity.CreatedAt = DateTime.UtcNow;
+            entity.CreatedAt = DateTime.UtcNow;
             entity.UpdatedAt = DateTime.UtcNow;
 
             await _db.AddAsync(entity);
@@ -39,7 +39,7 @@ namespace api_cinema_challenge.Repository
         public async Task<T> Update(T entity)
         {
             _table.Attach(entity);
-            //entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = DateTime.UtcNow;
             _db.Entry(entity).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return entity;
