@@ -17,5 +17,13 @@ namespace api_cinema_challenge.Models.DatabaseModels
         public DateTime CreatedAt { get; set; }
         [Column("updatedAt")]
         public DateTime UpdatedAt { get; set; }
+
+        [Column("customers")]
+        public IEnumerable<Customer> Customers { get; set; }
+
+        [ForeignKey("Movie")]
+        [Column("movieid")]
+        public int MovieId { get; set; }
+        public Movie Movie { get; set; }
     }
 }

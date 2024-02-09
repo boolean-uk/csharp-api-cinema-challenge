@@ -19,5 +19,7 @@ namespace api_cinema_challenge.Models.DatabaseModels
         public DateTime CreatedAt { get; set; }
         [Column("updatedAt")]
         public DateTime UpdatedAt { get; set; }
+        [Column("screenings")]
+        public IEnumerable<Screen> Screenings { get; set; }
     }
 }

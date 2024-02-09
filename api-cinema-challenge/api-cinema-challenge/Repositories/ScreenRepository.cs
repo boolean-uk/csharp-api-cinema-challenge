@@ -1,6 +1,6 @@
 ﻿namespace api_cinema_challenge.Repositories
 {
-    public class ScreenRepository
+    public class ScreenRepository : IScreenRepository
     {
     }
 }

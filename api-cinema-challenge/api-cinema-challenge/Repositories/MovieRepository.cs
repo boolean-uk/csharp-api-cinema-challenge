@@ -1,6 +1,6 @@
 ﻿namespace api_cinema_challenge.Repositories
 {
-    public class MovieRepository
+    public class MovieRepository : IMovieRepository
     {
     }
 }
