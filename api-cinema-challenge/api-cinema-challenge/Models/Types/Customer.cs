@@ -7,6 +7,7 @@ public class Customer
 {
     [Column("id")]
     public int Id { get; set; }
+    public ICollection<Ticket> Tickets { get; set; }
     [Column("name")]
     public string Name { get; set; }
     [Column("email")]

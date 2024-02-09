@@ -10,6 +10,7 @@ public class Screening
     [Column("movie_id")]
     public int MovieId { get; set; }
     public Movie Movie { get; set; }
+    public ICollection<Ticket> Tickets { get; set; }
     [Column("screenNumber")]
     public int ScreenNumber { get; set; }
     [Column("capacity")]

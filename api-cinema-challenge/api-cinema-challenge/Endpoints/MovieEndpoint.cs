@@ -43,7 +43,7 @@ public static class MovieEndpoint
         {
             returnList.Add(MovieDTO.ToDTO(movie));
         }
-        return TypedResults.Ok(returnList);
+        return TypedResults.Ok(new Payload<List<MovieDTO>>() { Data = returnList });
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -52,7 +52,7 @@ public static class MovieEndpoint
         var updatedMovie = await repository.GetById(id);
         if (updatedMovie == null)
         {
-            return TypedResults.NotFound("Unable to find the movie!");
+            return TypedResults.NotFound(new Payload<string>() { Status = "fail", Data = "Unable to find the movie!" });
         }
         updatedMovie.Title = movie.Title;
         updatedMovie.Rating = movie.Rating;
@@ -62,9 +62,9 @@ public static class MovieEndpoint
         var result = await repository.Update(updatedMovie);
         if (result == null)
         {
-            return TypedResults.BadRequest("Failed to update the movie!");
+            return TypedResults.BadRequest(new Payload<string>() { Status = "fail", Data = "Failed to update the movie!" });
         }
-        return TypedResults.Ok(MovieDTO.ToDTO(result));
+        return TypedResults.Ok(new Payload<MovieDTO>() { Data = MovieDTO.ToDTO(result) });
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -73,8 +73,8 @@ public static class MovieEndpoint
         var deletedMovie = await repository.Delete(id);
         if (deletedMovie == null)
         {
-            return TypedResults.NotFound("Unable to find the movie!");
+            return TypedResults.NotFound(new Payload<string>() { Status = "fail", Data = "Unable to find the movie!" });
         }
-        return TypedResults.Ok(MovieDTO.ToDTO(deletedMovie));
+        return TypedResults.Ok(new Payload<MovieDTO>() { Data = MovieDTO.ToDTO(deletedMovie) });
     }
 }

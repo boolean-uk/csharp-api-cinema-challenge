@@ -60,6 +60,12 @@ public class CinemaContext : DbContext
                 CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow
             },
         });
+
+        modelBuilder.Entity<Ticket>().HasData(new List<Ticket>
+        {
+            new Ticket { Id = 1, CustomerId = 1, ScreeningId = 2, NumSeats = 2, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+            new Ticket { Id = 2, CustomerId = 2, ScreeningId = 1, NumSeats = 38, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow},
+        });
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -71,4 +77,5 @@ public class CinemaContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Screening> Screenings { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
 }
