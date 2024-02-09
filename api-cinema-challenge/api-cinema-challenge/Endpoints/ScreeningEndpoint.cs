@@ -22,7 +22,7 @@ public static class ScreeningEndpoint
         var movie = await movieRepository.GetById(id);
         if (movie == null)
         {
-            return TypedResults.NotFound("Movie not found!");
+            return TypedResults.NotFound(new Payload<string>() { Status = "fail", Data = "Movie not found!" });
         }
         var newScreening = new Screening()
         {
@@ -35,7 +35,7 @@ public static class ScreeningEndpoint
             UpdatedAt = DateTime.UtcNow,
         };
         var result = await repository.Create(newScreening);
-        return TypedResults.Created($"/{result.Id}", ScreeningDTO.ToDTO(result));
+        return TypedResults.Created($"/{result.Id}", new Payload<ScreeningDTO>() { Data = ScreeningDTO.ToDTO(result) }s);
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -48,6 +48,6 @@ public static class ScreeningEndpoint
         {
             returnList.Add(ScreeningDTO.ToDTO(screening));
         }
-        return TypedResults.Ok(returnList);
+        return TypedResults.Ok(new Payload<List<ScreeningDTO>>() { Data = returnList });
     }
 }
