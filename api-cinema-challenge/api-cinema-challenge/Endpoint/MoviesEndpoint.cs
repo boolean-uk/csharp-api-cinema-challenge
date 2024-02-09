@@ -24,9 +24,9 @@ namespace api_cinema_challenge.Endpoint
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> CreateMovie(IRepository<Movie> repository, MovieInput input)
+        public static async Task<IResult> CreateMovie(IRepository<Movie> movieRepository, IRepository<Screening> screeningRepository, MovieInput input)
         {
-            var movies = await repository.GetAll();
+            var movies = await movieRepository.GetAll();
             DateTime creationTime = DateTime.UtcNow;
 
             var entity = new Movie()
@@ -39,7 +39,25 @@ namespace api_cinema_challenge.Endpoint
                 CreatedAt = creationTime,
                 UpdateddAt = creationTime
             };
-            repository.Insert(entity);
+            await movieRepository.Insert(entity);
+
+            var screenings = await screeningRepository.GetAll();
+            int newScreenId = (screenings.Count() == 0 ? 0 : screenings.Max(patient => patient.Id) + 1);
+            foreach (var inputScreening in input.Screening) 
+            {
+                Screening newScreening = new Screening()
+                {
+                    Id = newScreenId,
+                    MovieId = entity.Id,
+                    ScreenNumber = inputScreening.ScreenNumber,
+                    Capacity = inputScreening.Capacity,
+                    StartsAt = inputScreening.StartsAt,
+                    CreatedAt = creationTime,
+                    UpdateddAt = creationTime
+                };
+                await screeningRepository.Insert(newScreening);
+                newScreenId++;
+            }
             return TypedResults.Created($"/{entity.Id}", entity);
         }
 
