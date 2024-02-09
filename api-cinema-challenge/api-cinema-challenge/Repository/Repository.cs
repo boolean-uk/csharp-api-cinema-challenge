@@ -3,25 +3,59 @@ using api_cinema_challenge.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata.Conventions;
 using System.Collections;
 using api_cinema_challenge.Models;
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
 
 
 namespace api_cinema_challenge.Repository
 {
-public class Repository:IRepository
-{
+    public class Repository<T> : IRepository<T> where T : class
+    {
         private CinemaContext _db;
+        private DbSet<T> _table;
         public Repository(CinemaContext db)
         {
             _db = db;
+            _table = _db.Set<T>();
+        }
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            return await _table.ToListAsync();
+        }
+        
+        public async Task<T> GetById(int id)
+        {
+           return await _table.FindAsync(id);
+   
+        }
+        public async Task<T> GetByCompositeId(int screeningId, int customerId)
+        {
+            return await _table.FindAsync(screeningId, customerId);
+
         }
 
-        // TODO: - extra 1: save temporary list in Repository of all movies, screenings, Customer, Ticket when updating a table to minimize the time needed to get all elements from a list. And to do the fetch async in the background. 
-       // TODO: - exttra 2: Test the effect by getting the GetAllMovies from list in repository and get from db with timestamps.
-       
+        public async Task<T> Insert(T entity)
+        {
+            await _table.AddAsync(entity);
+            _db.SaveChanges();
+            return entity;
+        }
 
+        public async Task<T> Update(T entity)
+        {
+            _table.Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
+            _db.SaveChanges();
 
+            return entity;
+        }
 
+        public async Task<T> Delete(int id)
+        {
+            T entity = await _table.FindAsync(id);
+            _table.Remove(entity);
+            _db.SaveChanges();
+            return entity;
+        }
 
-
-}
+    }
 }

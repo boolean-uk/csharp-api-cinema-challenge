@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace api_cinema_challenge.Models
 {
@@ -14,18 +16,18 @@ namespace api_cinema_challenge.Models
         [Column("title")]
         public string Title { get; set; }
         [Column("rating")]
+        [Range(1,10)]
         public int Rating { get; set; }
         [Column("description")]
         public string Description { get; set; }
         [Column("runtime_mins")]
         public double RunTime { get; set; }
         [Column("created_at")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
         [Column("updated_at")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
 
+        [JsonIgnore]
         public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
 
     }

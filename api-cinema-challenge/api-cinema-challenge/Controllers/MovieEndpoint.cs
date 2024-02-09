@@ -4,6 +4,7 @@ using api_cinema_challenge.Models;
 using api_cinema_challenge.Models.PostModels;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Builder;
+using api_cinema_challenge.Models.DTO;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -14,37 +15,59 @@ namespace api_cinema_challenge.Controllers
     {
     var movieGroup = app.MapGroup("movies");
 
-        movieGroup.MapGet("/", GetAllMovies);
-        movieGroup.MapPost("/", AddMovie);    
+        movieGroup.MapGet("/", AllMovies);
+        movieGroup.MapPost("/", CreateMovie);    
         movieGroup.MapPut("/{id}", EditMovie);
         movieGroup.MapDelete("/{id}", DeleteMovie);
 
     }
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAllMovies(IRepository repository, int id)
+        public static async Task<IResult> AllMovies(IRepository<Movie> repository)
         {
-            throw new NotImplementedException();
-            //TODO: Return IEnumerable<DTMovie>
+            DTO result = new DTO();
+            IEnumerable<Movie> movies = await repository.GetAll();
+            foreach(Movie movie in movies)
+            {
+                result.createDtMovie(movie);
+            }
+            PayLoad<IEnumerable<DtMovie>> pl = new PayLoad<IEnumerable<DtMovie>>(result.Movies);
+
+            return TypedResults.Ok(pl);
+
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> AddMovie(IRepository repository, PMMovie model)
+        public static async Task<IResult> CreateMovie(IRepository<Movie> repository, PMMovie model)
         {
-            throw new NotImplementedException();
-            //TODO: Return DTMovie
+            var result = new DTO();
+            Movie movie = new Movie() { Title = model.Title, Description = model.Description, Rating = model.Rating, RunTime = model.RunTimeMins };
+            result.createDtMovie(await repository.Insert(movie));
+
+            PayLoad<DtMovie> pl = new PayLoad<DtMovie>(result.Movie);
+
+            return TypedResults.Created($"/{pl.data}", pl);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> EditMovie(IRepository repository, int id, PMMovie model)
-        {   throw new NotImplementedException();
-            //TODO: Return DTMovie
+        public static async Task<IResult> EditMovie(IRepository<Movie> repository, int id, PMMovie model)
+        {
+            DTO result = new DTO();
+            Movie movie = new Movie() { Id = id, Title = model.Title, Description = model.Description, Rating = model.Rating, RunTime = model.RunTimeMins };
+            result.createDtMovie(await repository.Update(movie));
+            PayLoad<DtMovie> pl = new PayLoad<DtMovie>(result.Movie);
+
+            return TypedResults.Created($"/{pl.data}", pl);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> DeleteMovie(IRepository repository, int id)
+        public static async Task<IResult> DeleteMovie(IRepository<Movie> repository, int id)
         {
-            throw new NotImplementedException();
-            //TODO: Return DTMovie
+            DTO result = new DTO();
+            result.createDtMovie(await repository.Delete(id));
+
+            PayLoad<DtMovie> pl = new PayLoad<DtMovie>(result.Movie);
+
+            return TypedResults.Ok( pl);
         }
 
 

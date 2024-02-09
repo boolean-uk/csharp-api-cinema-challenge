@@ -4,16 +4,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace api_cinema_challenge.Migrations
 {
     /// <inheritdoc />
-    public partial class EntityRelations : Migration
+    public partial class Pgsql : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "customer",
+                name: "customers",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -26,7 +28,7 @@ namespace api_cinema_challenge.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_customer", x => x.id);
+                    table.PrimaryKey("PK_customers", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,6 +81,7 @@ namespace api_cinema_challenge.Migrations
                     fk_screening_id = table.Column<int>(type: "integer", nullable: false),
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    num_seats = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -86,9 +89,9 @@ namespace api_cinema_challenge.Migrations
                 {
                     table.PrimaryKey("PK_tickets", x => new { x.fk_screening_id, x.fk_customer_id });
                     table.ForeignKey(
-                        name: "FK_tickets_customer_fk_customer_id",
+                        name: "FK_tickets_customers_fk_customer_id",
                         column: x => x.fk_customer_id,
-                        principalTable: "customer",
+                        principalTable: "customers",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -100,24 +103,28 @@ namespace api_cinema_challenge.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "customer",
+                table: "customers",
                 columns: new[] { "id", "created_at", "email", "name", "phone", "updated_at" },
-                values: new object[] { 1, new DateTime(2024, 2, 7, 10, 57, 26, 405, DateTimeKind.Utc).AddTicks(8227), "Oscar@Olsson.com", "Oscar Olsson", "09876543", new DateTime(2024, 2, 7, 10, 57, 26, 405, DateTimeKind.Utc).AddTicks(8228) });
+                values: new object[] { 1, new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5045), "Oscar@Olsson.com", "Oscar Olsson", "09876543", new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5055) });
 
             migrationBuilder.InsertData(
                 table: "movies",
                 columns: new[] { "id", "created_at", "description", "rating", "runtime_mins", "title", "updated_at" },
-                values: new object[] { 1, new DateTime(2024, 2, 7, 10, 57, 26, 405, DateTimeKind.Utc).AddTicks(5765), "Horror movie by famous programmer Steven", 3, 124.0, "Empty Relations", new DateTime(2024, 2, 7, 10, 57, 26, 405, DateTimeKind.Utc).AddTicks(5768) });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5261), "Horror movie by famous programmer Steven", 3, 124.0, "Empty Relations", new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5261) },
+                    { 2, new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5291), "Follow up from Steven", 5, 124.0, "Empty Relations 2", new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5292) }
+                });
 
             migrationBuilder.InsertData(
                 table: "screenings",
                 columns: new[] { "id", "capacity", "created_at", "fk_movie_id", "screen_number", "starts_at", "updated_at" },
-                values: new object[] { 1, 320, new DateTime(2024, 2, 7, 10, 57, 26, 406, DateTimeKind.Utc).AddTicks(204), 1, 2, new DateTime(2024, 4, 10, 8, 10, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 7, 10, 57, 26, 406, DateTimeKind.Utc).AddTicks(205) });
+                values: new object[] { 1, 320, new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5296), 1, 2, new DateTime(2024, 4, 10, 8, 10, 0, 0, DateTimeKind.Utc), new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5296) });
 
             migrationBuilder.InsertData(
                 table: "tickets",
-                columns: new[] { "fk_customer_id", "fk_screening_id", "created_at", "updated_at" },
-                values: new object[] { 1, 1, new DateTime(2024, 2, 7, 10, 57, 26, 406, DateTimeKind.Utc).AddTicks(1664), new DateTime(2024, 2, 7, 10, 57, 26, 406, DateTimeKind.Utc).AddTicks(1665) });
+                columns: new[] { "fk_customer_id", "fk_screening_id", "created_at", "num_seats", "updated_at" },
+                values: new object[] { 1, 1, new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5341), 3, new DateTime(2024, 2, 9, 9, 11, 3, 314, DateTimeKind.Utc).AddTicks(5342) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_screenings_fk_movie_id",
@@ -137,7 +144,7 @@ namespace api_cinema_challenge.Migrations
                 name: "tickets");
 
             migrationBuilder.DropTable(
-                name: "customer");
+                name: "customers");
 
             migrationBuilder.DropTable(
                 name: "screenings");

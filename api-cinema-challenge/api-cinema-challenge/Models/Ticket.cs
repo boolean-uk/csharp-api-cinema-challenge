@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
@@ -10,6 +11,8 @@ namespace api_cinema_challenge.Models
         [Key]
         [Column("id")]
         public int Id {  get; set; }
+        [Column("num_seats")]
+        public int NumSeats { get; set; }
         [ForeignKey("Customer")]
         [Column("fk_customer_id")]
         public int CustomerId { get; set; }
@@ -19,11 +22,10 @@ namespace api_cinema_challenge.Models
         public int ScreeningId { get; set; }
         public Screening Screening { get; set; }
         [Column("created_at")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
         [Column("updated_at")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
 
+        
     }
 }
