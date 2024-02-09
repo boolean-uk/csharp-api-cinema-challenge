@@ -2,8 +2,8 @@
 {
     public class Payload<T> where T : class
     {
-        public string status { get; set; } = "success";
-        public T data { get; set; }
+        public string Status { get; set; } = "Success";
+        public T Data { get; set; } 
 
     }
 }

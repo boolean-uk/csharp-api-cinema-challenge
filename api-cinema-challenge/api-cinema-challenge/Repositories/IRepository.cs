@@ -10,7 +10,7 @@ namespace api_cinema_challenge.Repositories
         Task<T> DeleteById(int id);
         Task<T> GetById(int id);
         void Save();
-
         Task<IEnumerable<Screening>> GetScreeningsByMovieId(int id);
+        Task<IEnumerable<Ticket>> GetTicketsByCustomerAndScreeningId(int customerId, int screeningId);
     }
 }

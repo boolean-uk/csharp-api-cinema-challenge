@@ -29,5 +29,6 @@ namespace api_cinema_challenge.Models
         public string Description { get; set; }
         public string IMDBRating { get; set; }
         public int RuntimeMin { get; set; }
+        public ICollection <ScreeningPost> Screenings { get; set; } = new List<ScreeningPost>();
     }
 }

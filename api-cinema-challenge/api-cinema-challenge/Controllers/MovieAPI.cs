@@ -67,32 +67,47 @@ namespace api_cinema_challenge.Controllers
                     movies.Add(new MovieDTO(movie));
 
                 }
-                return TypedResults.Ok(movies);
+                return TypedResults.Ok(new Payload<List<MovieDTO>> { Data = movies });
             }
-            else return TypedResults.NotFound("No movies or another problem");
+            else return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "No movies or another problem" });
             // Should return something else
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        public static async Task<IResult> CreateMovie(IRepository<Movie> repository, MoviePost movie)
+        public static async Task<IResult> CreateMovie(IRepository<Movie> movieRepository, IRepository<Screening> screeningReposiotry, MoviePost movie)
         {
-            // Turn customerpost into customer before adding to db
-            var m = new Movie
+                var m = new Movie
+                {
+                    Title = movie.Title,
+                    Description = movie.Description,
+                    RuntimeMin = movie.RuntimeMin,
+                    IMDBRating = movie.IMDBRating
+                };
+                var createdMovie = await movieRepository.Insert(m);
+
+                foreach (var screening in movie.Screenings)
+                {
+                if (screening.Number > 0 || screening.Capacity > 0)
+                    {
+                        await screeningReposiotry.Insert(new Screening
+                        {
+                            Number = screening.Number,
+                            Capacity = screening.Capacity,
+                            StartsAt = screening.StartsAt,
+                            CreatedAt = DateTime.UtcNow,
+                            MovieId = createdMovie.Id
+                        });
+                    }
+                }
+
+            if (createdMovie != null)
             {
-                Title = movie.Title,
-                Description = movie.Description,
-                RuntimeMin = movie.RuntimeMin,
-                IMDBRating = movie.IMDBRating
-            };
-            var response = await repository.Insert(m);
-            if (response != null)
-            {
-                var mDTO = new MovieDTO(response);
-                return TypedResults.Created("",mDTO);
+                return TypedResults.Created("", new Payload<MovieDTO> { Data = new MovieDTO(createdMovie) });
             }
-            else return TypedResults.BadRequest("Could not create");
+            else return TypedResults.BadRequest(new Payload<string> { Status = "Failure", Data = "Wrong input" });
         }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> GetMovieById(IRepository<Movie> repository, int id)
@@ -112,7 +127,7 @@ namespace api_cinema_challenge.Controllers
             var response = await repository.DeleteById(id);
             if (response != null)
             {
-                return TypedResults.Ok(new MovieDTO(response));
+                return TypedResults.Ok(new Payload<MovieDTO>);
             }
             return TypedResults.NotFound("Movie not deleted");
         }

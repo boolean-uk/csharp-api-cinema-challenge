@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240208142246_AddFieldToDB")]
-    partial class AddFieldToDB
+    [Migration("20240209103454_addticketsUpdatessssssss")]
+    partial class addticketsUpdatessssssss
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,180 +65,180 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(464),
-                            Email = "Robin82@live.com",
-                            Name = "Robin Dunpy",
-                            Phone = "222 25 555",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(467),
-                            Email = "Lily81@live.com",
-                            Name = "Lily Thorpe",
-                            Phone = "888 22 999",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(470),
-                            Email = "Lily92@hotmail.com",
-                            Name = "Lily Pritchett",
-                            Phone = "888 22 999",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(473),
-                            Email = "Robin71@hotmail.com",
-                            Name = "Robin Delgado",
-                            Phone = "888 22 999",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(475),
-                            Email = "Marshall55@hotmail.com",
-                            Name = "Marshall Dunpy",
-                            Phone = "888 22 999",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(479),
-                            Email = "Barney61@hotmail.com",
-                            Name = "Barney Pritchett",
-                            Phone = "909 11 881",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(482),
-                            Email = "Ted11@experis.com",
-                            Name = "Ted Pritchett",
-                            Phone = "888 22 999",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(485),
-                            Email = "Robin33@gmail.com",
-                            Name = "Robin Dunpy",
-                            Phone = "909 11 881",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(486),
-                            Email = "Marshall60@live.com",
-                            Name = "Marshall Pritchett",
-                            Phone = "888 22 999",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(492),
-                            Email = "Barney18@gmail.com",
-                            Name = "Barney Thorpe",
-                            Phone = "888 22 999",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(494),
-                            Email = "Lily86@hotmail.com",
-                            Name = "Lily Pritchett",
-                            Phone = "888 22 999",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(495),
-                            Email = "Robin33@experis.com",
-                            Name = "Robin Pritchett",
-                            Phone = "222 25 555",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(497),
-                            Email = "Barney57@hotmail.com",
-                            Name = "Barney Dunpy",
-                            Phone = "222 25 555",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(499),
-                            Email = "Robin85@experis.com",
-                            Name = "Robin Thorpe",
-                            Phone = "909 11 881",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(501),
-                            Email = "Lily48@live.com",
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7271),
+                            Email = "Lily7@live.com",
                             Name = "Lily Dunpy",
                             Phone = "888 22 999",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = 16,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(502),
-                            Email = "Robin39@hotmail.com",
-                            Name = "Robin Delgado",
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7282),
+                            Email = "Barney46@live.com",
+                            Name = "Barney Thorpe",
+                            Phone = "222 25 555",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7286),
+                            Email = "Ted16@experis.com",
+                            Name = "Ted Delgado",
+                            Phone = "222 25 555",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7287),
+                            Email = "Lily65@experis.com",
+                            Name = "Lily Dunpy",
                             Phone = "888 22 999",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = 17,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(504),
-                            Email = "Ted12@live.com",
-                            Name = "Ted Dunpy",
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7289),
+                            Email = "Lily79@live.com",
+                            Name = "Lily Delgado",
                             Phone = "909 11 881",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = 18,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(507),
-                            Email = "Robin24@experis.com",
-                            Name = "Robin Dunpy",
+                            Id = 6,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7293),
+                            Email = "Ted45@live.com",
+                            Name = "Ted Dunpy",
                             Phone = "888 22 999",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = 19,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(510),
-                            Email = "Ted16@live.com",
+                            Id = 7,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7295),
+                            Email = "Marshall0@hotmail.com",
+                            Name = "Marshall Pritchett",
+                            Phone = "888 22 999",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7296),
+                            Email = "Ted38@live.com",
+                            Name = "Ted Dunpy",
+                            Phone = "222 25 555",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7298),
+                            Email = "Ted69@hotmail.com",
                             Name = "Ted Thorpe",
                             Phone = "888 22 999",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = 20,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(511),
-                            Email = "Robin47@gmail.com",
+                            Id = 10,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7300),
+                            Email = "Barney47@experis.com",
+                            Name = "Barney Delgado",
+                            Phone = "222 25 555",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7301),
+                            Email = "Robin74@gmail.com",
                             Name = "Robin Dunpy",
+                            Phone = "222 25 555",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7303),
+                            Email = "Lily30@experis.com",
+                            Name = "Lily Dunpy",
+                            Phone = "909 11 881",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7304),
+                            Email = "Barney37@live.com",
+                            Name = "Barney Delgado",
+                            Phone = "888 22 999",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7306),
+                            Email = "Lily53@experis.com",
+                            Name = "Lily Pritchett",
+                            Phone = "909 11 881",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7307),
+                            Email = "Robin38@hotmail.com",
+                            Name = "Robin Delgado",
+                            Phone = "888 22 999",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7309),
+                            Email = "Ted20@live.com",
+                            Name = "Ted Pritchett",
+                            Phone = "888 22 999",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7310),
+                            Email = "Marshall92@live.com",
+                            Name = "Marshall Pritchett",
+                            Phone = "909 11 881",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7312),
+                            Email = "Lily69@experis.com",
+                            Name = "Lily Dunpy",
+                            Phone = "909 11 881",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7314),
+                            Email = "Robin44@experis.com",
+                            Name = "Robin Dunpy",
+                            Phone = "909 11 881",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7315),
+                            Email = "Robin92@live.com",
+                            Name = "Robin Pritchett",
                             Phone = "222 25 555",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -288,7 +288,7 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(517),
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7320),
                             Description = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
                             IMDBRating = "9.3",
                             RuntimeMin = 142,
@@ -298,7 +298,7 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(519),
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7322),
                             Description = "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
                             IMDBRating = "9.2",
                             RuntimeMin = 175,
@@ -308,7 +308,7 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(522),
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7323),
                             Description = "When the menace known as The Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.",
                             IMDBRating = "9.0",
                             RuntimeMin = 152,
@@ -318,7 +318,7 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(523),
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7325),
                             Description = "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
                             IMDBRating = "8.9",
                             RuntimeMin = 154,
@@ -328,7 +328,7 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 2, 8, 14, 22, 46, 309, DateTimeKind.Utc).AddTicks(525),
+                            CreatedAt = new DateTime(2024, 2, 9, 10, 34, 54, 362, DateTimeKind.Utc).AddTicks(7326),
                             Description = "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
                             IMDBRating = "8.8",
                             RuntimeMin = 148,
@@ -358,9 +358,6 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("fk_movie_id");
 
-                    b.Property<int?>("MovieId1")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Number")
                         .HasColumnType("integer")
                         .HasColumnName("number");
@@ -377,29 +374,90 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.HasIndex("MovieId1");
-
                     b.ToTable("screenings");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
+
+                    b.Property<int>("NumberOfSeats")
+                        .HasColumnType("integer")
+                        .HasColumnName("number_of_seats");
+
+                    b.Property<int>("ScreeningId")
+                        .HasColumnType("integer")
+                        .HasColumnName("screening_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ScreeningId");
+
+                    b.ToTable("tickets");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.Movie", "Movie")
-                        .WithMany()
+                        .WithMany("Screenings")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api_cinema_challenge.Models.Movie", null)
-                        .WithMany("Screenings")
-                        .HasForeignKey("MovieId1");
-
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.HasOne("api_cinema_challenge.Models.Customer", "Customer")
+                        .WithMany("Tickets")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api_cinema_challenge.Models.Screening", "Screening")
+                        .WithMany("Tickets")
+                        .HasForeignKey("ScreeningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Screening");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Customer", b =>
+                {
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Movie", b =>
                 {
                     b.Navigation("Screenings");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
+                {
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

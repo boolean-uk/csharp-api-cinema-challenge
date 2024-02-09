@@ -22,22 +22,7 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             Seeder seeder = new Seeder();
-            modelBuilder.Entity<Customer>();
-            modelBuilder.Entity<Movie>()
-                .HasMany(e => e.Screenings)
-                .WithOne(e => e.Movie)
-                .HasForeignKey(e => e.MovieId)
-                .IsRequired();
-            modelBuilder.Entity<Screening>()
-                .HasOne(e => e.Movie)
-                .WithMany()
-                .HasForeignKey(e => e.MovieId)
-                .IsRequired();
-
-            modelBuilder.Entity<Screening>()
-                .Navigation(e => e.Movie).AutoInclude();
-           
-
+            // Seed data
             modelBuilder.Entity<Customer>()
                 .HasData(seeder.Customers);
             modelBuilder.Entity<Movie>()
@@ -47,5 +32,6 @@ namespace api_cinema_challenge.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet <Ticket> Tickets { get; set; }
     }
 }

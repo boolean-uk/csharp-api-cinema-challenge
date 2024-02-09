@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.DTO;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,8 +15,56 @@ namespace api_cinema_challenge.Controllers
             customerGroup.MapPut("/{id}", UpdateCustomer);
             customerGroup.MapGet("/{id}", GetCustomerById);
             customerGroup.MapDelete("/{id}", DeleteCustomerById);
+            customerGroup.MapPost("/{id}/screenings/{screeningId}", BookTicket);
+            customerGroup.MapGet("/{id}/screenings/{screeningId}", GetTickets);
+        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetTickets(IRepository<Ticket> repository, int id, int screeningId)
+        {
+            var response = await repository.GetTicketsByCustomerAndScreeningId(id, screeningId);
+            if (response.Count() > 0)
+            {
+                List<TicketDTO> tickets = new List<TicketDTO>();
+                foreach(var ticket in response)
+                {
+                    tickets.Add(new TicketDTO(ticket));
+                }
+                return TypedResults.Ok(new Payload<List<TicketDTO>> { Data = tickets });
+            }
+            return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "No tickets found" });
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> BookTicket(IRepository<Ticket> ticketRepository, IRepository<Screening> screeningRepository, IRepository<Customer> customerRepository, int id, int screeningId, [FromBody] int numberOfSeats)
+        {
+            var ticket = new Ticket
+            {
+                NumberOfSeats = numberOfSeats,
+                CustomerId = id,
+                ScreeningId = screeningId,
+                CreatedAt = DateTime.UtcNow
+            };
+            var customer = await customerRepository.GetById(ticket.CustomerId);
+            if (customer == null)
+            {
+                return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "Customer does not exist"});
+            }
+            var screening = await screeningRepository.GetById(ticket.ScreeningId);
+            if (screening == null)
+            {
+                return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "Screening does not exist" });
+            }
+            var response = await ticketRepository.Insert(ticket);
+            if (response != null)
+            {
+                return TypedResults.Created("", new Payload<TicketDTO> { Data = new TicketDTO(response) });
+            }
+            return TypedResults.BadRequest(new Payload<string> { Status = "Failure", Data = "Could not create ticket" });
+        }
+    
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> GetAllCustomers(IRepository<Customer> repository)
@@ -29,10 +78,9 @@ namespace api_cinema_challenge.Controllers
                     customers.Add(new CustomerDTO(customer));
                     
                 }
-                return TypedResults.Ok(customers);
+                return TypedResults.Ok(new Payload<List<CustomerDTO>> { Data = customers });
             }
-            else return TypedResults.NotFound("No customers or another problem");
-            // Should return something else
+            else return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "No customers" });
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -49,10 +97,9 @@ namespace api_cinema_challenge.Controllers
             var response = await repository.Insert(c);
             if (response != null)
             {
-                var cDTO = new CustomerDTO(response);
-                return TypedResults.Created("",cDTO);
+                return TypedResults.Created("", new Payload<CustomerDTO> { Data = new CustomerDTO(response) });
             }
-            else return TypedResults.BadRequest("Could not create");
+            else return TypedResults.BadRequest(new Payload<string> { Status = "Failure", Data = "Could not create customer"});
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -62,7 +109,7 @@ namespace api_cinema_challenge.Controllers
             var originalCustomer = await repository.GetById(id);
             if (originalCustomer == null)
             {
-                return TypedResults.NotFound("Customer does not exist");
+                return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "Customer does not exist" });
             }
 
             originalCustomer.Name = (customer.Name != "string" && customer.Name != null) ? customer.Name : originalCustomer.Name;
@@ -73,9 +120,9 @@ namespace api_cinema_challenge.Controllers
             var response = await repository.Update(originalCustomer);
             if (response != null)
             {
-                return TypedResults.Created("", new CustomerDTO(response));
+                return TypedResults.Created("", new Payload<CustomerDTO> { Data = new CustomerDTO(response) });
             }
-            else return TypedResults.BadRequest("Could not update");
+            else return TypedResults.BadRequest(new Payload<string> { Status = "Failure", Data = "Could not update" });
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -96,8 +143,8 @@ namespace api_cinema_challenge.Controllers
             var response = await repository.DeleteById(id);
             if (response != null)
             {
-                return TypedResults.Ok(new CustomerDTO(response));
-            } return TypedResults.NotFound("Could not delete");
+                return TypedResults.Ok(new Payload<CustomerDTO> { Data = new CustomerDTO(response) });
+            } return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "Customer not found" });
         }
 
     }

@@ -16,8 +16,9 @@ namespace api_cinema_challenge.Models
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
         [Column("updated_at")]
-        public DateTime UpdatedAt { get; set;}
-    }
+        public DateTime UpdatedAt { get; set; }
+        public List<Ticket> Tickets { get; } = [];
+     }
 
     public class CustomerPost
     {

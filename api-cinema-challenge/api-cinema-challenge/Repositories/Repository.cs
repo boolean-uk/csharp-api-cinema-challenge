@@ -57,5 +57,11 @@ namespace api_cinema_challenge.Repositories
             var screenings = await _db.Screenings.Where(s => s.MovieId == id).ToListAsync();
             return screenings;
         }
+
+        public async Task<IEnumerable<Ticket>> GetTicketsByCustomerAndScreeningId(int customerId, int screeningId)
+        {
+            var tickets = await _db.Tickets.Where(t => t.CustomerId == customerId && t.ScreeningId == screeningId).ToListAsync();
+            return tickets;
+        }
     }
 }
