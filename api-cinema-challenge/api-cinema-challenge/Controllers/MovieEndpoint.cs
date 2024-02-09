@@ -12,13 +12,13 @@ namespace api_cinema_challenge.Controllers
             var movieGroup = app.MapGroup("movie/");
 
             movieGroup.MapPost("", CreateMovie);
-            //movieGroup.MapGet("", GetAllMovies);
+            movieGroup.MapGet("", GetAllMovies);
             //movieGroup.MapPut("{id}", UpdateMovie);
             //movieGroup.MapDelete("{id}", DeleteMovie);
 
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateMovie(IRepository<Movie> movieRepo, PostMovie model)
         {
@@ -39,15 +39,15 @@ namespace api_cinema_challenge.Controllers
                 RuntimeMins = model.RuntimeMins
             };
 
-            return TypedResults.Ok(result);
+            return TypedResults.Created($"{entity.Id}",result);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
 
-        public static async Task<IResult> GetAllCustomers(IRepository<Customer> customerRepo)
+        public static async Task<IResult> GetAllMovies(IRepository<Movie> movieRepo)
         {
-            var result = await customerRepo.GetAll();
-            Payload<IEnumerable<Customer>> payload = new Payload<IEnumerable<Customer>>();
+            var result = await movieRepo.GetAll();
+            Payload<IEnumerable<Movie>> payload = new Payload<IEnumerable<Movie>>();
             payload.data = result;
             return TypedResults.Ok(payload);
 
