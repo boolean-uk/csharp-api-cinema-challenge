@@ -33,7 +33,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<T> GetById(object id)
         {
-            return await _table.FindAsync(id);
+            return _table.Find(id);
         }
 
         public async Task<T> Update(T entity)

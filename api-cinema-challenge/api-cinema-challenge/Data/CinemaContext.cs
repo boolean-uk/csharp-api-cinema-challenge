@@ -37,7 +37,10 @@ namespace api_cinema_challenge.Data
                 .HasOne<Movie>(s => s.Movie)
                 .WithMany(m => m.Screenings)
                 .HasForeignKey(s => s.MovieId);
+
+            modelBuilder.Entity<Movie>().Navigation(x => x.Screenings).AutoInclude();
         }
+
 
         public DbSet<Movie> Movies { get; set; }
 
