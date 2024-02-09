@@ -318,10 +318,15 @@ namespace api_cinema_challenge.Migrations
             modelBuilder.Entity("api_cinema_challenge.Models.NewFolder.Screening", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.NewFolder.Movie", null)
-                        .WithMany()
+                        .WithMany("Screenings")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.NewFolder.Movie", b =>
+                {
+                    b.Navigation("Screenings");
                 });
 #pragma warning restore 612, 618
         }

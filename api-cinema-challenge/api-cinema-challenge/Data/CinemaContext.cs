@@ -26,10 +26,10 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Define foreign key relationship between Appointment and Prescription using Appointment.PrescriptionId
-            modelBuilder.Entity<Screening>()
-                .HasOne<Movie>()
-                .WithMany()
-                .HasForeignKey(a => a.MovieId);
+            //modelBuilder.Entity<Screening>()
+            //    .HasOne<Movie>()
+            //    .WithMany()
+            //    .HasForeignKey(a => a.MovieId);
 
             modelBuilder.Entity<Ticket>()
                 .HasOne<Customer>()

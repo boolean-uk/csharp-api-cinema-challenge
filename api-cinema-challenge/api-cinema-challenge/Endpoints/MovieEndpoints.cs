@@ -96,7 +96,7 @@ namespace api_cinema_challenge.Endpoints
                 CreatedAt = movie.CreatedAt,
                 UpdatedAt = movie.UpdatedAt,
                 Runtime = movie.Runtime,
-                //Screenings = screenings
+                Screenings = screenings
             };
         }
         public static ScreeningDTO CreateScreeningDTO(Screening screening)

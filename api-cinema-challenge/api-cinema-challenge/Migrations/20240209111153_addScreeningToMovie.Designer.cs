@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240208094451_addticketfr")]
-    partial class addticketfr
+    [Migration("20240209111153_addScreeningToMovie")]
+    partial class addScreeningToMovie
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -321,10 +321,15 @@ namespace api_cinema_challenge.Migrations
             modelBuilder.Entity("api_cinema_challenge.Models.NewFolder.Screening", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.NewFolder.Movie", null)
-                        .WithMany()
+                        .WithMany("Screenings")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.NewFolder.Movie", b =>
+                {
+                    b.Navigation("Screenings");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,7 +9,7 @@ namespace api_cinema_challenge.Models.NewFolder
         [Column("screening_id")]
         public int Id { get; set; }
         [Column("fk_movie_id")]
-        [ForeignKey(nameof(Movie))]
+        [ForeignKey("Movie")]
         public int MovieId { get; set; }
         [Column("screening_screen_number")]
         public int ScreenNumber { get; set; }
