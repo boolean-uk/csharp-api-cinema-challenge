@@ -1,12 +1,13 @@
 ﻿using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
 using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.Domain.Entities.SalesAndTickets;
+using api_cinema_challenge.Models.Domain.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.Domain.Junctions
 {
     [Table("screening_seats")]
-    public class ScreeningSeat
+    public class ScreeningSeat : ICreatedAndUpdatedTimeStamping
     {
         [Column("seat_id")]
         [ForeignKey("SeatId")]
@@ -22,5 +23,11 @@ namespace api_cinema_challenge.Models.Domain.Junctions
         [ForeignKey("TicketId")]
         public int? TicketId { get; set; } = null;
         public Ticket Ticket { get; set; }
+
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; }
+
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; set; }
     }
 }

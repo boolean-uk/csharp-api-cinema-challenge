@@ -1,13 +1,14 @@
 ﻿using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
 using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.Domain.Entities.SalesAndTickets;
+using api_cinema_challenge.Models.Domain.Interfaces;
 using api_cinema_challenge.Models.Domain.Junctions;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
 
 namespace api_cinema_challenge.Data
 {
-    public static class CinemaDataSeed
+    public static class CinemaDataSeeding
     {
         private static List<string> auditoriumNameBeginnings = new List<string>()
         {
@@ -258,7 +259,7 @@ namespace api_cinema_challenge.Data
             List<Screening> screenings = Enumerable.Range(1, numScreenings).Select(id => GenerateRandomScreening(id, movies)).ToList();
             List<Ticket> tickets = Enumerable.Range(1, numTickets).Select(id => GenerateRandomTicket(id, customers, screenings)).ToList();
             List<Seat> seats = GenerateRandomSeats(auditoriums);
-            List<ScreeningSeat> ticketSeats = GenerateRandomTicketSeats(screenings, auditoriums, seats, tickets);
+            List<ScreeningSeat> ticketSeats = GenerateRandomScreeningSeats(screenings, auditoriums, seats, tickets);
             modelBuilder.Entity<Auditorium>().HasData(auditoriums);
             modelBuilder.Entity<Movie>().HasData(movies);
             modelBuilder.Entity<Customer>().HasData(customers);
@@ -273,7 +274,7 @@ namespace api_cinema_challenge.Data
             Auditorium auditorium = new Auditorium();
             auditorium.Id = id;
             auditorium.Name = $"{PickRandomString(auditoriumNameBeginnings)} {PickRandomString(auditoriumNameEndings)}";
-            return auditorium;
+            return (Auditorium)TimeStamped(auditorium);
         }
 
         private static List<Seat> GenerateRandomSeats(List<Auditorium> auditoriumList)
@@ -289,7 +290,7 @@ namespace api_cinema_challenge.Data
                 {
                     for (int s = 1; s < numSeatsPerRow + 1; s++)
                     {
-                        seats.Add(new Seat(){Id=nextId++, AuditoriumId=auditorium.Id, RowNumber=r, SeatNumber=s, MaxWeight=maxWeight});
+                        seats.Add((Seat)TimeStamped(new Seat(){Id=nextId++, AuditoriumId=auditorium.Id, RowNumber=r, SeatNumber=s, MaxWeight=maxWeight}));
                     }
                 }
             }
@@ -307,7 +308,7 @@ namespace api_cinema_challenge.Data
             customer.Phone = random.Next(300000000, 999999999).ToString();
             customer.Age = random.Next(18, 100);
             customer.Weight = random.Next(50, 140);
-            return customer;
+            return (Customer)TimeStamped(customer);
         }
 
         private static Movie GenerateRandomMovie(int id)
@@ -318,7 +319,7 @@ namespace api_cinema_challenge.Data
             movie.Description = PickRandomString(movieDescriptions);
             movie.Rating = GetRandomMovieRating();
             movie.RuntimeMins = random.Next(60, 250);
-            return movie;
+            return (Movie)TimeStamped(movie);
         }
 
         private static Screening GenerateRandomScreening(int id, List<Movie> movieList)
@@ -327,7 +328,7 @@ namespace api_cinema_challenge.Data
             screening.Id = id;
             screening.MovieId = movieList[random.Next(movieList.Count)].Id;
             screening.StartsAt = GenerateRandomDate();
-            return screening;
+            return (Screening)TimeStamped(screening);
         }
 
         private static Ticket GenerateRandomTicket(int id, List<Customer> customerList, List<Screening> screeningList)
@@ -335,29 +336,29 @@ namespace api_cinema_challenge.Data
             Ticket ticket = new Ticket();
             ticket.Id = id;
             ticket.CustomerId = customerList[random.Next(screeningList.Count)].Id;
-            return ticket;
+            return (Ticket)TimeStamped(ticket);
         }
 
-        private static List<ScreeningSeat> GenerateRandomTicketSeats(List<Screening> screeningList, List<Auditorium> auditoriumList, List<Seat> seatList, List<Ticket> ticketList)
+        private static List<ScreeningSeat> GenerateRandomScreeningSeats(List<Screening> screeningList, List<Auditorium> auditoriumList, List<Seat> seatList, List<Ticket> ticketList)
         {
-            List<ScreeningSeat> ticketSeats = new List<ScreeningSeat>();
+            List<ScreeningSeat> screeningSeats = new List<ScreeningSeat>();
             foreach (Screening screening in screeningList)
             {
                 Auditorium auditorium = auditoriumList[random.Next(auditoriumList.Count)];
-                List<Seat> screeningSeats = seatList.Where(s => s.AuditoriumId == auditorium.Id).ToList();
-                foreach (Seat seat in screeningSeats) ticketSeats.Add(new ScreeningSeat() { ScreeningId = screening.Id, SeatId = seat.Id });
+                List<Seat> seatsForThisSreening = seatList.Where(s => s.AuditoriumId == auditorium.Id).ToList();
+                foreach (Seat seat in seatsForThisSreening) screeningSeats.Add((ScreeningSeat)TimeStamped(new ScreeningSeat() { ScreeningId = screening.Id, SeatId = seat.Id }));
             }
             foreach (Ticket ticket in ticketList)
             {
                 Screening screening = screeningList[random.Next(screeningList.Count)];
-                List<ScreeningSeat> availableSeats = ticketSeats.Where(ts => ts.ScreeningId == screening.Id && ts.TicketId == null).ToList();
+                List<ScreeningSeat> availableSeats = screeningSeats.Where(ts => ts.ScreeningId == screening.Id && ts.TicketId == null).ToList();
                 int numSeatsIncludedInTicket = int.Min(random.Next(1, 7), availableSeats.Count);
                 for (int i = 0; i < numSeatsIncludedInTicket; i++)
                 {
                     availableSeats[i].TicketId = ticket.Id;
                 }
             }
-            return ticketSeats;
+            return screeningSeats;
         }
 
         private static string PickRandomString(List<string> stringList)
@@ -395,6 +396,12 @@ namespace api_cinema_challenge.Data
         {
             MovieRating[] movieRatings = (MovieRating[])Enum.GetValues(typeof(MovieRating));
             return movieRatings[random.Next(movieRatings.Length)];
+        }
+
+        private static ICreatedAndUpdatedTimeStamping TimeStamped(ICreatedAndUpdatedTimeStamping entity)
+        {
+            entity.CreatedAt = entity.UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+            return entity;
         }
     }
 }

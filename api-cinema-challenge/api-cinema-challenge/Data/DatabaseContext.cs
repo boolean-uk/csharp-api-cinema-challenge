@@ -7,10 +7,10 @@ using Newtonsoft.Json.Linq;
 
 namespace api_cinema_challenge.Data
 {
-    public class CinemaContext : DbContext
+    public class DatabaseContext : DbContext
     {
         private string _connectionString;
-        public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;

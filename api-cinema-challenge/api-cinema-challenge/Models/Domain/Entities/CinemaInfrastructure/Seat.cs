@@ -1,11 +1,12 @@
-﻿using api_cinema_challenge.Models.Domain.Junctions;
+﻿using api_cinema_challenge.Models.Domain.Interfaces;
+using api_cinema_challenge.Models.Domain.Junctions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure
 {
     [Table("seats")]
-    public class Seat
+    public class Seat : ICreatedAndUpdatedTimeStamping
     {
         [Column("id")]
         public int Id { get; set; }
@@ -24,6 +25,12 @@ namespace api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure
         [Column("max_weight_in_kg")]
         public int MaxWeight { get; set; }
 
-        public ICollection<ScreeningSeat> TicketSeats { get; set; }
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; }
+
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; set; }
+
+        public ICollection<ScreeningSeat> ScreeningSeats { get; set; }
     }
 }
