@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 
 var app = builder.Build();
 
@@ -23,5 +24,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.ConfigureCustomerAPI();
+app.ConfigureCustomerApi();
+app.ConfigureMovieApi();
 app.Run();

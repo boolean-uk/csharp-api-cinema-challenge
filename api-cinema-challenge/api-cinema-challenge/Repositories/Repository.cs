@@ -22,21 +22,9 @@ namespace api_cinema_challenge.Repositories
             return entity;
         }
 
-        public async Task<Payload<IEnumerable<T>>> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            Payload<IEnumerable<T>> payload = new Payload<IEnumerable<T>>();
-            try
-            {
-                var entities = await _table.ToListAsync();
-                payload.data = entities;
-            } catch (Exception ex)
-            {
-                payload.status = "failure";
-                payload.data = null;
-                Console.WriteLine(ex.ToString());
-
-            }
-            return payload;
+            return await _table.ToListAsync();
         }
 
         public async Task<T> GetById(int id)
@@ -62,6 +50,12 @@ namespace api_cinema_challenge.Repositories
             _db.Entry(entity).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task<IEnumerable<Screening>> GetScreeningsByMovieId(int id)
+        {
+            var screenings = await _db.Screenings.Where(s => s.MovieId == id).ToListAsync();
+            return screenings;
         }
     }
 }

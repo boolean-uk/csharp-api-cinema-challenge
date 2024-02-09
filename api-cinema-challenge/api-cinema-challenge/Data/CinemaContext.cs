@@ -34,6 +34,10 @@ namespace api_cinema_challenge.Data
                 .HasForeignKey(e => e.MovieId)
                 .IsRequired();
 
+            modelBuilder.Entity<Screening>()
+                .Navigation(e => e.Movie).AutoInclude();
+           
+
             modelBuilder.Entity<Customer>()
                 .HasData(seeder.Customers);
             modelBuilder.Entity<Movie>()
