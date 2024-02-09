@@ -16,16 +16,19 @@ namespace api_cinema_challenge.Controllers
 
             cinemaGroup.MapPost("customers", CreateCustomer);
             cinemaGroup.MapGet("customers", GetCustomers);
-            cinemaGroup.MapPut("customers", UpdateCustomer);
-            cinemaGroup.MapDelete("customers", DeleteCustomer);
+            cinemaGroup.MapPut("customers{c_id}", UpdateCustomer);
+            cinemaGroup.MapDelete("customers{c_id}", DeleteCustomer);
 
             cinemaGroup.MapPost("movies", CreateMovie);
             cinemaGroup.MapGet("movies", GetMovies);
-            cinemaGroup.MapPut("movies", UpdateMovie);
-            cinemaGroup.MapDelete("movies", DeleteMovie);
+            cinemaGroup.MapPut("movies{m_id}", UpdateMovie);
+            cinemaGroup.MapDelete("movies{m_id}", DeleteMovie);
 
-            cinemaGroup.MapPost("movies/{id}/screenings", CreateScreening);
-            cinemaGroup.MapGet("movies/{id}/screenings", GetScreenings);
+            cinemaGroup.MapPost("movies/{m_id}/screenings", CreateScreening);
+            cinemaGroup.MapGet("movies/{m_id}/screenings", GetScreenings);
+
+            cinemaGroup.MapPost("customers/{c_id}/screenings/{s_id}", CreateTicket);
+            cinemaGroup.MapGet("customers/{c_id}/screenings{s_id}", GetTickets);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -35,6 +38,7 @@ namespace api_cinema_challenge.Controllers
             {
                 return TypedResults.BadRequest();
             }
+            Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
             var newCustomer = await repository.CreateCustomer(customer);
             var customerDTO = new CustomerDTO()
             {
@@ -45,12 +49,16 @@ namespace api_cinema_challenge.Controllers
                 CreatedAt = newCustomer.CreatedAt,
                 UpdatedAt = newCustomer.UpdatedAt
             };
-            return TypedResults.Created($"{customerDTO.Name}", customerDTO);
+            payload.data = customerDTO;
+            return TypedResults.Created($"{payload.data.Name}", payload);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetCustomers(IRepository repository)
         {
-            return TypedResults.Ok(await repository.GetCustomers());
+            Payload<IEnumerable<CustomerDTO>> payload = new Payload<IEnumerable<CustomerDTO>>();
+            var customer = await repository.GetCustomers();
+            payload.data = customer;
+            return TypedResults.Ok(payload);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> UpdateCustomer(IRepository repository, CustomerPut customer, int id)
@@ -71,7 +79,10 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> DeleteCustomer(IRepository repository, int id)
         {
-            return TypedResults.Ok(await repository.DeleteCustomer(id));
+            Payload<Customer> payload = new Payload<Customer>();
+            var customer = await repository.DeleteCustomer(id);
+            payload.data = customer;
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -82,6 +93,7 @@ namespace api_cinema_challenge.Controllers
             {
                 return TypedResults.BadRequest();
             }
+            Payload<MovieDTO> payload = new Payload<MovieDTO>();
             var newMovie = await repository.CreateMovie(movie);
             var movieDTO = new MovieDTO()
             {
@@ -92,13 +104,26 @@ namespace api_cinema_challenge.Controllers
                 RuntimeMins = newMovie.RuntimeMins,
                 CreatedAt = newMovie.CreatedAt,
                 UpdatedAt = newMovie.UpdatedAt,
+                Screenings = newMovie.Screenings.Select(x => new ScreeningDTO()
+                {
+                    Id = x.Id,
+                    ScreenNumber = x.ScreenNumber,
+                    Capacity = x.Capacity,
+                    StartsAt = x.StartsAt,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt
+                })
             };
-            return TypedResults.Created($"{movieDTO.Title}", movieDTO);
+            payload.data = movieDTO;
+            return TypedResults.Created($"{payload.data.Title}", payload);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetMovies(IRepository repository)
         {
-            return TypedResults.Ok(await repository.GetMovies());
+            var movies = await repository.GetMovies();
+            Payload<IEnumerable<MovieDTO>> payload = new Payload<IEnumerable<MovieDTO>>();
+            payload.data = movies;
+            return TypedResults.Ok(payload);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -125,7 +150,10 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> DeleteMovie(IRepository repository, int id)
         {
-            return TypedResults.Ok(await repository.DeleteMovie(id));
+            var movie = await repository.DeleteMovie(id);
+            Payload<Movie> payload = new Payload<Movie>();
+            payload.data = movie;
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -136,6 +164,7 @@ namespace api_cinema_challenge.Controllers
             {
                 return TypedResults.BadRequest();
             }
+            Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>();
             var newScreening = await repository.CreateScreening(screening, movieId);
             var screeningDTO = new ScreeningDTO()
             {
@@ -146,12 +175,43 @@ namespace api_cinema_challenge.Controllers
                 CreatedAt = newScreening.CreatedAt,
                 UpdatedAt = newScreening.UpdatedAt
             };
-            return TypedResults.Created($"{screeningDTO.ScreenNumber}", screeningDTO);
+            payload.data = screeningDTO;
+            return TypedResults.Created($"{payload.data.ScreenNumber}", payload);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetScreenings(IRepository repository, int id)
         {
-            return TypedResults.Ok(await repository.GetScreenings(id));
+            Payload<IEnumerable<ScreeningDTO>> payload = new Payload<IEnumerable<ScreeningDTO>>();
+            var screening = await repository.GetScreenings(id);
+            payload.data = screening;
+            return TypedResults.Ok(payload);
+        }
+
+        public static async Task<IResult> CreateTicket(IRepository repository, int customerId, int screeningId, TicketPost ticket)
+        {
+            if (customerId == null)
+            {
+                return TypedResults.BadRequest();
+            }
+            Payload<TicketDTO> payload = new Payload<TicketDTO>();
+            var newTicket = await repository.CreateTicket(customerId, screeningId, ticket);
+            var ticketDTO = new TicketDTO()
+            {
+                Id = newTicket.Id,
+                NumSeats = newTicket.NumSeats,
+                CustomerId = newTicket.CustomerId,
+                ScreeningId = newTicket.ScreeningId
+            };
+            payload.data = ticketDTO;
+            return TypedResults.Created($"{ticketDTO.Id}", ticketDTO);
+        }
+
+        public static async Task<IResult> GetTickets(IRepository repository, int customerId, int screeningId)
+        {
+            Payload<IEnumerable<TicketDTO>> payload = new Payload<IEnumerable<TicketDTO>>();
+            var tickets = await repository.GetTickets(customerId, screeningId);
+            payload.data = tickets;
+            return TypedResults.Ok(payload);
         }
     }
 } 

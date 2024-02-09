@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace api_cinema_challenge.Models
 {
@@ -24,5 +25,8 @@ namespace api_cinema_challenge.Models
         [Column("movie_id")]
         public int MovieId {  get; set; }
         public Movie Movie { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

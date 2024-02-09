@@ -20,5 +20,9 @@ namespace api_cinema_challenge.Repository
         // Screening
         Task<Screening> CreateScreening(ScreeningPost screening, int movieId);
         Task<IEnumerable<ScreeningDTO>> GetScreenings(int id);
+
+        // Ticket
+        Task<Ticket> CreateTicket(int customerId, int ScreeningId, TicketPost ticket);
+        Task<IEnumerable<TicketDTO>> GetTickets(int customerId, int ScreeningId);
     }
 }

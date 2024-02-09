@@ -3,6 +3,7 @@ using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace api_cinema_challenge.Repository
 {
@@ -35,6 +36,7 @@ namespace api_cinema_challenge.Repository
         public async Task<Movie> CreateMovie(MoviePost movie)
         {
             var nextId = _dbContext.Movies.Count();
+            var screeningsNextId = _dbContext.Screenings.Count();
             Movie newMovie = new Movie()
             {
                 Id = nextId + 1,
@@ -43,7 +45,17 @@ namespace api_cinema_challenge.Repository
                 Description = movie.Description,
                 RuntimeMins = movie.RuntimeMins,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
+                Screenings = movie.Screenings.Select(x => new Screening()
+                {
+                    Id = screeningsNextId + 1,
+                    ScreenNumber = x.ScreenNumber,
+                    Capacity = x.Capacity,
+                    StartsAt = x.StartsAt,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    MovieId = nextId
+                }).ToList(),
             };
 
             _dbContext.Add(newMovie);
@@ -69,6 +81,26 @@ namespace api_cinema_challenge.Repository
             _dbContext.Add(newScreening);
             _dbContext.SaveChanges();
             return newScreening;
+        }
+
+        public async Task<Ticket> CreateTicket(int customerId, int screeningId, TicketPost ticket)
+        {
+            var nextId = _dbContext.Tickets.Count();
+            Ticket newTicket = new Ticket()
+            {
+                Id = nextId + 1,
+                NumSeats = ticket.NumSeats,
+                CustomerId = customerId,
+                Customer = _dbContext.Customers.Include(t => t.Tickets).FirstOrDefault(x => x.Id == customerId),
+                ScreeningId = screeningId,
+                Screening = _dbContext.Screenings.Include(t => t.Tickets).FirstOrDefault(x => x.Id == screeningId),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _dbContext.Add(newTicket);
+            _dbContext.SaveChanges();
+            return newTicket;
         }
 
         public async Task<Customer> DeleteCustomer(int id)
@@ -101,6 +133,14 @@ namespace api_cinema_challenge.Repository
                 CreatedAt = m.CreatedAt,
                 UpdatedAt = m.UpdatedAt
             }).SingleOrDefaultAsync(m => m.Id == id);
+
+            if (movie.Screenings != null)
+            {
+                IEnumerable<Screening> screenings = from screening in movie.Screenings where movie.Id == movie.Id select screening;
+
+                // _dbContext.Screenings.Select(s => s.MovieId == movie.Id);
+                _dbContext.Remove(screenings);
+            }
 
             _dbContext.Remove(movie);
             _dbContext.SaveChanges();
@@ -135,7 +175,16 @@ namespace api_cinema_challenge.Repository
                                 Description = movie.Description,
                                 RuntimeMins = movie.RuntimeMins,
                                 CreatedAt = movie.CreatedAt,
-                                UpdatedAt = movie.UpdatedAt
+                                UpdatedAt = movie.UpdatedAt,
+                                Screenings = movie.Screenings.Select(x => new ScreeningDTO()
+                                {
+                                    Id = x.Id,
+                                    ScreenNumber = x.ScreenNumber,
+                                    Capacity = x.Capacity,
+                                    StartsAt = x.StartsAt,
+                                    CreatedAt = x.CreatedAt,
+                                    UpdatedAt = x.UpdatedAt
+                                })
                             };
             return await movies.ToListAsync();
         }
@@ -155,8 +204,26 @@ namespace api_cinema_challenge.Repository
             return await screenings.ToListAsync();
         }
 
+        public async Task<IEnumerable<TicketDTO>> GetTickets(int customerId, int ScreeningId)
+        {
+            var tickets = from ticket in _dbContext.Tickets
+                             where ticket.CustomerId == customerId && ticket.ScreeningId == ScreeningId
+                             select new TicketDTO()
+                             {
+                                 Id = ticket.Id,
+                                 NumSeats = ticket.NumSeats,
+                                 CustomerId = ticket.CustomerId,
+                                 ScreeningId = ticket.ScreeningId
+                             };
+            return await tickets.ToListAsync();
+        }
+
         public async Task<Customer> UpdateCustomer(CustomerPut customer, int id)
         {
+            var updatedCustomer = _dbContext.Customers.Single(c => c.Id == id);
+
+            //core, replaced by extension now
+            /*
             Customer updatedCustomer = new Customer()
             {
                 Id = id,
@@ -164,10 +231,27 @@ namespace api_cinema_challenge.Repository
                 Email = customer.Email,
                 Phone = customer.Phone,
                 UpdatedAt = DateTime.UtcNow
-            };
+            };*/
 
+
+            // extension: only update fields that are provided
             _dbContext.Attach(updatedCustomer);
-            _dbContext.Entry(updatedCustomer).State = EntityState.Modified;
+            if (!string.IsNullOrEmpty(customer.Name) && !(customer.Name == "string"))
+            {
+                updatedCustomer.Name = customer.Name;
+            }
+
+            if (!string.IsNullOrEmpty(customer.Email) && !(customer.Email == "string"))
+            {
+                updatedCustomer.Email = customer.Email;
+            }
+            if (!string.IsNullOrEmpty(customer.Phone) && !(customer.Phone == "string"))
+            {
+                updatedCustomer.Phone = customer.Phone;
+            }
+            updatedCustomer.UpdatedAt = DateTime.UtcNow;
+
+           // _dbContext.Entry(oldCustomer).State = EntityState.Modified;
             _dbContext.SaveChanges();
 
             return updatedCustomer;
@@ -175,6 +259,10 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Movie> UpdateMovie(MoviePut movie, int id)
         {
+            var updatedMovie = _dbContext.Movies.Single(c => c.Id == id);
+
+            // Core, replaced by extension
+            /*
             Movie updated = new Movie()
             {
                 Id = id,
@@ -183,13 +271,32 @@ namespace api_cinema_challenge.Repository
                 Description = movie.Description,
                 RuntimeMins = movie.RuntimeMins,
                 UpdatedAt = DateTime.UtcNow
-            };
+            }; */
 
-            _dbContext.Attach(updated);
-            _dbContext.Entry(updated).State = EntityState.Modified;
+            // extension, only update fields that are provided
+            _dbContext.Attach(updatedMovie);
+            if (!string.IsNullOrEmpty(updatedMovie.Title) && !(movie.Title == "string"))
+            {
+                updatedMovie.Title = movie.Title;
+            }
+
+            if (!string.IsNullOrEmpty(updatedMovie.Rating) && !(movie.Rating == "string"))
+            {
+                updatedMovie.Rating = movie.Rating;
+            }
+            if (!string.IsNullOrEmpty(updatedMovie.Description) && !(movie.Description == "string"))
+            {
+                updatedMovie.Description = movie.Description;
+            }
+            if (movie.RuntimeMins != 0)
+            {
+                updatedMovie.RuntimeMins = movie.RuntimeMins;
+            }
+
+            updatedMovie.UpdatedAt = DateTime.UtcNow;
             _dbContext.SaveChanges();
 
-            return updated;
+            return updatedMovie;
         }
     }
 }

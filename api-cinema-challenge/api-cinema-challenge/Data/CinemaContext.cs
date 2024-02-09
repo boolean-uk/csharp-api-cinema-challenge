@@ -28,7 +28,11 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Customer>().HasKey(k => k.Id);
             modelBuilder.Entity<Movie>().HasKey(k => k.Id);
             modelBuilder.Entity<Screening>().HasKey(k => k.Id);
+            modelBuilder.Entity<Ticket>().HasKey(k => k.Id);
+            modelBuilder.Entity<Customer>().HasMany(k => k.Tickets);
+            modelBuilder.Entity<Screening>().HasMany(k => k.Tickets);
             modelBuilder.Entity<Movie>().HasMany(k => k.Screenings);
+
 
             // Seed
             modelBuilder.Entity<Customer>().HasData(
@@ -56,10 +60,19 @@ namespace api_cinema_challenge.Data
                 new { Id = 11, ScreenNumber = 2, Capacity = 50, StartsAt = DateTime.UtcNow, MovieId = 2, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new { Id = 12, ScreenNumber = 4, Capacity = 25, StartsAt = DateTime.UtcNow, MovieId = 3, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
+
+            modelBuilder.Entity<Ticket>().HasData(
+                new { Id = 1, NumSeats = 2, CustomerId = 1, ScreeningId = 4, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new { Id = 2, NumSeats = 2, CustomerId = 2, ScreeningId = 4, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new { Id = 3, NumSeats = 2, CustomerId = 1, ScreeningId = 9, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new { Id = 4, NumSeats = 2, CustomerId = 2, ScreeningId = 9, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new { Id = 5, NumSeats = 1, CustomerId = 1, ScreeningId = 11, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                );
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }
