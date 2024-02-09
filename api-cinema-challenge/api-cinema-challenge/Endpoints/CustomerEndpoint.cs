@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.Models.Post;
+﻿using api_cinema_challenge.Models.DTOs;
+using api_cinema_challenge.Models.Post;
 using api_cinema_challenge.Models.Types;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -28,14 +29,20 @@ public static class CustomerEndpoint
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
         };
-        var result = await repository.Create(newCustomer);
-        return TypedResults.Created($"/{result.Id}", result);
+        Customer result = await repository.Create(newCustomer);
+        return TypedResults.Created($"/{result.Id}", new Payload<CustomerDTO>() { Data = CustomerDTO.ToDTO(result) });
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
     public static async Task<IResult> GetCustomers(IRepository<Customer> repository)
     {
-        return TypedResults.Ok(await repository.GetAll());
+        var customers = await repository.GetAll();
+        var returnList = new List<CustomerDTO>();
+        foreach (var customer in customers)
+        {
+            returnList.Add(CustomerDTO.ToDTO(customer));
+        }
+        return TypedResults.Ok(new Payload<List<CustomerDTO>>() { Data = returnList });
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -44,7 +51,7 @@ public static class CustomerEndpoint
         var updatedCustomer = await repository.GetById(id);
         if (updatedCustomer == null)
         {
-            return TypedResults.NotFound("Unable to find the customer!");
+            return TypedResults.NotFound(new Payload<string>() { Status = "fail", Data = "Unable to find the customer!" });
         }
         updatedCustomer.Name = customer.Name;
         updatedCustomer.Email = customer.Email;
@@ -53,9 +60,9 @@ public static class CustomerEndpoint
         var result = await repository.Update(updatedCustomer);
         if (result == null)
         {
-            return TypedResults.BadRequest("Failed to update the customer!");
+            return TypedResults.BadRequest(new Payload<string>() { Status = "fail", Data = "Failed to update the customer!" });
         }
-        return TypedResults.Ok(result);
+        return TypedResults.Ok(new Payload<CustomerDTO>() { Data = CustomerDTO.ToDTO(result) });
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,8 +71,8 @@ public static class CustomerEndpoint
         var deletedCustomer = await repository.Delete(id);
         if (deletedCustomer == null)
         {
-            return TypedResults.NotFound("Unable to find the customer!");
+            return TypedResults.NotFound(new Payload<string>() { Status = "fail", Data = "Unable to find the customer!" });
         }
-        return TypedResults.Ok(deletedCustomer);
+        return TypedResults.Ok(new Payload<CustomerDTO>() { Data = CustomerDTO.ToDTO(deletedCustomer) });
     }
 }
