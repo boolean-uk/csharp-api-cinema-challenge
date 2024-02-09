@@ -130,7 +130,7 @@ namespace api_cinema_challenge.Controllers
             }
             IEnumerable<Ticket> tickets = customer.Tickets;
 
-            IEnumerable<TicketDTO> ticketsOut = tickets.Select(t => new TicketDTO(t.TicketId, t.NumberOfSeats, t.CreatedAt, t.UpdatedAt));
+            IEnumerable<TicketDTO> ticketsOut = tickets.Select(t => new TicketDTO(t.TicketId, t.Seats.Count, t.CreatedAt, t.UpdatedAt));
             Payload<IEnumerable<TicketDTO>> payload = new Payload<IEnumerable<TicketDTO>>(ticketsOut);
             return TypedResults.Ok(payload);
         }
@@ -152,7 +152,7 @@ namespace api_cinema_challenge.Controllers
             }
 
 
-            TicketDTO ticketOut = new TicketDTO(ticket.TicketId, ticket.NumberOfSeats, ticket.CreatedAt, ticket.UpdatedAt);
+            TicketDTO ticketOut = new TicketDTO(ticket.TicketId, ticket.Seats.Count, ticket.CreatedAt, ticket.UpdatedAt);
             Payload<TicketDTO> payload = new Payload<TicketDTO>(ticketOut);
             return TypedResults.Ok(payload);
         }
@@ -175,7 +175,7 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"No screening with ID {screeningId} found.");
             }
 
-            int seatsAvailable = screening.Display.Capacity - screening.Tickets.Sum(t => t.NumberOfSeats);
+            int seatsAvailable = screening.Display.Capacity - screening.Tickets.Sum(t => t.Seats.Count);
             if (seatsAvailable < ticketPost.numSeats) 
             {
                 return TypedResults.BadRequest($"The provided screening only has {seatsAvailable} seats left, therefore you were denied your purchase of {ticketPost.numSeats} seats.");
@@ -185,7 +185,6 @@ namespace api_cinema_challenge.Controllers
             // GENERATING AND INSERTING TICKET
             Ticket inputTicket = new Ticket()
             {
-                NumberOfSeats = ticketPost.numSeats,
                 CustomerId = customerId,
                 ScreeningId = screeningId,
                 CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
@@ -193,7 +192,7 @@ namespace api_cinema_challenge.Controllers
             };
             Ticket ticket = await ticketRepo.Insert(inputTicket);
 
-            TicketDTO ticketOut = new TicketDTO(ticket.TicketId, ticket.NumberOfSeats, ticket.CreatedAt, ticket.UpdatedAt);
+            TicketDTO ticketOut = new TicketDTO(ticket.TicketId, ticket.Seats.Count, ticket.CreatedAt, ticket.UpdatedAt);
             Payload<TicketDTO> payload = new Payload<TicketDTO>(ticketOut);
             return TypedResults.Created($"/{ticketOut.Id}", payload);
         }
