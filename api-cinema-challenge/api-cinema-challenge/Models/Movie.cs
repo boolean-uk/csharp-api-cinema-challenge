@@ -18,6 +18,7 @@ namespace api_cinema_challenge.Models
         public string Description { get; set; }
         [Column("runtime")]
         public int Runtime { get; set; }
+        public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }

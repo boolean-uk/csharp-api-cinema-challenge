@@ -24,11 +24,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-    <Folder Include="Models\DTOs\" />
-    <Folder Include="Models\Puts\" />
-    <Folder Include="Models\Posts\" />
-  </ItemGroup>
-
 </Project>

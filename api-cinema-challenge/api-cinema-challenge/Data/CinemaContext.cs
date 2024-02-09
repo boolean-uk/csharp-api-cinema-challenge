@@ -26,7 +26,6 @@ namespace api_cinema_challenge.Data
             Seeder seeder = new Seeder();
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
-            modelBuilder.Entity<SilverScreen>().HasData(seeder.SilverScreens);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
             modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
         }
@@ -35,6 +34,5 @@ namespace api_cinema_challenge.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Screening> Screenings { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<SilverScreen> SilverScreens { get; set; }
     }
 }

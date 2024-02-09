@@ -67,7 +67,6 @@ namespace api_cinema_challenge.Data
 
         private List<Customer> _customers = new List<Customer>();
         private List<Movie> _movies = new List<Movie>();
-        private List<SilverScreen> _silverScreens = new List<SilverScreen>();
         private List<Screening> _screenings = new List<Screening>();
         private List<Ticket> _tickets = new List<Ticket>();
 
@@ -75,7 +74,6 @@ namespace api_cinema_challenge.Data
         {
             CustomerSeeder();
             MovieSeeder();
-            SilverScreenSeeder();
             ScreeningSeeder();
             TicketSeeder();
         }
@@ -160,29 +158,6 @@ namespace api_cinema_challenge.Data
             _movies.Add(movie4);
             _movies.Add(movie5);
         }
-
-        //2 Theaters in the cinema
-        public void SilverScreenSeeder()
-        {
-            SilverScreen silverscreen1 = new SilverScreen
-            {
-                Id = 1,
-                Name = "Inger Johanne",
-                Capacity = 200,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-            };
-            SilverScreen silverscreen2 = new SilverScreen
-            {
-                Id = 2,
-                Name = "Dikken",
-                Capacity = 50,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-            };
-            _silverScreens.Add(silverscreen1);
-            _silverScreens.Add(silverscreen2);
-        }
         
         //5 Screenings
         public void ScreeningSeeder()
@@ -193,8 +168,9 @@ namespace api_cinema_challenge.Data
             {
                 Screening screening = new Screening();
                 screening.Id = i;
+                screening.ScreenNumber = screeningRandom.Next(1, 4);
+                screening.Capacity = screeningRandom.Next(25, 251);
                 screening.MovieId = screeningRandom.Next(1, 6);
-                screening.SilverScreenId = screeningRandom.Next(1, 3);
                 screening.StartsAt = DateTime.UtcNow.AddHours(screeningRandom.Next(3, 6));
                 screening.CreatedAt = DateTime.UtcNow;
                 screening.UpdatedAt = DateTime.UtcNow;
@@ -221,7 +197,6 @@ namespace api_cinema_challenge.Data
 
         public List<Customer> Customers { get { return _customers; } }
         public List<Movie> Movies { get { return _movies; } }
-        public List<SilverScreen> SilverScreens { get { return _silverScreens; } }
         public List<Screening> Screenings { get { return _screenings; } }
         public List<Ticket> Tickets { get { return _tickets; } }
     }
