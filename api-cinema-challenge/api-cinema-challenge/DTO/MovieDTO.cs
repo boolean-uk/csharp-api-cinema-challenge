@@ -16,5 +16,8 @@ namespace api_cinema_challenge.DTO
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        public IEnumerable<ScreeningDTO> Screenings { get; set; }
+
     }
 }

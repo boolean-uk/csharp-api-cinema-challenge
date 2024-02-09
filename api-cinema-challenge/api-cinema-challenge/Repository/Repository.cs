@@ -52,23 +52,32 @@ namespace api_cinema_challenge.Repository
             return createCustomer;
         }
 
-        //Update Customer
+
+
         public async Task<Customer> UpdateCustomer(int id, CustomerPost customer)
         {
             var existingCustomer = await _cinemaContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
 
             if (existingCustomer != null)
             {
-                existingCustomer.CustomerName = customer.CustomerName;
-                existingCustomer.EmailAdress = customer.EmailAdress;
-                existingCustomer.PhoneNumber = customer.PhoneNumber;
+                // Update fields only if provided
+                if (!string.IsNullOrEmpty(customer.CustomerName) && customer.CustomerName != "string") // Check for null instead of empty string
+                    existingCustomer.CustomerName = customer.CustomerName;
+
+                if (!string.IsNullOrEmpty(customer.EmailAdress) && customer.EmailAdress != "string")
+                    existingCustomer.EmailAdress = customer.EmailAdress;
+
+                if (!string.IsNullOrEmpty(customer.PhoneNumber) && customer.PhoneNumber != "string")
+                    existingCustomer.PhoneNumber = customer.PhoneNumber;
+
                 existingCustomer.UpdatedAt = DateTime.UtcNow;
 
                 await _cinemaContext.SaveChangesAsync();
             }
-            
+
             return existingCustomer;
         }
+
 
         // Delete Customer
         public async Task<Customer> DeleteCustomer(int id)
@@ -96,8 +105,17 @@ namespace api_cinema_challenge.Repository
                              Description = movie.Description,
                              RuntimeMins = movie.RuntimeMins,
                              CreatedAt = movie.CreatedAt,
-                             UpdatedAt = movie.UpdatedAt
-                         };
+                             UpdatedAt = movie.UpdatedAt,
+                             Screenings = movie.Screenings.Select(x => new ScreeningDTO()
+                             {
+                                 Id = x.ScreeningId,
+                                 ScreenNumber = x.ScreenNumber,
+                                 ScreenCapacity = x.ScreenCapacity,
+                                 StartsAt = x.StartsAt,
+                                 CreatedAt = x.CreatedAt,
+                                 UpdatedAt = x.UpdatedAt
+                             })
+                            };
 
             return await movies.ToListAsync();
         }
@@ -113,7 +131,44 @@ namespace api_cinema_challenge.Repository
                 Description = movie.Description,
                 RuntimeMins = movie.RuntimeMins,
                 CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Screenings = movie.Screenings.Select(x => new Screening() 
+                {
+                    ScreenNumber = x.ScreenNumber,
+                    ScreenCapacity = x.ScreenCapacity,
+                    StartsAt = x.StartsAt,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    MovieId = id
+                }).ToArray()
+            };
+
+            _cinemaContext.Movies.Add(createMovie);
+            await _cinemaContext.SaveChangesAsync();
+            {
+                
+               
+                await _cinemaContext.SaveChangesAsync();
+            }
+
+            return createMovie;
+        }
+
+
+
+        /* Create Movie CORE
+        public async Task<Movie> CreateMovie(MoviePost movie, int id)
+        {
+            var createMovie = new Movie()
+            {
+                MovieId = id,
+                Title = movie.Title,
+                Rating = movie.Rating,
+                Description = movie.Description,
+                RuntimeMins = movie.RuntimeMins,
+                CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
+                
             };
 
             _cinemaContext.Movies.Add(createMovie);
@@ -121,8 +176,10 @@ namespace api_cinema_challenge.Repository
 
             return createMovie;
         }
+        */
 
-        //Update Movie
+        //Update Movie CORE
+        /*
         public async Task<Movie> UpdateMovie(int id, MoviePost movie)
         {
             var existingMovie = await _cinemaContext.Movies.FirstOrDefaultAsync(m => m.MovieId == id);
@@ -139,6 +196,36 @@ namespace api_cinema_challenge.Repository
             }
 
             return existingMovie;
+        }
+        */
+
+        //Update Movie Extension
+        public async Task<Movie> UpdateMovie(int id, MoviePost movie)
+        {
+            var updatedMovie = await _cinemaContext.Movies.FirstOrDefaultAsync(m => m.MovieId == id);
+
+            if (updatedMovie != null)
+            {
+
+                // Update fields only if provided
+                if (!string.IsNullOrEmpty(movie.Title) && movie.Title != "string")
+                    updatedMovie.Title = movie.Title;
+
+                if (!string.IsNullOrEmpty(movie.Rating) && movie.Rating != "string")
+                    updatedMovie.Rating = movie.Rating;
+
+                if (!string.IsNullOrEmpty(movie.Description) && movie.Description != "string")
+                    updatedMovie.Description = movie.Description;
+
+                if (movie.RuntimeMins != 0)
+                    updatedMovie.RuntimeMins = movie.RuntimeMins;
+
+                updatedMovie.UpdatedAt = DateTime.UtcNow;
+
+                await _cinemaContext.SaveChangesAsync();
+            }
+
+            return updatedMovie;
         }
 
         // Delete Movie
@@ -197,7 +284,6 @@ namespace api_cinema_challenge.Repository
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 MovieId = movieId
-                //Movie = _cinemaContext.Movies.Include(s => s.Screenings).FirstOrDefault(x => x.MovieId == movieId)
 
             };
 
@@ -206,6 +292,54 @@ namespace api_cinema_challenge.Repository
 
             return createScreening;
         }
+
+        public async Task<Ticket> BookTicket(int customerId, int screeningId, int numSeats)
+        {
+            var screening = await _cinemaContext.Screenings.FirstOrDefaultAsync(s => s.ScreeningId == screeningId);
+            var customer = await _cinemaContext.Customers.FirstOrDefaultAsync(c => c.Id == customerId);
+
+            if (screening == null || customer == null)
+            {
+                return null; 
+            }
+
+            var availableSeats = screening.ScreenCapacity - screening.Tickets.Sum(t => t.SeatNumber);
+            if (availableSeats < numSeats)
+            {
+                return null; 
+            }
+
+            var ticket = new Ticket
+            {
+                SeatNumber = numSeats,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                CustomerId = customerId,
+                ScreeningId = screeningId
+                
+            };
+
+            screening.Tickets.Add(ticket);
+            await _cinemaContext.SaveChangesAsync();
+
+            var ticketToReturn = new Ticket
+            {
+                TicketId = ticket.TicketId,
+                SeatNumber = ticket.SeatNumber,
+                CreatedAt = ticket.CreatedAt,
+                UpdatedAt = ticket.UpdatedAt
+            };
+
+            return ticketToReturn;
+        }
+
+        //Get Tickets
+        public async Task<IEnumerable<Ticket>> GetTickets(int customerId, int screeningId)
+        {
+            var tickets = await _cinemaContext.Tickets.Where(t => t.ScreeningId == screeningId && t.CustomerId == customerId).ToListAsync();
+            return tickets;
+        }
+
 
     }
 }

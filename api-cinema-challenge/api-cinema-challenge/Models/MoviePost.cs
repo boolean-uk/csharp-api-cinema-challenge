@@ -7,6 +7,6 @@
         public string Description { get; set; }
         public int RuntimeMins { get; set; }
 
-
+        public IEnumerable<ScreeningPost> Screenings { get; set; }
     }
 }

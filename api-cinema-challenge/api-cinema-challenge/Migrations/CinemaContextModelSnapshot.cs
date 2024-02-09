@@ -54,29 +54,28 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("Id")
-                        .HasName("customer_id");
+                    b.HasKey("Id");
 
-                    b.ToTable("customers", (string)null);
+                    b.ToTable("customers");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6659),
+                            CreatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(382),
                             CustomerName = "John Doe",
                             EmailAdress = "john@example.com",
                             PhoneNumber = "1234567890",
-                            UpdatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6661)
+                            UpdatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(385)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6666),
+                            CreatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(389),
                             CustomerName = "Jane Smith",
                             EmailAdress = "jane@example.com",
                             PhoneNumber = "9876543210",
-                            UpdatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6667)
+                            UpdatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(389)
                         });
                 });
 
@@ -110,37 +109,36 @@ namespace api_cinema_challenge.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("movie_title");
+                        .HasColumnName("movie_tite");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("MovieId")
-                        .HasName("movie_id");
+                    b.HasKey("MovieId");
 
-                    b.ToTable("movies", (string)null);
+                    b.ToTable("movies");
 
                     b.HasData(
                         new
                         {
                             MovieId = 1,
-                            CreatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6713),
+                            CreatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(435),
                             Description = "Description of Movie 1",
                             Rating = "PG",
                             RuntimeMins = 120,
                             Title = "Movie 1",
-                            UpdatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6714)
+                            UpdatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(436)
                         },
                         new
                         {
                             MovieId = 2,
-                            CreatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6719),
+                            CreatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(439),
                             Description = "Description of Movie 2",
                             Rating = "PG-13",
                             RuntimeMins = 150,
                             Title = "Movie 2",
-                            UpdatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6720)
+                            UpdatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(440)
                         });
                 });
 
@@ -177,34 +175,69 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("ScreeningId")
-                        .HasName("screen_id");
+                    b.HasKey("ScreeningId");
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("screenings", (string)null);
+                    b.ToTable("screenings");
 
                     b.HasData(
                         new
                         {
                             ScreeningId = 1,
-                            CreatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6766),
+                            CreatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(470),
                             MovieId = 1,
                             ScreenCapacity = 100,
                             ScreenNumber = 1,
-                            StartsAt = new DateTime(2024, 2, 8, 13, 32, 21, 650, DateTimeKind.Utc).AddTicks(6758),
-                            UpdatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6767)
+                            StartsAt = new DateTime(2024, 2, 9, 14, 24, 34, 247, DateTimeKind.Utc).AddTicks(463),
+                            UpdatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(470)
                         },
                         new
                         {
                             ScreeningId = 2,
-                            CreatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6773),
-                            MovieId = 1,
+                            CreatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(475),
+                            MovieId = 2,
                             ScreenCapacity = 120,
                             ScreenNumber = 2,
-                            StartsAt = new DateTime(2024, 2, 8, 14, 32, 21, 650, DateTimeKind.Utc).AddTicks(6772),
-                            UpdatedAt = new DateTime(2024, 2, 8, 12, 32, 21, 650, DateTimeKind.Utc).AddTicks(6774)
+                            StartsAt = new DateTime(2024, 2, 9, 15, 24, 34, 247, DateTimeKind.Utc).AddTicks(474),
+                            UpdatedAt = new DateTime(2024, 2, 9, 13, 24, 34, 247, DateTimeKind.Utc).AddTicks(476)
                         });
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("ticket_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TicketId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
+
+                    b.Property<int>("ScreeningId")
+                        .HasColumnType("integer")
+                        .HasColumnName("screening_id");
+
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("seat_number");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("ScreeningId");
+
+                    b.ToTable("tickets");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
@@ -218,9 +251,23 @@ namespace api_cinema_challenge.Migrations
                     b.Navigation("Movie");
                 });
 
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.HasOne("api_cinema_challenge.Models.Screening", null)
+                        .WithMany("Tickets")
+                        .HasForeignKey("ScreeningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("api_cinema_challenge.Models.Movie", b =>
                 {
                     b.Navigation("Screenings");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
+                {
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

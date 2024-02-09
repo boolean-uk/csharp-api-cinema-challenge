@@ -13,6 +13,7 @@ namespace api_cinema_challenge.Repository
 
         //Movie
         Task<IEnumerable<MovieDTO>> GetMovies();
+        //Task<Movie> CreateMovie(MoviePost movie, int id);
         Task<Movie> CreateMovie(MoviePost movie, int id);
         Task<Movie> UpdateMovie(int id, MoviePost movie);
         Task<MovieDTO> DeleteMovie(int id);
@@ -21,6 +22,8 @@ namespace api_cinema_challenge.Repository
         Task<IEnumerable<ScreeningDTO>> GetScreeningsForMovie(int movieId);
         Task<Screening> CreateScreeningForMovie(ScreeningPost screening, int movieId);
 
-
+        //Ticket
+        Task<Ticket> BookTicket(int customerId, int screeningId, int numSeats);
+        Task<IEnumerable<Ticket>> GetTickets(int customerId, int screeningId);
     }
 }

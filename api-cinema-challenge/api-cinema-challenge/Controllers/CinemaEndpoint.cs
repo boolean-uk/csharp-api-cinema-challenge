@@ -28,9 +28,9 @@ namespace api_cinema_challenge.Controllers
             cinemaGroup.MapGet("/screenings", GetScreening);
             cinemaGroup.MapPost("/screenings", CreateScreening);
 
-
-
-
+            //tickets
+            cinemaGroup.MapPost("/tickets", BookTicket);
+            cinemaGroup.MapGet("/tickets/{customerid}/{screeningid}", GetTicket);
 
 
         }
@@ -40,8 +40,11 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> GetCustomers(IRepository repository)
         {
             var customers = await repository.GetCustomers();
+            Payload<IEnumerable<CustomerDTO>> payload = new Payload<IEnumerable<CustomerDTO>>();
+            payload.data = customers;
 
-            return TypedResults.Ok(customers);
+
+            return TypedResults.Ok(payload);
         }
 
         //Create Customer
@@ -50,6 +53,8 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> CreateCustomer(IRepository repository, CustomerPost customer, int id)
         {
             var createdCustomer = await repository.CreateCustomer(customer, id);
+            Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
+
 
             if (createdCustomer == null)
             {
@@ -65,8 +70,8 @@ namespace api_cinema_challenge.Controllers
                 CreatedAt = createdCustomer.CreatedAt,
                 UpdatedAt = createdCustomer.UpdatedAt
             };
-
-            return TypedResults.Created($"{customerDTO.CustomerName}", customerDTO);
+            payload.data = customerDTO;
+            return TypedResults.Created($"{payload.data.CustomerName}", payload);
         }
 
         //Update Customer
@@ -98,15 +103,17 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> DeleteCustomer(IRepository repository, int id)
+
         {
             var deletedCustomer = await repository.DeleteCustomer(id);
+            Payload<Customer> payload = new Payload<Customer>();
 
             if (deletedCustomer == null)
             {
                 return Results.NotFound("Customer not found.");
             }
-
-            return Results.Ok(deletedCustomer);
+            payload.data = deletedCustomer;
+            return Results.Ok(payload);
         }
 
 
@@ -115,8 +122,9 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> GetMovies(IRepository repository)
         {
             var movies = await repository.GetMovies();
-
-            return TypedResults.Ok(movies);
+            Payload<IEnumerable<MovieDTO>> payload = new Payload<IEnumerable<MovieDTO>>();
+            payload.data = movies;
+            return TypedResults.Ok(payload);
         }
 
         //Create Movie
@@ -124,7 +132,8 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateMovie(IRepository repository, MoviePost movie, int id)
         {
-            var createdMovie= await repository.CreateMovie(movie, id);
+            var createdMovie = await repository.CreateMovie(movie, id);
+            Payload<MovieDTO> payload = new Payload<MovieDTO>();
 
             if (createdMovie == null)
             {
@@ -139,10 +148,19 @@ namespace api_cinema_challenge.Controllers
                 Description = createdMovie.Description,
                 RuntimeMins = createdMovie.RuntimeMins,
                 CreatedAt = createdMovie.CreatedAt,
-                UpdatedAt = createdMovie.UpdatedAt
+                UpdatedAt = createdMovie.UpdatedAt,
+                Screenings = createdMovie.Screenings.Select(x => new ScreeningDTO()
+                {
+                    Id = x.ScreeningId,
+                    ScreenNumber = x.ScreenNumber,
+                    ScreenCapacity = x.ScreenCapacity,
+                    StartsAt = x.StartsAt,
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt
+                })
             };
-
-            return TypedResults.Created($"{movieDTO.Title}", movieDTO);
+            payload.data = movieDTO;
+            return TypedResults.Created($"{payload.data.Title}", payload);
         }
 
         //Update Movie
@@ -176,14 +194,16 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> DeleteMovie(IRepository repository, int id)
         {
-            var deletedCustomer = await repository.DeleteMovie(id);
+            var deletedMovie = await repository.DeleteMovie(id);
+            Payload<MovieDTO> payload = new Payload<MovieDTO>();
 
-            if (deletedCustomer == null)
+
+            if (deletedMovie == null)
             {
                 return Results.NotFound("Movie not found.");
             }
-
-            return Results.Ok(deletedCustomer);
+            payload.data = deletedMovie;
+            return Results.Ok(payload);
         }
 
         //Get Screenings
@@ -191,8 +211,9 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> GetScreening(IRepository repository, int movieId)
         {
             var screenings = await repository.GetScreeningsForMovie(movieId);
-
-            return TypedResults.Ok(screenings);
+            Payload<IEnumerable<ScreeningDTO>> payload = new Payload<IEnumerable<ScreeningDTO>>();
+            payload.data = screenings;
+            return TypedResults.Ok(payload);
         }
 
 
@@ -203,6 +224,7 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> CreateScreening(IRepository repository, ScreeningPost screening, int movieId)
         {
             var createdScreening = await repository.CreateScreeningForMovie(screening, movieId);
+            Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>();
 
             if (createdScreening == null)
             {
@@ -218,8 +240,42 @@ namespace api_cinema_challenge.Controllers
                 CreatedAt = createdScreening.CreatedAt,
                 UpdatedAt = createdScreening.UpdatedAt
             };
+            payload.data = screeningDTO;
 
-            return TypedResults.Created($"{screeningDTO.Id}", screeningDTO);
+            return TypedResults.Created($"{payload.data.Id}", payload);
         }
+
+        //Create Ticket
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public static async Task<IResult> BookTicket(IRepository repository, int customerId, int screeningId, TicketPost ticket)
+        {
+            //Validate the input from client (swagger)
+            if (ticket.SeatNumber <= 0)
+            {
+                return Results.BadRequest(new Payload<string> { status = "Failure", data = "Invalid seatnumber" });
+            }
+
+            // Create a new ticket
+            var createdTicket = await repository.BookTicket(customerId, screeningId, ticket.SeatNumber);
+            // Return the created ticket
+            return TypedResults.Created("", new Payload<TicketDTO> { data = new TicketDTO(createdTicket)});
+        }
+
+        //Get Tickets
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetTicket(IRepository repository, int customerid, int screeningid)
+        {
+            var tickets = await repository.GetTickets(customerid, screeningid);
+            List<TicketDTO> ticketDTOs = new List<TicketDTO>();
+            foreach(var ticket in tickets)
+            {
+                ticketDTOs.Add(new TicketDTO(ticket));
+            }
+            Payload<IEnumerable<TicketDTO>> payload = new Payload<IEnumerable<TicketDTO>>();
+            payload.data = ticketDTOs;
+            return TypedResults.Ok(payload);
+        }
+
     }
 }
