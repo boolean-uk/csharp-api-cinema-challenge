@@ -4,6 +4,7 @@ using api_cinema_challenge.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Net;
 using System.Xml.Linq;
+using api_cinema_challenge.Models.DTOs;
 
 namespace api_cinema_challenge.Repository
 {
@@ -145,7 +146,7 @@ namespace api_cinema_challenge.Repository
         //getscreenings
         public async Task<IEnumerable<Screening>> GetScreeningsByMovieId(int movieId)
         {
-            return await _context.Screens
+            return await _context.Screens.Include(s => s.Movie)
                 .Where(s => s.MovieId == movieId).ToListAsync();
         }
         
@@ -164,6 +165,27 @@ namespace api_cinema_challenge.Repository
             _context.SaveChanges();
             return screening;
         }
+
+        //get all tickets
         
+        public async Task<IEnumerable<Ticket>> GetTickets()
+        {
+            var tickets = await _context.Tickets
+                .Include(t => t.Movie)
+                .Include(t => t.User).ToArrayAsync();
+            return tickets;
+        }
+
+        public async Task<IEnumerable<Ticket>> GetTicketById(int ticketId)
+        {
+            var ticket = await _context.Tickets
+                .Include(t => t.Movie)
+                .Include(t => t.User)
+                .Where(s => s.Id == ticketId).ToListAsync();
+            return ticket;
+        }
+        
+
+
     }
 }

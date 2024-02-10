@@ -5,6 +5,7 @@ using api_cinema_challenge.Repository;
 using static api_cinema_challenge.Models.Movie;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Net.Sockets;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -31,6 +32,11 @@ namespace api_cinema_challenge.Endpoints
             //screenings
             screeningsGroup.MapGet("/screenings/{movieId}/", GetScreenings);
             screeningsGroup.MapPost("/screenings/", CreateScreening);
+
+            //tickets
+            screeningsGroup.MapGet("/tickets/", GetTickets);
+            screeningsGroup.MapGet("/tickets/{Id}/", GetTicketById);
+
         }
 
         //201responses.users
@@ -159,5 +165,34 @@ namespace api_cinema_challenge.Endpoints
             MovieResponseDTO movieToReturn = new MovieResponseDTO(movie);
             return TypedResults.Ok(movieToReturn);
         }
+
+        //get tickets
+        public static async Task<IResult> GetTickets(IRepository repository)
+        {
+            var tickets = await repository.GetTickets();
+
+            List<TicketResponseDTO> ticketsToReturn = new List<TicketResponseDTO>();
+            foreach (var ticket in tickets)
+            {
+                TicketResponseDTO ticketToReturn = new TicketResponseDTO(ticket);
+                ticketsToReturn.Add(ticketToReturn);
+            }
+            return TypedResults.Ok(ticketsToReturn);
+        }
+
+        //get ticket by ID
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(TicketResponseDTO))]
+        public static async Task<IResult> GetTicketById(IRepository repository, int Id)
+        {
+            var tickets = await repository.GetTicketById(Id);
+
+            List<TicketResponseDTO> ticketsToReturn = new List<TicketResponseDTO>();
+            foreach (var ticket in tickets)
+            {
+                TicketResponseDTO ticketToReturn = new TicketResponseDTO(ticket);
+                ticketsToReturn.Add(ticketToReturn);
+            }
+            return TypedResults.Ok(ticketsToReturn);
+        } 
     }
 }   

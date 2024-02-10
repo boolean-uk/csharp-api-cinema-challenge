@@ -16,6 +16,7 @@ namespace api_cinema_challenge.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screens { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
         
         public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
         {
@@ -204,6 +205,41 @@ namespace api_cinema_challenge.Data
                     StartTime = DateTime.UtcNow.AddHours(5),
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
+                }
+                );
+
+            modelBuilder.Entity<Ticket>().HasData(
+                new Ticket
+                {
+                    Id = 1,
+                    NumSeats = 2,
+                    CreatedAt = DateTime.UtcNow,
+                    LastUpdatedAt = DateTime.UtcNow,
+
+                    MovieId= 1,
+                    UserId= 1,
+                },
+
+                new Ticket
+                {
+                    Id = 2,
+                    NumSeats = 3,
+                    CreatedAt = DateTime.UtcNow,
+                    LastUpdatedAt = DateTime.UtcNow,
+
+                    MovieId = 2,
+                    UserId = 2,
+                },
+
+                new Ticket
+                {
+                    Id = 3,
+                    NumSeats = 5,
+                    CreatedAt = DateTime.UtcNow,
+                    LastUpdatedAt = DateTime.UtcNow,
+
+                    MovieId = 3,
+                    UserId = 3,
                 }
                 );
         }

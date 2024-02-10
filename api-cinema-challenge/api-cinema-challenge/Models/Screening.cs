@@ -5,8 +5,11 @@ namespace api_cinema_challenge.Models
     [Table("screenings")]
     public class Screening
     {
+        
         [Column("movie_id")]
         public int MovieId { get; set; }
+
+        public Movie Movie { get; set; }
 
         [Column("capacity")]
         public int Capacity { get; set; }
