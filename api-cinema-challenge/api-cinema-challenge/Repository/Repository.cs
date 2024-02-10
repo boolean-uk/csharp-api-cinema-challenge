@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Helpers;
+using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,13 @@ namespace api_cinema_challenge.Repository
         public async Task<IEnumerable<T>> SelectWhere(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> InsertRange(IEnumerable<T> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+            await _database.SaveChangesAsync();
+            return entities;
         }
     }
 }

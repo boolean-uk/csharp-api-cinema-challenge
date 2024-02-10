@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using api_cinema_challenge.Models.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.DTOs
 {
-    public class ScreeningDTO
+    public class ScreeningDTO : IScreening
     {
         public int Id { get; set; }
         public int ScreenNumber { get; set; }

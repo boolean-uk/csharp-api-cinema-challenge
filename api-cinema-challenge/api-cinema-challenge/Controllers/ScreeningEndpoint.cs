@@ -19,8 +19,15 @@ namespace api_cinema_challenge.Controllers
             screenings.MapGet("", GetAllScreenings);
         }
 
-        private static async Task<IResult> PostScreening(IRepository<Screening> repository, ScreeningPost model)
+        public static async Task<IResult> PostScreening(IRepository<Screening> screeningRepo, IRepository<Movie> movieRepo, ScreeningPost model, int id)
         {
+            // Retrieve the movie by its id
+            var movie = await movieRepo.SelectById(id);
+            if (movie == null)
+            {
+                return TypedResults.NotFound("Movie not found");
+            }
+
             // Map the model to a DTO
             var screeningDTO = DTOHelper.MapToDTO<ScreeningDTO>(model);
 
@@ -35,10 +42,13 @@ namespace api_cinema_challenge.Controllers
             if (payload.status == "success")
             {
                 // Insert the new customer into the database
-                var customer = await repository.Insert(DTOHelper.MapToEntity<Screening>(model, "create"));
+                var ScreeningToInsert = DTOHelper.MapToEntity<Screening>(model, "create");
+                //REMEMBER THE MOOOOVIE
+                ScreeningToInsert.MovieId = id;
+                var screening = await screeningRepo.Insert(ScreeningToInsert);
 
-                //Give the customerDTO the new customer's id
-                payload.data = DTOHelper.MapToDTO<ScreeningDTO>(customer);
+                //Give the DTO the new id
+                payload.data = DTOHelper.MapToDTO<ScreeningDTO>(screening);
 
                 // Return the payload
                 return TypedResults.Created($"/{payload.data.Id}", payload);
@@ -50,7 +60,7 @@ namespace api_cinema_challenge.Controllers
             }
         }
 
-        private static async Task<IResult> GetAllScreenings(IRepository<Screening> repository, IRepository<Movie> movieRepo, int id)
+        private static async Task<IResult> GetAllScreenings(IRepository<Screening> screeningRepo, IRepository<Movie> movieRepo, int id)
         {
             // Retrieve the movie by its id
             var movie = await movieRepo.SelectById(id);
@@ -60,7 +70,7 @@ namespace api_cinema_challenge.Controllers
             }
 
             // Retrieve all screenings of the specified movie
-            var screenings = await repository.SelectWhere(s => s.MovieId == id);
+            var screenings = await screeningRepo.SelectWhere(s => s.MovieId == id);
             IEnumerable<ScreeningDTO> screeningDTOs = screenings.Select(s => DTOHelper.MapToDTO<ScreeningDTO>(s));
 
             var payload = new PayLoad1<IEnumerable<ScreeningDTO>>

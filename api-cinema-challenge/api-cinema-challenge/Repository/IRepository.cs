@@ -1,4 +1,5 @@
-﻿using System;
+﻿using api_cinema_challenge.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,5 +17,6 @@ namespace api_cinema_challenge.Repository
         Task<T> Update(int id, T entity);
         Task<T> Delete(int id);
         Task<IEnumerable<T>> SelectWhere(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> InsertRange(IEnumerable<T> entities);
     }
 }

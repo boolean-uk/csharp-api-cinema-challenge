@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using api_cinema_challenge.Models.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.DTOs
 {
-    public class MovieDTO
+    public class MovieDTO : IMovie
     {
         public int Id { get; set; }
         public string Title { get; set; }

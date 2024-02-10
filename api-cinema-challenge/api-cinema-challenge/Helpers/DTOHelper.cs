@@ -1,45 +1,56 @@
-﻿using System.Net.Mail;
+﻿using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Globalization;
+using System.Net.Mail;
 using System.Text;
 
 namespace api_cinema_challenge.Helpers
 {
     public static class DTOHelper
     {
-        public static T MapToDTO<T>(object entity) where T : class
+        public static T MapToDTO<T>(object entity, bool ignoreObjects=false, string objectToIgnore= "") where T : class
         {
             var dto = Activator.CreateInstance<T>();
-            var entityProperties = entity.GetType().GetProperties();
-            var dtoProperties = dto.GetType().GetProperties();
 
-            foreach (var entityProperty in entityProperties)
+            foreach (var dtoProperty in typeof(T).GetProperties())
             {
-                foreach (var dtoProperty in dtoProperties)
+                var entityProperty = entity.GetType().GetProperty(dtoProperty.Name);
+                // This is a bit of a hack to avoid the circular reference between Movie and Screening
+                if(ignoreObjects && entityProperty.Name == objectToIgnore)
+                { 
+                    continue;
+                }
+                if (entityProperty != null && dtoProperty.CanWrite)
                 {
-                    if(entityProperty.Name == "Screenings")
-                    {
-                        //Do nothing
-                    }
-                    if (entityProperty.Name == dtoProperty.Name)
-                    {
-                        dtoProperty.SetValue(dto, entityProperty.GetValue(entity));
-                    }
+                    dtoProperty.SetValue(dto, entityProperty.GetValue(entity));
                 }
             }
 
             return dto;
         }
 
-        public static T MapToEntity<T>(object dto, string operation) where T : class
+
+        public static T MapToEntity<T>(object dto, string operation, bool ignoreObjects = false, string objectToIgnore = "") where T : class
         {
             var entity = Activator.CreateInstance<T>();
-            var dtoProperties = dto.GetType().GetProperties();
-            var entityProperties = entity.GetType().GetProperties();
 
-            foreach (var dtoProperty in dtoProperties)
+            foreach (var dtoProperty in dto.GetType().GetProperties())
             {
-                foreach (var entityProperty in entityProperties)
+                var entityProperty = entity.GetType().GetProperty(dtoProperty.Name);
+                if (entityProperty != null && dtoProperty.CanRead)
                 {
-                    if (dtoProperty.Name == entityProperty.Name)
+                    // This is a bit of a hack to avoid the circular reference between Movie and Screening
+                    if (ignoreObjects && entityProperty.Name == objectToIgnore)
+                    {
+                        continue;
+                    }
+                    if (entityProperty.PropertyType == typeof(DateTime))
+                    {
+                        // Ensure DateTime values are converted to UTC
+                        var dtoValue = (DateTime)dtoProperty.GetValue(dto);
+                        var utcValue = DateTime.SpecifyKind(dtoValue, DateTimeKind.Utc);
+                        entityProperty.SetValue(entity, utcValue);
+                    }
+                    else
                     {
                         entityProperty.SetValue(entity, dtoProperty.GetValue(dto));
                     }
@@ -50,25 +61,18 @@ namespace api_cinema_challenge.Helpers
             {
                 var createdAtProperty = entity.GetType().GetProperty("CreatedAt");
                 var updatedAtProperty = entity.GetType().GetProperty("UpdatedAt");
-                if (createdAtProperty != null)
-                {
-                    createdAtProperty.SetValue(entity, DateTime.UtcNow);
-                }
-                if (updatedAtProperty != null)
-                {
-                    updatedAtProperty.SetValue(entity, DateTime.UtcNow);
-                }
+                createdAtProperty?.SetValue(entity, DateTime.UtcNow);
+                updatedAtProperty?.SetValue(entity, DateTime.UtcNow);
             }
 
             return entity;
         }
 
 
+
         //In retrospect this is overkill with the return inside the status of the payload... but I am too lazy to change it now.
         public static string PropertyChecker<T>(object dto) where T : class
         {
-            //Create a string to return
-            string returnString = "success";
             //Create a stringbuilder to append errors to
             StringBuilder sb = new StringBuilder();
 
@@ -111,7 +115,7 @@ namespace api_cinema_challenge.Helpers
                     }
                 }
                 //Phone number validation. Should contain at least one digit. Phone is a can of worms with the possibility of +47 with the plus sign. This is just a super simple validation.
-                if(propName == "phone" && !value.ToString().Any(char.IsDigit) )
+                if (propName == "phone" && !value.ToString().Any(char.IsDigit))
                 {
                     sb.Append($"-Invalid property {propName}: {value.ToString()}. Phone needs to have integers. {Environment.NewLine} ");
                 }
@@ -126,17 +130,36 @@ namespace api_cinema_challenge.Helpers
                     }
                 }
                 */
+
+
+                //Convert the dates. The spec sheet has a different format than the default format and this is needed to c
+                //Excluding propName == "CreatedAt" || propName == "UpdatedAt" is the easiest way to handle some trouble I got into...
+                if (propName == "StartsAt")
+                {
+                    if (value != null)
+                    {
+                        if (value.GetType() == typeof(DateTime))
+                        {
+                            // Convert startsAt to the desired format
+                            var startsAtDateTime = (DateTime)value;
+                            var formattedStartsAt = startsAtDateTime.ToString("yyyy-MM-dd HH:mm:ss.fffffffzzz");
+                            property.SetValue(dto, DateTime.ParseExact(formattedStartsAt, "yyyy-MM-dd HH:mm:ss.fffffffzzz", CultureInfo.InvariantCulture));
+                        }
+                        else
+                        {
+                            return "-Date formatting is wrong";
+                        }
+                    }
+                }
             }
 
             //If there are any errors, return the error string
             if (sb.Length > 0)
             {
-                returnString = sb.ToString();
+                return sb.ToString();
             }
 
-            return returnString;
+            return "success";
         }
-
-
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace api_cinema_challenge.Models.Posts
+﻿using api_cinema_challenge.Models.Interfaces;
+
+namespace api_cinema_challenge.Models.Posts
 {
-    public class ScreeningPost
+    public class ScreeningPost : IScreening
     {
         public int ScreenNumber { get; set; }
         public int Capacity { get; set; }

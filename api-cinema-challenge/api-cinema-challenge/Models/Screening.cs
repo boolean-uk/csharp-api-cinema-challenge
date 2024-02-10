@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api_cinema_challenge.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
     [Table("screenings")]
     [PrimaryKey("Id")]
-    public class Screening
+    public class Screening : IScreening
     {
         [Column("id")]
         public int Id { get; set; }
@@ -24,7 +25,5 @@ namespace api_cinema_challenge.Models
         public DateTime CreatedAt { get; set; }
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
-
-
     }
 }

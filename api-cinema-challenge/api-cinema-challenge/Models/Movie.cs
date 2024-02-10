@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api_cinema_challenge.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
     [Table("movies")]
     [PrimaryKey("Id")]
-    public class Movie
+    public class Movie : IMovie
     {
         [Column("id")]
         public int Id { get; set; }
@@ -18,7 +19,7 @@ namespace api_cinema_challenge.Models
         public string Description { get; set; }
         [Column("runtime")]
         public int Runtime { get; set; }
-        public ICollection<Screening> Screenings { get; set; } = new List<Screening>();
+        public List<Screening> Screenings { get; set; } = new List<Screening>();
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
