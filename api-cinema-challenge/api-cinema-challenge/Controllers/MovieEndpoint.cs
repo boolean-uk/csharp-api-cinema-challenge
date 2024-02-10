@@ -1,10 +1,13 @@
 ﻿using api_cinema_challenge.Helpers;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Models.DTOs;
+using api_cinema_challenge.Models.Interfaces;
 using api_cinema_challenge.Models.PayLoad;
 using api_cinema_challenge.Models.Posts;
+using api_cinema_challenge.Models.Puts;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -93,49 +96,6 @@ namespace api_cinema_challenge.Controllers
             return TypedResults.Created($"/{payload.data.Id}", payload);
         }
 
-        /*{
-            // Convert ScreeningPost to Screening and save them to DB
-            var screenings = model.Screenings.Select(screeningPost => DTOHelper.MapToEntity<Screening>(screeningPost, "create"));
-            await screeningRepository.InsertRange(screenings);
-
-            // Convert MoviePost to Movie
-            var movieEntity = DTOHelper.MapToEntity<Movie>(model, "create");
-
-            // Associate the screenings with the movie
-            foreach (var screening in screenings)
-            {
-                movieEntity.Screenings.Add(screening);
-            }
-
-            // Insert the new entity into the database
-            var insertedMovie = await movieRepository.Insert(movieEntity);
-
-            // Retrieve the Movie with a collection of Screenings with that MovieId
-            insertedMovie = await movieRepository.SelectById(insertedMovie.Id); //, include => include.Screenings
-
-            // Convert the Movie with Screenings inside to MovieDTO with ScreeningsDTO inside
-            var movieDTO = DTOHelper.MapToDTO<MovieDTO>(insertedMovie);
-
-            // Create a payload to return
-            var payload = new PayLoad1<MovieDTO>
-            {
-                data = movieDTO,
-                status = DTOHelper.PropertyChecker<MovieDTO>(movieDTO)
-            };
-
-            // Check if the DTO properties are valid
-            if (payload.status == "success")
-            {
-                // Return the payload
-                return TypedResults.Created($"/{payload.data.Id}", payload);
-            }
-            else
-            {
-                // Return the payload
-                return TypedResults.BadRequest(payload);
-            }
-        }
-        */
 
         //Gets all movies from the database, converts them to DTOs and returns them in a payload, but do not return any Screenings
         private static async Task<IResult> GetAllMovies(IRepository<Movie> repository)
@@ -181,14 +141,83 @@ namespace api_cinema_challenge.Controllers
             }
         }
 
-        private static async Task<IResult> UpdateMovie(HttpContext context)
+        private static async Task<IResult> UpdateMovie(IRepository<Movie> repository, int id, MoviePut model)
         {
-            throw new NotImplementedException();
+            // Fetch the existing movie from the repository
+            var existingMovie = await repository.SelectById(id);
+            if (existingMovie == null)
+            {
+                return TypedResults.NotFound();
+            }
+
+            // Map the fields from the model to the entity
+            var updatedMovie = DTOHelper.MapToEntity<Movie>(model, "update");
+
+            // Update only the provided fields, keeping the original values if not provided
+            if (model.Title != null)
+            {
+                existingMovie.Title = updatedMovie.Title;
+            }
+            if (model.Rating != null)
+            {
+                existingMovie.Rating = updatedMovie.Rating;
+            }
+            if (model.Description != null)
+            {
+                existingMovie.Description = updatedMovie.Description;
+            }
+            if (model.Runtime != 0)
+            {
+                existingMovie.Runtime = updatedMovie.Runtime;
+            }
+
+            // Add conditions for other fields if applicable
+
+            // Update the existing movie in the repository
+            var result = await repository.Update(id, existingMovie);
+
+            // If update successful, return the updated movie
+            if (result != null)
+            {
+                var payload = new PayLoad1<MovieDTO>
+                {
+                    data = DTOHelper.MapToDTO<MovieDTO>(result),
+                    status = "success"
+                };
+                return TypedResults.Ok(payload);
+            }
+            else 
+            {
+                // If update fails, return bad request
+                return TypedResults.BadRequest("Failed to update the movie.");
+            }
         }
 
-        private static async Task<IResult> DeleteMovie(HttpContext context)
+        //Delete an existing movie.When deleting a movie, all of its screenings should also be deleted.
+        private static async Task<IResult> DeleteMovie(IRepository<Movie> repository, IRepository<Screening> screeningRepository, int id)
         {
-            throw new NotImplementedException();
+            var foundMovie = await repository.SelectById(id);
+            if (foundMovie == null)
+            {
+                return TypedResults.NotFound("The movie does not exist");
+            }
+
+            var screenings = await screeningRepository.SelectAll();
+            foreach (var screening in screenings)
+            {
+                if (screening.MovieId == id)
+                {
+                    await screeningRepository.Delete(screening.Id);
+                }
+            }
+
+            var payload = new PayLoad1<MovieDTO>
+            {
+                data = DTOHelper.MapToDTO<MovieDTO>(foundMovie),
+                status = "success"
+            };
+
+            return TypedResults.Ok(payload);
         }
     }
 }

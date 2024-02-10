@@ -101,29 +101,51 @@ namespace api_cinema_challenge.Controllers
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //Update an existing movie. If any field is not provided, the original value should not be changed. Any combination of fields can be updated.
         private static async Task<IResult> PutCustomer(IRepository<Customer> repository, int id, CustomerPut model)
         {
-            var entity = DTOHelper.MapToEntity<Customer>(model, "update");
-
-            var payload = new PayLoad1<CustomerDTO>
+            // Fetch the existing customer from the repository
+            var existingCustomer = await repository.SelectById(id);
+            if (existingCustomer == null)
             {
-                data = null,
-                status = DTOHelper.PropertyChecker<CustomerDTO>(DTOHelper.MapToDTO<CustomerDTO>(model))
-            };
+                return TypedResults.NotFound();
+            }
 
-            if (payload.status == "success")
+            // Map the fields from the model to the entity
+            var updatedCustomer = DTOHelper.MapToEntity<Customer>(model, "update");
+
+            // Update only the provided fields, keeping the original values if not provided
+            if (!string.IsNullOrEmpty(model.Name))
             {
-                // Update the existing customer with the modified entity
-                var updatedCustomer = await repository.Update(id, entity);
+                existingCustomer.Name = updatedCustomer.Name;
+            }
+            if (!string.IsNullOrEmpty(model.Email))
+            {
+                existingCustomer.Email = updatedCustomer.Email;
+            }
+            if (!string.IsNullOrEmpty(model.Phone))
+            {
+                existingCustomer.Phone = updatedCustomer.Phone;
+            }
+            // Add conditions for other fields if applicable
 
-                // Map updated entity back to DTO
-                payload.data = DTOHelper.MapToDTO<CustomerDTO>(updatedCustomer);
+            // Update the existing customer in the repository
+            var result = await repository.Update(id, existingCustomer);
 
+            // If update successful, return the updated customer
+            if (result != null)
+            {
+                var payload = new PayLoad1<CustomerDTO>
+                {
+                    data = DTOHelper.MapToDTO<CustomerDTO>(result),
+                    status = "success"
+                };
                 return TypedResults.Ok(payload);
             }
             else
             {
-                return TypedResults.BadRequest(payload);
+                // If update fails, return bad request
+                return TypedResults.BadRequest("Failed to update the customer.");
             }
         }
 
