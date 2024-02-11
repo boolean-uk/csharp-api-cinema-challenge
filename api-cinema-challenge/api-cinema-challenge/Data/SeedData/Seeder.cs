@@ -67,7 +67,7 @@ namespace api_cinema_challenge.Data.SeedData
                 movie.MovieId = i;
                 movie.Title = $"" +
                     $"{_prefix[rng.Next(_prefix.Count)]}" +
-                    $"{_firstMovieWord[rng.Next(_firstMovieWord.Count)]} " +
+                    $"{_firstMovieWord[rng.Next(_firstMovieWord.Count)]}" +
                     $"{_secondMovieWord[rng.Next(_secondMovieWord.Count)]}";
                 movie.Rating = _ratings[rng.Next(_ratings.Count)];
                 movie.Description = _movieDesc[rng.Next(_movieDesc.Count)];
