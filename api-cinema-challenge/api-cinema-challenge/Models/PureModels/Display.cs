@@ -10,7 +10,8 @@ namespace api_cinema_challenge.Models.PureModels
         public int DisplayId { get; set; }
 
         /// <summary>
-        /// This ScreenNumber variable is only here so that a user can input due to a (in my opinion) badly thought out Post Screening definition schema
+        /// This ScreenNumber variable is only here so that a user can input due to the Post Screening definition schema.
+        /// You can image it as having multiple configurations for the same display, same screen number but different DisplayIds
         /// </summary>
         [Column("screen_number")]
         public int ScreenNumber { get; set; }

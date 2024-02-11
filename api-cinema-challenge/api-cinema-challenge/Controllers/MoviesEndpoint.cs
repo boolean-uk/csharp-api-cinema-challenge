@@ -8,6 +8,7 @@ using api_cinema_challenge.Models.InputModels.Movie;
 using Microsoft.AspNetCore.Http.HttpResults;
 using api_cinema_challenge.Models.TransferModels.Payload;
 using api_cinema_challenge.Models.JunctionModel;
+using api_cinema_challenge.Utils;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -111,26 +112,14 @@ namespace api_cinema_challenge.Controllers
 
                 foreach (Screening screening in createdScreenings)
                 {
-                    Screening newScreening = await screeningRepo.Insert(screening);
-                    Random rng = new Random();
-                    int seats = screening.Display.Capacity;
-                    int rows = rng.Next(3, Math.Max(6, seats / 6));
-                    int seatPerRow = seats / rows;
+                    Screening insertedScreening = await screeningRepo.Insert(screening);
 
-                    for (int j = 1; j <= seats; j++)
+                    List<Tuple<Seat, TicketSeat>> generatedSeats = SeatGenerator
+                        .FillSeatAndTicketSeat(insertedScreening.Display.Capacity, insertedScreening.DisplayId, insertedScreening.ScreeningId);
+                    foreach (Tuple<Seat, TicketSeat> entry in generatedSeats)
                     {
-                        int RowNumber = j - 1 / seatPerRow + 1;
-                        int seatNumber = (j - 1) % seatPerRow + 1;
-
-                        Seat seat = new Seat();
-                        seat.SeatId = j;
-                        seat.RowNumber = RowNumber;
-                        seat.SeatNumber = seatNumber;
-                        seat.DisplayId = newScreening.DisplayId;
-                        await seatRepo.Insert(seat);
-
-                        TicketSeat ts = new TicketSeat() { SeatId = seat.SeatId, DisplayId = newScreening.DisplayId, ScreeningId = newScreening.ScreeningId};
-                        await tsRepo.Insert(ts);
+                        await seatRepo.Insert(entry.Item1);
+                        await tsRepo.Insert(entry.Item2);
                     }
                 }
 
@@ -244,25 +233,12 @@ namespace api_cinema_challenge.Controllers
             screeningRoom.Screenings.Add(inputScreening);
             Screening screening = await repo.Insert(inputScreening);
 
-            Random rng = new Random();
-            int seats = screening.Display.Capacity;
-            int rows = rng.Next(3, Math.Max(6, seats / 6));
-            int seatPerRow = seats / rows;
-
-            for (int j = 1; j <= seats; j++)
+            List<Tuple<Seat, TicketSeat>> generatedSeats = SeatGenerator
+                .FillSeatAndTicketSeat(screening.Display.Capacity, screening.DisplayId, screening.ScreeningId);
+            foreach (Tuple<Seat, TicketSeat> entry in generatedSeats) 
             {
-                int RowNumber = j - 1 / seatPerRow + 1;
-                int seatNumber = (j - 1) % seatPerRow + 1;
-
-                Seat seat = new Seat();
-                seat.SeatId = j;
-                seat.RowNumber = RowNumber;
-                seat.SeatNumber = seatNumber;
-                seat.DisplayId = screening.DisplayId;
-                await seatRepo.Insert(seat);
-
-                TicketSeat ts = new TicketSeat() { SeatId = seat.SeatId, DisplayId = screening.DisplayId, ScreeningId = screening.ScreeningId };
-                await tsRepo.Insert(ts);
+                await seatRepo.Insert(entry.Item1);
+                await tsRepo.Insert(entry.Item2);
             }
 
             ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.DisplayId, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);
