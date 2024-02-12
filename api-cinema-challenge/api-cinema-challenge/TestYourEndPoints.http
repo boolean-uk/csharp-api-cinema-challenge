@@ -1,1 +1,98 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+### MOVIES
+GET https://localhost:7195/movies
+
+###
+
+POST https://localhost:7195/movies
+Content-Type: application/json
+
+{
+  "title": "DeleteThis",
+  "rating": "PG-13",
+  "description": "The greatest movie ever made.",
+  "runtimeMins": 126,
+  "screenings": [
+    {
+      "screenNumber": 24,
+      "capacity": 44,
+      "startsAt": "2023-04-19 11:30:00"
+    }
+  ]
+}
+
+###
+
+PUT https://localhost:7195/movies/119
+Content-Type: application/json
+
+{
+
+    "title": "Dodgeball 2",
+    "rating": "PG-13",
+    "description": "The second greatest movie ever made.",
+    "runtimeMins": 126
+
+}
+
+###
+
+DELETE https://localhost:7195/movies/119
+
+### CUSTOMER
+
+GET https://localhost:7195/customers
+
+###
+POST https://localhost:7195/customers
+Content-Type: application/json
+
+{
+
+    "name": "Chris Wolstenholme",
+    "email": "chris@muse.mu",
+    "phone": "+44729388192"
+
+}
+
+###
+PUT https://localhost:7195/customers/400
+Content-Type: application/json
+
+{
+    "name": "Christine Wolstenholme",
+    "email": "chris@muse.mu"
+}
+
+###
+
+DELETE https://localhost:7195/customers/400
+
+### SCREENINGS
+GET https://localhost:7195/movies/20/screenings
+
+###
+POST https://localhost:7195/movies/20/screenings
+Content-Type: application/json
+
+{
+
+    "screenNumber": 10,
+    "capacity": 60,
+    "startsAt": "2023-03-19 11:30:00"
+
+}
+
+### TICKETS
+GET https://localhost:7195/customers/20/screenings/52
+
+###
+POST https://localhost:7195/customers/20/screenings/52
+Content-Type: application/json
+
+{
+
+    "numSeats": 4
+
+}
