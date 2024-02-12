@@ -80,15 +80,16 @@ namespace api_cinema_challenge.Controllers
             if (moviePost.Screenings.Count > 0)
             {
                 ICollection<Screening> createdScreenings = new List<Screening>();
-
+                IEnumerable<Display> screeningRooms = await displayRepo.GetAll();
                 foreach (ScreeningInputAsMovieDTO screening in moviePost.Screenings)
                 {
-                    Screening screeningGenerated = new Screening();
 
-                    IEnumerable<Display> screeningRooms = await displayRepo.GetAll();
-                    Display? screeningRoom = screeningRooms.Where(sr => sr.ScreenNumber == screening.ScreenNumber).FirstOrDefault();
+                    Display? screeningRoom = screeningRooms
+                        .Where(sr => sr.ScreenNumber == screening.ScreenNumber && sr.Capacity == screening.Capacity).FirstOrDefault();
+                    bool needToGenerateSeats = false;
                     if (screeningRoom == null) 
                     {
+                        needToGenerateSeats = true;
                         screeningRoom = new Display()
                         {
                             ScreenNumber = screening.ScreenNumber,
@@ -96,33 +97,36 @@ namespace api_cinema_challenge.Controllers
                             CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                             UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                         };
-                        screeningRoom.Screenings.Add(screeningGenerated);
+                        screeningRoom = await displayRepo.Insert(screeningRoom);
                     }
 
-
-                    screeningGenerated.DisplayId = screeningGenerated.DisplayId;
-                    screeningGenerated.Display = screeningRoom;
-                    screeningGenerated.Starts = DateTime.SpecifyKind(DateTime.Parse(screening.StartsAt), DateTimeKind.Utc);
-                    screeningGenerated.CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
-                    screeningGenerated.UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
-                    screeningGenerated.MovieId = movie.MovieId;
-
-                    createdScreenings.Add(screeningGenerated);
-                }
-
-                foreach (Screening screening in createdScreenings)
-                {
-                    Screening insertedScreening = await screeningRepo.Insert(screening);
-
-                    List<Tuple<Seat, TicketSeat>> generatedSeats = SeatGenerator
-                        .FillSeatAndTicketSeat(insertedScreening.Display.Capacity, insertedScreening.DisplayId, insertedScreening.ScreeningId);
-                    foreach (Tuple<Seat, TicketSeat> entry in generatedSeats)
+                    Screening screeningGenerated = new Screening()
                     {
-                        await seatRepo.Insert(entry.Item1);
-                        await tsRepo.Insert(entry.Item2);
+                        DisplayId = screeningRoom.DisplayId,
+                        Starts = DateTime.SpecifyKind(DateTime.Parse(screening.StartsAt), DateTimeKind.Utc),
+                        CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                        UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                        MovieId = movie.MovieId,
+                    };
+
+                    screeningGenerated = await screeningRepo.Insert(screeningGenerated);
+                    screeningGenerated.Display = screeningRoom;
+
+                    if (needToGenerateSeats) 
+                    {
+                        List<Tuple<Seat, TicketSeat>> generatedSeats = SeatGenerator
+                            .FillSeatAndTicketSeat(
+                                screeningGenerated.Display.Capacity, 
+                                screeningGenerated.DisplayId, 
+                                screeningGenerated.ScreeningId
+                                );
+                        foreach (Tuple<Seat, TicketSeat> entry in generatedSeats)
+                        {
+                            await seatRepo.Insert(entry.Item1);
+                            await tsRepo.Insert(entry.Item2);
+                        }
                     }
                 }
-
             }
 
             MovieWithScreeningDTO movieOut = new MovieWithScreeningDTO(movie.MovieId, movie.Title, movie.Rating, movie.Description, movie.RuntimeMinutes, movie.CreatedAt, movie.UpdatedAt, movie.Screenings);
