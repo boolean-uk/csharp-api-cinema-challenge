@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Models.DTOs;
 using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Controllers
@@ -59,15 +60,27 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> UpdateCustomer(IRepository<Customer> customerRepo, int id, PutCustomer model)
         {
             var entity = await customerRepo.GetById(id);
+            Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
             if(entity == null)
             {
-                return TypedResults.NotFound();
+                payload.data = null;
+                payload.status = "Not found";
+                return TypedResults.NotFound(payload.status);
             }
             entity.Name = model.Name;
             entity.Phone = model.Phone;
             var result = await customerRepo.Update(entity);
+            var DTO = new CustomerDTO() 
+            {
+                Id = result.Id,
+                Name = result.Name,
+                Phone = result.Phone,
+                CreatedAt = result.CreatedAt,
+                UpdatedAt = result.UpdatedAt,
+            };
+            payload.data = DTO;
 
-            return TypedResults.Ok(result);
+            return TypedResults.Created(payload.status, payload);
 
 
         }
@@ -77,11 +90,23 @@ namespace api_cinema_challenge.Controllers
         public static async Task<IResult> DeleteCustomer(IRepository<Customer> customerRepo, int id)
         {
             var result = await customerRepo.Delete(id);
+            Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
             if (result == null)
             {
-                return TypedResults.NotFound();
+                payload.status = "Not Found";
+                payload.data = null;
+                return TypedResults.NotFound(payload.status);
             }
-            return TypedResults.Ok(result);
+            var DTO = new CustomerDTO() 
+            { 
+                Id = result.Id,
+                Name = result.Name,
+                Phone = result.Phone,
+                CreatedAt = result.CreatedAt,
+                UpdatedAt = result.UpdatedAt,
+            };
+
+            return TypedResults.Ok(payload);
         }
 
     }
