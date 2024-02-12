@@ -12,6 +12,9 @@ namespace api_cinema_challenge.Models.DTOs
 
         public int RuntimeMins { get; set; }
 
+        public DateTime TimeCreated { get; set; }
+        public DateTime TimeUpdated { get; set; }
+
         //public List<ScreeningDTO> Screenings { get; set; }
 
     }

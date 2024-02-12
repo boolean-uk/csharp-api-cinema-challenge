@@ -21,6 +21,10 @@
         [Column("runtime_mins")]
         public int RuntimeMins { get; set; }
 
+        [Column("time_created")] public DateTime TimeCreated { get; set; }
+        [Column("time_updated")] public DateTime TimeUpdated { get; set; }
+
+
         [JsonIgnore]
         public List<Screening> Screenings { get; set; }
     }

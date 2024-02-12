@@ -111,6 +111,8 @@ namespace api_cinema_challenge.Data
                     mov.Description = $"A movie about {_secondword[movieRandom.Next(_secondword.Count)]}";
                     mov.Rating = $"{customerRandom.Next(0, 10)}/10";
                     mov.RuntimeMins = customerRandom.Next(40, 450);
+                    mov.TimeCreated = DateTime.UtcNow;
+                    mov.TimeUpdated = mov.TimeCreated;
 
                     _movies.Add(mov);
                 }

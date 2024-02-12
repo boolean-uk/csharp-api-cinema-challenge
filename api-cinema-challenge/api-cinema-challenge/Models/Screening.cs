@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace api_cinema_challenge.Models
 {
@@ -12,5 +13,7 @@ namespace api_cinema_challenge.Models
         [Column("starts_at")] public DateTime StartTime { get; set; }
         [Column("date_created")] public DateTime TimeCreated { get; set; }
         [Column("date_updated")] public DateTime TimeUpdated { get; set; }
+
+        [JsonIgnore] public Movie PlayingMovie { get; set; }
     }
 }

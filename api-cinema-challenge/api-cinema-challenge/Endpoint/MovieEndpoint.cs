@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Endpoint
                 moviesDTO.Add(new MovieDTO()
                 {
                     Title = movie.Title, Description = movie.Description, Rating = movie.Rating,
-                    RuntimeMins = movie.RuntimeMins
+                    RuntimeMins = movie.RuntimeMins, TimeCreated = movie.TimeCreated, TimeUpdated = movie.TimeUpdated
                 });
             }
 
@@ -42,7 +42,7 @@ namespace api_cinema_challenge.Endpoint
             Movie movie = new Movie()
             {
                 Title = inMovie.Title, Description = inMovie.Description, Rating = inMovie.Rating,
-                RuntimeMins = inMovie.RuntimeMins
+                RuntimeMins = inMovie.RuntimeMins, TimeCreated = DateTime.UtcNow, TimeUpdated = DateTime.UtcNow
             };
 
             var acceptedMovie = await repository.Insert(movie);
@@ -54,20 +54,24 @@ namespace api_cinema_challenge.Endpoint
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> UpdateMovie(IRepository<Movie> repository, int id, MovieDTO inMovie)
         {
-            //TODO KEEP ORIGINAL VALUES
-            Movie movie = new Movie()
+            var originalData = await repository.GetById(id);
+            if (originalData == null) return TypedResults.NotFound();
+
+            if (inMovie.Title != "string") originalData.Title = inMovie.Title;
+            if (inMovie.Description != "string") originalData.Description = inMovie.Description;
+            if (inMovie.Rating != "string") originalData.Rating = inMovie.Rating;
+            if (inMovie.RuntimeMins != 0) originalData.RuntimeMins = inMovie.RuntimeMins;
+
+            var acceptedMovie = await repository.Update(originalData);
+
+            MovieDTO acceptedMovieDTO = new MovieDTO()
             {
-                Id = id,
-                Title = inMovie.Title,
-                Description = inMovie.Description,
-                Rating = inMovie.Rating,
-                RuntimeMins = inMovie.RuntimeMins
+                Description = acceptedMovie.Description, Rating = acceptedMovie.Rating,
+                RuntimeMins = acceptedMovie.RuntimeMins, TimeUpdated = acceptedMovie.TimeUpdated,
+                TimeCreated = acceptedMovie.TimeCreated, Title = acceptedMovie.Title
             };
 
-            var acceptedMovie = await repository.Update(movie);
-
-
-            return TypedResults.Ok(acceptedMovie);
+            return TypedResults.Ok(acceptedMovieDTO);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

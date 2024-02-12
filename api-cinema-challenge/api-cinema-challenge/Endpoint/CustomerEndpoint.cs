@@ -29,18 +29,20 @@ namespace api_cinema_challenge.Endpoint
             {
                 customersDTO.Add(new CustomerDTO()
                 {
-                    Name = customer.Name, Email = customer.Email, Phone = customer.Phone
+                    Id = customer.Id, Name = customer.Name, Email = customer.Email, Phone = customer.Phone,
+                    TimeCreated = customer.TimeCreated, TimeUpdated = customer.TimeUpdated
+
                 });
             }
 
             return TypedResults.Ok(customersDTO);
         }
 
-        public static async Task<IResult> CreateCustomer(IRepository<Customer> repository, string name, string email, string phone)
+        public static async Task<IResult> CreateCustomer(IRepository<Customer> repository, CustomerInputDTO customerDTO)
         {
             Customer customer = new Customer()
             {
-                Name = name, Email = email, Phone = phone,
+                Name = customerDTO.Name, Email = customerDTO.Email, Phone = customerDTO.Phone,
                 TimeCreated = DateTime.UtcNow, TimeUpdated = DateTime.UtcNow
             };
 
@@ -49,20 +51,18 @@ namespace api_cinema_challenge.Endpoint
             return TypedResults.Ok(acceptedCustomer);
         }
 
-        public static async Task<IResult> UpdateCustomer(IRepository<Customer> repository, int id, string name, string email, string phone)
+        public static async Task<IResult> UpdateCustomer(IRepository<Customer> repository, int id, CustomerInputDTO customerDTO)
         {
-            Customer customer = new Customer()
-            {
-                Id = id,
-                Name = name,
-                Email = email,
-                Phone = phone,
-                //TODO FIX TIMECREATED
-                //currently when updating timecreated does not remain, and turns into -infinity
-                TimeUpdated = DateTime.UtcNow
-            };
+            var existingData = await repository.GetById(id);
 
-            var acceptedCustomer = await repository.Update(customer);
+            if (existingData == null) return TypedResults.NotFound();
+
+            existingData.TimeUpdated = DateTime.UtcNow;
+            if (customerDTO.Name != "string") existingData.Name = customerDTO.Name;
+            if (customerDTO.Email != "string") existingData.Email = customerDTO.Email;
+            if (customerDTO.Phone != "string") existingData.Phone = customerDTO.Phone;
+
+            Customer acceptedCustomer = await repository.Update(existingData);
 
             return TypedResults.Ok(acceptedCustomer);
         }
