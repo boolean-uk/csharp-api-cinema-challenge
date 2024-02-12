@@ -26,7 +26,7 @@ namespace api_cinema_challenge.Data
         {
             modelBuilder.Entity<ScreeningSeat>().HasKey(ts => new { ts.SeatId, ts.ScreeningId });
             modelBuilder.Entity<Movie>().Property(m => m.Rating).HasConversion<string>();
-            modelBuilder.SeedDatabase(111);
+            modelBuilder.SeedDatabase(1996);
         }
 
         public DbSet<Movie> Movies { get; set; }

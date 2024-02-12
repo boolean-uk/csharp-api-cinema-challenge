@@ -1,4 +1,4 @@
-﻿using api_cinema_challenge.Models.Domain.Interfaces;
+﻿using api_cinema_challenge.Models.Domain.AbstractClasses;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings
     }
 
     [Table("movies")]
-    public class Movie : ICreatedAndUpdatedTimeStamping
+    public class Movie : TimestampedEntity
     {
         [Key]
         [Column("id")]
@@ -37,12 +37,6 @@ namespace api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings
 
         [Column("rating")]
         public MovieRating Rating { get; set; }
-
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; }
-
-        [Column("updated_at")]
-        public DateTime UpdatedAt { get; set; }
 
         public ICollection<Screening> Screenings { get; set; }
     }

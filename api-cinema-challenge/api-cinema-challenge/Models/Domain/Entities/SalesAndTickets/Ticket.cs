@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
-using api_cinema_challenge.Models.Domain.Interfaces;
+using api_cinema_challenge.Models.Domain.AbstractClasses;
 using api_cinema_challenge.Models.Domain.Junctions;
 
 namespace api_cinema_challenge.Models.Domain.Entities.SalesAndTickets
 {
     [Table("tickets")]
-    public class Ticket : ICreatedAndUpdatedTimeStamping
+    public class Ticket : TimestampedEntity
     {
         [Key]
         [Column("id")]
@@ -17,12 +16,6 @@ namespace api_cinema_challenge.Models.Domain.Entities.SalesAndTickets
         [ForeignKey("CustomerId")]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
-
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; }
-
-        [Column("updated_at")]
-        public DateTime UpdatedAt { get; set; }
 
         public ICollection<ScreeningSeat> ScreeningSeats { get; set; }
     }

@@ -1,11 +1,11 @@
-﻿using api_cinema_challenge.Models.Domain.Interfaces;
+﻿using api_cinema_challenge.Models.Domain.AbstractClasses;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.Domain.Entities.SalesAndTickets
 {
     [Table("customers")]
-    public class Customer : ICreatedAndUpdatedTimeStamping
+    public class Customer : TimestampedEntity
     {
         [Key]
         [Column("id")]
@@ -25,12 +25,6 @@ namespace api_cinema_challenge.Models.Domain.Entities.SalesAndTickets
 
         [Column("weight_in_kg")]
         public int Weight { get; set; }
-
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; }
-
-        [Column("updated_at")]
-        public DateTime UpdatedAt { get; set; }
 
         ICollection<Ticket> Tickets { get; set; }
     }
