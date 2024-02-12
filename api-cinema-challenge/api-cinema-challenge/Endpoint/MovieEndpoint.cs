@@ -5,6 +5,8 @@ using api_cinema_challenge.Repository;
 using api_cinema_challenge.Model;
 using api_cinema_challenge.DTO;
 using api_cinema_challenge.Payloads;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace api_cinema_challenge.Endpoint
 {
@@ -17,9 +19,10 @@ namespace api_cinema_challenge.Endpoint
             movieGroup.MapGet("/get", Get);
             movieGroup.MapPut("/update", Update);
             movieGroup.MapDelete("/delete", Delete);
+            movieGroup.MapGet("/test", test);
         }
 
-        public static async Task<IResult> Create(IRepository<Movie> repository, createMovie movieInfo) 
+        public static async Task<IResult> Create(IRepository<Movie> movieRepository, IRepository<Screening> screeningRepository, MoviePost movieInfo) 
         {
             Movie movie = new Movie()
             {
@@ -30,12 +33,26 @@ namespace api_cinema_challenge.Endpoint
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
-            Movie movieAdded = await repository.Add(movie);
+            Movie movieAdded = await movieRepository.Add(movie);
             Payload<Movie> payload = new Payload<Movie>()
             {
                 Status = "success",
                 Data = movieAdded,
             };
+
+            if (movieInfo.Screenings.Count > 0) 
+            {
+                var screenings = movieInfo.Screenings.Select(x => new Screening()
+                {
+                    ScreenNumber = x.ScreeningNumber,
+                    Capacity = x.Capacity,
+                    StartsAt = x.StartsAt,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    MovieId = movieAdded.Id                    
+                });
+                await screeningRepository.AddRange(screenings);
+            }
             return TypedResults.Ok(payload);
         }
 
@@ -53,10 +70,10 @@ namespace api_cinema_challenge.Endpoint
         public static async Task<IResult> Update(IRepository<Movie> repository, int id, createMovie movieInfo)
         {
             Movie movie = await repository.GetById(id);
-            movie.Title = movieInfo.Title;
-            movie.Description = movieInfo.Description;
-            movie.Rating = movieInfo.Rating;
-            movie.RuntimeMins = movieInfo.RuntimeMins;
+            movie.Title = movieInfo.Title == string.Empty ? movie.Title : movieInfo.Title;
+            movie.Description = movieInfo.Description == string.Empty ? movie.Description : movieInfo.Description;
+            movie.Rating = movieInfo.Rating == string.Empty ? movie.Rating : movieInfo.Rating;
+            movie.RuntimeMins = movieInfo.RuntimeMins <= 0 ? movie.RuntimeMins : movieInfo.RuntimeMins;
             movie.UpdatedAt = DateTime.UtcNow;
 
             Movie updatedMovie = await repository.Update(movie);
@@ -67,18 +84,28 @@ namespace api_cinema_challenge.Endpoint
             };
             return TypedResults.Ok(payload);
         }
-        public static async Task<IResult> Delete(IRepository<Movie> repository, int id) 
+        public static async Task<IResult> Delete(IRepository<Movie> movieRepository, IRepository<Screening> screeningRepository, int id) 
         {
-            var movies = await repository.Get();
-            Movie? movie = movies.Find(x => x.Id == id);
-            if (movie == null) { return TypedResults.NotFound($"Movie with id {id} could not be found"); }
-            Movie deletedMovie = await repository.Delete(movie);
+            var screenings = await screeningRepository.Get();
+            var screeningsToBeDeleted = screenings.Where(s => s.MovieId == id);
+            await screeningRepository.DeleteRange(screeningsToBeDeleted);
+          
+            var movie = await movieRepository.GetById(id);                       
+            Movie deletedMovie = await movieRepository.Delete(movie);
             Payload<Movie> payload = new Payload<Movie>()
             {
                 Status = "success",
                 Data = deletedMovie
             };
             return TypedResults.Ok(payload);
+        }
+        
+        public static bool test() 
+        {
+            string s = "";
+
+            if (s == string.Empty) { Debug.WriteLine("begge er tomme"); }
+            return true; 
         }
     }
 }

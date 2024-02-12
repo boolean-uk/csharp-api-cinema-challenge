@@ -12,6 +12,7 @@ builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 
 var app = builder.Build();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -27,4 +28,5 @@ app.UseHttpsRedirection();
 app.ConfigureCustomerEndpoint();
 app.ConfigureMovieEndpoint();
 app.ConfigureScreeningEndpoint();
+app.ConfigureTicketEndpoint();
 app.Run();

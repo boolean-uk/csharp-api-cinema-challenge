@@ -24,8 +24,15 @@ namespace api_cinema_challenge.Repository
         public async Task<T> Add(T entity) 
         {
             await this._table.AddAsync(entity);
-            await this._db.SaveChangesAsync();
+            await this._db.SaveChangesAsync();            
             return entity;
+        }
+
+        public async Task<IEnumerable<T>> AddRange(IEnumerable<T> entities) 
+        {
+            await this._table.AddRangeAsync(entities);
+            await this._db.SaveChangesAsync();
+            return entities;
         }
 
         public async Task<List<T>> Get() 
@@ -45,6 +52,13 @@ namespace api_cinema_challenge.Repository
             this._table.Remove(entity);
             await _db.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task<IEnumerable<T>> DeleteRange(IEnumerable<T> entities) 
+        {
+            this._table.RemoveRange(entities);
+            await this._db.SaveChangesAsync();
+            return entities;
         }
     }
 }

@@ -27,14 +27,42 @@ namespace api_cinema_challenge.Endpoint
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.UtcNow              
             };
-            Customer addedCustomer = await repository.Add(customer);            
-            return TypedResults.Ok(addedCustomer);
+            Customer addedCustomer = await repository.Add(customer);
+            CustomerServerDto dto = new CustomerServerDto()
+            {
+                Id = addedCustomer.Id,
+                Name = addedCustomer.Name,
+                Email = addedCustomer.Email,
+                Phone = addedCustomer.Phone,
+                CreatedAt = addedCustomer.CreatedAt,
+                UpdatedAt = addedCustomer.UpdatedAt
+            };
+            Payload<CustomerServerDto> payload = new Payload<CustomerServerDto>()
+            {
+                Status = "success",
+                Data = dto
+            };
+            return TypedResults.Ok(payload);
         }
 
         public static async Task<IResult> Get(IRepository<Customer> repository) 
         {
             List<Customer> customers = await repository.Get();
-            return TypedResults.Ok(customers);
+            var dto = customers.Select(c => new CustomerServerDto()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Email = c.Email,
+                Phone = c.Phone,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            });
+            Payload<IEnumerable<CustomerServerDto>> payload = new Payload<IEnumerable<CustomerServerDto>>()
+            {
+                Status = "success",
+                Data = dto
+            };
+            return TypedResults.Ok(payload);
         }
 
         public static async Task<IResult> Update(IRepository<Customer> repository, int id, CreateCustomer customerUpdates) 
@@ -46,11 +74,20 @@ namespace api_cinema_challenge.Endpoint
             customer.UpdatedAt = DateTime.UtcNow;
             
             Customer updatedCustomer = await repository.Update(customer);
-            Payload<Customer> payload = new Payload<Customer>()
+            CustomerServerDto dto = new CustomerServerDto()
             {
-                Data = customer,
-                Status = "success"
+                Id = updatedCustomer.Id,
+                Name = updatedCustomer.Name,
+                Email = updatedCustomer.Email,
+                Phone = updatedCustomer.Phone,
+                CreatedAt = updatedCustomer.CreatedAt,
+                UpdatedAt = updatedCustomer.UpdatedAt
             };
+            Payload<CustomerServerDto> payload = new Payload<CustomerServerDto>()
+            {
+                Status = "success",
+                Data = dto
+            };            
             return TypedResults.Ok(payload);
         }
 
@@ -60,11 +97,20 @@ namespace api_cinema_challenge.Endpoint
             Customer? customer = customers.Find(x => x.Id == id);
             if (customer == null) { return TypedResults.NotFound($"Customer with id {id} could not be found");}
             Customer deletedCustomer = await repository.Delete(customer);
-            Payload<Customer> payload = new Payload<Customer>()
+            CustomerServerDto dto = new CustomerServerDto()
+            {
+                Id = deletedCustomer.Id,
+                Name = deletedCustomer.Name,
+                Email = deletedCustomer.Email,
+                Phone = deletedCustomer.Phone,
+                CreatedAt = deletedCustomer.CreatedAt,
+                UpdatedAt = deletedCustomer.UpdatedAt
+            };
+            Payload<CustomerServerDto> payload = new Payload<CustomerServerDto>()
             {
                 Status = "success",
-                Data = deletedCustomer
-            };
+                Data = dto
+            };            
             return TypedResults.Ok(payload);
         }
 

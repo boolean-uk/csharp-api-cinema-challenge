@@ -24,10 +24,12 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Customer>();
             modelBuilder.Entity<Movie>();
             modelBuilder.Entity<Screening>();
+            modelBuilder.Entity<Ticket>();
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }
