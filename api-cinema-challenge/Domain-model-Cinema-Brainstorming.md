@@ -16,7 +16,7 @@ Properties: TicketId, SeatNumber, CreatedAt, UpdatedAt
 Foreign Keys: CustomerId (relation with Customer), ScreeningId (relation with Screening)
 
 
-Relationships:
+Relationships:  
 
 Customer and Ticket:
 
