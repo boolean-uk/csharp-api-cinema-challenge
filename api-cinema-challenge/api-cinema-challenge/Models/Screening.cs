@@ -26,5 +26,7 @@ namespace api_cinema_challenge.Models
         public int MovieId { get; set; }
         [JsonIgnore]
         public Movie Movie { get; set; }
+        [JsonIgnore]
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

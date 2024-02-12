@@ -1,16 +1,12 @@
-﻿using api_cinema_challenge.Models;
-using Microsoft.EntityFrameworkCore.Storage;
-
-namespace api_cinema_challenge.Repositories
+﻿namespace api_cinema_challenge.Repositories
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
-        Task<IEnumerable<Customer>> GetCustomers();
-
-        Task<Customer> GetCustomerById(int id);
-        Task<Customer> CreateCustomer(Customer customer);
-        Task<Customer> UpdateCustomer(int id, Customer customer);
-        Task<Customer> DeleteCustomer(int id);
-        
+        Task<T> Insert(T entity);
+        Task<IEnumerable<T>> Get();
+        Task<T> Update(T entity);
+        Task<T> Delete(int id);
+        Task<T> GetById(object id);
+        void Save();
     }
 }

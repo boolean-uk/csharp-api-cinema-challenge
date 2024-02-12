@@ -1,55 +1,66 @@
 ﻿using api_cinema_challenge.Data;
-using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace api_cinema_challenge.Repositories
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T : class
     {
         private CinemaContext _dbContext;
+        private DbSet<T> _table = null;
 
-        public Repository(CinemaContext db)
+        public Repository(CinemaContext dbContext)
         {
-            _dbContext = db;
+            _dbContext = dbContext;
+            _table = _dbContext.Set<T>();
         }
 
-        //Customer
-        public async Task<Customer> CreateCustomer(Customer customer)
+        public async Task<T> Delete(int id)
         {
-            _dbContext.Customers.Add(customer);
-            _dbContext.SaveChangesAsync();
-            return customer;
-        }
-
-        public async Task<Customer> GetCustomerById(int id)
-        {
-            return await _dbContext.Customers.FirstAsync(x => x.Id == id);
-        }
-
-        public async Task<IEnumerable<Customer>> GetCustomers()
-        {
-            return await _dbContext.Customers.ToListAsync();
-        }
-
-        public async Task<Customer> UpdateCustomer(int id, Customer customer)
-        {
-            var aCustomer = await GetCustomerById(id);
-            
-            aCustomer.Name = customer.Name; 
-            aCustomer.Email = customer.Email;
-            aCustomer.PhoneNumber = customer.PhoneNumber;
-            aCustomer.UpdatedAt = DateTime.UtcNow;
+            T entity = _table.Find(id);
+            _table.Remove(entity);
             _dbContext.SaveChanges();
-            return aCustomer;
+            return entity;
+
         }
 
-        public async Task<Customer> DeleteCustomer(int id)
+        public async Task<IEnumerable<T>> Get()
         {
-            var customer = await _dbContext.Customers.FirstAsync(x => x.Id == id);
-            _dbContext.Customers.Remove(customer);
-            await _dbContext.SaveChangesAsync();
-            return customer;
+            return await _table.ToListAsync();
         }
+
+        public async Task<T> Insert(T entity)
+        {
+            await _table.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<T> Update(T entity)
+        {
+            _table.Attach(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<T> Delete(object id)
+        {
+            T entity = _table.Find(id);
+            _table.Remove(entity);
+            _dbContext.SaveChanges();
+            return entity;
+        }
+
+        public async Task<T> GetById(object id)
+        {
+            return _table.Find(id);
+        }
+
+        public async void Save()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
+
     }
 }

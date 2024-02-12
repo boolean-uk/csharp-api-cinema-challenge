@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetCustomers(IRepository repository)
+        public static async Task<IResult> GetCustomers(ICustomerRepository repository)
         {
             var customers = await repository.GetCustomers();
             List<CustomerDTO> dtoCustomers = new List<CustomerDTO>();
@@ -41,7 +41,7 @@ namespace api_cinema_challenge.Endpoints
         }
         
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetACustomer(IRepository repository, int id)
+        public static async Task<IResult> GetACustomer(ICustomerRepository repository, int id)
         {
             var customers = await repository.GetCustomerById(id);
 
@@ -57,7 +57,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateCustomer(IRepository repository, Customer customer)
+        public static async Task<IResult> CreateCustomer(ICustomerRepository repository, Customer customer)
         {
             Customer createCustomer = new Customer()
             {
@@ -79,7 +79,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> DeleteCustomer(IRepository repository, int id)
+        public static async Task<IResult> DeleteCustomer(ICustomerRepository repository, int id)
         {
             var customer = await repository.GetCustomerById(id);
             await repository.DeleteCustomer(id);
@@ -94,7 +94,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> UpdateCustomer(IRepository repository, int id, Customer customer)
+        public static async Task<IResult> UpdateCustomer(ICustomerRepository repository, int id, Customer customer)
         {
             var aCustomer = await repository.UpdateCustomer(id, customer);
 
