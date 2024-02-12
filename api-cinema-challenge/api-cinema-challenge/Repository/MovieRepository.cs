@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Repository
         {
             Movie movie = new Movie
             {
-                Id = await _db.Movies.MaxAsync(x => x.Id)+1,
+                Id = _db.Movies.Max(x => x.Id) + 1,
                 CreatedAt = DateTime.Now.ToUniversalTime(),
                 UpdatedAt = DateTime.Now.ToUniversalTime(),
                 Title = m.Title,
@@ -30,6 +30,13 @@ namespace api_cinema_challenge.Repository
             };
             _db.Movies.Add(movie);
             await _db.SaveChangesAsync();
+
+            foreach (ScreeningInputDTO screening in m.Screenings)
+            {
+                Screening s = await CreateScreening(screening, movie.Id);
+            }
+            
+            
             return movie;
         }
 

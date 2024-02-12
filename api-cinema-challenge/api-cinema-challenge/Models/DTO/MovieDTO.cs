@@ -20,5 +20,6 @@ namespace api_cinema_challenge.Models.DTO
         public string Rating { get; set; }
         public string Description { get; set; }
         public int Runtime { get; set; }
+        public List<ScreeningInputDTO>? Screenings { get; set; }
     }
 }
