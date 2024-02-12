@@ -31,8 +31,8 @@ namespace api_cinema_challenge.Controllers
                 {
                     screenings.Add(new ScreeningDTO(screening));
                 }
-                return TypedResults.Ok(screenings);
-            } return TypedResults.NotFound("No screenings found");
+                return TypedResults.Ok(new Payload<List<ScreeningDTO>> { Data = screenings});
+            } return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "No screenings found" });
 
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -50,8 +50,8 @@ namespace api_cinema_challenge.Controllers
             var response = await repository.Insert(s);
             if (response != null)
             {
-                return TypedResults.Created("", new ScreeningDTO(response));
-            } return TypedResults.BadRequest("Failed to create");
+                return TypedResults.Created("", new Payload<ScreeningDTO> { Data = new ScreeningDTO(response) });
+            } return TypedResults.BadRequest(new Payload<string> { Status = "Failure", Data = "Failed to create" });
 
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -115,9 +115,9 @@ namespace api_cinema_challenge.Controllers
             var response = await repository.GetById(id);
             if (response != null)
             {
-                return TypedResults.Ok(new MovieDTO(response));
+                return TypedResults.Ok(new Payload<MovieDTO> { Data = new MovieDTO(response)});
             }
-            return TypedResults.NotFound("Movie does not exist");
+            return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "Movie does not exist" });
 
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -127,9 +127,9 @@ namespace api_cinema_challenge.Controllers
             var response = await repository.DeleteById(id);
             if (response != null)
             {
-                return TypedResults.Ok(new Payload<MovieDTO>);
+                return TypedResults.Ok(new Payload<MovieDTO> { Data = new MovieDTO(response) });
             }
-            return TypedResults.NotFound("Movie not deleted");
+            return TypedResults.NotFound(new Payload<string> { Status = "Failure", Data = "Movie does not exist"});
         }
 
     }
