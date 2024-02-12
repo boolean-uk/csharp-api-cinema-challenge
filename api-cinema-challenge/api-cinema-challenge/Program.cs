@@ -1,4 +1,7 @@
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Endpoint;
+using api_cinema_challenge.Model;
+using api_cinema_challenge.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,8 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -17,4 +24,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.ConfigureCustomerEndpoint();
+app.ConfigureMovieEndpoint();
+app.ConfigureScreeningEndpoint();
 app.Run();
