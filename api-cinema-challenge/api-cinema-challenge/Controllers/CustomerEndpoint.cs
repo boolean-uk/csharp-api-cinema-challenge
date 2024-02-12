@@ -4,6 +4,7 @@ using api_cinema_challenge.Models.DTOs;
 using api_cinema_challenge.Models.PayLoad;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -106,9 +107,15 @@ namespace api_cinema_challenge.Controllers
         {
             // Fetch the existing customer from the repository
             var existingCustomer = await repository.SelectById(id);
+            var payload = new PayLoad1<CustomerDTO>
+            {
+                data = new CustomerDTO()
+            };
+
             if (existingCustomer == null)
             {
-                return TypedResults.NotFound();
+                payload.status = "Customer not found";
+                return TypedResults.NotFound(payload);
             }
 
             // Map the fields from the model to the entity
@@ -135,33 +142,31 @@ namespace api_cinema_challenge.Controllers
             // If update successful, return the updated customer
             if (result != null)
             {
-                var payload = new PayLoad1<CustomerDTO>
-                {
-                    data = DTOHelper.MapToDTO<CustomerDTO>(result),
-                    status = "success"
-                };
+                payload.data = DTOHelper.MapToDTO<CustomerDTO>(result);
                 return TypedResults.Ok(payload);
             }
             else
             {
                 // If update fails, return bad request
-                return TypedResults.BadRequest("Failed to update the customer.");
+                payload.status = "Customer not updated";
+                return TypedResults.BadRequest(payload);
             }
         }
 
         private static async Task<IResult> DeleteCustomer(IRepository<Customer> repository, int id)
         {
             var foundCustomerClass = await repository.Delete(id);
-            if (foundCustomerClass == null)
-            {
-                return TypedResults.NotFound("The customer does not exist");
-            }
             var payload = new PayLoad1<CustomerDTO>
             {
-                data = DTOHelper.MapToDTO<CustomerDTO>(foundCustomerClass),
-                status = "success"
+                data = new CustomerDTO(),
+                status = foundCustomerClass != null ? "success" : "Customer not found"
             };
 
+            if (foundCustomerClass == null)
+            {
+                return TypedResults.NotFound(payload);
+            }
+            payload.data = DTOHelper.MapToDTO<CustomerDTO>(foundCustomerClass);
             return TypedResults.Ok(payload);
         }
     }

@@ -96,5 +96,11 @@ namespace api_cinema_challenge.Repository
             await _database.SaveChangesAsync();
             return entities;
         }
+
+        //Returns the latest entity in the database
+        public Task<T> GetLatest()
+        {
+            return _dbSet.OrderByDescending(e => e.GetType().GetProperty("Id").GetValue(e)).FirstOrDefaultAsync();
+        }
     }
 }

@@ -183,12 +183,13 @@ namespace api_cinema_challenge.Data
         {
             Random ticketRandom = new Random();
 
-            for (int i = 1; i < 21; i++)
+            for (int i = 1; i < 51; i++)
             {
                 Ticket ticket = new Ticket();
                 ticket.Id = i;
                 ticket.ScreeningId = ticketRandom.Next(1, 6);
                 ticket.CustomerId = ticketRandom.Next(1, 11);
+                ticket.NumSeats = ticketRandom.Next(1, 8);
                 ticket.CreatedAt = DateTime.UtcNow;
                 ticket.UpdatedAt = DateTime.UtcNow;
                 _tickets.Add(ticket);

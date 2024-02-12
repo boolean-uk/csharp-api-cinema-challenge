@@ -6,6 +6,7 @@ using api_cinema_challenge.Repository;
 using api_cinema_challenge.Models.Posts;
 using api_cinema_challenge.Helpers;
 using api_cinema_challenge.Models.PayLoad;
+using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Controllers
 {
@@ -19,6 +20,7 @@ namespace api_cinema_challenge.Controllers
             screenings.MapGet("", GetAllScreenings);
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> PostScreening(IRepository<Screening> screeningRepo, IRepository<Movie> movieRepo, ScreeningPost model, int id)
         {
             // Retrieve the movie by its id
@@ -64,29 +66,24 @@ namespace api_cinema_challenge.Controllers
         {
             // Retrieve the movie by its id
             var movie = await movieRepo.SelectById(id);
+            IEnumerable<ScreeningDTO> screeningDTOs = new List<ScreeningDTO>();
+            var payload = new PayLoad1<IEnumerable<ScreeningDTO>>
+            {
+                data = screeningDTOs
+            };
+
             if (movie == null)
             {
-                return TypedResults.NotFound("Movie not found");
+                payload.status = "Movie not found";
+                return TypedResults.NotFound(payload);
             }
 
             // Retrieve all screenings of the specified movie
             var screenings = await screeningRepo.SelectWhere(s => s.MovieId == id);
-            IEnumerable<ScreeningDTO> screeningDTOs = screenings.Select(s => DTOHelper.MapToDTO<ScreeningDTO>(s));
+            screeningDTOs = screenings.Select(s => DTOHelper.MapToDTO<ScreeningDTO>(s));
+            payload.data = screeningDTOs;
 
-            var payload = new PayLoad1<IEnumerable<ScreeningDTO>>
-            {
-                data = screeningDTOs,
-                status = screeningDTOs.Any() ? "success" : "not found"
-            };
-
-            if (payload.status == "success")
-            {
-                return TypedResults.Ok(payload);
-            }
-            else
-            {
-                return TypedResults.NotFound(payload);
-            }
+            return TypedResults.Ok(payload);
         }
     }
 }

@@ -67,7 +67,13 @@ namespace api_cinema_challenge.Controllers
 
             // 7. Convert each of the Screenings to a ScreeningDTO by using a for each loop so the DTOHelper can work properly
             var screeningDTOs = new List<ScreeningDTO>();
-            foreach (var screening in screenings)
+            
+            //Dredge up the screenings from the database to get the Ids instead of having all the screeningIDs at 0...
+            //I think this is horribly inefficient, but I don't know how to do it better right now without sinking in a couple of hours more.
+            var allScreenings = await screeningRepository.SelectAll();
+            var updatedScreenings = allScreenings.Where(s => s.MovieId == insertedMovie.Id);
+
+            foreach (var screening in updatedScreenings)
             {
                 var screeningDTO = DTOHelper.MapToDTO<ScreeningDTO>(screening);
                 screeningDTOs.Add(screeningDTO);
