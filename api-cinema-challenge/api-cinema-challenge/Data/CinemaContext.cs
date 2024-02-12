@@ -38,7 +38,19 @@ namespace api_cinema_challenge.Data
                 .WithMany(m => m.Screenings)
                 .HasForeignKey(s => s.MovieId);
 
+            modelBuilder.Entity<Ticket>()
+                .HasOne<Customer>(t => t.Customer)
+                .WithMany(c => c.Tickets)
+                .HasForeignKey(t => t.CustomerId);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne<Screening>(t => t.Screening)
+                .WithMany(s => s.Tickets)
+                .HasForeignKey(t => t.ScreeningId);
+
             modelBuilder.Entity<Movie>().Navigation(x => x.Screenings).AutoInclude();
+            modelBuilder.Entity<Customer>().Navigation(x => x.Tickets).AutoInclude();
+            modelBuilder.Entity<Screening>().Navigation(x => x.Tickets).AutoInclude();
         }
 
 
@@ -47,5 +59,7 @@ namespace api_cinema_challenge.Data
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Screening> Screenings { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

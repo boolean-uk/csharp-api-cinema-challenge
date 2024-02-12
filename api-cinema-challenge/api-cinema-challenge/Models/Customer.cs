@@ -11,5 +11,9 @@ namespace api_cinema_challenge.Models
         [Column("phone")]
         public string Phone { get; set; }
 
+        [Column("screenings")]
+
+        public ICollection<Ticket> Tickets { get; set; }
+
     }
 }

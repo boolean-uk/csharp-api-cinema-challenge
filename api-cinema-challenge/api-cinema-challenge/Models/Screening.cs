@@ -19,5 +19,8 @@ namespace api_cinema_challenge.Models
 
         [Column("movie")]
         public virtual Movie Movie { get; set; }
+
+        [Column("tickets")]
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

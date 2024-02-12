@@ -7,6 +7,7 @@ namespace api_cinema_challenge.Data
         private List<Movie> _movies = [];
         private List<Screening> _screenings = [];
         private List<Customer> _customers = [];
+        private List<Ticket> _tickets = [];
 
         public Seeder() 
         { 
@@ -69,11 +70,33 @@ namespace api_cinema_challenge.Data
 
             _customers.Add(customer1);
             _customers.Add(customer2);
+
+            Ticket ticket1 = new Ticket()
+            {
+                Id = 1,
+                NumSeats = 5,
+                CustomerId = customer1.Id,
+                ScreeningId = screening1.Id,
+            };
+
+            Ticket ticket2 = new Ticket()
+            {
+                Id = 2,
+                NumSeats = 4,
+                CustomerId = customer2.Id,
+                ScreeningId = screening2.Id,
+            };
+
+            _tickets.Add(ticket1);
+            _tickets.Add(ticket2);
+
         }
 
         public List<Movie> Movies { get { return _movies; } }
         public List<Screening> Screenings { get {  return _screenings; } }
 
         public List<Customer> Customers { get {  return _customers; } }
+
+        public List<Ticket> Tickets { get { return _tickets; } }
     }
 }
