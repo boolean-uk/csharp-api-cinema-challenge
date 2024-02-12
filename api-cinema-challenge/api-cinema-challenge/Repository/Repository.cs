@@ -38,9 +38,10 @@ namespace api_cinema_challenge.Repository
         }
 
         /// <inheritdoc/>
+        /// <remarks> Explicitly ignores any and all autoincludes, only direct T entities included in return.</remarks>
         public async Task<IEnumerable<T>> GetAll()
         {
-            return await _table_T.AsNoTracking().ToListAsync();
+            return await _table_T.AsNoTracking().IgnoreAutoIncludes().ToListAsync();
         }
 
         /// <inheritdoc/>
@@ -76,7 +77,7 @@ namespace api_cinema_challenge.Repository
                     .Include(t => (t as Ticket).Screening)
                         .ThenInclude(s => s.Movie);
             } 
-            else if(typeof(T) == typeof(Display)) 
+            else if (typeof(T) == typeof(Display)) 
             {
                 query = query
                     .Include(d => (d as Display).Screenings)
@@ -84,28 +85,6 @@ namespace api_cinema_challenge.Repository
             }
 
             return await query.ToListAsync();
-        }
-
-        /// <summary>
-        /// Method thats allows for chaining of a .ThenInclude onto a IQueryable<T> object. Potentially useful for future .ThenInclude methods
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"> The IQueryable object before inclusion of the ThenInclude </param>
-        /// <param name="navigationPropertyPath"> ThenInclude lambda expression to be added</param>
-        /// <returns> The result IQueryable object </returns>
-        private static IQueryable<T> ThenInclude<T>(IQueryable<T> source, Expression<Func<T, object>> navigationPropertyPath)
-        {
-            var thenIncludeMethodInfo = typeof(EntityFrameworkQueryableExtensions)
-                .GetMethods()
-                .FirstOrDefault(m => m.Name == "ThenInclude" && m.GetParameters().Length == 2);
-
-            if (thenIncludeMethodInfo != null)
-            {
-                var genericThenInclude = thenIncludeMethodInfo.MakeGenericMethod(typeof(T), navigationPropertyPath.ReturnType);
-                return (IQueryable<T>)genericThenInclude.Invoke(null, new object[] { source, navigationPropertyPath });
-            }
-
-            return source;
         }
 
         /// <inheritdoc/>

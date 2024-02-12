@@ -2,12 +2,12 @@
 {
     public class PayloadExtended<T>(T Data, int millis, int entries = 1) where T : class
     {
-        public string status { get; set; } = "success";
+        public string Status { get; set; } = "success";
 
-        public int creationTimeInMillis { get; set; } = millis;
+        public int CreationTimeInMillis { get; set; } = millis;
 
-        public int entryNumber { get; set; } = entries;
+        public int NumberOfEntries { get; set; } = entries;
 
-        public T data { get; set; } = Data;
+        public T Data { get; set; } = Data;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models.JunctionModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models.PureModels
@@ -6,6 +7,8 @@ namespace api_cinema_challenge.Models.PureModels
     [Table("displays")]
     public class Display
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("display_id")]
         public int DisplayId { get; set; }
 
