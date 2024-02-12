@@ -1,7 +1,7 @@
 ﻿using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
+using api_cinema_challenge.Models.Domain.Entities.Junctions;
 using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.Domain.Entities.SalesAndTickets;
-using api_cinema_challenge.Models.Domain.Junctions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 

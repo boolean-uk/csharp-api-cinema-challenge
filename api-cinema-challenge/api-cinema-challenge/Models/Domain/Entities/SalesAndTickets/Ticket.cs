@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using api_cinema_challenge.Models.Domain.AbstractClasses;
-using api_cinema_challenge.Models.Domain.Junctions;
+using api_cinema_challenge.Models.Domain.Entities.Junctions;
 
 namespace api_cinema_challenge.Models.Domain.Entities.SalesAndTickets
 {

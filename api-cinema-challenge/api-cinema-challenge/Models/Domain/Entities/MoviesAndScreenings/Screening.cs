@@ -1,5 +1,5 @@
 ﻿using api_cinema_challenge.Models.Domain.AbstractClasses;
-using api_cinema_challenge.Models.Domain.Junctions;
+using api_cinema_challenge.Models.Domain.Entities.Junctions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

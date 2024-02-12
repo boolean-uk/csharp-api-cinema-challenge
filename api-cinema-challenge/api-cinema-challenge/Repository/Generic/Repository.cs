@@ -15,7 +15,7 @@ namespace api_cinema_challenge.Repository.Generic
             table = db.Set<T>();
         }
 
-        public async Task<T?> DeleteByID(object id)
+        public async Task<T?> DeleteById(object id)
         {
             T? entity = await table.FindAsync(id);
             if (entity == null) return null;
@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Repository.Generic
             return await table.ToListAsync();
         }
 
-        public async Task<T?> GetByID(object id)
+        public async Task<T?> GetById(object id)
         {
             return await table.FindAsync(id);
         }
