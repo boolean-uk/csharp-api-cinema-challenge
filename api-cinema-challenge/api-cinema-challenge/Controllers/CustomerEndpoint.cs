@@ -35,6 +35,9 @@ namespace api_cinema_challenge.Controllers
                 UpdatedAt = create.UpdatedAt,
             };
 
+            Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
+            payload.data = result;
+
             return TypedResults.Ok(result);
         }
 
