@@ -8,11 +8,11 @@ namespace api_cinema_challenge.Controllers
         {
             var customers = app.MapGroup("tickets");
 
-            customers.MapPost("", CreateTicket);
-            customers.MapGet("", ReadAllTickets);
-            customers.MapPut("/{id}", ReadATicket);
-            customers.MapPut("/{id}", UpdateTicket);
-            customers.MapDelete("/{id}", DeleteTicket);
+            customers.MapPost("/{customerID}/screenings/{screenID}", CreateTicket);
+            customers.MapGet("/{customerID}/screenings/{screenID}", ReadAllTickets);
+            //customers.MapPut("/{id}", ReadATicket);
+            //customers.MapPut("/{id}", UpdateTicket);
+            //customers.MapDelete("/{id}", DeleteTicket);
         }
 
         private static Task CreateTicket(HttpContext context)

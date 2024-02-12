@@ -19,7 +19,7 @@ namespace api_cinema_challenge.Controllers
 
             movies.MapPost("", PostMovie);
             movies.MapGet("", GetAllMovies);
-            movies.MapGet("/{id}", GetAMovie);
+            //movies.MapGet("/{id}", GetAMovie);
             movies.MapPut("/{id}", UpdateMovie);
             movies.MapDelete("/{id}", DeleteMovie);
         }
@@ -46,7 +46,6 @@ namespace api_cinema_challenge.Controllers
                 }
             }
 
-
             // 1. Convert the model to Movie and save it to the database
             var movieEntity = DTOHelper.MapToEntity<Movie>(model, "create", true, "Screenings");
 
@@ -56,17 +55,12 @@ namespace api_cinema_challenge.Controllers
             // 3. Convert all the ScreeningsPost to Screenings 
             var screenings = model.Screenings.Select(screeningPost => DTOHelper.MapToEntity<Screening>(screeningPost, "create"));
 
-            // 4. Associate the screenings with the movie. That means to set the MovieId of each Screening to the Id of the Movie. It has to eagerly be done 
+            // 4. Associate the screenings with the movie. That means to set the MovieId of each Screening to the Id of the Movie and insert to DB.
             foreach (var screening in screenings)
             {
                 screening.MovieId = insertedMovie.Id;
                 await screeningRepository.Insert(screening);
             }
-
-
-
-            // 5. Insert the new entities into the database
-            //
 
             // 6. Retrieve the Movie with a collection of Screenings with that MovieId
             insertedMovie = await movieRepository.SelectById(insertedMovie.Id); //, include => include.Screenings
@@ -101,9 +95,9 @@ namespace api_cinema_challenge.Controllers
         private static async Task<IResult> GetAllMovies(IRepository<Movie> repository)
         {
             var movies = await repository.SelectAll();
-            var movieDTOs = movies.Select(movie => DTOHelper.MapToDTO<MovieDTO>(movie, true, "Screenings"));
+            var movieDTOs = movies.Select(movie => DTOHelper.MapToDTO<MovieDTO_Lite>(movie, true, "Screenings"));
 
-            var payload = new PayLoad1<IEnumerable<MovieDTO>>
+            var payload = new PayLoad1<IEnumerable<MovieDTO_Lite>>
             {
                 data = movieDTOs,
                 status = movieDTOs.Any() ? "success" : "not found"
@@ -153,7 +147,7 @@ namespace api_cinema_challenge.Controllers
             // Map the fields from the model to the entity
             var updatedMovie = DTOHelper.MapToEntity<Movie>(model, "update");
 
-            // Update only the provided fields, keeping the original values if not provided
+            // Update only the provided fields, keeping the original values if not provided.
             if (model.Title != null)
             {
                 existingMovie.Title = updatedMovie.Title;
@@ -171,22 +165,20 @@ namespace api_cinema_challenge.Controllers
                 existingMovie.Runtime = updatedMovie.Runtime;
             }
 
-            // Add conditions for other fields if applicable
-
             // Update the existing movie in the repository
             var result = await repository.Update(id, existingMovie);
 
             // If update successful, return the updated movie
             if (result != null)
             {
-                var payload = new PayLoad1<MovieDTO>
+                var payload = new PayLoad1<MovieDTO_Lite>
                 {
-                    data = DTOHelper.MapToDTO<MovieDTO>(result),
+                    data = DTOHelper.MapToDTO<MovieDTO_Lite>(result, true, "Screenings"),
                     status = "success"
                 };
                 return TypedResults.Ok(payload);
             }
-            else 
+            else
             {
                 // If update fails, return bad request
                 return TypedResults.BadRequest("Failed to update the movie.");
@@ -210,10 +202,11 @@ namespace api_cinema_challenge.Controllers
                     await screeningRepository.Delete(screening.Id);
                 }
             }
+            var deletedMovie = await repository.Delete(id);
 
-            var payload = new PayLoad1<MovieDTO>
+            var payload = new PayLoad1<MovieDTO_Lite>
             {
-                data = DTOHelper.MapToDTO<MovieDTO>(foundMovie),
+                data = DTOHelper.MapToDTO<MovieDTO_Lite>(deletedMovie, true, "Screenings"),
                 status = "success"
             };
 

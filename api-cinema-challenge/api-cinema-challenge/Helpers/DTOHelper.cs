@@ -7,15 +7,16 @@ namespace api_cinema_challenge.Helpers
 {
     public static class DTOHelper
     {
-        public static T MapToDTO<T>(object entity, bool ignoreObjects=false, string objectToIgnore= "") where T : class
+        public static T MapToDTO<T>(object entity, bool ignoreObjects=false, string objectToIgnore= "") where T : class, new()
         {
-            var dto = Activator.CreateInstance<T>();
+            var dto = new T();
+            //var dto = Activator.CreateInstance<T>();
 
             foreach (var dtoProperty in typeof(T).GetProperties())
             {
                 var entityProperty = entity.GetType().GetProperty(dtoProperty.Name);
                 // This is a bit of a hack to avoid the circular reference between Movie and Screening
-                if(ignoreObjects && entityProperty.Name == objectToIgnore)
+                if(ignoreObjects && entityProperty?.Name == objectToIgnore)
                 { 
                     continue;
                 }
@@ -27,7 +28,6 @@ namespace api_cinema_challenge.Helpers
 
             return dto;
         }
-
 
         public static T MapToEntity<T>(object dto, string operation, bool ignoreObjects = false, string objectToIgnore = "") where T : class
         {
