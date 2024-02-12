@@ -19,7 +19,7 @@ namespace api_cinema_challenge.Controllers
 
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateCustomer(IRepository<Customer> customerRepo, PostCustomer model)
         {
@@ -38,7 +38,7 @@ namespace api_cinema_challenge.Controllers
             Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
             payload.data = result;
 
-            return TypedResults.Ok(result);
+            return TypedResults.Created(payload.status, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
