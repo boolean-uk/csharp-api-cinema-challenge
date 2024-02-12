@@ -20,8 +20,8 @@ namespace api_cinema_challenge.Endpoints
             cinemaGroup.MapPut("movies/{id}", UpdateMovie);
             cinemaGroup.MapDelete("movies/{id}", DeleteMovie);
 
-            cinemaGroup.MapGet("screenings/", GetScreenings);
-            cinemaGroup.MapPost("screenings/", CreateScreening);
+            cinemaGroup.MapGet("movies/{id}/screenings/", GetScreenings);
+            cinemaGroup.MapPost("movies/{id}/screenings/", CreateScreening);
         }
 
         #region Customers
@@ -161,27 +161,28 @@ namespace api_cinema_challenge.Endpoints
 
         #region Screenings
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetScreenings(IRepository<Screening> repository)
+        public static async Task<IResult> GetScreenings(IRepository<Screening> repository, int id)
         {
-            Payload<List<GetScreeningDto>> output = new();
+            Payload<List<ScreeningDto>> output = new();
             output.data = new();
-            IEnumerable<Screening> data = await repository.Get();
+            IEnumerable<Screening> data = (await repository.Get()).Where(x => x.MovieId == id);
             foreach (Screening screening in data)
             {
-                output.data.Add(new GetScreeningDto(screening));
+                output.data.Add(new ScreeningDto(screening));
             }
 
             return TypedResults.Ok(output);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateScreening(IRepository<Screening> repository, PostScreening createScreening)
+        public static async Task<IResult> CreateScreening(IRepository<Screening> repository, int id, PostScreening createScreening)
         {
             Payload<GetScreeningDto> output = new();
             var screenings = await repository.Get();
 
             Screening screening = new(createScreening);
             screening.Id = screenings.Last().Id + 1;
+            screening.MovieId = id;
 
 
             output.data = new GetScreeningDto(await repository.Create(screening));

@@ -28,6 +28,7 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
 
             modelBuilder.Entity<Movie>().Navigation(x => x.Screenings).AutoInclude();
+            modelBuilder.Entity<Screening>().Navigation(x => x.Movie).AutoInclude();
         }
 
         public DbSet<Customer> Customers { get; set; }

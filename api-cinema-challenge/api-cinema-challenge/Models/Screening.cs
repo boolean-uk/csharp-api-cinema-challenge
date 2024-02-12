@@ -6,6 +6,7 @@ namespace api_cinema_challenge.Models
     {
         public int Id {  get; set; }
         public int Capacity { get; set; }
+        public int ScreenNumber { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
@@ -19,8 +20,8 @@ namespace api_cinema_challenge.Models
         public Screening(PostScreening screening)
         {
             Capacity = screening.Capacity;
+            ScreenNumber = screening.ScreenNumber;
             StartsAt = screening.StartsAt;
-            MovieId = screening.MovieId;
             CreatedAt = DateTime.UtcNow;
             UpdateAt = DateTime.UtcNow;
         }
@@ -30,6 +31,7 @@ namespace api_cinema_challenge.Models
     {
         public int Id { get; set; }
         public int Capacity { get; set; }
+        public int ScreenNumber { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
@@ -38,6 +40,7 @@ namespace api_cinema_challenge.Models
         {
             Id = screening.Id;
             Capacity = screening.Capacity;
+            ScreenNumber = screening.ScreenNumber;
             StartsAt = screening.StartsAt;
             CreatedAt = screening.CreatedAt;
             UpdateAt = screening.UpdateAt;
@@ -59,7 +62,7 @@ namespace api_cinema_challenge.Models
     public class PostScreening
     {
         public int Capacity { get; set; }
+        public int ScreenNumber { get; set; }
         public DateTime StartsAt { get; set; }
-        public int MovieId { get; set; }
     }
 }

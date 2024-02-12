@@ -147,6 +147,7 @@ namespace api_cinema_challenge.Data
                 Screening screening = new();
                 screening.Id = i;
                 screening.Capacity = 50 + random.Next(50);
+                screening.ScreenNumber = 1 + random.Next(5);
                 screening.StartsAt = DateTime.UtcNow.AddDays(random.Next(10));
                 screening.MovieId = _movies[random.Next(_movies.Count)].Id;
                 screening.CreatedAt = DateTime.UtcNow.AddDays(-10 -random.Next(10));

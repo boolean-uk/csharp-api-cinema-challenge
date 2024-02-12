@@ -17,6 +17,7 @@ namespace api_cinema_challenge.Models
 
         public List<Screening> Screenings { get; set; } = new();
 
+
         public Movie() { }
         public Movie(PostMovie movie)
         {
