@@ -1,4 +1,9 @@
+using api_cinema_challenge.Controllers;
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Repository;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
 
 var app = builder.Build();
 
@@ -17,4 +24,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.ConfigureCustomerEndpoint();
+app.ConfigureMovieEndpoint();
 app.Run();
+
+public partial class Program { } // needed for testing - please ignore
