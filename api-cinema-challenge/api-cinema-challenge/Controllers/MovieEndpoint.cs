@@ -24,6 +24,8 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateMovie(IRepository<Movie> movieRepo, PostMovie model)
         {
+            Payload<MovieDTO> payload = new Payload<MovieDTO>();
+
             var entity = new Movie() 
             { 
                 Title = model.Title, 
@@ -31,7 +33,7 @@ namespace api_cinema_challenge.Controllers
                 Description=model.Description,
                 RuntimeMins = model.RuntimeMins,
             };
-            var create = await movieRepo.Create(entity);
+            await movieRepo.Create(entity);
 
             var result = new MovieDTO()
             {
@@ -40,8 +42,9 @@ namespace api_cinema_challenge.Controllers
                 Description = model.Description,
                 RuntimeMins = model.RuntimeMins
             };
+            payload.data = result;
 
-            return TypedResults.Created($"{entity.Id}",result);
+            return TypedResults.Created(payload.status,payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,10 +74,14 @@ namespace api_cinema_challenge.Controllers
 
         public static async Task<IResult> UpdateMovie(IRepository<Movie> movieRepo, int id, PutMovie model)
         {
+            Payload<MovieDTO> payload = new Payload<MovieDTO>();
+
             var entity = await movieRepo.GetById(id);
             if (entity == null)
             {
-                return TypedResults.NotFound();
+                payload.status = "Not found";
+                payload.data = null;
+                return TypedResults.NotFound(payload);
             }
             entity.Title = model.Title;
             entity.Description = model.Description;
@@ -87,9 +94,10 @@ namespace api_cinema_challenge.Controllers
                 Description = model.Description,
                 RuntimeMins = (int)model.RuntimeMins
             };
-            var result = await movieRepo.Update(entity);
+            await movieRepo.Update(entity);
+            payload.data = update;
 
-            return TypedResults.Created("",update);
+            return TypedResults.Created(payload.status,payload);
 
 
         }
@@ -98,10 +106,13 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> DeleteMovie(IRepository<Movie> movieRepo, int id)
         {
+            Payload<MovieDTO> payload = new Payload<MovieDTO>();
             var result = await movieRepo.Delete(id);
             if (result == null)
             {
-                return TypedResults.NotFound();
+                payload.status = "Not Found";
+                payload.data = null;
+                return TypedResults.NotFound(payload);
             }
 
             var delete = new MovieDTO() 
@@ -111,15 +122,20 @@ namespace api_cinema_challenge.Controllers
                 Description = result.Description,
                 RuntimeMins = (int)result.RuntimeMins
             };
-            return TypedResults.Ok(result);
+            payload.data = delete;
+            return TypedResults.Ok(payload);
         }
+
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateScreening(IRepository<Screening> screeningRepo, IRepository<Movie> movieRepo, PostScreening model, int movieId)
         {
+            Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>();
             if(movieRepo.GetById(movieId) == null) 
             {
-                return TypedResults.NotFound($"Movie with id {movieId} does not exist"); 
+                payload.status = $"Movie with id {movieId} does not exist";
+                payload.data = null;
+                return TypedResults.NotFound(payload); 
             }
             
             var entity = new Screening()
@@ -140,8 +156,9 @@ namespace api_cinema_challenge.Controllers
                 CreatedAt = create.CreatedAt,
                 UpdatedAt = create.UpdatedAt,
             };
+            payload.data = result;
 
-            return TypedResults.Created($"{entity.Id}", result);
+            return TypedResults.Created(payload.status, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -149,10 +166,14 @@ namespace api_cinema_challenge.Controllers
 
         public static async Task<IResult> GetScreenings(IRepository<Movie> movieRepo, int id)
         {
+            Payload<IEnumerable<ScreeningDTO>> payload = new Payload<IEnumerable<ScreeningDTO>>();
+
             var entity = await movieRepo.GetById(id);
             if(entity == null)
             {
-                return TypedResults.NotFound();
+                payload.status = "Not Found";
+                payload.data = null;
+                return TypedResults.NotFound(payload);
             }
 
             var screenings = from screening in entity.Screenings
@@ -165,8 +186,8 @@ namespace api_cinema_challenge.Controllers
                                  CreatedAt = screening.CreatedAt,
                                  UpdatedAt = screening.UpdatedAt,
                              };
-
-            return TypedResults.Ok(screenings);
+            payload.data = screenings;
+            return TypedResults.Ok(payload);
 
         }
     }
