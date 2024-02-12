@@ -152,9 +152,11 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.NotFound($"No ticket with screening ID {screeningId} found.");
             }
 
+            IEnumerable<Ticket> tickets = customer.Tickets.Where(t => t.ScreeningId == screeningId);
 
-            TicketDTO ticketOut = new TicketDTO(ticket.TicketId, ticket.Seats.Count, ticket.CreatedAt, ticket.UpdatedAt);
-            Payload<TicketDTO> payload = new Payload<TicketDTO>(ticketOut);
+
+            IEnumerable<TicketDTO> ticketOut = tickets.Select(t =>new TicketDTO(t.TicketId, t.Seats.Count, t.CreatedAt, t.UpdatedAt));
+            Payload<IEnumerable<TicketDTO>> payload = new Payload<IEnumerable<TicketDTO>>(ticketOut);
             return TypedResults.Ok(payload);
         }
 
@@ -211,7 +213,7 @@ namespace api_cinema_challenge.Controllers
             Random rng = new Random((int)(DateTime.Now.Ticks / TimeSpan.TicksPerSecond));
             availableSeats = availableSeats.OrderBy(x => rng.Next()).ToList();
 
-            for (int i = 0; i <= ticketPost.numSeats; i++) 
+            for (int i = 0; i < ticketPost.numSeats; i++) 
             {
                 Seat seat = availableSeats[i];
                 TicketSeat? ts = await tsRepo.Get(seat.SeatId, ticket.Screening.DisplayId, ticket.ScreeningId);
