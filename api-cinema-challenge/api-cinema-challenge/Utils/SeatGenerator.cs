@@ -56,5 +56,23 @@ namespace api_cinema_challenge.Utils
 
             return GeneratedSeats;
         }
+
+        public static List<TicketSeat> GetScreeningSeatConnection(int RoomCapacity, int DisplayId, int ScreeningId) 
+        {
+            List<TicketSeat> ticketSeats = new List<TicketSeat>();
+
+            for (int i = 1; i < RoomCapacity; i++) 
+            {
+                TicketSeat ts = new TicketSeat() 
+                {
+                    SeatId = i,
+                    DisplayId = DisplayId,
+                    ScreeningId = ScreeningId
+                };
+                ticketSeats.Add(ts);
+            }
+
+            return ticketSeats;
+        }
     }
 }

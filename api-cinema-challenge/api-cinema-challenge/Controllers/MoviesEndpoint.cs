@@ -112,18 +112,30 @@ namespace api_cinema_challenge.Controllers
                     screeningGenerated = await screeningRepo.Insert(screeningGenerated);
                     screeningGenerated.Display = screeningRoom;
 
-                    if (needToGenerateSeats) 
-                    {
+                    if (needToGenerateSeats)
+                    { // Need to generate both Seats for the new Display and the TicketSeat junctions
                         List<Tuple<Seat, TicketSeat>> generatedSeats = SeatGenerator
                             .FillSeatAndTicketSeat(
-                                screeningGenerated.Display.Capacity, 
-                                screeningGenerated.DisplayId, 
+                                screeningGenerated.Display.Capacity,
+                                screeningGenerated.DisplayId,
                                 screeningGenerated.ScreeningId
                                 );
                         foreach (Tuple<Seat, TicketSeat> entry in generatedSeats)
                         {
                             await seatRepo.Insert(entry.Item1);
                             await tsRepo.Insert(entry.Item2);
+                        }
+                    }
+                    else 
+                    { // Need only generate and insert the new TicketSeat junctions for the new screening
+                        List<TicketSeat> junctionsToAdd = SeatGenerator
+                            .GetScreeningSeatConnection(
+                            screeningGenerated.Display.Capacity,
+                            screeningGenerated.DisplayId, 
+                            screeningGenerated.ScreeningId);
+                        foreach (TicketSeat ts in junctionsToAdd) 
+                        {
+                            await tsRepo.Insert(ts);
                         }
                     }
                 }
