@@ -1,11 +1,12 @@
+@HOST = https://localhost:64271
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 
 ### MOVIES
-GET https://localhost:7195/movies
+GET {{HOST}}/movies
 
 ###
 
-POST https://localhost:7195/movies
+POST {{HOST}}/movies
 Content-Type: application/json
 
 {
@@ -24,7 +25,7 @@ Content-Type: application/json
 
 ###
 
-PUT https://localhost:7195/movies/119
+PUT {{HOST}}/movies/121
 Content-Type: application/json
 
 {
@@ -38,14 +39,14 @@ Content-Type: application/json
 
 ###
 
-DELETE https://localhost:7195/movies/119
+DELETE {{HOST}}/movies/121
 
 ### CUSTOMER
 
-GET https://localhost:7195/customers
+GET {{HOST}}/customers
 
 ###
-POST https://localhost:7195/customers
+POST {{HOST}}/customers
 Content-Type: application/json
 
 {
@@ -57,7 +58,7 @@ Content-Type: application/json
 }
 
 ###
-PUT https://localhost:7195/customers/400
+PUT {{HOST}}/customers/400
 Content-Type: application/json
 
 {
@@ -67,13 +68,13 @@ Content-Type: application/json
 
 ###
 
-DELETE https://localhost:7195/customers/400
+DELETE {{HOST}}/customers/400
 
 ### SCREENINGS
-GET https://localhost:7195/movies/20/screenings
+GET {{HOST}}/movies/121/screenings
 
 ###
-POST https://localhost:7195/movies/20/screenings
+POST {{HOST}}/movies/121/screenings
 Content-Type: application/json
 
 {
@@ -85,10 +86,10 @@ Content-Type: application/json
 }
 
 ### TICKETS
-GET https://localhost:7195/customers/20/screenings/52
+GET {{HOST}}/customers/20/screenings/52
 
 ###
-POST https://localhost:7195/customers/20/screenings/52
+POST {{HOST}}/customers/20/screenings/52
 Content-Type: application/json
 
 {
