@@ -7,18 +7,18 @@ POST https://localhost:7195/movies
 Content-Type: application/json
 
 {
-  "title": "Lion Eats Lunch 2",
+  "title": "Lion Eats Lunch",
   "rating": "PG-17",
   "description": "He is back and he is hungry.",
   "runtimeMins": 182,
   "screenings": [
     {
-      "screenNumber": 8,
-      "capacity": 500,
-      "startsAt": "2024-01-01T18:00:00"
+      "screenNumber": 2,
+      "capacity": 10000,
+      "startsAt": "2024-02-02T18:00:00"
     },
     {
-      "screenNumber": 9,
+      "screenNumber": 3,
       "capacity": 500,
       "startsAt": "2024-01-01T18:00:00"
     }

@@ -62,7 +62,6 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> CreateMovie(
             [FromServices] IRepository<Movie> movieRepository,
@@ -73,7 +72,7 @@ namespace api_cinema_challenge.Endpoints
         {
             foreach (ScreeningInputDTO screening in input.Screenings)
             {
-                if (!DateTime.TryParse(screening.StartsAt, out DateTime parsed)) return TypedResults.BadRequest($"{screening.StartsAt} is not a valid date.");
+
                 Auditorium? auditorium = await auditoriumRepository.GetById(screening.ScreenNumber);
                 if (auditorium == null) return TypedResults.NotFound(($"No screen with id = {screening.ScreenNumber}"));
             }
@@ -104,7 +103,7 @@ namespace api_cinema_challenge.Endpoints
                 ScreeningInputDTO input)
         {
             Auditorium? auditorium = await auditoriumRepository.GetById(input.ScreenNumber);
-            ScreeningCreator screeningCreator = new ScreeningCreator(movieId, auditorium, input.Capacity, DateTime.Parse(input.StartsAt));
+            ScreeningCreator screeningCreator = new ScreeningCreator(movieId, auditorium, input.Capacity, input.StartsAt);
             Screening screeningResult = await screeningRepository.Insert(screeningCreator.GetScreening());
             IEnumerable<ScreeningSeat> screeningSeatsResult = await screeeningSeatRepository.Insert(screeningCreator.GetScreeningSeats(screeningResult.Id));
             return new ScreeningInsertResultDTO(screeningResult, auditorium.Id, screeningSeatsResult.Count());
