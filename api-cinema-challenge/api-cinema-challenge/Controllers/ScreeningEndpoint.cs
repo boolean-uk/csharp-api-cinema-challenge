@@ -25,7 +25,8 @@ namespace api_cinema_challenge.Controllers
         {
             var data = await repository.Get();
             var output = await service.MultipleToDto<Screening, ScreeningDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<IEnumerable<ScreeningDto>> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,7 +36,8 @@ namespace api_cinema_challenge.Controllers
             var data = await repository.GetById(id);
             if (data == null) { return TypedResults.NotFound("Screening not found"); }
             var output = await service.SingleToDto<Screening, ScreeningDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<ScreeningDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -56,7 +58,8 @@ namespace api_cinema_challenge.Controllers
             };
             var data = await repository.Create(screening, x => x.Hall, x=> x.Movie);
             var output = await service.SingleToDto<Screening, ScreeningDto>(data);
-            return TypedResults.Created($"/{data.Id}", output);
+            var outputPayload = new Payload<ScreeningDto> { data = output };
+            return TypedResults.Created($"/{data.Id}", outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -75,7 +78,8 @@ namespace api_cinema_challenge.Controllers
             screening.UpdatedAt = DateTime.UtcNow;
             var data = await repository.Update(screening);
             var output = await service.SingleToDto<Screening, ScreeningDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<ScreeningDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -85,7 +89,8 @@ namespace api_cinema_challenge.Controllers
             if (await repository.GetById(id) == null) { return TypedResults.NotFound("Screening not found"); }
             var data = await repository.Delete(id);
             var output = await service.SingleToDto<Screening, ScreeningDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<ScreeningDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
     }
 }

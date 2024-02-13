@@ -25,7 +25,8 @@ namespace api_cinema_challenge.Controllers
         {
             var data = await repository.Get();
             var output = await service.MultipleToDto<Seat, SeatDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<IEnumerable<SeatDto>> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,7 +36,8 @@ namespace api_cinema_challenge.Controllers
             var data = await repository.GetById(id);
             if (data == null) { return TypedResults.NotFound("Seat not found"); }
             var output = await service.SingleToDto<Seat, SeatDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<SeatDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -56,7 +58,8 @@ namespace api_cinema_challenge.Controllers
             };
             var data = await repository.Create(seat);
             var output = await service.SingleToDto<Seat, SeatDto>(data);
-            return TypedResults.Created($"/{data.Id}", output);
+            var outputPayload = new Payload<SeatDto> { data = output };
+            return TypedResults.Created($"/{data.Id}", outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -75,7 +78,8 @@ namespace api_cinema_challenge.Controllers
             seat.UpdatedAt = DateTime.UtcNow;
             var data = await repository.Update(seat);
             var output = await service.SingleToDto<Seat, SeatDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<SeatDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -85,7 +89,8 @@ namespace api_cinema_challenge.Controllers
             if (await repository.GetById(id) == null) { return TypedResults.NotFound("Seat not found"); }
             var data = await repository.Delete(id);
             var output = await service.SingleToDto<Seat, SeatDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<SeatDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
     }
 }

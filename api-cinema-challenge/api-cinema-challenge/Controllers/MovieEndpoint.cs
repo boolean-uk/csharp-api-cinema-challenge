@@ -25,7 +25,8 @@ namespace api_cinema_challenge.Controllers
         {
             var data = await repository.Get();
             var output = await service.MultipleToDto<Movie, MovieDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<IEnumerable<MovieDto>> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,7 +36,8 @@ namespace api_cinema_challenge.Controllers
             var data = await repository.GetById(id);
             if(data == null) { return TypedResults.NotFound("Movie not found"); }
             var output = await service.SingleToDto<Movie, MovieDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<MovieDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -56,7 +58,8 @@ namespace api_cinema_challenge.Controllers
             };
             var data = await repository.Create(movie);
             var output = await service.SingleToDto<Movie, MovieDto>(data);
-            return TypedResults.Created($"/{data.Id}",output);
+            var outputPayload = new Payload<MovieDto> { data = output };
+            return TypedResults.Created($"/{data.Id}",outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -76,7 +79,8 @@ namespace api_cinema_challenge.Controllers
             movie.UpdatedAt = DateTime.UtcNow;
             var data = await repository.Update(movie);
             var output = await service.SingleToDto<Movie, MovieDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<MovieDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -86,7 +90,8 @@ namespace api_cinema_challenge.Controllers
             if (await repository.GetById(id) == null) { return TypedResults.NotFound("Movie not found"); }
             var data = await repository.Delete(id);
             var output = await service.SingleToDto<Movie, MovieDto>(data);
-            return TypedResults.Ok(output);
+            var outputPayload = new Payload<MovieDto> { data = output };
+            return TypedResults.Ok(outputPayload);
         }
     }
 }
