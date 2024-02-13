@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.DTOs;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 
 namespace api_cinema_challenge.Controllers
@@ -17,20 +18,21 @@ namespace api_cinema_challenge.Controllers
         {
             Movie? movie = await movieRepository.GetMovieByID(id);
             if (movie is null) return TypedResults.NotFound($"Movie {id} doesn't exist");
+            var result = await movieRepository.CreateScreening(id, payload.screenNumber, payload.capacity, payload.startsAt);
 
-            return TypedResults.Created("", new ScreeningOutput("success", await movieRepository.CreateScreening(id, payload.screenNumber, payload.capacity, payload.startsAt)));
+            return TypedResults.Created("", new Payload<Screening>() { data = result });
         }
         public static async Task<IResult> GetScreening(IMovieRepository movieRepository, int id)
         {
             Movie? movie = await movieRepository.GetMovieByID(id);
             if (movie is null) return TypedResults.NotFound($"Movie {id} doesn't exist");
             var screenings = await movieRepository.GetScreenings(id);
-            return TypedResults.Ok(new ScreeningListOutput("success", screenings));
+            return TypedResults.Ok(new Payload<IEnumerable<Screening>>() { data = screenings });
         }
 
         public static async Task<IResult> GetAllScreenings(IMovieRepository movieRepository)
         {
-            return TypedResults.Ok(new ScreeningListOutput("success", await movieRepository.GetAllScreenings()));
+            return TypedResults.Ok(new Payload<IEnumerable<Screening>>() { data =  await movieRepository.GetAllScreenings()});
         }
     }
 }

@@ -21,39 +21,5 @@ namespace api_cinema_challenge.Models
 
     public record CustomerPayload(string Name, string Email, string Phone);
 
-    public class CustomerDTO
-    {
-        public int id { get; }
-        public string name { get; }
-        public string email { get; }
-        public string phone { get; }
-        public CustomerDTO(Customer customer)
-        {
-            id = customer.Id;
-            name = customer.Name;
-            email = customer.Email;
-            phone = customer.Phone;
-        }
-    }
-    public class CustomerOutput
-    {
-        public string status { get;}
-        public Customer data { get; }
-        public CustomerOutput(string status, Customer data)
-        {
-            this.status = status;
-            this.data = data;
-        }
-    }
-    public class CustomerListOutput
-    {
-        public string status { get; }
-        public IEnumerable<Customer> data { get; }
-        public CustomerListOutput(string status, IEnumerable<Customer> data)
-        {
-            this.status = status;
-            this.data = data;
-        }
-    }
 
 }
