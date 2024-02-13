@@ -16,6 +16,8 @@ namespace api_cinema_challenge.Models
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
 
+        public List<Ticket> Tickets { get; set; } = new();
+
         public Screening() { }
         public Screening(PostScreening screening)
         {

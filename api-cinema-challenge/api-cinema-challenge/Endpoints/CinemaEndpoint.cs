@@ -22,46 +22,57 @@ namespace api_cinema_challenge.Endpoints
 
             cinemaGroup.MapGet("movies/{id}/screenings/", GetScreenings);
             cinemaGroup.MapPost("movies/{id}/screenings/", CreateScreening);
+
+            cinemaGroup.MapGet("customers/{customerId}/screenings/{screeningId}/", GetTickets);
+            cinemaGroup.MapPost("customers/{customerId}/screenings/{screeningId}/", CreateTicket);
+
         }
 
         #region Customers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetCustomers(IRepository<Customer> repository)
         {
-            Payload<IEnumerable<Customer>> output = new() { data = await repository.Get() };
+            Payload<List<CustomerDto>> output = new();
+            output.data = new();
+            foreach (Customer customer in await repository.Get())
+            {
+                output.data.Add(new CustomerDto(customer));
+            }
+
             return TypedResults.Ok(output);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateCustomer(IRepository<Customer> repository, PostCustomer newCustomer)
+        public static async Task<IResult> CreateCustomer(IRepository<Customer> repository, PostCustomer createCustomer)
         {
-            Payload<Customer> output = new();
-            var customers = await repository.Get();
-            Customer customer = new();
+            Payload<CustomerDto> output = new();
+            var movies = await repository.Get();
 
-            customer.Id = customers.Last().Id+1;
-            customer.Name = newCustomer.Name;
-            customer.Email = newCustomer.Email;
-            customer.Phone = newCustomer.Phone;
-            customer.CreatedAt = DateTime.UtcNow;
-            customer.UpdatedAt = DateTime.UtcNow;
-            output.data = await repository.Create(customer);
+            Customer customer = new(createCustomer);
+            customer.Id = movies.Last().Id + 1;
 
-            return TypedResults.Created($"/{output.data.Id}",output);
+
+            output.data = new CustomerDto(await repository.Create(customer));
+            return TypedResults.Created($"/{output.data.Id}", output);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> UpdateCustomer(IRepository<Customer> repository, int id, UpdateCustomerDto updateCustomer)
+        public static async Task<IResult> UpdateCustomer(IRepository<Customer> repository, int id, PostCustomer updateCustomer)
         {
-            Payload<Customer> output = new() { data = await repository.GetById(id) };
-            var customers = await repository.Get();
+            Payload<CustomerDto> output = new();
+            Customer customer = await repository.GetById(id);
+            if (customer == null)
+            {
+                output.status = "not found";
+                return TypedResults.NotFound(output);
+            }
 
-            output.data.Name = updateCustomer.Name != null ? updateCustomer.Name : output.data.Name;
-            output.data.Email = updateCustomer.Email != null ? updateCustomer.Email : output.data.Email;
-            output.data.Phone = updateCustomer.Phone != null ? updateCustomer.Phone : output.data.Phone;
-            output.data.UpdatedAt = DateTime.UtcNow;
+            customer.Name = updateCustomer.Name != null ? updateCustomer.Name : output.data.Name;
+            customer.Email = updateCustomer.Email != null ? updateCustomer.Email : output.data.Email;
+            customer.Phone = updateCustomer.Phone != null ? updateCustomer.Phone : output.data.Phone;
+            customer.UpdatedAt = DateTime.UtcNow;
 
-            repository.Update(output.data);
+            output.data = new CustomerDto(await repository.Update(customer));
             return TypedResults.Created($"", output);
         }
 
@@ -69,14 +80,14 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> DeleteCustomer(IRepository<Customer> repository, int id)
         {
-            Payload<Customer> output = new();
-            var customer = await repository.GetById(id);
+            Payload<CustomerDto> output = new();
+            Customer customer = await repository.GetById(id);
             if (customer == null)
             {
                 output.status = "failed";
                 return TypedResults.NotFound(output);
             }
-            output.data = await repository.Delete(id);
+            output.data = new CustomerDto(await repository.Delete(id));
             if (output.data == null)
             {
                 output.status = "failed";
@@ -92,8 +103,7 @@ namespace api_cinema_challenge.Endpoints
         {
             Payload<List<GetMovieDto>> output = new();
             output.data = new();
-            IEnumerable<Movie> data = await repository.Get();
-            foreach (Movie movie in data)
+            foreach (Movie movie in await repository.Get())
             {
                 output.data.Add(new GetMovieDto(movie));
             }
@@ -120,20 +130,20 @@ namespace api_cinema_challenge.Endpoints
         public static async Task<IResult> UpdateMovie(IRepository<Movie> repository, int id, PutMovie updateMovie)
         {
             Payload<GetMovieDto> output = new();
-            Movie oldMovie = await repository.GetById(id);
-            var movie = await repository.GetById(id);
+            Movie movie = await repository.GetById(id);
             if (movie == null)
             {
                 output.status = "not found";
                 return TypedResults.NotFound(output);
             }
 
-            oldMovie.Title = updateMovie.Title != null ? updateMovie.Title : output.data.Title;
-            oldMovie.Description = updateMovie.Description != null ? updateMovie.Description : output.data.Description;
-            oldMovie.Rating = updateMovie.Rating != null ? updateMovie.Rating : output.data.Rating;
-            oldMovie.RuntimeMins = (int)(updateMovie.RuntimeMins != null ? updateMovie.RuntimeMins : output.data.RuntimeMins);
+            movie.Title = updateMovie.Title != null ? updateMovie.Title : output.data.Title;
+            movie.Description = updateMovie.Description != null ? updateMovie.Description : output.data.Description;
+            movie.Rating = updateMovie.Rating != null ? updateMovie.Rating : output.data.Rating;
+            movie.RuntimeMins = (int)(updateMovie.RuntimeMins != null ? updateMovie.RuntimeMins : output.data.RuntimeMins);
+            movie.UpdatedAt = DateTime.UtcNow;
 
-            output.data = new GetMovieDto(await repository.Update(oldMovie));
+            output.data = new GetMovieDto(await repository.Update(movie));
             return TypedResults.Created($"", output);
         }
 
@@ -187,6 +197,38 @@ namespace api_cinema_challenge.Endpoints
 
             output.data = new GetScreeningDto(await repository.Create(screening));
             return TypedResults.Created($"/{output.data.Id}", output);
+        }
+        #endregion
+
+        #region Tickets
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetTickets(IRepository<Ticket> repository, int customerId, int screeningId)
+        {
+            Payload<List<TicketDto>> output = new();
+            output.data = new();
+            IEnumerable<Ticket> data = (await repository.Get()).Where(x => x.CustomerId == customerId && x.ScreeningId == screeningId);
+            foreach (Ticket ticket in data)
+            {
+                output.data.Add(new TicketDto(ticket));
+            }
+
+            return TypedResults.Ok(output);
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> CreateTicket(IRepository<Ticket> repository, int customerId, int screeningId, PostTicket createTicket)
+        {
+            Payload<TicketDto> output = new();
+            var tickets = await repository.Get();
+
+            Ticket ticket = new(createTicket);
+            ticket.Id = tickets.Last().Id + 1;
+            ticket.CustomerId = customerId;
+            ticket.ScreeningId = screeningId;
+
+            output.data = new TicketDto(await repository.Create(ticket));
+            return TypedResults.Created($"/{output.data.Id}", output);
+
         }
         #endregion
     }

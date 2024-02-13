@@ -7,6 +7,7 @@ namespace api_cinema_challenge.Data
         private List<Customer> _customers = new();
         private List<Movie> _movies = new();
         private List<Screening> _screenings = new();
+        private List<Ticket> _tickets = new();
 
 
         //random value strings generated with chatgpt:
@@ -155,11 +156,24 @@ namespace api_cinema_challenge.Data
                 _screenings.Add(screening);
             }
 
+            for (int i = 1; i <= 100; i++)
+            {
+                Ticket ticket = new();
+                ticket.Id = i;
+                ticket.NumSeats = 1 + random.Next(10);
+                ticket.CreatedAt = DateTime.UtcNow.AddDays(-random.Next(10));
+                ticket.UpdatedAt = DateTime.UtcNow;
+                ticket.CustomerId = _customers[random.Next(_customers.Count)].Id;
+                ticket.ScreeningId = _screenings[random.Next(_screenings.Count)].Id;
+                _tickets.Add(ticket);
+            }
+
         }
 
         public List<Customer> Customers { get { return _customers; } }
         public List<Movie> Movies { get { return _movies; } }
         public List<Screening> Screenings { get { return _screenings; } }
+        public List<Ticket> Tickets { get { return _tickets; } }
 
         
     }
