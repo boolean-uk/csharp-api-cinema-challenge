@@ -30,11 +30,16 @@ namespace api_cinema_challenge.Data
             );
 
             modelBuilder.Entity<Movie>().HasData(
-                new Movie() { Id = 1, Title = "Forrest Gump", Rating = "PG-13", Description = "The story of a man with a low IQ who accomplished great things in his life.", RuntimeMins = 142 },
-                new Movie() { Id = 2, Title = "Titanic", Rating = "PG-13", Description = "A love story between Jack and Rose aboard the ill-fated Titanic.", RuntimeMins = 195 },
-                new Movie() { Id = 3, Title = "The Avengers", Rating = "PG-13", Description = "A team of superheroes including Iron Man, Captain America, and Thor, come together to save the world.", RuntimeMins = 143 },
-                new Movie() { Id = 4, Title = "Fight Club", Rating = "R", Description = "An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much, much more.", RuntimeMins = 139 },
-                new Movie() { Id = 5, Title = "Mr. & Mrs. Smith", Rating = "PG-13", Description = "A bored married couple is surprised to learn that they are both assassins hired by competing agencies to kill each other.", RuntimeMins = 120 }
+                new Movie() { Id = 1, Title = "Forrest Gump", Rating = "PG-13", Description = "The story of a man with a low IQ who accomplished great things in his life.", 
+                    RuntimeMins = 142, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Movie() { Id = 2, Title = "Titanic", Rating = "PG-13", Description = "A love story between Jack and Rose aboard the ill-fated Titanic.", 
+                    RuntimeMins = 195, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Movie() {Id = 3, Title = "The Avengers", Rating = "PG-13", Description = "A team of superheroes including Iron Man, Captain America, and Thor, come together to save the world.", 
+                    RuntimeMins = 143, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Movie() { Id = 4, Title = "Fight Club", Rating = "R", Description = "An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much, much more.", 
+                    RuntimeMins = 139, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Movie() {Id = 5, Title = "Mr. & Mrs. Smith", Rating = "PG-13", Description = "A bored married couple is surprised to learn that they are both assassins hired by competing agencies to kill each other.", 
+                    RuntimeMins = 120, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             modelBuilder.Entity<Screening>().HasData(
@@ -44,10 +49,16 @@ namespace api_cinema_challenge.Data
                 new Screening() { Id = 4, ScreenNumber = 4, Capacity = 90, StartsAt = DateTime.UtcNow.AddHours(4) },
                 new Screening() { Id = 5, ScreenNumber = 5, Capacity = 110, StartsAt = DateTime.UtcNow.AddHours(5) }
             );
+
+            modelBuilder.Entity<Ticket>().HasData(
+                new Ticket() { Id = 1, NumSeats = 10, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Ticket() { Id = 2, NumSeats = 20, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+            );
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

@@ -24,14 +24,22 @@ namespace api_cinema_challenge.Endpoints
 
             cinemaGroup.MapGet("/screenings", GetAllScreenings);
             cinemaGroup.MapPost("/screenings", CreateScreening);
+
+            cinemaGroup.MapGet("/ticket", GetAllTickets);
+            cinemaGroup.MapPost("/ticket", CreateTicket);
         }
 
         //---------------------------- Customer -------------------------------
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllCustomers(IRepository<Customer> repository)
         {
-            var customers = await repository.GetAll(); 
-            return TypedResults.Ok(customers);
+            var customers = await repository.GetAll();
+            var response = new ApiResponse<IEnumerable<Customer>>
+            {
+                Status = "success",
+                Data = customers
+            };
+            return TypedResults.Ok(response);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -46,8 +54,14 @@ namespace api_cinema_challenge.Endpoints
                 UpdatedAt = DateTime.UtcNow
             };
 
-            await repository.Add(customer);
-            return TypedResults.Created($"Customer {customer.Name} with id {customer.Id} has been added.");
+            var createdCustomer = await repository.Add(customer);
+            var response = new ApiResponse<Customer>
+            {
+                Status = "success",
+                Data = createdCustomer
+            };
+            //return TypedResults.Created($"Customer {customer.Name} with id {customer.Id} has been added.");
+            return TypedResults.Created($"/{customer.Id}", response); 
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,7 +78,13 @@ namespace api_cinema_challenge.Endpoints
             customer.UpdatedAt = DateTime.UtcNow;
 
             await repository.Update(customer);
-            return TypedResults.Ok(customer);
+            var response = new ApiResponse<Customer>
+            {
+                Status = "success",
+                Data = customer
+            };
+
+            return TypedResults.Ok(response);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -75,8 +95,13 @@ namespace api_cinema_challenge.Endpoints
             if (customer == null)
                 return TypedResults.NotFound($"Customer with id {id} doesn't exist");
 
-            await repository.Delete(id); 
-            return TypedResults.Ok(customer);
+            await repository.Delete(id);
+            var response = new ApiResponse<Customer>
+            {
+                Status = "success",
+                Data = customer
+            };
+            return TypedResults.Ok(response);
         }
 
         //------------------------------ Movie ------------------------------
@@ -84,7 +109,12 @@ namespace api_cinema_challenge.Endpoints
         public static async Task<IResult> GetAllMovies(IRepository<Movie> repository)
         {
             var movies = await repository.GetAll();
-            return TypedResults.Ok(movies);
+            var response = new ApiResponse<IEnumerable<Movie>>
+            {
+                Status = "success",
+                Data = movies
+            };
+            return TypedResults.Ok(response);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -100,8 +130,13 @@ namespace api_cinema_challenge.Endpoints
                 UpdatedAt = DateTime.UtcNow
             };
 
-            await repository.Add(movie);
-            return TypedResults.Created($"Movie {movie.Title} with id {movie.Id} has been added.");
+            var createdMovie = await repository.Add(movie);
+            var response = new ApiResponse<Movie>
+            {
+                Status = "success",
+                Data = createdMovie
+            };
+            return TypedResults.Created($"/{movie.Id}", response);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -119,7 +154,12 @@ namespace api_cinema_challenge.Endpoints
             movie.UpdatedAt = DateTime.UtcNow;
 
             await repository.Update(movie);
-            return TypedResults.Ok(movie);
+            var response = new ApiResponse<Movie>
+            {
+                Status = "success",
+                Data = movie
+            };
+            return TypedResults.Ok(response);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -131,7 +171,12 @@ namespace api_cinema_challenge.Endpoints
                 return TypedResults.NotFound($"Movie with id {id} doesn't exist");
 
             await repository.Delete(id);
-            return TypedResults.Ok(movie);
+            var response = new ApiResponse<Movie>
+            {
+                Status = "success",
+                Data = movie
+            };
+            return TypedResults.Ok(response);
         }
 
         //----------------------- Screening ----------------------------------------
@@ -139,7 +184,12 @@ namespace api_cinema_challenge.Endpoints
         public static async Task<IResult> GetAllScreenings(IRepository<Screening> repository)
         {
             var screenings = await repository.GetAll();
-            return TypedResults.Ok(screenings);
+            var response = new ApiResponse<IEnumerable<Screening>>
+            {
+                Status = "success",
+                Data = screenings
+            };
+            return TypedResults.Ok(response);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -154,8 +204,45 @@ namespace api_cinema_challenge.Endpoints
                 UpdatedAt = DateTime.UtcNow
             };
 
-            await repository.Add(screening);
-            return TypedResults.Created($"Screening with id {screening.Id} has been added.");
+            var createdScreening = await repository.Add(screening);
+            var response = new ApiResponse<Screening>
+            {
+                Status = "success",
+                Data = createdScreening
+            };
+            return TypedResults.Created($"/{screening.Id}", response);
+        }
+
+        //---------------------------- Ticket ---------------------------------
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetAllTickets(IRepository<Ticket> repository)
+        {
+            var tickets = await repository.GetAll();
+            var response = new ApiResponse<IEnumerable<Ticket>>
+            {
+                Status = "success",
+                Data = tickets
+            };
+            return TypedResults.Ok(response);
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> CreateTicket(IRepository<Ticket> repository, TicketDTO ticketDTO)
+        {
+            var ticket = new Ticket
+            {
+                NumSeats = ticketDTO.NumSeats,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            var createdTicket = await repository.Add(ticket);
+            var response = new ApiResponse<Ticket>
+            {
+                Status = "success",
+                Data = createdTicket
+            };
+            return TypedResults.Created($"/{ticket.Id}", response);
         }
     }
 }
