@@ -4,7 +4,7 @@ namespace api_cinema_challenge.Models.DTO.Entities.MoviesAndScreenings
 {
     public class MovieWithScreeningsOutputDTO
     {
-        public MovieWithScreeningsOutputDTO(Movie movie, List<ScreeningInsertResultDTO> insertedScreenings)
+        public MovieWithScreeningsOutputDTO(Movie movie, List<ScreeningOutputDTO> insertedScreenings)
         {
             this.Id = movie.Id;
             this.Title = movie.Title;
@@ -22,6 +22,6 @@ namespace api_cinema_challenge.Models.DTO.Entities.MoviesAndScreenings
         public int RuntimeMins { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
-        public List<ScreeningInsertResultDTO> InsertedScreenings { get; set; }
+        public List<ScreeningOutputDTO> InsertedScreenings { get; set; }
     }
 }

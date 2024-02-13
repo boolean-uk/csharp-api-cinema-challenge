@@ -48,5 +48,8 @@ namespace api_cinema_challenge.Repository.Generic
             await db.SaveChangesAsync();
             return entity;
         }
+
+        public DatabaseContext DB { get { return db; } }
+        public DbSet<T> Table { get {  return table; } }
     }
 }

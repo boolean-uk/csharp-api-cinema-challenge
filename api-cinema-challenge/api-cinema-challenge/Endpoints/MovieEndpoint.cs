@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System;
-using api_cinema_challenge.Repository;
+﻿using api_cinema_challenge.Repository;
 using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.DTO.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.DTO;
-using api_cinema_challenge.Models.Domain.Entities.SalesAndTickets;
-using api_cinema_challenge.Repository.Generic;
 using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
 using api_cinema_challenge.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using api_cinema_challenge.Repository.Specific;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -22,6 +19,8 @@ namespace api_cinema_challenge.Endpoints
             group.MapPost("/", CreateMovie);
             group.MapPut("/{id}", Update);
             group.MapDelete("/{id}", Delete);
+            group.MapPost("/{id}/screenings", CreateScreeningByMovieId);
+            group.MapGet("/{id}/screenings", GetScreeningsByMovieId);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -84,29 +83,49 @@ namespace api_cinema_challenge.Endpoints
                 RuntimeMins = input.RuntimeMins,
             };
             Movie movieResult = await movieRepository.Insert(newMovie);
-            List<ScreeningInsertResultDTO> insertedScreenings = new List<ScreeningInsertResultDTO>();
+            List<ScreeningOutputDTO> insertedScreenings = new List<ScreeningOutputDTO>();
             if (input.Screenings.Count > 0)
             {
                 foreach (var screening in  input.Screenings)
                 {
-                    insertedScreenings.Add(await CreateScreening(screeningRepository, auditoriumRepository, screeningSeatRepository, movieResult.Id, screening));
+                    insertedScreenings.Add(await Services.CreateScreening(screeningRepository, auditoriumRepository, screeningSeatRepository, movieResult.Id, screening));
                 }
             }
-            return TypedResults.Created($"/{movieResult.Id}", new MovieWithScreeningsOutputDTO(movieResult, insertedScreenings));
+            MovieWithScreeningsOutputDTO results = new MovieWithScreeningsOutputDTO(movieResult, insertedScreenings);
+            return TypedResults.Created($"/{movieResult.Id}", new Payload<MovieWithScreeningsOutputDTO>(results));
         }
 
-        private static async Task<ScreeningInsertResultDTO> CreateScreening(
-                IRepository<Screening> screeningRepository,
-                IRepository<Auditorium> auditoriumRepository,
-                IJunctionRepository<ScreeningSeat> screeeningSeatRepository,
-                int movieId,
-                ScreeningInputDTO input)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        private static async Task<IResult> GetScreeningsByMovieId(IRepository<Movie> movieRepository, IScreeningRepository screeningEndpoint, int id)
         {
-            Auditorium? auditorium = await auditoriumRepository.GetById(input.ScreenNumber);
-            ScreeningCreator screeningCreator = new ScreeningCreator(movieId, auditorium, input.Capacity, input.StartsAt);
-            Screening screeningResult = await screeningRepository.Insert(screeningCreator.GetScreening());
-            IEnumerable<ScreeningSeat> screeningSeatsResult = await screeeningSeatRepository.Insert(screeningCreator.GetScreeningSeats(screeningResult.Id));
-            return new ScreeningInsertResultDTO(screeningResult, auditorium.Id, screeningSeatsResult.Count());
+            Movie? movie = await movieRepository.GetById(id);
+            if (movie == null) return TypedResults.BadRequest($"No movies with id={id}");
+            IEnumerable<Screening> results = await screeningEndpoint.GetAllByMovieId(id);
+            List<ScreeningOutputDTO> resultDTOs = new List<ScreeningOutputDTO>();
+            foreach (Screening output in results)
+            {
+                int screenNumber = output.ScreeningSeats.First().Seat.AuditoriumId;
+                int capacity = output.ScreeningSeats.Count();
+                resultDTOs.Add(new ScreeningOutputDTO(output, screenNumber, capacity));
+            }
+            return TypedResults.Ok(new Payload<IEnumerable<ScreeningOutputDTO>>(resultDTOs));
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        private static async Task<IResult> CreateScreeningByMovieId(
+            [FromServices] IRepository<Movie> movieRepository,
+            [FromServices] IRepository<Screening> screeningRepository,
+            [FromServices] IRepository<Auditorium> auditoriumRepository,
+            [FromServices] IJunctionRepository<ScreeningSeat> screeningSeatRepository,
+            [FromBody] ScreeningInputDTO input,
+            [FromRoute] int id)
+        {
+            Movie? movie = await movieRepository.GetById(id);
+            if (movie == null) return TypedResults.BadRequest($"No movies with id={id}");
+            ScreeningOutputDTO resultDto = await Services.CreateScreening(screeningRepository, auditoriumRepository, screeningSeatRepository, movie.Id, input);
+            return TypedResults.Created($"/{movie.Id}", new Payload<ScreeningOutputDTO>(resultDto));
         }
     }
 }

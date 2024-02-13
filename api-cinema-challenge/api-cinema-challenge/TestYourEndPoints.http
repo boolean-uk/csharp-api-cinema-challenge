@@ -10,7 +10,7 @@ Content-Type: application/json
   "title": "Lion Eats Lunch",
   "rating": "PG-17",
   "description": "He is back and he is hungry.",
-  "runtimeMins": 182,
+  "runtimeMins": 188,
   "screenings": [
     {
       "screenNumber": 2,
@@ -19,7 +19,7 @@ Content-Type: application/json
     },
     {
       "screenNumber": 3,
-      "capacity": 500,
+      "capacity": 10,
       "startsAt": "2024-01-01T18:00:00"
     }
   ]

@@ -5,6 +5,7 @@ using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.Domain.Entities.SalesAndTickets;
 using api_cinema_challenge.Repository;
 using api_cinema_challenge.Repository.Generic;
+using api_cinema_challenge.Repository.Specific;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 builder.Services.AddScoped<IRepository<Auditorium>, Repository<Auditorium>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IJunctionRepository<ScreeningSeat>, JunctionRepository<ScreeningSeat>>();
+builder.Services.AddScoped<IScreeningRepository, ScreeningRepository>();
 
 var app = builder.Build();
 
