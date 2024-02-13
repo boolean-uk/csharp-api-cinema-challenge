@@ -219,13 +219,15 @@ namespace api_cinema_challenge.Controllers
             ScreeningInputAsMovieDTO screeningPost)
         {
 
-            IEnumerable<Display> screeningRooms = await displayRepo.GetAll();
-            Display? screeningRoom = screeningRooms
+            IEnumerable<Display> allDisplays = await displayRepo.GetAll();
+            Display? display = allDisplays
                 .Where(sr => sr.ScreenNumber == screeningPost.ScreenNumber && sr.Capacity == screeningPost.Capacity)
                 .FirstOrDefault();
-            if (screeningRoom == null)
+            bool newDisplayGenerated = false;
+            if (display == null)
             {
-                screeningRoom = new Display()
+                newDisplayGenerated = true;
+                display = new Display()
                 {
                     ScreenNumber = screeningPost.ScreenNumber,
                     Capacity = screeningPost.Capacity,
@@ -233,28 +235,37 @@ namespace api_cinema_challenge.Controllers
                     UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
 
                 };
-                screeningRoom = await displayRepo.Insert(screeningRoom);
+                display = await displayRepo.Insert(display);
             }
 
             Screening inputScreening = new Screening()
             {
-                DisplayId = screeningRoom.DisplayId,
-                Display = screeningRoom,
+                DisplayId = display.DisplayId,
                 Starts = DateTime.SpecifyKind(DateTime.Parse(screeningPost.StartsAt), DateTimeKind.Utc),
                 MovieId = id,
                 CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
             };
-
-            screeningRoom.Screenings.Add(inputScreening);
             Screening screening = await repo.Insert(inputScreening);
-
-            List<Tuple<Seat, TicketSeat>> generatedSeats = SeatGenerator
-                .FillSeatAndTicketSeat(screening.Display.Capacity, screening.DisplayId, screening.ScreeningId);
-            foreach (Tuple<Seat, TicketSeat> entry in generatedSeats) 
+            screening.Display = display;
+            if (newDisplayGenerated)
             {
-                await seatRepo.Insert(entry.Item1);
-                await tsRepo.Insert(entry.Item2);
+                List<Tuple<Seat, TicketSeat>> generatedSeats = SeatGenerator
+                    .FillSeatAndTicketSeat(display.Capacity, display.DisplayId, screening.ScreeningId);
+                foreach (Tuple<Seat, TicketSeat> entry in generatedSeats)
+                {
+                    await seatRepo.Insert(entry.Item1);
+                    await tsRepo.Insert(entry.Item2);
+                }
+            }
+            else 
+            {
+                List<TicketSeat> generatedTicketSeats = SeatGenerator
+                    .GetScreeningSeatConnection(display.Capacity, display.DisplayId, screening.ScreeningId);
+                foreach (TicketSeat ts in generatedTicketSeats) 
+                {
+                    await tsRepo.Insert(ts);
+                }
             }
 
             ScreeningDTO screeningOut = new ScreeningDTO(screening.ScreeningId, screening.DisplayId, screening.Display.Capacity, screening.Starts, screening.CreatedAt, screening.UpdatedAt);

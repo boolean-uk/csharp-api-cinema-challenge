@@ -46,6 +46,9 @@ DELETE {{HOST}}/movies/121
 GET {{HOST}}/customers
 
 ###
+GET {{HOST}}/customers/401
+
+###
 POST {{HOST}}/customers
 Content-Type: application/json
 
@@ -58,7 +61,7 @@ Content-Type: application/json
 }
 
 ###
-PUT {{HOST}}/customers/400
+PUT {{HOST}}/customers/401
 Content-Type: application/json
 
 {
@@ -68,7 +71,7 @@ Content-Type: application/json
 
 ###
 
-DELETE {{HOST}}/customers/400
+DELETE {{HOST}}/customers/401
 
 ### SCREENINGS
 GET {{HOST}}/movies/121/screenings
