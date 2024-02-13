@@ -1,4 +1,4 @@
-@HOST = https://localhost:64271
+@HOST = https://localhost:8081
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 
 ### MOVIES
@@ -46,7 +46,7 @@ DELETE {{HOST}}/movies/121
 GET {{HOST}}/customers
 
 ###
-GET {{HOST}}/customers/401
+GET {{HOST}}/customers/201
 
 ###
 POST {{HOST}}/customers
