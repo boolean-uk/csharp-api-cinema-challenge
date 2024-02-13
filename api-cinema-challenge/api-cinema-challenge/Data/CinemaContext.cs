@@ -17,11 +17,12 @@ namespace api_cinema_challenge.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Screening>().Navigation(x => x.Movie).AutoInclude(true);
             modelBuilder.Entity<Screening>().Navigation(x => x.Hall).AutoInclude(true);
             modelBuilder.Entity<Seat>().Navigation(x => x.Hall).AutoInclude(true);
             modelBuilder.Entity<Ticket>().Navigation(x => x.Seat).AutoInclude(true);
-            modelBuilder.Entity<Ticket>().Navigation(x => x.Screening).AutoInclude(true).UsePropertyAccessMode(PropertyAccessMode.Property);
+            modelBuilder.Entity<Ticket>().Navigation(x => x.Screening).AutoInclude(true);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

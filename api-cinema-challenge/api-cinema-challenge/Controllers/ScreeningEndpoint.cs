@@ -54,7 +54,7 @@ namespace api_cinema_challenge.Controllers
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
-            var data = await repository.Create(screening);
+            var data = await repository.Create(screening, x => x.Hall, x=> x.Movie);
             var output = await service.SingleToDto<Screening, ScreeningDto>(data);
             return TypedResults.Created($"/{data.Id}", output);
         }

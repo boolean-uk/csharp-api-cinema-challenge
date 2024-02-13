@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 namespace api_cinema_challenge.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
@@ -29,6 +30,26 @@ namespace api_cinema_challenge.Repository
 
         public async Task<T> Create(T entity)
         {
+            foreach (var property in typeof(T).GetProperties())
+            {
+                if (property.PropertyType.IsClass && property.GetGetMethod() != null)
+                {
+                    _db.Entry(entity).Reference(property.Name).Load();
+                }
+            }
+            await _table.AddAsync(entity);
+            await _db.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<T> Create(T entity, params Expression<Func<T, object>>[] includes)
+        {
+            foreach (var include in includes)
+            {
+                _db.Entry(entity).State = EntityState.Modified;
+                _db.Entry(entity).Reference(include).Load();
+            }
+
             await _table.AddAsync(entity);
             await _db.SaveChangesAsync();
             return entity;
