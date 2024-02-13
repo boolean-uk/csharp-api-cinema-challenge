@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Payload;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace api_cinema_challenge.Controllers
         {
             Movie movie = await repository.Get(id);
             if (movie == null || !movie.Screenings.Any()) return TypedResults.NotFound();
-            return TypedResults.Ok(movie.Screenings);
+            return TypedResults.Ok(new Payload<List<Screening>>(movie.Screenings));
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,7 +39,7 @@ namespace api_cinema_challenge.Controllers
 
             Screening screening = Service.ScreeningService.toScreening(screeningDto, movieId);
             Screening result = await repository.Create(screening);
-            return TypedResults.Created($"screening/{result.Id}", result);
+            return TypedResults.Created($"screening/{result.Id}", new Payload<Screening>(result));
         }
     }
 

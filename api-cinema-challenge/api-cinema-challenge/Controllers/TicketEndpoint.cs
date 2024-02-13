@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Payload;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace api_cinema_challenge.Controllers
             List<Ticket> ticketList = customer.Tickets.Intersect(screening.Tickets).ToList();
 
             if (!ticketList.Any()) return TypedResults.NotFound();
-            return TypedResults.Ok(ticketList);
+            return TypedResults.Ok(new Payload<List<Ticket>>(ticketList));
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,7 +46,7 @@ namespace api_cinema_challenge.Controllers
 
             Ticket ticket = Service.TicketService.toTicket(ticketDto, customerId, screeningId);
             Ticket result = await repository.Create(ticket);
-            return TypedResults.Created($"cusomter/{result.Id}", result);
+            return TypedResults.Created($"cusomter/{result.Id}", new Payload<Ticket>(result));
         }
     }
 }

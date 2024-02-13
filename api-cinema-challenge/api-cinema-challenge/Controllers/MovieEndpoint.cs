@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Payload;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace api_cinema_challenge.Controllers
         {
             IEnumerable<Movie> movie = await repository.Get();
             if (movie == null) return TypedResults.NotFound();
-            return TypedResults.Ok(movie);
+            return TypedResults.Ok(new Payload<IEnumerable<Movie>>(movie));
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -51,7 +52,7 @@ namespace api_cinema_challenge.Controllers
                         );
                 }
             }
-            return TypedResults.Created($"movie/{result.Id}", result);
+            return TypedResults.Created($"movie/{result.Id}", new Payload<Movie>(result));
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -67,7 +68,7 @@ namespace api_cinema_challenge.Controllers
             movie = Service.MovieService.updateMovie(movie, movieDto);
             Movie result = await repository.Update(movie);
 
-            return TypedResults.Ok(result);
+            return TypedResults.Ok(new Payload<Movie>(result));
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -77,7 +78,7 @@ namespace api_cinema_challenge.Controllers
             if (movie == null) return TypedResults.NotFound();
 
             Movie result = await repository.Delete(movie);
-            return TypedResults.Ok(result);
+            return TypedResults.Ok(new Payload<Movie>(result));
         }
     }
 }

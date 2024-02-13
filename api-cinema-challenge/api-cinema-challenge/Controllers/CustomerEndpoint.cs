@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Payload;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,7 @@ namespace api_cinema_challenge.Controllers
         {
             IEnumerable<Customer> customer = await repository.Get();
             if (customer == null) return TypedResults.NotFound();
-            return TypedResults.Ok(customer);
+            return TypedResults.Ok(new Payload<IEnumerable<Customer>>(customer));
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,7 +37,7 @@ namespace api_cinema_challenge.Controllers
 
             Customer customer = Service.CustomerService.toCustomer(customerDto);
             Customer result = await repository.Create(customer);
-            return TypedResults.Created($"cusomter/{result.Id}", result);
+            return TypedResults.Created($"cusomter/{result.Id}", new Payload<Customer>(result));
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -52,7 +53,7 @@ namespace api_cinema_challenge.Controllers
             customer = Service.CustomerService.updateCustomer(customer, customerDto);
             Customer result = await repository.Update(customer);
 
-            return TypedResults.Ok(result);
+            return TypedResults.Ok(new Payload<Customer>(result));
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -62,7 +63,7 @@ namespace api_cinema_challenge.Controllers
             if (customer == null) return TypedResults.NotFound();
 
             Customer result = await repository.Delete(customer);
-            return TypedResults.Ok(result);
+            return TypedResults.Ok(new Payload<Customer>(result));
         }
     }
 }
