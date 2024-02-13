@@ -10,7 +10,6 @@ namespace api_cinema_challenge.DTO
 
         public ScreeningDto(Screening screening)
         {
-            //Async issue; Nigel please fix if you have time :)
             if(screening == null)
             {
                 StartTime = DateTime.MinValue;

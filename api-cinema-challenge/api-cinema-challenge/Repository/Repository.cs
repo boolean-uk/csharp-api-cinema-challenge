@@ -30,13 +30,6 @@ namespace api_cinema_challenge.Repository
 
         public async Task<T> Create(T entity)
         {
-            foreach (var property in typeof(T).GetProperties())
-            {
-                if (property.PropertyType.IsClass && property.GetGetMethod() != null)
-                {
-                    _db.Entry(entity).Reference(property.Name).Load();
-                }
-            }
             await _table.AddAsync(entity);
             await _db.SaveChangesAsync();
             return entity;

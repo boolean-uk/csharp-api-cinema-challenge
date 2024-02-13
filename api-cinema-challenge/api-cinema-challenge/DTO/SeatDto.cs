@@ -10,7 +10,6 @@ namespace api_cinema_challenge.DTO
 
         public SeatDto(Seat seat)
         {
-            //Async issue; Nigel please fix if you have time :)
             if(seat == null)
             {
                 HallName = "Seat is null error";

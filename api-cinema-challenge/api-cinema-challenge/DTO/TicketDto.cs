@@ -9,7 +9,6 @@ namespace api_cinema_challenge.DTO
 
         public TicketDto(Ticket ticket)
         {
-            //Async issue; Nigel please fix if you have time :)
             if(ticket == null)
             {
                 Screening = null;
