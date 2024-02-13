@@ -9,18 +9,18 @@ namespace api_cinema_challenge.Models
         public int Id { get; set; }
 
         [Column("movie_name")]
-        public string Name { get; set; }
+        public string MovieName { get; set; }
 
         [Column("movie_desc")]
-        public string Desc { get; set; }
+        public string MovieDesc { get; set; }
 
         [Column("movie_length")]
-        public int Length { get; set; }
+        public int MovieLength { get; set; }
 
         [Column("created_at")]
-        public DateTime Created_At { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [Column("updated_at")]
-        public DateTime Updated_At { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -10,15 +10,15 @@ namespace api_cinema_challenge.Models
         public int Id { get; set; }
 
         [Column("hall_name")]
-        public string Hall_Name { get; set; }
+        public string HallName { get; set; }
 
         [Column("hall_desc")]
-        public string Hall_Desc { get; set; }
+        public string HallDesc { get; set; }
 
         [Column("created_at")]
-        public DateTime Created_At { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [Column("updated_at")]
-        public DateTime Updated_At { get;set; }
+        public DateTime UpdatedAt { get;set; }
     }
 }

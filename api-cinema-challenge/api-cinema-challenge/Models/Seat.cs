@@ -14,6 +14,11 @@ namespace api_cinema_challenge.Models
         [Column("seat_number")]
         public int SeatNumber { get; set; }
 
+        [Column("fk_hall_id")]
+        [ForeignKey("Hall")]
+        public int HallId { get; set; }
+        public Hall Hall { get; set; }
+
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
 

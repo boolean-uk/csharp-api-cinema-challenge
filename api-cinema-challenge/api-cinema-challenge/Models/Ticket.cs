@@ -11,12 +11,12 @@ namespace api_cinema_challenge.Models
         [Column("fk_screening_id")]
         [ForeignKey("Screening")]
         public int ScreeningId { get; set; }
-        public Screening Screening { get; set; }
+        public virtual Screening Screening { get; set; }
 
         [Column("fk_seat_id")]
         [ForeignKey("Seat")]
         public int SeatId { get; set; }
-        public Seat Seat { get; set; }
+        public virtual Seat Seat { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
