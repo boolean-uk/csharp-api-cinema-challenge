@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace api_cinema_challenge.Models
 {
     [Table("customer")]
-    public class Customer
+    public class Customer : ApplicationUser
     {
         [Column("id")]
         public int id { get; set; }
