@@ -36,7 +36,7 @@ namespace api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings
         public int RuntimeMins { get; set; }
 
         [Column("rating")]
-        public MovieRating Rating { get; set; }
+        public string Rating { get; set; }
 
         public ICollection<Screening> Screenings { get; set; }
     }

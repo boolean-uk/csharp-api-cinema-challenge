@@ -1,5 +1,4 @@
 ﻿using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
-using api_cinema_challenge.Models.Domain.Entities.Junctions;
 using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.Domain.Entities.SalesAndTickets;
 using Microsoft.EntityFrameworkCore;
@@ -317,7 +316,7 @@ namespace api_cinema_challenge.Data
             movie.Id = id;
             movie.Title = GenerateRandomMovieTitle();
             movie.Description = PickRandomString(movieDescriptions);
-            movie.Rating = GetRandomMovieRating();
+            movie.Rating = GetRandomMovieRating().ToString();
             movie.RuntimeMins = random.Next(60, 250);
             return movie;
         }

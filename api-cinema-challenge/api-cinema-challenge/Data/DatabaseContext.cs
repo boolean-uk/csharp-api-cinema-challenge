@@ -1,5 +1,4 @@
 ﻿using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
-using api_cinema_challenge.Models.Domain.Entities.Junctions;
 using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.Domain.Entities.SalesAndTickets;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +24,7 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScreeningSeat>().HasKey(ts => new { ts.SeatId, ts.ScreeningId });
-            modelBuilder.Entity<Movie>().Property(m => m.Rating).HasConversion<string>();
+            modelBuilder.Entity<Auditorium>().Navigation(a => a.Seats).AutoInclude();
             modelBuilder.SeedDatabase(1996);
         }
 

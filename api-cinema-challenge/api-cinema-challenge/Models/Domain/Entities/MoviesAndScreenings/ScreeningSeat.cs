@@ -1,10 +1,9 @@
 ﻿using api_cinema_challenge.Models.Domain.AbstractClasses;
 using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
-using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.Domain.Entities.SalesAndTickets;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api_cinema_challenge.Models.Domain.Entities.Junctions
+namespace api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings
 {
     [Table("screening_seats")]
     public class ScreeningSeat : TimestampedEntity
