@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.IO.Pipes;
 using System.Globalization;
 using System.Net.Sockets;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -48,6 +49,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Manager")]
         public static async Task<IResult> CreateMovie(CreateMoviePayload payload, IMovieRepository movieRepository, IRepository repository)
         {
 
@@ -108,6 +110,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Manager")]
         public static async Task<IResult> DeleteMovie(int id, IMovieRepository repository)
         {
 
@@ -128,6 +131,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Manager")]
         public static async Task<IResult> UpdateMovie(int id, UpdateMoviePayload payload, IMovieRepository repository)
         {
 

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.IO.Pipes;
 using System.Globalization;
 using System.Net.Sockets;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using api_cinema_challenge.Utils;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -48,8 +51,17 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]  // [AsParameters]
-        public static async Task<IResult> CreateScreening(int id, CreateScreeningPayload payload, IRepository repository)
+        [Authorize(Roles = "Manager")]
+        public static async Task<IResult> CreateScreening(int id, CreateScreeningPayload payload, IRepository repository, ClaimsPrincipal user)
         {
+
+            var uid = user.UserId();
+            var email = user.UserEmail();
+
+            if (uid == null)
+            {
+                return Results.Unauthorized();
+            }
 
             if (payload.screenNumber <= 0 || payload.capacity <= 0 || id <= 0)
             {
@@ -87,8 +99,16 @@ namespace api_cinema_challenge.Endpoints
         //{customerId}/screenings/{screeningId}
         /// TICKETS
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetTickets(int customerId, int screeningId, IRepository repository)
+        [Authorize()]
+        public static async Task<IResult> GetTickets(int customerId, int screeningId, IRepository repository, ClaimsPrincipal user)
         {
+            var uid = user.UserId();
+            var email = user.UserEmail();
+
+            if (uid == null)
+            {
+                return Results.Unauthorized();
+            }
 
             var tickets = await repository.GetTickets(customerId, screeningId);
 
@@ -110,6 +130,7 @@ namespace api_cinema_challenge.Endpoints
         // {customerId}/screenings/{screeningId}
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]  // [AsParameters]
+        [Authorize(Roles = "Customer")]
         public static async Task<IResult> CreateTicket(int customerId, int screeningId, CreateTicketPayload payload, IRepository repository)
         {
 

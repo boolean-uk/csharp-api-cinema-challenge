@@ -47,10 +47,14 @@ namespace api_cinema_challenge.Repository
             return mv;
         }
 
-        public async Task<Customer?> CreateCustomer(string name, string email, string phone)
+        public async Task<Customer?> CreateCustomer(string name, string email, string phone, string email2)
         {
+
+            string usr_id = _db.ApplicationUsers.FirstOrDefault(x => x.Email == email2).Id;
+
+
             if (name == "" || email == "" || phone == "") return null;
-            var customer = new Customer { Name = name, Email = email, Phone = phone, CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt =  DateTime.Now.ToUniversalTime()  };
+            var customer = new Customer { Name = name, UserId = usr_id, Email = email, Phone = phone, CreatedAt = DateTime.Now.ToUniversalTime(), UpdatedAt =  DateTime.Now.ToUniversalTime()  };
             await _db.Customers.AddAsync(customer);
             return customer;
         }

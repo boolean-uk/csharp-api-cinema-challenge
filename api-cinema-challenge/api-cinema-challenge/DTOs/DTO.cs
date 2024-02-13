@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.Enums;
+using api_cinema_challenge.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -6,6 +7,11 @@ using System.Xml.Linq;
 
 namespace api_cinema_challenge.DTOs
 {
+
+    public record RegisterDto(string Email, string Password);
+    public record LoginDto(string Email, string Password);
+    public record AuthResponseDto(string Token, string Email, UserRole Role);
+
 
     class StatusListDto
     {

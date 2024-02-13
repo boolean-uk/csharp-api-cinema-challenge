@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.IO.Pipes;
 using System.Globalization;
 using System.Net.Sockets;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using api_cinema_challenge.Utils;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -27,6 +30,7 @@ namespace api_cinema_challenge.Endpoints
 
         /// CUSTOMERS
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = "Manager")]
         public static async Task<IResult> GetCustomers(ICustomerRepository repository)
         { 
 
@@ -48,8 +52,18 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> CreateCustomer(CreateCustomerPayload payload, ICustomerRepository repository)
+        [Authorize()]
+        public static async Task<IResult> CreateCustomer(CreateCustomerPayload payload, ICustomerRepository repository, ClaimsPrincipal user)
         {
+
+
+            var uid = user.UserId();
+            var email = user.UserEmail();
+
+            if (uid == null)
+            {
+                return Results.Unauthorized();
+            }
 
             if (payload.Name == "" || payload.Phone == "" || payload.Email == "")
             {
@@ -66,7 +80,7 @@ namespace api_cinema_challenge.Endpoints
                 return Results.BadRequest("Email needs to be in correct format.");
             }
 
-            Customer? customer = await repository.CreateCustomer(payload.Name, payload.Email, payload.Phone);
+            Customer? customer = await repository.CreateCustomer(payload.Name, payload.Email, payload.Phone, email);
             if (customer == null)
             {
                 return Results.BadRequest("Failed to create customer.");
@@ -83,10 +97,28 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> DeleteCustomer(int id, ICustomerRepository repository)
+        [Authorize()]
+        public static async Task<IResult> DeleteCustomer(int id, ICustomerRepository repository, ClaimsPrincipal user)
         {
 
+            var uid = user.UserId();
+            var email = user.UserEmail();
+            var pos = user.UserRole();
+
+            if (uid == null)
+            {
+                return Results.Unauthorized();
+            }
+
+
+
             Customer? customer = await repository.DeleteCustomer(id, PreloadPolicy.PreloadRelations);
+
+            // customer can only delete themselves
+            if (customer.Email != email && pos == "Customer")
+            {
+                return Results.Unauthorized();
+            }
 
             if (customer == null)
             {
@@ -105,6 +137,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize()]
         public static async Task<IResult> UpdateCustomer(int id, UpdateCustomerPayload payload, ICustomerRepository repository)
         {
 

@@ -10,6 +10,9 @@ namespace api_cinema_challenge.Models
         [Column("id")]
         public int Id { get; set; }
 
+        [Column("user_id")]
+        public string UserId { get; set; }
+
         [Column("name")]
         [Required]
         public string Name { get; set; }

@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using System.Diagnostics;
 using System.Reflection.Metadata;
-using Microsoft.EntityFrameworkCore;
 using api_cinema_challenge.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using api_cinema_challenge.Enums;
 
 namespace api_cinema_challenge.Data
 {
-    public class CinemaContext : DbContext
+    public class CinemaContext : IdentityUserContext<ApplicationUser>
     {
         // private string _connectionString;
         public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
@@ -28,13 +30,14 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
             Seeder seeder = new Seeder();
+
 
             modelBuilder.Entity<Ticket>().HasKey(e => new { e.Id, e.ScreeningId, e.CustomerId });
 
             modelBuilder.Entity<Movie>().HasMany(e => e.Screenings).WithOne(e => e.Movie).HasForeignKey(e => e.MovieId);
-
 
 
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
@@ -46,6 +49,8 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
 
         }
+
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Customer> Customers { get; set; }

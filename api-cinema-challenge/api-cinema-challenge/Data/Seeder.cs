@@ -13,6 +13,7 @@ namespace api_cinema_challenge.Data
         private List<Ticket> _tickets = new List<Ticket>();
 
 
+
         private List<string> _movieTitles = new List<string>()
         {
             "2001 Space Odyssey",
@@ -118,6 +119,7 @@ namespace api_cinema_challenge.Data
 
                 Customer c = new Customer();
                 c.Id = x;
+                c.UserId = $"{x}";
                 c.Name = _names[x];
                 c.Email = _emails[x];
                 c.Phone = _numbers[x];
