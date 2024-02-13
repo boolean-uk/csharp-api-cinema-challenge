@@ -13,9 +13,9 @@ namespace api_cinema_challenge.Data
 
         public List<Movie> Movies = new List<Movie>()
         {
-            new Movie() {Id = 1, Title = "Oppenheimer", Rating = "R", RuntimMins = 180},
-            new Movie() {Id = 2, Title = "There Will Be Blood", Rating = "12A", RuntimMins = 158},
-            new Movie() {Id = 3, Title = "The Lord of the Rings: The Return of the King", Rating = "12A", RuntimMins = 201}
+            new Movie() {Id = 1, Title = "Oppenheimer", Description = "Oppenheimer Description", Rating = "R", RuntimMins = 180},
+            new Movie() {Id = 2, Title = "There Will Be Blood", Description = "There will be blood description", Rating = "12A", RuntimMins = 158},
+            new Movie() {Id = 3, Title = "The Lord of the Rings: The Return of the King", Description = "The lord of the rings description", Rating = "12A", RuntimMins = 201}
         };
 
         public List<Screen> Screens = new List<Screen>()
@@ -30,6 +30,13 @@ namespace api_cinema_challenge.Data
             new CustomerScreening(){CustomerId = 1, ScreeningId = 1},
             new CustomerScreening(){CustomerId = 2, ScreeningId = 2},
             new CustomerScreening(){CustomerId = 3, ScreeningId = 3}
+        };
+
+        public List<Ticket> Tickets = new List<Ticket>()
+        {
+            new Ticket() { Id = 1, NumSeats = 3, CustomerId = 1, ScreenId = 1 },
+            new Ticket() { Id = 2, NumSeats = 5, CustomerId = 2, ScreenId = 2 },
+            new Ticket() { Id = 3, NumSeats = 7, CustomerId = 3, ScreenId = 3 }
         };
     }
 }

@@ -7,6 +7,8 @@ namespace api_cinema_challenge.Models.DatabaseModels
     [Table("customers")]
     public class Customer
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
         public int Id { get; set; }
         [Column("name")]

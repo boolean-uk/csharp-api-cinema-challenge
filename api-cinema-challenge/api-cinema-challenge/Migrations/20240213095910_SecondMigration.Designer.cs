@@ -12,7 +12,7 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240209094255_SecondMigration")]
+    [Migration("20240213095910_SecondMigration")]
     partial class SecondMigration
     {
         /// <inheritdoc />
@@ -106,6 +106,38 @@ namespace api_cinema_challenge.Migrations
                         });
                 });
 
+            modelBuilder.Entity("api_cinema_challenge.Models.DatabaseModels.CustomerScreening", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("customerid");
+
+                    b.Property<int>("ScreeningId")
+                        .HasColumnType("integer")
+                        .HasColumnName("screeningid");
+
+                    b.HasKey("CustomerId", "ScreeningId");
+
+                    b.ToTable("customersScreenings");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            ScreeningId = 1
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            ScreeningId = 2
+                        },
+                        new
+                        {
+                            CustomerId = 3,
+                            ScreeningId = 3
+                        });
+                });
+
             modelBuilder.Entity("api_cinema_challenge.Models.DatabaseModels.Movie", b =>
                 {
                     b.Property<int>("Id")
@@ -118,6 +150,11 @@ namespace api_cinema_challenge.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("createdAt");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<string>("Rating")
                         .IsRequired()
@@ -146,6 +183,7 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Oppenheimer Description",
                             Rating = "R",
                             RuntimMins = 180,
                             Title = "Oppenheimer",
@@ -155,6 +193,7 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "There will be blood description",
                             Rating = "12A",
                             RuntimMins = 158,
                             Title = "There Will Be Blood",
@@ -164,6 +203,7 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 3,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "The lord of the rings description",
                             Rating = "12A",
                             RuntimMins = 201,
                             Title = "The Lord of the Rings: The Return of the King",
@@ -243,6 +283,72 @@ namespace api_cinema_challenge.Migrations
                         });
                 });
 
+            modelBuilder.Entity("api_cinema_challenge.Models.DatabaseModels.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("createdAt");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("customerId");
+
+                    b.Property<int>("NumSeats")
+                        .HasColumnType("integer")
+                        .HasColumnName("numSeats");
+
+                    b.Property<int>("ScreenId")
+                        .HasColumnType("integer")
+                        .HasColumnName("screenId");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updatedAt");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ScreenId");
+
+                    b.ToTable("tickets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = 1,
+                            NumSeats = 3,
+                            ScreenId = 1,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = 2,
+                            NumSeats = 5,
+                            ScreenId = 2,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = 3,
+                            NumSeats = 7,
+                            ScreenId = 3,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
             modelBuilder.Entity("CustomerScreen", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.DatabaseModels.Customer", null)
@@ -267,6 +373,25 @@ namespace api_cinema_challenge.Migrations
                         .IsRequired();
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.DatabaseModels.Ticket", b =>
+                {
+                    b.HasOne("api_cinema_challenge.Models.DatabaseModels.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api_cinema_challenge.Models.DatabaseModels.Screen", "Screen")
+                        .WithMany()
+                        .HasForeignKey("ScreenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Screen");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.DatabaseModels.Movie", b =>

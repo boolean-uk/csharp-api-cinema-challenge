@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240209102121_ThirdMigration")]
-    partial class ThirdMigration
+    [Migration("20240212142016_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -151,6 +151,11 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("createdAt");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
                     b.Property<string>("Rating")
                         .IsRequired()
                         .HasColumnType("text")
@@ -178,6 +183,7 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Oppenheimer Description",
                             Rating = "R",
                             RuntimMins = 180,
                             Title = "Oppenheimer",
@@ -187,6 +193,7 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "There will be blood description",
                             Rating = "12A",
                             RuntimMins = 158,
                             Title = "There Will Be Blood",
@@ -196,6 +203,7 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 3,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "The lord of the rings description",
                             Rating = "12A",
                             RuntimMins = 201,
                             Title = "The Lord of the Rings: The Return of the King",

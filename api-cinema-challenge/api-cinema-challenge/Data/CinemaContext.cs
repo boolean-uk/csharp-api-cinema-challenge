@@ -29,11 +29,15 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Movie>().HasMany(x => x.Screenings).WithOne(x => x.Movie).HasForeignKey(x => x.MovieId);
             modelBuilder.Entity<Screen>().HasOne(x => x.Movie).WithMany(x => x.Screenings);
             modelBuilder.Entity<Screen>().HasMany(x => x.Customers).WithMany(x => x.Screenings);
+            modelBuilder.Entity<Ticket>().HasOne(x => x.Customer);
+            modelBuilder.Entity<Ticket>().HasOne(x => x.Screen);
+
 
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Screen>().HasData(seeder.Screens);
             modelBuilder.Entity<CustomerScreening>().HasData(seeder.CustomerScreenings);
+            modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
 
 
         }
@@ -42,6 +46,8 @@ namespace api_cinema_challenge.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screen> Screens { get; set; }
         public DbSet<CustomerScreening> CustomerScreenings { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
 
     }
 }
