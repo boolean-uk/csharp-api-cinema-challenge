@@ -1,1 +1,26 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
+GET https://localhost:7195/customers
+Accept: application/json
+
+###
+POST https://localhost:7195/movies
+Content-Type: application/json
+
+{
+  "title": "Lion Eats Lunch 2",
+  "rating": "PG-17",
+  "description": "He is back and he is hungry.",
+  "runtimeMins": 182,
+  "screenings": [
+    {
+      "screenNumber": 8,
+      "capacity": 500,
+      "startsAt": "2024-01-01T18:00:00"
+    },
+    {
+      "screenNumber": 9,
+      "capacity": 500,
+      "startsAt": "2024-01-01T18:00:00"
+    }
+  ]
+}

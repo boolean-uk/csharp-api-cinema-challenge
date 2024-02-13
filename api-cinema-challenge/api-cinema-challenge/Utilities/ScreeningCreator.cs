@@ -11,7 +11,7 @@ namespace api_cinema_challenge.Utilities
             MovieId = movieId;
             Auditorium = auditoriumWithSeats;
             Capacity = capacity;
-            StartsAt = DateTime.SpecifyKind(StartsAt, DateTimeKind.Utc);
+            StartsAt = DateTime.SpecifyKind(startsAt, DateTimeKind.Utc);
         }
 
         public Screening GetScreening()

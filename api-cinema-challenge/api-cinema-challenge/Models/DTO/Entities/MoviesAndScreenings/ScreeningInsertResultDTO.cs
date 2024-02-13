@@ -4,15 +4,14 @@ namespace api_cinema_challenge.Models.DTO.Entities.MoviesAndScreenings
 {
     public class ScreeningInsertResultDTO
     {
-        public ScreeningInsertResultDTO(Screening? screening=null, int? screenNumber=null, int? numSeats=null)
+        public ScreeningInsertResultDTO(Screening screening, int screenNumber, int numSeats)
         {
-            if (screening != null) StartsAt = screening.StartsAt.ToString("yyyy-MM-ddTHH:mm:ss");
+            StartsAt = screening.StartsAt.ToString("yyyy-MM-ddTHH:mm:ss");
             ScreenNumber = screenNumber;
             NumSeats = numSeats;
         }
-        public string Status { get; set; } = "Success";
-        public string? StartsAt { get; set; }
-        public int? ScreenNumber { get; set; }
-        public int? NumSeats { get; set; }
+        public string StartsAt { get; set; }
+        public int ScreenNumber { get; set; }
+        public int NumSeats { get; set; }
     }
 }

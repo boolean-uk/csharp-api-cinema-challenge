@@ -24,6 +24,7 @@ namespace api_cinema_challenge.Endpoints
             group.MapDelete("/{id}", Delete);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> GetAll(IRepository<Movie> movieRepository)
         {
             IEnumerable<Movie> results = await movieRepository.GetAll();
@@ -35,6 +36,8 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Ok(new Payload<List<MovieOutputDTO>>(resultDTOs));
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> Update(IRepository<Movie> movieRepository, int id, MoviePutDTO input)
         {
             Movie? movie = await movieRepository.GetById(id);
@@ -48,6 +51,8 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Created($"/{movie.Id}", new Payload<MovieOutputDTO>(resultDTO));
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> Delete(IRepository<Movie> movieRepository, int id)
         {
             Movie? result = await movieRepository.DeleteById(id);
@@ -56,6 +61,9 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Ok(new Payload<MovieOutputDTO>(resultDTO));
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> CreateMovie(
             [FromServices] IRepository<Movie> movieRepository,
             [FromServices] IRepository<Screening> screeningRepository,
@@ -63,6 +71,12 @@ namespace api_cinema_challenge.Endpoints
             [FromServices] IJunctionRepository<ScreeningSeat> screeningSeatRepository,
             [FromBody] MoviePostDTO input)
         {
+            foreach (ScreeningInputDTO screening in input.Screenings)
+            {
+                if (!DateTime.TryParse(screening.StartsAt, out DateTime parsed)) return TypedResults.BadRequest($"{screening.StartsAt} is not a valid date.");
+                Auditorium? auditorium = await auditoriumRepository.GetById(screening.ScreenNumber);
+                if (auditorium == null) return TypedResults.NotFound(($"No screen with id = {screening.ScreenNumber}"));
+            }
             Movie newMovie = new Movie()
             {
                 Title = input.Title,
@@ -90,8 +104,7 @@ namespace api_cinema_challenge.Endpoints
                 ScreeningInputDTO input)
         {
             Auditorium? auditorium = await auditoriumRepository.GetById(input.ScreenNumber);
-            if (auditorium == null) return new ScreeningInsertResultDTO() { Status = $"Failed: No screen with id={input.ScreenNumber}." };
-            ScreeningCreator screeningCreator = new ScreeningCreator(movieId, auditorium, input.Capacity, input.StartsAt);
+            ScreeningCreator screeningCreator = new ScreeningCreator(movieId, auditorium, input.Capacity, DateTime.Parse(input.StartsAt));
             Screening screeningResult = await screeningRepository.Insert(screeningCreator.GetScreening());
             IEnumerable<ScreeningSeat> screeningSeatsResult = await screeeningSeatRepository.Insert(screeningCreator.GetScreeningSeats(screeningResult.Id));
             return new ScreeningInsertResultDTO(screeningResult, auditorium.Id, screeningSeatsResult.Count());
