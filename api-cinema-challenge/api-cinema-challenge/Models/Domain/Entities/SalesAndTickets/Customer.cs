@@ -26,6 +26,6 @@ namespace api_cinema_challenge.Models.Domain.Entities.SalesAndTickets
         [Column("weight_in_kg")]
         public int Weight { get; set; }
 
-        ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

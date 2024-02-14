@@ -25,6 +25,9 @@ namespace api_cinema_challenge.Data
         {
             modelBuilder.Entity<ScreeningSeat>().HasKey(ts => new { ts.SeatId, ts.ScreeningId });
             modelBuilder.Entity<Auditorium>().Navigation(a => a.Seats).AutoInclude();
+            modelBuilder.Entity<Customer>().Navigation(a => a.Tickets).AutoInclude();
+            modelBuilder.Entity<Ticket>().Navigation(a => a.ScreeningSeats).AutoInclude();
+            modelBuilder.Entity<ScreeningSeat>().Navigation(a => a.Seat).AutoInclude();
             modelBuilder.SeedDatabase(1996);
         }
 

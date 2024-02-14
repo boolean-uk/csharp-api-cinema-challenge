@@ -24,5 +24,13 @@ namespace api_cinema_challenge.Repository.Generic
             await db.SaveChangesAsync();
             return entities;
         }
+
+        public async Task<T> Update(T entity)
+        {
+            table.Attach(entity);
+            db.Entry(entity).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return entity;
+        }
     }
 }

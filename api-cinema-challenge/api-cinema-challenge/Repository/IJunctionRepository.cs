@@ -4,5 +4,6 @@
     {
         Task<IEnumerable<T>> GetAll();
         Task<IEnumerable<T>> Insert(IEnumerable<T> entities);
+        Task<T> Update(T entity);
     }
 }

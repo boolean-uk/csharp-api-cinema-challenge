@@ -17,6 +17,7 @@ builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 builder.Services.AddScoped<IRepository<Auditorium>, Repository<Auditorium>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IJunctionRepository<ScreeningSeat>, JunctionRepository<ScreeningSeat>>();
 builder.Services.AddScoped<IScreeningRepository, ScreeningRepository>();

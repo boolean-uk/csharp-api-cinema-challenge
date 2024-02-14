@@ -3,10 +3,8 @@ using api_cinema_challenge.Models.Domain.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.DTO.Entities.MoviesAndScreenings;
 using api_cinema_challenge.Models.DTO;
 using api_cinema_challenge.Models.Domain.Entities.CinemaInfrastructure;
-using api_cinema_challenge.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using api_cinema_challenge.Repository.Specific;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api_cinema_challenge.Endpoints
 {
