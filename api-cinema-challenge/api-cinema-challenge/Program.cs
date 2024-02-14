@@ -1,11 +1,24 @@
+using api_cinema_challenge.Controllers;
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Models.PureModels;
+using api_cinema_challenge.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddDbContext<DataContext>(
+    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("LocalDockerContainer"))
+    );
+builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
+builder.Services.AddScoped<IRepository<Display>, Repository<Display>>();
+builder.Services.AddScoped<IRepository<Seat>, Repository<Seat>>();
+builder.Services.AddScoped<TicketSeatRepository>();
 
 var app = builder.Build();
 
@@ -17,4 +30,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.ConfigureCustomersEndpoint();
+app.ConfigureMoviesEndpoint();
+app.ConfigureScreeningsEndpoint();
+app.ConfigureTicketsEndpoint();
+app.ConfigureDisplaysEndpoint();
+
 app.Run();

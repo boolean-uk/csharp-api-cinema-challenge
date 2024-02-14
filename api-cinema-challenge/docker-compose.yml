@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  api-cinema-challenge:
+    image: ${DOCKER_REGISTRY-}apicinemachallenge
+    container_name: cinemaChallenge
+    build:
+      context: .
+      dockerfile: api-cinema-challenge/Dockerfile
+    ports: 
+        - "8080:8080"
+        - "8081:8081"
+    networks:
+      - cinema-network
+    depends_on:
+        postgresDatabase:
+            condition: service_healthy
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Production
+
+  postgresDatabase:
+    image: postgres:latest
+    container_name: postgresCinemaDatabase
+    ports:
+      - "5432:5432"  # Map the host port to the container port
+    networks:
+      - cinema-network
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./containers/postgresql/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:
+    driver: local
+networks:
+  cinema-network:
+    driver: bridge  
