@@ -1,8 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
-using api_cinema_challenge.Data;
-using api_cinema_challenge.Models.PatientModels;
 using api_cinema_challenge.Repository.GenericRepository;
 
 namespace api_cinema_challenge.Repository.ExtensionRepository
