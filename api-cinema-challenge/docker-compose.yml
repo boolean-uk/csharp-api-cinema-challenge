@@ -22,7 +22,7 @@ services:
     image: postgres:latest
     container_name: postgresCinemaDatabase
     ports:
-      - "5433:5433"  # Map the host port to the container port
+      - "5432:5432"  # Map the host port to the container port
     networks:
       - cinema-network
     environment:
