@@ -1,12 +1,13 @@
 ﻿using api_cinema_challenge.Models;
 
-namespace api_cinema_challenge.DTOs
+namespace api_cinema_challenge.Posts___Puts
 {
-    public class ScreeningDTO : BaseEntity
+    public class ScreeningPost
     {
         public int screenNumber {  get; set; }
         public int capacity { get; set; }
         public DateTime startsAt { get; set; }
-        public int MovieId { get; set; }
+        public int movieId { get; set; }
+        
     }
 }

@@ -20,7 +20,5 @@ namespace api_cinema_challenge.Models
 
         [Column("fk_movie_id")]
         public int MovieId { get; set; }
-
-        
     }
 }
