@@ -5,11 +5,11 @@ using api_cinema_challenge.Repository.GenericRepository;
 
 namespace api_cinema_challenge.Repository.ExtensionRepository
 {
-    public class AppointmentRepo : Repository<Screening>
+    public class ScreeningRepo : Repository<Screening>
     {
         private readonly DataContext _db;
 
-        public AppointmentRepo(DataContext db) : base(db)
+        public ScreeningRepo(DataContext db) : base(db)
         {
             _db = db;
         }

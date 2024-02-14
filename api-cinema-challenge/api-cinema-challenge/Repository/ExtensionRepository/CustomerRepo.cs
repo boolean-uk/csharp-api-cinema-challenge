@@ -5,11 +5,11 @@ using api_cinema_challenge.Repository.GenericRepository;
 
 namespace api_cinema_challenge.Repository.ExtensionRepository
 {
-    public class PrescriptionRepo : Repository<Customer>
+    public class CustomerRepo : Repository<Customer>
     {
         private readonly DataContext _db;
 
-        public PrescriptionRepo(DataContext db) : base(db)
+        public CustomerRepo(DataContext db) : base(db)
         {
             _db = db;
         }

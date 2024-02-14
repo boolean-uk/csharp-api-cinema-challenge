@@ -1,5 +1,5 @@
 ﻿
-namespace workshop.wwwapi.Repository.GenericRepository
+namespace api_cinema_challenge.Repository.GenericRepository
 {
     public interface IRepository<T> where T : class
     {
@@ -9,7 +9,7 @@ namespace workshop.wwwapi.Repository.GenericRepository
         Task<T> Delete(object id);
         Task<T> Delete(T entity);
         Task<T> GetById(object id);
-        Task<IEnumerable<T>> GetById(object id_1, object id_2);
+        Task<T> GetById(object id_1, object id_2);
 
 
 

@@ -5,11 +5,11 @@ using api_cinema_challenge.Repository.GenericRepository;
 
 namespace api_cinema_challenge.Repository.ExtensionRepository
 {
-    public class DoctorRepo: Repository<Movie>
+    public class MovieRepo: Repository<Movie>
     {
         private readonly DataContext _db;
 
-        public DoctorRepo(DataContext db) : base(db)
+        public MovieRepo(DataContext db) : base(db)
         {
             _db = db;
         }

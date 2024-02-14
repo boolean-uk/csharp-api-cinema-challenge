@@ -1,5 +1,7 @@
 ﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository.GenericRepository;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -15,27 +17,64 @@ namespace api_cinema_challenge.Endpoints
         private static async Task<IResult> GetTickets(IRepository<Ticket> repo)
         {
             var tickets = await repo.Get();
-            return Results.Ok(tickets.Select(ticket => new {
-                ticket.Id,
-                ticket.NumSeats,
-                ticket.CreatedAt,
-                ticket.UpdatedAt
-            }));
+            return Results.Ok(tickets.Select(TicketDto));
         }
 
         private static async Task<IResult> GetTicketById(IRepository<Ticket> repo, object screeningId, object customerId)
         {
             var ticket = await repo.GetById(screeningId, customerId);
             if (ticket == null) return Results.NotFound();
+            return Results.Ok(TicketDto(ticket));
+            
+        }
+        private static object TicketDto(Ticket ticket)
+        {
+            var customer = ticket.Customer;
+            var screening = ticket.Screening;
+            var movie = screening.Movie;
 
-            return Results.Ok(new
+            var movieDto = new
             {
-                new {ticket.Screening,
-                ticket.Customer,
+                movie.Id,
+                movie.Title,
+                movie.Description,
+                movie.Rating,
+                movie.RuntimeMins,
+                movie.CreatedAt,
+                movie.UpdatedAt,
+            };
+
+            var screeningDto = new
+            {
+                screening.Id,
+                screening.StartsAt,
+                screening.Capacity,
+                screening.CreatedAt,
+                screening.UpdatedAt,
+                screening.ScreenNumber,
+                movieDto
+            };
+
+            var customerDto = new
+            {
+                customer.Id,
+                customer.Name,
+                customer.Email,
+                customer.Phone,
+                customer.CreatedAt,
+                customer.UpdatedAt,
+            };
+
+            var ticketDto = new
+            {
+                customerDto,
+                screeningDto,
                 ticket.NumSeats,
                 ticket.CreatedAt,
                 ticket.UpdatedAt
-            });
+            };
+
+            return ticketDto;
         }
     }
 

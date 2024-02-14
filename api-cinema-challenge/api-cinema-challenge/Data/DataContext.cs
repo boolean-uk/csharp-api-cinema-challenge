@@ -21,18 +21,59 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Ticket>()
-                .HasKey(t => new { t.FkCustomerId, t.FkScreeningId });
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
+                entity.HasIndex(e => e.Email).IsUnique();
+                entity.Property(e => e.Phone).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.CreatedAt).IsRequired().HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            });
 
-            modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.Customer)
-                .WithMany(c => c.Tickets)
-                .HasForeignKey(t => t.FkCustomerId);
+            modelBuilder.Entity<Movie>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Title).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.Rating).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Description).IsRequired();
+                entity.Property(e => e.RuntimeMins).IsRequired();
+                entity.Property(e => e.CreatedAt).IsRequired().HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            });
 
-            modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.Screening)
-                .WithMany(s => s.Tickets)
-                .HasForeignKey(t => t.FkScreeningId);
+            modelBuilder.Entity<Screening>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ScreenNumber).IsRequired();
+                entity.Property(e => e.Capacity).IsRequired();
+                entity.Property(e => e.StartsAt).IsRequired();
+                entity.Property(e => e.CreatedAt).IsRequired().HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.HasOne(e => e.Movie)
+                      .WithMany(m => m.Screenings)
+                      .HasForeignKey(e => e.MovieId);
+            });
+
+            modelBuilder.Entity<Ticket>(entity =>
+            {
+                entity.HasKey(e => new { e.CustomerId, e.ScreeningId });
+                entity.Property(e => e.NumSeats).IsRequired();
+                entity.Property(e => e.CreatedAt).IsRequired().HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.HasOne(e => e.Customer)
+                      .WithMany(c => c.Tickets)
+                      .HasForeignKey(e => e.CustomerId);
+                entity.HasOne(e => e.Screening)
+                      .WithMany(s => s.Tickets)
+                      .HasForeignKey(e => e.ScreeningId);
+            });
         }
+
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }

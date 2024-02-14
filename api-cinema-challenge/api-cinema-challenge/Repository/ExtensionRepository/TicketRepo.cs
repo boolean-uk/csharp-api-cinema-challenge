@@ -7,11 +7,11 @@ using api_cinema_challenge.Repository.GenericRepository;
 
 namespace api_cinema_challenge.Repository.ExtensionRepository
 {
-    public class PatientRepo : Repository<Ticket>
+    public class TicketRepo : Repository<Ticket>
     {
         private readonly DataContext _db;
 
-        public PatientRepo(DataContext db) : base(db)
+        public TicketRepo(DataContext db) : base(db)
         {
             _db = db;
         }

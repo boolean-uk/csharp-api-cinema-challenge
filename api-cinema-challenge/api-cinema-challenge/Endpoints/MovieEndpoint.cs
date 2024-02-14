@@ -15,7 +15,7 @@ namespace api_cinema_challenge.Endpoints
 
         private static async Task<IResult> GetMovies(IRepository<Movie> repo)
         {
-            var movies = await repo.GetAllAsync();
+            var movies = await repo.Get();
             return Results.Ok(movies.Select(movie => new {
                 movie.Id,
                 movie.Title,

@@ -1,6 +1,5 @@
 ﻿using api_cinema_challenge.Data;
 using Microsoft.EntityFrameworkCore;
-using api_cinema_challenge.Data;
 
 namespace api_cinema_challenge.Repository.GenericRepository
 {
