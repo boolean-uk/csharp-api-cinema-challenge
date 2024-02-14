@@ -1,35 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
-using workshop.wwwapi.Data;
-using workshop.wwwapi.Models.DoctorModels;
-using workshop.wwwapi.Repository.GenericRepository;
+﻿using api_cinema_challenge.Data;
+using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
+using api_cinema_challenge.Repository.GenericRepository;
 
-namespace workshop.wwwapi.Repository.ExtensionRepository
+namespace api_cinema_challenge.Repository.ExtensionRepository
 {
-    public class DoctorRepo: Repository<Doctor>
+    public class DoctorRepo: Repository<Movie>
     {
-        private readonly DatabaseContext _db;
+        private readonly DataContext _db;
 
-        public DoctorRepo(DatabaseContext db) : base(db)
+        public DoctorRepo(DataContext db) : base(db)
         {
             _db = db;
         }
 
-        public override async Task<IEnumerable<Doctor>> Get()
+        public async override Task<IEnumerable<Movie>> Get()
         {
-            return await _db.Doctors
-                            .Include(d => d.Appointments)
-                                .ThenInclude(a => a.Patient)
+            return await _db.Movies
+                            .Include(m => m.Screenings)
                             .ToListAsync();
         }
 
-        public override async Task<Doctor> GetById(object id)
+        public async override Task<Movie> GetById(object id)
         {
-            var doctor = await _db.Doctors
-                            .Include(d => d.Appointments)
-                                .ThenInclude(a => a.Patient)
-                            .FirstOrDefaultAsync(d => d.Id == (int)id);
-
-            return doctor == null ? throw new KeyNotFoundException($"An author with the ID {id} was not found.") : doctor;
+            return await _db.Movies
+                            .Include(m => m.Screenings)
+                            .FirstOrDefaultAsync(m => m.Id == (int)id);
         }
     }
 }

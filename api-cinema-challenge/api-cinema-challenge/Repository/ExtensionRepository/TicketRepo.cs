@@ -1,35 +1,37 @@
-﻿using Microsoft.EntityFrameworkCore;
-using workshop.wwwapi.Data;
-using workshop.wwwapi.Models.PatientModels;
-using workshop.wwwapi.Repository.GenericRepository;
+﻿using api_cinema_challenge.Data;
+using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
+using api_cinema_challenge.Data;
+using api_cinema_challenge.Models.PatientModels;
+using api_cinema_challenge.Repository.GenericRepository;
 
-namespace workshop.wwwapi.Repository.ExtensionRepository
+namespace api_cinema_challenge.Repository.ExtensionRepository
 {
-    public class PatientRepo : Repository<Patient>
+    public class PatientRepo : Repository<Ticket>
     {
-        private readonly DatabaseContext _db;
+        private readonly DataContext _db;
 
-        public PatientRepo(DatabaseContext db) : base(db)
+        public PatientRepo(DataContext db) : base(db)
         {
             _db = db;
         }
 
-        public override async Task<IEnumerable<Patient>> Get()
+        public async override Task<IEnumerable<Ticket>> Get()
         {
-            return await _db.Patients
-                            .Include(p => p.Appointments)
-                                .ThenInclude(a => a.Doctor)
+            return await _db.Tickets
+                            .Include(t => t.Customer)
+                            .Include(t => t.Screening)
+                                .ThenInclude(s => s.Movie)
                             .ToListAsync();
         }
 
-        public override async Task<Patient> GetById(object id)
+        public async override Task<Ticket> GetById(object customerId, object screeningId)
         {
-            var patient = await _db.Patients
-                            .Include(p => p.Appointments)
-                                .ThenInclude(a => a.Doctor)
-                            .FirstOrDefaultAsync(p => p.Id == (int)id);
-
-            return patient == null ? throw new KeyNotFoundException($"An author with the ID {id} was not found.") : patient;
+            return await _db.Tickets
+                            .Include(t => t.Customer)
+                            .Include(t => t.Screening)
+                                .ThenInclude(s => s.Movie)
+                            .FirstOrDefaultAsync(t => t.CustomerId == (int)customerId && t.ScreeningId == (int)screeningId);
         }
     }
 }

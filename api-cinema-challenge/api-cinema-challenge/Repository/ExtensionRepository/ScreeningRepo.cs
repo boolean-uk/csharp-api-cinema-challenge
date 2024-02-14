@@ -1,30 +1,34 @@
-﻿using Microsoft.EntityFrameworkCore;
-using workshop.wwwapi.Data;
-using workshop.wwwapi.Models.AppointmentModels;
-using workshop.wwwapi.Repository.GenericRepository;
+﻿using api_cinema_challenge.Data;
+using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
+using api_cinema_challenge.Repository.GenericRepository;
 
-namespace workshop.wwwapi.Repository.ExtensionRepository
+namespace api_cinema_challenge.Repository.ExtensionRepository
 {
-    public class AppointmentRepo : Repository<Appointment>
+    public class AppointmentRepo : Repository<Screening>
     {
-        private readonly DatabaseContext _db;
+        private readonly DataContext _db;
 
-        public AppointmentRepo(DatabaseContext db) : base(db)
+        public AppointmentRepo(DataContext db) : base(db)
         {
             _db = db;
         }
 
-        public override async Task<IEnumerable<Appointment>> Get()
+        public async override Task<IEnumerable<Screening>> Get()
         {
-            return await _db.Appointments.Include(a => a.Doctor).Include(a => a.Patient).ToListAsync();
+            return await _db.Screenings
+                            .Include(s => s.Movie)
+                            .Include(s => s.Tickets)
+                            .ToListAsync();
         }
 
-        public override async Task<IEnumerable<Appointment>> GetById(object doctor_id, object patient_id)
+        public async override Task<Screening> GetById(object id)
         {
-            var appointments = await _db.Appointments.Include(a => a.Doctor).Include(a => a.Patient).ToListAsync();
-            
-            return appointments.Where(a=>a.DoctorId==(int)doctor_id && a.PatientId==(int)patient_id);
+            return await _db.Screenings
+                            .Include(s => s.Movie)
+                            .Include(s => s.Tickets)
+                            .FirstOrDefaultAsync(s => s.Id == (int)id);
         }
-        
+
     }
 }

@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using workshop.wwwapi.Data;
+﻿using api_cinema_challenge.Data;
+using Microsoft.EntityFrameworkCore;
+using api_cinema_challenge.Data;
 
-namespace workshop.wwwapi.Repository.GenericRepository
+namespace api_cinema_challenge.Repository.GenericRepository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private DatabaseContext _db;
+        private DataContext _db;
         private DbSet<T> _table;
 
-        public Repository(DatabaseContext dataContext)
+        public Repository(DataContext dataContext)
         {
             _db = dataContext;
             _table = _db.Set<T>();
@@ -41,7 +42,7 @@ namespace workshop.wwwapi.Repository.GenericRepository
             return await _table.FindAsync(id);
         }
 
-        public virtual Task<IEnumerable<T>> GetById(object id_1, object id_2)
+        public virtual Task<T> GetById(object id_1, object id_2)
         {
             throw new NotImplementedException();
         }
