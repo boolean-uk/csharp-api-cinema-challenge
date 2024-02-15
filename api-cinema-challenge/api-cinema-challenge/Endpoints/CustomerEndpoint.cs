@@ -1,4 +1,7 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.Models.Base;
+using api_cinema_challenge.Models.InputDTOs;
+using api_cinema_challenge.Models.OutputDTOs;
+using api_cinema_challenge.Repository.ExtensionRepository;
 using api_cinema_challenge.Repository.GenericRepository;
 
 namespace api_cinema_challenge.Endpoints
@@ -7,38 +10,63 @@ namespace api_cinema_challenge.Endpoints
     {
         public static void ConfigureCustomerEndpoint(this WebApplication app)
         {
-            var customerGroup = app.MapGroup("/customers");
-            customerGroup.MapGet("", GetCustomers);
-            customerGroup.MapGet("/{id}", GetCustomerById);
+            app.MapGet("/customers", GetCustomers);
+            app.MapGet("/customers/{id}", GetCustomerById);
+            app.MapPost("/customers", CreateCustomer);
+            app.MapPut("/customers/{id}", UpdateCustomer);
+            app.MapDelete("/customer/{id}", DeleteCustomer);
         }
+
+        private static async Task<IResult> CreateCustomer(IRepository<Customer> repo, CustomerInputDto inputDto)
+        {
+            var customer = new Customer 
+            { 
+                Name = inputDto.Name,
+                Email = inputDto.Email,
+                Phone = inputDto.Phone,
+                UpdatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            var inserted = await repo.Insert(customer);
+            return TypedResults.Created($"/customers/{inserted.Id}", CustomerOutputDto.Create(inserted));
+        }
+
+        private static async Task<IResult> UpdateCustomer(IRepository<Customer> repo, int customerId, CustomerInputDto inputDto)
+        {
+
+            var customer = await repo.GetById(customerId);
+            customer.Id = customerId;
+            customer.Name = inputDto.Name;
+            customer.Email = inputDto.Email;
+            customer.Phone = inputDto.Phone;
+            customer.UpdatedAt = DateTime.UtcNow;
+            
+
+            var updated = await repo.Update(customer);
+            return TypedResults.Accepted($"/customers/{customerId}", CustomerOutputDto.Create(updated));
+        }
+
 
         private static async Task<IResult> GetCustomers(IRepository<Customer> repo)
         {
             var customers = await repo.Get();
-            return Results.Ok(customers.Select(customer => new {
-                customer.Id,
-                customer.Name,
-                customer.Email,
-                customer.Phone,
-                customer.CreatedAt,
-                customer.UpdatedAt,
-            }));
+            return Results.Ok(customers.Select(CustomerOutputDto.Create));
         }
 
         private static async Task<IResult> GetCustomerById(IRepository<Customer> repo, int id)
         {
-            var customer = await repo.GetByIdAsync(id);
+            var customer = await repo.GetById(id);
             if (customer == null) return Results.NotFound();
+            return Results.Ok(CustomerOutputDto.Create);
+        }
 
-            return Results.Ok(new
-            {
-                customer.Id,
-                customer.Name,
-                customer.Email,
-                customer.Phone,
-                customer.CreatedAt,
-                customer.UpdatedAt
-            });
+        private static async Task<IResult> DeleteCustomer(IRepository<Customer> repo, int id)
+        {
+            var customer = await repo.GetById(id);
+            var customerDto = CustomerOutputDto.Create(customer);
+            await repo.Delete(id);
+            return Results.Ok(customerDto);
         }
     }
 }

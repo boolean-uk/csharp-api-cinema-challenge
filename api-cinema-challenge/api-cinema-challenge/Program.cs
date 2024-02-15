@@ -1,5 +1,6 @@
 using api_cinema_challenge.Data;
-using api_cinema_challenge.Models;
+using api_cinema_challenge.Endpoints;
+using api_cinema_challenge.Models.Base;
 using api_cinema_challenge.Repository.ExtensionRepository;
 using api_cinema_challenge.Repository.GenericRepository;
 using System.Numerics;
@@ -26,8 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.ConfigureMovieEndpoint();
 app.ConfigureTicketEndpoint();
+app.ConfigureMovieEndpoint();
 app.ConfigureScreeningEndpoint();
 app.ConfigureCustomerEndpoint();
 app.Run();

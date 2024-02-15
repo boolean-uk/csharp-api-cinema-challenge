@@ -1,4 +1,7 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.Models.Base;
+using api_cinema_challenge.Models.InputDTOs;
+using api_cinema_challenge.Models.OutputDTOs;
+using api_cinema_challenge.Repository.ExtensionRepository;
 using api_cinema_challenge.Repository.GenericRepository;
 
 namespace api_cinema_challenge.Endpoints
@@ -7,44 +10,30 @@ namespace api_cinema_challenge.Endpoints
     {
         public static void ConfigureScreeningEndpoint(this WebApplication app)
         {
-            var screeningGroup = app.MapGroup("/screenings");
-            screeningGroup.MapGet("", GetScreenings);
-            screeningGroup.MapGet("/{id}", GetScreeningById);
+            app.MapGet("/movies/{movieId}/screenings", GetScreenings);
+            app.MapPost("/movies/{movieId}/screenings", CreateScreening);
         }
 
-        private static async Task<IResult> GetScreenings(IRepository<Screening> repo)
+        private static async Task<IResult> CreateScreening(IRepository<Screening> screeningRepo, IRepository<Movie> movieRepo,  int movieId, ScreeningInputDto inputDto)
+        {
+            var movie = await movieRepo.GetById(movieId);
+            var input = new Screening
+            {
+                Capacity = inputDto.Capacity,
+                ScreenNumber = inputDto.ScreenNumber,
+                StartsAt = inputDto.StartsAt,
+                MovieId = movieId,
+                Movie = movie,
+            };
+
+            var inserted = await screeningRepo.Insert(input);
+            return TypedResults.Created($"/customers/{inserted.Id}", ScreeningOutputDto.Create(inserted));
+        }
+
+        private static async Task<IResult> GetScreenings(IRepository<Screening> repo, int movieId)
         {
             var screenings = await repo.Get();
-            return Results.Ok(screenings.Select(screening => new {
-                screening.Id,
-                screening.ScreenNumber,
-                screening.Capacity,
-                screening.StartsAt,
-                screening.CreatedAt,
-                screening.UpdatedAt
-            }));
-        }
-
-        private static async Task<IResult> GetScreeningById(IRepository<Screening> repo, int id)
-        {
-            var screening = await repo.GetByIdAsync(id);
-            if (screening == null) return Results.NotFound();
-
-
-
-            return Results.Ok(new
-            {
-                screening.Id,
-                screening.ScreenNumber,
-                screening.Capacity,
-                screening.StartsAt,
-                screening.CreatedAt,
-                screening.UpdatedAt
-            });
-        }
-
-        private static object ScreeningDto(Screening screening)
-        {
+            return Results.Ok(screenings.Where(s => s.MovieId == movieId).Select(ScreeningOutputDto.Create));
 
         }
     }

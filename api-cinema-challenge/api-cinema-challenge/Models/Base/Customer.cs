@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models
+﻿namespace api_cinema_challenge.Models.Base
 {
     public class Customer
     {
@@ -6,10 +6,9 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        // Navigation property for related Tickets
-        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Ticket>? Tickets { get; set; }
     }
 }

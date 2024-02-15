@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models
+﻿namespace api_cinema_challenge.Models.Base
 {
     public class Ticket
     {
@@ -6,9 +6,8 @@
         public int ScreeningId { get; set; }
         public int NumSeats { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
-        // Navigation properties for the related Customer and Screening
         public Customer Customer { get; set; }
         public Screening Screening { get; set; }
     }

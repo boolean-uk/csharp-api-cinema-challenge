@@ -1,4 +1,6 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.Models.Base;
+using api_cinema_challenge.Models.InputDTOs;
+using api_cinema_challenge.Models.OutputDTOs;
 using api_cinema_challenge.Repository.GenericRepository;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
@@ -9,73 +11,53 @@ namespace api_cinema_challenge.Endpoints
     {
         public static void ConfigureTicketEndpoint(this WebApplication app)
         {
-            var ticketGroup = app.MapGroup("/tickets");
-            ticketGroup.MapGet("", GetTickets);
-            ticketGroup.MapGet("/{id}", GetTicketById);
+            app.MapGet("/customers/{customerId}/screenings", GetTickets);
+            app.MapGet("/customers/{customerId}/screenings/{screeningId}", GetTicketById);
+            app.MapPost("/customers/{customerId}/screenings/{screeningId}", CreateTicket);
         }
 
-        private static async Task<IResult> GetTickets(IRepository<Ticket> repo)
+        private static async Task<IResult> CreateTicket
+            (
+            IRepository<Customer> customerRepo,
+            IRepository<Ticket> ticketRepo,
+            IRepository<Screening> screeningRepo,
+            int customerId,
+            int screeningId,
+            TicketInputDto inputDto
+            )
+        {
+            var screening = await screeningRepo.GetById(screeningId);
+            var customer = await customerRepo.GetById(customerId);
+
+            var ticket = new Ticket
+            {
+                NumSeats = inputDto.NumSeats,
+                CustomerId = customerId,
+                Customer = customer,
+                ScreeningId = screeningId,
+                Screening = screening,
+                
+            };
+
+            var inserted = await ticketRepo.Insert(ticket);
+            return TypedResults.Created($"/customers/{{customerId}}/screenings/{{screeningId}}", TicketOutputDto.Create(inserted));
+        }
+
+        private static async Task<IResult> GetTickets(IRepository<Ticket> repo, int customerId)
         {
             var tickets = await repo.Get();
-            return Results.Ok(tickets.Select(TicketDto));
+            var customerTickets = tickets.Where(ticket => ticket.CustomerId == customerId);
+            return Results.Ok(customerTickets.Select(TicketOutputDto.Create));
         }
 
-        private static async Task<IResult> GetTicketById(IRepository<Ticket> repo, object screeningId, object customerId)
+        private static async Task<IResult> GetTicketById(IRepository<Ticket> repo, int screeningId, int customerId)
         {
             var ticket = await repo.GetById(screeningId, customerId);
             if (ticket == null) return Results.NotFound();
-            return Results.Ok(TicketDto(ticket));
+            return Results.Ok(TicketOutputDto.Create(ticket));
             
         }
-        private static object TicketDto(Ticket ticket)
-        {
-            var customer = ticket.Customer;
-            var screening = ticket.Screening;
-            var movie = screening.Movie;
-
-            var movieDto = new
-            {
-                movie.Id,
-                movie.Title,
-                movie.Description,
-                movie.Rating,
-                movie.RuntimeMins,
-                movie.CreatedAt,
-                movie.UpdatedAt,
-            };
-
-            var screeningDto = new
-            {
-                screening.Id,
-                screening.StartsAt,
-                screening.Capacity,
-                screening.CreatedAt,
-                screening.UpdatedAt,
-                screening.ScreenNumber,
-                movieDto
-            };
-
-            var customerDto = new
-            {
-                customer.Id,
-                customer.Name,
-                customer.Email,
-                customer.Phone,
-                customer.CreatedAt,
-                customer.UpdatedAt,
-            };
-
-            var ticketDto = new
-            {
-                customerDto,
-                screeningDto,
-                ticket.NumSeats,
-                ticket.CreatedAt,
-                ticket.UpdatedAt
-            };
-
-            return ticketDto;
-        }
+        
     }
 
 }

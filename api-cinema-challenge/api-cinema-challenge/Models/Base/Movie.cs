@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models
+﻿namespace api_cinema_challenge.Models.Base
 {
     public class Movie
     {
@@ -10,7 +10,6 @@
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        // Navigation property for related Screenings
-        public ICollection<Screening> Screenings { get; set; }
+        public ICollection<Screening>? Screenings { get; set; }
     }
 }
