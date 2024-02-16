@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Endpoints
             };
 
             var inserted = await repo.Insert(customer);
-            return TypedResults.Created($"/customers/{inserted.Id}", CustomerOutputDto.Create(inserted));
+            return TypedResults.Created($"/customers/{inserted.Id}", new Payload<object>().Get(CustomerOutputDto.Create(inserted)));
         }
 
         private static async Task<IResult> UpdateCustomer(IRepository<Customer> repo, int customerId, CustomerInputDto inputDto)
@@ -44,21 +44,21 @@ namespace api_cinema_challenge.Endpoints
             
 
             var updated = await repo.Update(customer);
-            return TypedResults.Accepted($"/customers/{customerId}", CustomerOutputDto.Create(updated));
+            return TypedResults.Accepted($"/customers/{customerId}", new Payload<object>().Get(CustomerOutputDto.Create(updated)));
         }
 
 
         private static async Task<IResult> GetCustomers(IRepository<Customer> repo)
         {
             var customers = await repo.Get();
-            return Results.Ok(customers.Select(CustomerOutputDto.Create));
+            return Results.Ok(new Payload<object>().Get(customers.Select(CustomerOutputDto.Create)));
         }
 
         private static async Task<IResult> GetCustomerById(IRepository<Customer> repo, int id)
         {
             var customer = await repo.GetById(id);
             if (customer == null) return Results.NotFound();
-            return Results.Ok(CustomerOutputDto.Create);
+            return Results.Ok(new Payload<object>().Get(CustomerOutputDto.Create(customer)));
         }
 
         private static async Task<IResult> DeleteCustomer(IRepository<Customer> repo, int id)
@@ -66,7 +66,7 @@ namespace api_cinema_challenge.Endpoints
             var customer = await repo.GetById(id);
             var customerDto = CustomerOutputDto.Create(customer);
             await repo.Delete(id);
-            return Results.Ok(customerDto);
+            return Results.Ok(new Payload<object>().Get(customerDto));
         }
     }
 }

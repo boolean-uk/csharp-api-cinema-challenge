@@ -24,16 +24,18 @@ namespace api_cinema_challenge.Endpoints
                 StartsAt = inputDto.StartsAt,
                 MovieId = movieId,
                 Movie = movie,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
             };
 
             var inserted = await screeningRepo.Insert(input);
-            return TypedResults.Created($"/customers/{inserted.Id}", ScreeningOutputDto.Create(inserted));
+            return TypedResults.Created($"/customers/{inserted.Id}", new Payload<object>().Get(ScreeningOutputDto.Create(inserted)));
         }
 
         private static async Task<IResult> GetScreenings(IRepository<Screening> repo, int movieId)
         {
             var screenings = await repo.Get();
-            return Results.Ok(screenings.Where(s => s.MovieId == movieId).Select(ScreeningOutputDto.Create));
+            return Results.Ok(new Payload<object>().Get(screenings.Where(s => s.MovieId == movieId).Select(ScreeningOutputDto.Create)));
 
         }
     }
