@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace api_cinema_challenge.Data
@@ -22,5 +23,10 @@ namespace api_cinema_challenge.Data
         {
 
         }
+
+        internal DbSet<Customer> Customers { get; set; }
+        internal DbSet<Movie> Movies { get; set; }
+        internal DbSet<Screening> Screens { get; set; }
+        internal DbSet<Ticket> Ticket { get; set; }
     }
 }
