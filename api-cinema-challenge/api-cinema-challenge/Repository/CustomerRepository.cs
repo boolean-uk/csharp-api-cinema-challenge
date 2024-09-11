@@ -10,7 +10,7 @@ namespace api_cinema_challenge.Repository
         }
 
         public List<CustomerDTO> GetCustomers() { throw new NotImplementedException(); }
-        public Payload<CustomerDTO> UpdateCustomer() { throw new NotImplementedException(); }
-        public Payload<CustomerDTO> DeleteCustomer() { throw new NotImplementedException(); }
+        public CustomerDTO UpdateCustomer(int id, string name, string email, string phone) { throw new NotImplementedException(); }
+        public CustomerDTO DeleteCustomer(int id) { throw new NotImplementedException(); }
     }
 }

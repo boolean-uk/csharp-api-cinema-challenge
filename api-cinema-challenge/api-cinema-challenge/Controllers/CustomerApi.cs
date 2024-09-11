@@ -18,17 +18,36 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> DeleteCustomer(IRepository repository)
+        private static async Task<IResult> DeleteCustomer(IRepository repository, int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
+                payload.data = repository.DeleteCustomer(id);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest();
+            }
+
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> UpdateCustomer(IRepository repository)
+        private static async Task<IResult> UpdateCustomer(IRepository repository, int customerId, string name, string email, string phone)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
+                payload.data = repository.UpdateCustomer(customerId, name, email, phone);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest();
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -55,14 +74,13 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
-                payload.data =  repository.CreateCustomer(name, email, phone);
+                payload.data = repository.CreateCustomer(name, email, phone);
                 return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();
             }
             catch
             {
                 return TypedResults.BadRequest();
             }
-
         }
     }
 }

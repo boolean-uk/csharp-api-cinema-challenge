@@ -9,8 +9,8 @@ namespace api_cinema_challenge.Repository
     {
         public CustomerDTO CreateCustomer(string name, string email, string phone);
         public List<CustomerDTO> GetCustomers();
-        public Payload<CustomerDTO> UpdateCustomer();
-        public Payload<CustomerDTO> DeleteCustomer();
+        public CustomerDTO UpdateCustomer(int id, string name, string email, string phone);
+        public CustomerDTO DeleteCustomer(int id);
 
         public Payload<MovieDTO> CreateMovie();
         public Payload<List<MovieDTO>> GetMovies();
