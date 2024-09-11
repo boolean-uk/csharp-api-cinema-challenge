@@ -6,7 +6,7 @@ namespace api_cinema_challenge.Repository
     {
         public CustomerDTO CreateCustomer(string name, string email, string phone)
         {
-            throw new NotImplementedException();
+            
         }
 
         public List<CustomerDTO> GetCustomers() { throw new NotImplementedException(); }
