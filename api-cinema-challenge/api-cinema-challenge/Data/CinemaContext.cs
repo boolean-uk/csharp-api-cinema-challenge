@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Data
 {
@@ -21,5 +22,10 @@ namespace api_cinema_challenge.Data
         {
 
         }
+
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screens { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }
