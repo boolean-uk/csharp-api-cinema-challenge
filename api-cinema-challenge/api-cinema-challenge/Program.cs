@@ -1,4 +1,5 @@
 using api_cinema_challenge.Data;
+using api_cinema_challenge.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,5 +18,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.SeedCinemaApi();
+
+app.ConfigureCustomerApi();
+
 app.Run();
