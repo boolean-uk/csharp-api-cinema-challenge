@@ -21,14 +21,18 @@ namespace api_cinema_challenge.Repositories
             return customer;
         }
 
-        public Task<Movie> CreateMovie(Movie movie)
+        public async Task<Movie> CreateMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            _db.Movies.Add(movie);
+            await _db.SaveChangesAsync();
+            return movie;
         }
 
-        public Task<Screening> CreateScreening(Screening screening)
+        public async Task<Screening> CreateScreening(Screening screening)
         {
-            throw new NotImplementedException();
+            _db.Screenings.Add(screening);
+            await _db.SaveChangesAsync();
+            return screening;
         }
 
         public async Task<Customer> DeleteCustomer(int id)
@@ -40,14 +44,17 @@ namespace api_cinema_challenge.Repositories
             return customer;
         }
 
-        public Task<Movie> DeleteMovie(int id)
+        public async Task<Movie> DeleteMovie(int id)
         {
-            throw new NotImplementedException();
+            var movie = await _db.Movies.FindAsync(id);
+            _db.Movies.Remove(movie);
+            await _db.SaveChangesAsync();
+            return movie;
         }
 
-        public Task<Customer> GetACustomer(int id)
+        public async Task<Customer> GetACustomer(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Customers.FindAsync(id);
         }
 
         public async Task<ICollection<Customer>> GetAllCustomers()
@@ -55,34 +62,34 @@ namespace api_cinema_challenge.Repositories
             return await _db.Customers.ToListAsync();
         }
 
-        public Task<ICollection<Movie>> GetAllMovies()
+        public async Task<ICollection<Movie>> GetAllMovies()
         {
-            throw new NotImplementedException();
+            return await _db.Movies.Include(s => s.Screenings).ToListAsync();
         }
 
-        public Task<ICollection<Screening>> GetAllScreenings()
+        public async Task<ICollection<Screening>> GetAllScreenings()
         {
-            throw new NotImplementedException();
+            return await _db.Screenings.ToListAsync();
         }
 
-        public Task<ICollection<Ticket>> GetAllTickets()
+        public async Task<ICollection<Ticket>> GetAllTickets()
         {
-            throw new NotImplementedException();
+            return await _db.Tickets.ToListAsync();
         }
 
-        public Task<Movie> GetMovie(int id)
+        public async Task<Movie> GetMovie(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Movies.Include(s => s.Screenings).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<Screening> GetScreening(int id)
+        public async Task<Screening> GetScreening(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Screenings.FindAsync(id);
         }
 
-        public Task<Ticket> GetTicket(int id)
+        public async Task<Ticket> GetTicket(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Tickets.FindAsync(id);
         }
 
         public async Task<Customer> UpdateCustomer(Customer customer)
@@ -92,19 +99,25 @@ namespace api_cinema_challenge.Repositories
             return customer;
         }
 
-        public Task<Movie> UpdateMovie(Movie movie)
+        public async Task<Movie> UpdateMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            _db.Movies.Update(movie);
+            await _db.SaveChangesAsync();
+            return movie;
         }
 
-        public Task<Screening> UpdateScreening(Screening screening)
+        public async Task<Screening> UpdateScreening(Screening screening)
         {
-            throw new NotImplementedException();
+            _db.Screenings.Update(screening);
+            await _db.SaveChangesAsync();
+            return screening;
         }
 
-        public Task<Ticket> UpdateTicket(Ticket ticket)
+        public async Task<Ticket> UpdateTicket(Ticket ticket)
         {
-            throw new NotImplementedException();
+            _db.Tickets.Update(ticket);
+            await _db.SaveChangesAsync();
+            return ticket;
         }
     }
 }
