@@ -9,6 +9,6 @@ namespace api_cinema_challenge.ViewModels
         [Required]
         public string Email { get; set; }
         [Required]
-        public string PhoneNr { get; set; }
+        public string Phone { get; set; }
     }
 }

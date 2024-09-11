@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
-builder.Services.AddScoped<IRepository, CustomerRepository>();
+builder.Services.AddScoped<IRepository, Repository>();
 
 var app = builder.Build();
 
@@ -24,5 +24,6 @@ app.UseHttpsRedirection();
 app.SeedCinemaApi();
 
 app.ConfigureCustomerApi();
+app.ConfigureMovieApi();
 
 app.Run();

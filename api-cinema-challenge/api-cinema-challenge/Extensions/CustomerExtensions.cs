@@ -12,7 +12,7 @@ namespace api_cinema_challenge.Extensions
             {
                 Name = customerPost.Name,
                 Email = customerPost.Email,
-                PhoneNr = customerPost.PhoneNr,
+                Phone = customerPost.Phone,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -25,7 +25,7 @@ namespace api_cinema_challenge.Extensions
                 Id = customer.Id,
                 Name = customer.Name,
                 Email = customer.Email,
-                PhoneNr = customer.PhoneNr,
+                PhoneNr = customer.Phone,
                 CreatedAt = customer.CreatedAt,
                 UpdatedAt = customer.UpdatedAt
             };

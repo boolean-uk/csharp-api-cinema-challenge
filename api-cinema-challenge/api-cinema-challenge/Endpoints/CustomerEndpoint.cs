@@ -13,10 +13,22 @@ namespace api_cinema_challenge.Endpoints
         public static void ConfigureCustomerApi(this WebApplication app)
         {
             var customers = app.MapGroup("customers");
-            customers.MapGet("", GetAllCustomers);
-            customers.MapPost("", CreateCustomer);
-            customers.MapPut("", UpdateCustomer);
-            customers.MapDelete("", DeleteCustomer);
+            customers.MapGet("/", GetAllCustomers);
+            customers.MapPost("/", CreateCustomer);
+            customers.MapPut("/", UpdateCustomer);
+            customers.MapDelete("/", DeleteCustomer);
+            customers.MapGet("/{id}/screenings/{screeningId}", GetAllCustomerScreeningTickets);
+            customers.MapPost("/{id}/screenings/{screeningId}", BookTicket);
+        }
+
+        private static async Task<IResult> BookTicket(IRepository repository, int customerId, int screeningId)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static async Task<IResult> GetAllCustomerScreeningTickets(IRepository repository, int customerId, int screeningId)
+        {
+            throw new NotImplementedException();
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -57,9 +69,9 @@ namespace api_cinema_challenge.Endpoints
                 customer.Email = customerUpdate.Email;
             }
 
-            if (!string.IsNullOrEmpty(customerUpdate.PhoneNr))
+            if (!string.IsNullOrEmpty(customerUpdate.Phone))
             {
-                customer.PhoneNr = customerUpdate.PhoneNr;
+                customer.Phone = customerUpdate.Phone;
             }
 
             customer.UpdatedAt = DateTime.UtcNow;

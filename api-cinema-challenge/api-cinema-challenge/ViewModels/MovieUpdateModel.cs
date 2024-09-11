@@ -2,16 +2,13 @@
 
 namespace api_cinema_challenge.ViewModels
 {
-    public class MoviePostModel
+    public class MovieUpdateModel
     {
         [Required]
+        public int Id { get; set; }
         public string Title { get; set; }
-        [Required]
         public string Rating { get; set; }
-        [Required]
         public string Description { get; set; }
-        [Required]
         public int RuntimeMins { get; set; }
-        public List<ScreeningPostModel> Screenings { get; set; }
     }
 }

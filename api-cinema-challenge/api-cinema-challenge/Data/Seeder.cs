@@ -14,7 +14,7 @@ namespace api_cinema_challenge.Data
                 db.Customers.Add(new Customer
                 {
                     Name = "Agron Metaj",
-                    PhoneNr = "0735871826",
+                    Phone = "0735871826",
                     Email = "agron.metaj@cinema.enjoyer.com",
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
@@ -22,7 +22,7 @@ namespace api_cinema_challenge.Data
                 db.Customers.Add(new Customer
                 {
                     Name = "Nigel Sibbert",
-                    PhoneNr = "0735619238",
+                    Phone = "0735619238",
                     Email = "nigel.sibbert@cinema.enjoyer.com",
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
@@ -30,7 +30,7 @@ namespace api_cinema_challenge.Data
                 db.Customers.Add(new Customer
                 {
                     Name = "Dave Ames",
-                    PhoneNr = "0735617291",
+                    Phone = "0735617291",
                     Email = "dave.ames@cinema.enjoyer.com",
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
