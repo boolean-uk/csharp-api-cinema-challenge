@@ -1,6 +1,6 @@
 ﻿namespace api_cinema_challenge.Repository
 {
-    public class MovieRepository
+    public partial class Repository : IRepository
     {
     }
 }
