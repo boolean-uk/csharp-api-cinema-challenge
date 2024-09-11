@@ -75,7 +75,7 @@ namespace api_cinema_challenge.Data
                 db.Screenings.AddRange(
                     new Screening
                     {
-                        MovieId = 1, 
+                        MovieId = 1,
                         ScreenNumber = 5,
                         Capacity = 40,
                         StartsAt = DateTime.UtcNow.AddDays(2),
@@ -84,7 +84,7 @@ namespace api_cinema_challenge.Data
                     },
                     new Screening
                     {
-                        MovieId = 2, 
+                        MovieId = 2,
                         ScreenNumber = 3,
                         Capacity = 50,
                         StartsAt = DateTime.UtcNow.AddDays(3),
@@ -93,7 +93,7 @@ namespace api_cinema_challenge.Data
                     },
                     new Screening
                     {
-                        MovieId = 3, 
+                        MovieId = 3,
                         ScreenNumber = 1,
                         Capacity = 60,
                         StartsAt = DateTime.UtcNow.AddDays(4),
@@ -108,7 +108,7 @@ namespace api_cinema_challenge.Data
                 db.Tickets.AddRange(
                     new Ticket
                     {
-                        CustomerId = 2, 
+                        CustomerId = 2,
                         NumSeats = 1,
                         ScreeningId = 1,
                         CreatedAt = DateTime.UtcNow,
@@ -116,15 +116,15 @@ namespace api_cinema_challenge.Data
                     },
                     new Ticket
                     {
-                        CustomerId = 3, 
+                        CustomerId = 3,
                         NumSeats = 2,
-                        ScreeningId = 2, 
+                        ScreeningId = 2,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
                     },
                     new Ticket
                     {
-                        CustomerId = 1, 
+                        CustomerId = 1,
                         NumSeats = 3,
                         ScreeningId = 3,
                         CreatedAt = DateTime.UtcNow,
