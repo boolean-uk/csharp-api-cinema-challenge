@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models;
+using System;
 
 namespace api_cinema_challenge.Data
 {
@@ -133,5 +134,32 @@ namespace api_cinema_challenge.Data
             }
 
         }
+        public static async Task PurgeCinemaDbTables(this WebApplication app)
+        {
+            using var db = new CinemaContext();
+
+            if (db.Tickets.Any())
+            {
+                db.Tickets.RemoveRange(db.Tickets);
+            }
+
+            if (db.Screenings.Any())
+            {
+                db.Screenings.RemoveRange(db.Screenings);
+            }
+
+            if (db.Movies.Any())
+            {
+                db.Movies.RemoveRange(db.Movies);
+            }
+
+            if (db.Customers.Any())
+            {
+                db.Customers.RemoveRange(db.Customers);
+            }
+
+            await db.SaveChangesAsync();
+        }
+
     }
 }
