@@ -1,6 +1,6 @@
-namespace api_cinema_challenge.DTOs;
+namespace api_cinema_challenge.ViewModels;
 
-public class MovieDTO
+public class MoviePayload
 {
     public string Title { get; set; }
     public string Rating { get; set; }

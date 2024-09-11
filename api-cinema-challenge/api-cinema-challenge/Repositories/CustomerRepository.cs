@@ -11,23 +11,33 @@ public class CustomerRepository(CinemaContext db) : IRepository<Customer>
         return await db.Customers.ToListAsync();
     }
 
-    public Task<Customer> GetById(int id)
+    public async Task<Customer> GetById(int id)
     {
-        throw new NotImplementedException();
+        return (await db.Customers.FirstOrDefaultAsync(p => p.Id == id))!; 
     }
 
-    public Task<Customer> Add(Customer entity)
+    public async Task<Customer> Add(Customer entity)
     {
-        throw new NotImplementedException();
+        await db.Customers.AddAsync(entity);
+        await db.SaveChangesAsync();
+        return entity;
     }
 
-    public Task<Customer> Update(Customer entity)
+    public async Task<Customer> Update(Customer entity)
     {
-        throw new NotImplementedException();
+        var c =  await db.Customers.FirstOrDefaultAsync(p => p.Id == entity.Id);
+        c.Name = entity.Name;
+        c.Email = entity.Email;
+        c.PhoneNumber = entity.PhoneNumber;
+        c.UpdatedAt = DateTime.UtcNow;
+        await db.SaveChangesAsync();
+        return c;
     }
 
-    public Task<Customer> Delete(Customer entity)
+    public async Task<Customer> Delete(Customer entity)
     {
-        throw new NotImplementedException();
+        var c =  await db.Customers.FirstOrDefaultAsync(p => p.Id == entity.Id);
+        db.Customers.Remove(c);
+        return c;
     }
 }

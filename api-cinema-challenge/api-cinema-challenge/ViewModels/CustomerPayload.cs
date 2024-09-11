@@ -1,6 +1,6 @@
-namespace api_cinema_challenge.DTOs;
+namespace api_cinema_challenge.ViewModels;
 
-public class CustomerDTO
+public class CustomerPayload
 {
     public string Name { get; set; }
     public string Email { get; set; }
