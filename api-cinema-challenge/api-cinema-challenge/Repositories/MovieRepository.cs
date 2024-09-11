@@ -1,27 +1,42 @@
 ﻿using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Numerics;
+using System.Xml.Linq;
 
 namespace api_cinema_challenge.Repositories
 {
     internal partial class Repository : IRepository
     {
-        public Task<Movie> AddMovie(string title, string rating, string description, int runtimeMins)
+        public async Task<Movie> AddMovie(string title, string rating, string description, int runtimeMins)
         {
-            throw new NotImplementedException();
+            await _db.Movies.AddAsync(new Movie(title, rating, description, runtimeMins));
+            await _db.SaveChangesAsync();
+            return new Movie(title, rating, description, runtimeMins);
         }
 
-        public Task<Movie> DeleteMovie(int id)
+        public async Task<Movie> DeleteMovie(int id)
         {
-            throw new NotImplementedException();
+            var movie = await _db.Movies.FirstOrDefaultAsync(c => c.Id == id);
+            _db.Movies.Remove(movie);
+            await _db.SaveChangesAsync();
+            return movie;
         }
 
-        public Task<IEnumerable<Movie>> GetMovie()
+        public async Task<IEnumerable<Movie>> GetMovie()
         {
-            throw new NotImplementedException();
+            return await _db.Movies.ToListAsync();
         }
 
-        public Task<Movie> UppdateMovie(int id, string? title, string? rating, string? description, int? runtimeMins)
+        public async Task<Movie> UppdateMovie(int id, string? title, string? rating, string? description, int? runtimeMins)
         {
-            throw new NotImplementedException();
+            var movie = await _db.Movies.FirstOrDefaultAsync(c => c.Id == id);
+            if (title is not null) { movie.Title = title; }
+            if (rating is not null) { movie.Rating = rating; }
+            if (description is not null) { movie.Description = description; }
+            if (runtimeMins is not null && runtimeMins > 1) { movie.RuntimeMins = (int)runtimeMins; }
+
+            await _db.SaveChangesAsync();
+            return movie;
         }
     }
 }
