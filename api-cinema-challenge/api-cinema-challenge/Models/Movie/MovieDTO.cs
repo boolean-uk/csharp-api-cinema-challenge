@@ -9,5 +9,7 @@ namespace api_cinema_challenge.Models.Movie
         public string Description { get; set; }
         public int runtimeMins { get; set; }
         public List<Screening.Screening> Screenings { get; set; }
+        public DateTime createdAt { get; set; }
+        public DateTime updatedAt { get; set; }
     }
 }

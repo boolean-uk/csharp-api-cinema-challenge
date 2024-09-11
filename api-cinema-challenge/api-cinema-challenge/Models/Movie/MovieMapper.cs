@@ -10,7 +10,9 @@
                 Title = movie.Title,
                 Description = movie.Description,
                 runtimeMins = movie.runtimeMins,
-                Screenings = movie.Screenings
+                Screenings = movie.Screenings,
+                createdAt = movie.createdAt,
+                updatedAt = movie.updatedAt,
             };
         }
 
@@ -22,7 +24,9 @@
                 Title = movie.Title,
                 Description = movie.Description,
                 runtimeMins = movie.runtimeMins,
-                Screenings = movie.Screenings
+                Screenings = movie.Screenings,
+                createdAt = movie.createdAt,
+                updatedAt = movie.updatedAt,
             }).ToList();
         }
     }

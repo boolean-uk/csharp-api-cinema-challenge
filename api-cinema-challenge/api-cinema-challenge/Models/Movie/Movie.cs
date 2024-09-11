@@ -18,5 +18,9 @@ namespace api_cinema_challenge.Models.Movie
         public int runtimeMins { get; set; }
         [Column("SCREENINGS")]
         public List<Screening.Screening> Screenings { get; set; }
+        [Column("CREATEDAT")]
+        public DateTime createdAt { get; set; }
+        [Column("UPDATEDAT")]
+        public DateTime updatedAt { get; set; }
     }
 }
