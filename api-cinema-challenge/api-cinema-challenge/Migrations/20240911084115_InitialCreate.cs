@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
-                    phone = table.Column<string>(type: "text", nullable: false),
+                    phoneNr = table.Column<string>(type: "text", nullable: false),
                     createdAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

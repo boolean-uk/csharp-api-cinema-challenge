@@ -17,4 +17,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.SeedCinemaApi();
 app.Run();

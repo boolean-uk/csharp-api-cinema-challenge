@@ -11,8 +11,8 @@ namespace api_cinema_challenge.Models
         public string Name { get; set; }
         [Column("email")]
         public string Email { get; set; }
-        [Column("phone")]
-        public string Phone { get; set; }
+        [Column("phoneNr")]
+        public string PhoneNr { get; set; }
         [Column("createdAt")]
         public DateTime CreatedAt {  get; set; }
         [Column("updatedAt")]

@@ -45,10 +45,10 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("PhoneNr")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("phone");
+                        .HasColumnName("phoneNr");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
