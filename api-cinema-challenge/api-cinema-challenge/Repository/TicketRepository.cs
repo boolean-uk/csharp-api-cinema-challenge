@@ -7,7 +7,7 @@ namespace api_cinema_challenge.Repository
 {
     public partial class Repository : IRepository
     {
-
-
+        public Payload<TicketDTO> BookTicket() { throw new NotImplementedException(); }
+        public Payload<List<TicketDTO>> GetTickets() { throw new NotImplementedException(); }
     }
 }

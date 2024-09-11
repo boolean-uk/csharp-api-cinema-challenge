@@ -7,8 +7,8 @@ namespace api_cinema_challenge.Repository
 {
     public interface IRepository
     {
-        public Payload<CustomerDTO> CreateCustomer();
-        public Payload<List<CustomerDTO>> GetCustomers();
+        public CustomerDTO CreateCustomer(string name, string email, string phone);
+        public List<CustomerDTO> GetCustomers();
         public Payload<CustomerDTO> UpdateCustomer();
         public Payload<CustomerDTO> DeleteCustomer();
 
@@ -19,6 +19,7 @@ namespace api_cinema_challenge.Repository
 
         public Payload<ScreeningDTO> CreateScreening();
         public Payload<ScreeningDTO> GetScreenings();
+
         public Payload<TicketDTO> BookTicket();
         public Payload<List<TicketDTO>> GetTickets();
 
