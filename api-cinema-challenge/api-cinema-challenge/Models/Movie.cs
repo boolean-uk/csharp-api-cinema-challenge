@@ -25,6 +25,6 @@ namespace api_cinema_challenge.Models
         [Column("description")]
         public string Description { get; set; }
 
-        List<Screening> Screenings { get; set; } = new List<Screening>();
+        public List<Screening> Screenings { get; set; } = new List<Screening>();
     }
 }

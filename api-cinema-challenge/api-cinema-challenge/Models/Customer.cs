@@ -25,6 +25,6 @@ namespace api_cinema_challenge.Models
         [Column("phone")]
         public string Phone { get; set; }
 
-        List<Ticket> Tickets { get; set; } = new List<Ticket>();
+        public List<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
