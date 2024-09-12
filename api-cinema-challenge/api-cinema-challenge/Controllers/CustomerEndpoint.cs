@@ -24,7 +24,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var customer = await repository.AddCustomer(name, email, phonenumber);
-                return customer != null ? TypedResults.Created(DTOConvert.DTOConvert(customer)) : TypedResults.NotFound("NotFound");
+                return customer != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(customer)) : TypedResults.NotFound();
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var customers = await repository.GetCustomers();
-                return customers != null ? TypedResults.Ok(DTOConvert.DTOConvert(customers)) : TypedResults.NotFound("NotFound");
+                return customers != null ? TypedResults.Ok(DTOConvert.DTOConvertList(customers)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var customer = await repository.UppdateCustomer(id,name, email, phone);
-                return customer != null ? TypedResults.Created(DTOConvert.DTOConvert(customer)) : TypedResults.NotFound("NotFound");
+                return customer != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(customer)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var customer = await repository.DeleteCustomer(id);
-                return customer != null ? TypedResults.Ok(DTOConvert.DTOConvert(customer)) : TypedResults.NotFound("NotFound");
+                return customer != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(customer)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {

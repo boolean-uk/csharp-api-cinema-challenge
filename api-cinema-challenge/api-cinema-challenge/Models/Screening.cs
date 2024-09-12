@@ -7,6 +7,8 @@ namespace api_cinema_challenge.Models
         private int _screenNumber;
         private int _capacity;
         private DateTime _startsAt;
+        private readonly DateTime _created;
+        private DateTime _updated;
 
         internal Screening(int screenNumber, int capacity, DateTime startsAt)
         {
@@ -15,6 +17,7 @@ namespace api_cinema_challenge.Models
             this._screenNumber = screenNumber;
             this._capacity = capacity;
             this._startsAt = startsAt;
+            this._created = DateTime.Now;
         }
 
         internal int Id { get { return _id; } }
@@ -23,6 +26,8 @@ namespace api_cinema_challenge.Models
         internal int Capacity { get { return _capacity; } }
 
         internal DateTime StartsAt { get { return _startsAt; } }
+        internal DateTime Created { get { return _created; } }
+        internal DateTime Updated { get { return _updated; } }
 
 
     }

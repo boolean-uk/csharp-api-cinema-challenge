@@ -22,7 +22,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var ticket = await repository.AddTicket(screeningId);
-                return ticket != null ? TypedResults.Created(DTOConvert.DTOConvert(ticket)) : TypedResults.NotFound("NotFound");
+                return ticket != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(ticket)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var ticket = await repository.GetTicket();
-                return ticket != null ? TypedResults.Ok(DTOConvert.DTOConvert(ticket)) : TypedResults.NotFound("NotFound");
+                return ticket != null ? TypedResults.Ok(DTOConvert.DTOConvertList(ticket)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {

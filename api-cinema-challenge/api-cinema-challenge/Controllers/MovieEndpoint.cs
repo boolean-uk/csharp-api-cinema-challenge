@@ -23,7 +23,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movie = await repository.AddMovie(title, rating, description, runtimeMins);
-                return movie != null ? TypedResults.Created(DTOConvert.DTOConvert(movie)) : TypedResults.NotFound("NotFound");
+                return movie != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(movie)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -43,7 +43,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movies = await repository.GetMovie();
-                return movies != null ? TypedResults.Ok(DTOConvert.DTOConvert(movies)) : TypedResults.NotFound("NotFound");
+                return movies != null ? TypedResults.Ok(DTOConvert.DTOConvertList(movies)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movie = await repository.UppdateMovie(id, title, rating, description, runtimeMins);
-                return movie != null ? TypedResults.Created(DTOConvert.DTOConvert(movie)) : TypedResults.NotFound("NotFound");
+                return movie != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(movie)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movie = await repository.DeleteMovie(id);
-                return movie != null ? TypedResults.Ok(DTOConvert.DTOConvert(movie)) : TypedResults.NotFound("NotFound");
+                return movie != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(movie)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {

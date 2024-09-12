@@ -21,7 +21,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var screening = await repository.AddScreening(screenNumber, capacity, startsAt);
-                return screening != null ? TypedResults.Created(DTOConvert.DTOConvert(screening)) : TypedResults.NotFound("NotFound");
+                return screening != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(screening)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var screening = await repository.GetScreening();
-                return screening != null ? TypedResults.Ok(DTOConvert.DTOConvert(screening)) : TypedResults.NotFound("NotFound");
+                return screening != null ? TypedResults.Ok(DTOConvert.DTOConvertList(screening)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {

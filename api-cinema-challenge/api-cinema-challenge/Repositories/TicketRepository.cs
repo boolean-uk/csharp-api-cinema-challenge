@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repositories
 {
@@ -6,15 +7,15 @@ namespace api_cinema_challenge.Repositories
     {
         public async Task<Ticket> AddTicket(int screeningId)
         {
-
-            await _db.Ticket.AddAsync(new Ticket(s));
+            var ticket = new Ticket(screeningId);
+            await _db.Ticket.AddAsync(ticket);
             await _db.SaveChangesAsync();
-            return new Movie(title, rating, description, runtimeMins);
+            return ticket;
         }
 
         public async  Task<IEnumerable<Ticket>> GetTicket()
         {
-            throw new NotImplementedException();
+            return await _db.Ticket.ToListAsync();
         }
     }
 }
