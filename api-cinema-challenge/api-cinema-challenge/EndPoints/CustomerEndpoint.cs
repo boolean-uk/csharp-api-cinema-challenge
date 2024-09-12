@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using api_cinema_challenge.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.EndPoints

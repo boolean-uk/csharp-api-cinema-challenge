@@ -16,8 +16,8 @@ namespace api_cinema_challenge.Models
         [Column("runtimemins")]
         public int RuntimeMins { get; set; }
         [Column("createdat")]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
         [Column("updatedat")]
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; }
     }
 }

@@ -51,16 +51,18 @@ namespace api_cinema_challenge.Migrations
                 name: "screenings",
                 columns: table => new
                 {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     movieid = table.Column<int>(type: "integer", nullable: false),
                     screenid = table.Column<int>(type: "integer", nullable: false),
-                    startsat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     capacity = table.Column<int>(type: "integer", nullable: false),
+                    startsat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     createdat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updatedat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_screenings", x => new { x.movieid, x.screenid, x.startsat });
+                    table.PrimaryKey("PK_screenings", x => x.id);
                     table.ForeignKey(
                         name: "FK_screenings_movies_movieid",
                         column: x => x.movieid,
@@ -68,11 +70,58 @@ namespace api_cinema_challenge.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "tickets",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    customerid = table.Column<int>(type: "integer", nullable: false),
+                    screeningid = table.Column<int>(type: "integer", nullable: false),
+                    numseats = table.Column<int>(type: "integer", nullable: false),
+                    createdat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updatedat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tickets", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_tickets_customers_customerid",
+                        column: x => x.customerid,
+                        principalTable: "customers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tickets_screenings_screeningid",
+                        column: x => x.screeningid,
+                        principalTable: "screenings",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_screenings_movieid",
+                table: "screenings",
+                column: "movieid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tickets_customerid",
+                table: "tickets",
+                column: "customerid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tickets_screeningid",
+                table: "tickets",
+                column: "screeningid");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "tickets");
+
             migrationBuilder.DropTable(
                 name: "customers");
 

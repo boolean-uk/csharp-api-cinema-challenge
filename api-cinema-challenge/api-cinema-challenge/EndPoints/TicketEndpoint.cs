@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using api_cinema_challenge.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.EndPoints
@@ -19,37 +20,36 @@ namespace api_cinema_challenge.EndPoints
 
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateTicket(IRepository<Screening> repository, int id, ScreeningView view)
+        public static async Task<IResult> CreateTicket(IRepository<Ticket> repository, int customerId, int screeningId, TicketView view)
         {
             DateTime creationTime = DateTime.UtcNow;
-            var model = new Screening()
+            var model = new Ticket()
             {
-                MovieId = id,
-                ScreenId = view.ScreenNumber,
-                Capacity = view.Capacity,
-                StartsAt = DateTime.Parse(view.StartsAt).ToUniversalTime(),
+                CustomerId = customerId,
+                ScreeningId = screeningId,
+                NumSeats = view.NumSeats,
                 CreatedAt = creationTime,
                 UpdatedAt = creationTime
             };
-            var result = await repository.Create(["Movie"], model);
-            var resultDTO = new ScreeningDTO(result);
+            var result = await repository.Create(["Customer", "Screening"], model);
+            var resultDTO = new TicketDTO(result);
 
-            var payload = new Payload<ScreeningDTO>() { Status = "success", Data = resultDTO };
-            return TypedResults.Created(_basepath, resultDTO);
+            var payload = new Payload<TicketDTO>() { Status = "success", Data = resultDTO };
+            return TypedResults.Created(_basepath, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetTickets(IRepository<Screening> repository, int id)
+        public static async Task<IResult> GetTickets(IRepository<Ticket> repository, int customerId, int screeningId)
         {
-            var resultList = await repository.GetAll(["Movie"], s => s.MovieId == id);
-            var resultDTOs = new List<ScreeningDTO>();
+            var resultList = await repository.GetAll(["Customer", "Screening"], m => m.CustomerId == customerId && m.ScreeningId == screeningId);
+            var resultDTOs = new List<TicketDTO>();
             foreach (var result in resultList)
             {
-                resultDTOs.Add(new ScreeningDTO(result));
+                resultDTOs.Add(new TicketDTO(result));
             }
 
-            var payload = new Payload<List<ScreeningDTO>>() { Status = "success", Data = resultDTOs };
-            return TypedResults.Ok(resultDTOs);
+            var payload = new Payload<List<TicketDTO>>() { Status = "success", Data = resultDTOs };
+            return TypedResults.Ok(payload);
         }
     }
 }

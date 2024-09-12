@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using api_cinema_challenge.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.EndPoints
@@ -18,8 +19,13 @@ namespace api_cinema_challenge.EndPoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> CreateScreening(IRepository<Screening> repository, int id, ScreeningView view)
         {
+            if (await repository.Get([], s => s.ScreenId == view.ScreenNumber && s.StartsAt == DateTime.Parse(view.StartsAt).ToUniversalTime()) != null)
+            {
+                return TypedResults.BadRequest(new Payload<string>() { Status = "failure", Data = "This screening slot is already taken" });
+            }
             DateTime creationTime = DateTime.UtcNow;
             var model = new Screening()
             {
@@ -34,7 +40,7 @@ namespace api_cinema_challenge.EndPoints
             var resultDTO = new ScreeningDTO(result);
 
             var payload = new Payload<ScreeningDTO>() { Status = "success", Data = resultDTO };
-            return TypedResults.Created(_basepath, resultDTO);
+            return TypedResults.Created(_basepath, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -48,7 +54,7 @@ namespace api_cinema_challenge.EndPoints
             }
 
             var payload = new Payload<List<ScreeningDTO>>() { Status = "success", Data = resultDTOs };
-            return TypedResults.Ok(resultDTOs);
+            return TypedResults.Ok(payload);
         }
     }
 }

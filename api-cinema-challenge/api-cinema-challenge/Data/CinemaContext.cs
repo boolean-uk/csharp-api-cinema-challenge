@@ -21,11 +21,12 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Screening>().HasKey(k => new { k.MovieId, k.ScreenId, k.StartsAt });
+
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

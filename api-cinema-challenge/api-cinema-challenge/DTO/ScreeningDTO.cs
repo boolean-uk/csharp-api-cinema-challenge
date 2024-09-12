@@ -15,7 +15,7 @@ namespace api_cinema_challenge.DTO
 
         public ScreeningDTO(Screening model)
         {
-            Id = model.MovieId;
+            Id = model.Id;
             ScreenNumber = model.ScreenId;
             Capacity = model.Capacity;
             StartsAt = model.StartsAt.ToLocalTime().ToString("yyyy-MM-ddTHH:mm:ss");

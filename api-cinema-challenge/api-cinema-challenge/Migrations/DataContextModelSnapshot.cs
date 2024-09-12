@@ -102,6 +102,21 @@ namespace api_cinema_challenge.Migrations
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer")
+                        .HasColumnName("capacity");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("createdat");
+
                     b.Property<int>("MovieId")
                         .HasColumnType("integer")
                         .HasColumnName("movieid");
@@ -114,21 +129,53 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("startsat");
 
-                    b.Property<int>("Capacity")
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updatedat");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("screenings");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("capacity");
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("createdat");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("customerid");
+
+                    b.Property<int>("NumSeats")
+                        .HasColumnType("integer")
+                        .HasColumnName("numseats");
+
+                    b.Property<int>("ScreeningId")
+                        .HasColumnType("integer")
+                        .HasColumnName("screeningid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updatedat");
 
-                    b.HasKey("MovieId", "ScreenId", "StartsAt");
+                    b.HasKey("Id");
 
-                    b.ToTable("screenings");
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ScreeningId");
+
+                    b.ToTable("tickets");
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
@@ -140,6 +187,25 @@ namespace api_cinema_challenge.Migrations
                         .IsRequired();
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
+                {
+                    b.HasOne("api_cinema_challenge.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api_cinema_challenge.Models.Screening", "Screening")
+                        .WithMany()
+                        .HasForeignKey("ScreeningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Screening");
                 });
 #pragma warning restore 612, 618
         }

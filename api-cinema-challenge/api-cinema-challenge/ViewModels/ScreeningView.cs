@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Models
+﻿namespace api_cinema_challenge.ViewModels
 {
     public class ScreeningView
     {

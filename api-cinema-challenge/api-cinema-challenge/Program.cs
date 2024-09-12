@@ -13,6 +13,7 @@ builder.Services.AddDbContext<DataContext>();
 builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 
 var app = builder.Build();
 
@@ -26,7 +27,7 @@ if (app.Environment.IsDevelopment())
 app.ConfigureCustomerEndpoint();
 app.ConfigureMovieEndpoint();
 app.ConfigureScreeningEndpoint();
-//app.ConfigureTicketEndpoint();
+app.ConfigureTicketEndpoint();
 
 app.UseHttpsRedirection();
 app.Run();

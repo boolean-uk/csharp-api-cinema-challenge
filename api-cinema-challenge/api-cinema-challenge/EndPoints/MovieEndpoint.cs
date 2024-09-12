@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using api_cinema_challenge.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.EndPoints
@@ -20,7 +21,7 @@ namespace api_cinema_challenge.EndPoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateMovie(IRepository<Movie> repository, MovieView view)
+        public static async Task<IResult> CreateMovie(IRepository<Movie> repository, IRepository<Screening> screeningRepository, MovieView view)
         {
             DateTime creationTime = DateTime.UtcNow;
             var model = new Movie()
@@ -32,8 +33,15 @@ namespace api_cinema_challenge.EndPoints
                 CreatedAt = creationTime,
                 UpdatedAt = creationTime
             };
+
             var result = await repository.Create([], model);
             var resultDTO = new MovieDTO(result);
+
+            // Create any screenings that were sent in
+            foreach (var screening in view.Screenings)
+            {
+                await ScreeningEndpoint.CreateScreening(screeningRepository, result.Id, screening);
+            }
 
             var payload = new Payload<MovieDTO>() { Status = "success", Data = resultDTO };
             return TypedResults.Created(_basepath, payload);
