@@ -67,8 +67,6 @@ namespace api_cinema_challenge.Repository
 
             // need to get the original CreatedAt value from the database...
             await _db.Entry(model).ReloadAsync();
-            var createdAt = _db.Entry(model).Property("CreatedAt").OriginalValue;
-            model.GetType().GetProperty("CreatedAt")!.SetValue(model, createdAt);
 
             foreach (string inclusion in inclusions)
             {
