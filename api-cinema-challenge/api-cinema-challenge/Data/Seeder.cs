@@ -2,6 +2,7 @@
 using api_cinema_challenge.Models.Movie;
 using api_cinema_challenge.Models.Screening;
 using api_cinema_challenge.Models.Ticket;
+using System.Globalization;
 
 namespace api_cinema_challenge.Data
 {
@@ -95,16 +96,16 @@ namespace api_cinema_challenge.Data
 
         List<string> _dates = new List<string>
         {
-            "2024-09-12 13:45:00",
-            "2024-09-12 14:00:00",
-            "2024-09-12 14:15:00",
-            "2024-09-12 14:30:00",
-            "2024-09-12 14:45:00",
-            "2024-09-12 15:00:00",
-            "2024-09-12 15:15:00",
-            "2024-09-12 15:30:00",
-            "2024-09-12 15:45:00",
-            "2024-09-12 16:00:00"
+            "2024-09-12 13:45:00 UTC +0200",
+            "2024-09-12 14:00:00 UTC +0200",
+            "2024-09-12 14:15:00 UTC +0200",
+            "2024-09-12 14:30:00 UTC +0200",
+            "2024-09-12 14:45:00 UTC +0200",
+            "2024-09-12 15:00:00 UTC +0200",
+            "2024-09-12 15:15:00 UTC +0200",
+            "2024-09-12 15:30:00 UTC +0200",
+            "2024-09-12 15:45:00 UTC +0200",
+            "2024-09-12 16:00:00 UTC +0200"
         };
 
         private List<Customer> _customers = new List<Customer>();
@@ -137,7 +138,10 @@ namespace api_cinema_challenge.Data
                 screening.ScreenNumber = x;
                 screening.Capacity = _capacities[screenRandom.Next(_capacities.Count)];
                 string date = _dates[screenRandom.Next(_dates.Count)];
-                screening.StartsAt = DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss", null);
+                string text = "11/23/2011 23:59:59 UTC +0800";
+                string pattern = "MM/dd/yyyy HH:mm:ss 'UTC' zzz";
+                DateTimeOffset fan = DateTime.ParseExact(text, pattern, CultureInfo.InvariantCulture);
+                screening.StartsAt = DateTime.ParseExact(date, "yyyy/MM/dd HH:mm:ss 'UTC' zzz", CultureInfo.InvariantCulture);
                 _screenings.Add(screening);
             }
 
