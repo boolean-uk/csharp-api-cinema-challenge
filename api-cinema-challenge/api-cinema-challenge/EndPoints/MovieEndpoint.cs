@@ -8,8 +8,8 @@ namespace api_cinema_challenge.EndPoints
 {
     public static class MovieEndpoint
     {
-        // Base path of the api, used for the created call...
-        private static string _basepath = AppDomain.CurrentDomain.BaseDirectory;
+        // Base path of the api call, used for the created call...
+        private static string _path = AppContext.BaseDirectory;
         public static void ConfigureMovieEndpoint(this WebApplication app)
         {
             var movie = app.MapGroup("movies");
@@ -44,7 +44,7 @@ namespace api_cinema_challenge.EndPoints
             }
 
             var payload = new Payload<MovieDTO>() { Status = "success", Data = resultDTO };
-            return TypedResults.Created(_basepath, payload);
+            return TypedResults.Created(_path, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -78,7 +78,7 @@ namespace api_cinema_challenge.EndPoints
             var resultDTO = new MovieDTO(result);
 
             var payload = new Payload<MovieDTO>() { Status = "success", Data = resultDTO };
-            return TypedResults.Created(_basepath, payload);
+            return TypedResults.Created(_path, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -8,8 +8,8 @@ namespace api_cinema_challenge.EndPoints
 {
     public static class CustomerEndpoint
     {
-        // Base path of the api, used for the created call...
-        private static string _basepath = AppDomain.CurrentDomain.BaseDirectory;
+        // Base path of the api call, used for the created call...
+        private static string _path = AppContext.BaseDirectory;
         public static void ConfigureCustomerEndpoint(this WebApplication app)
         {
             var customer = app.MapGroup("customers");
@@ -28,7 +28,7 @@ namespace api_cinema_challenge.EndPoints
             var resultDTO = new CustomerDTO(result);
 
             var payload = new Payload<CustomerDTO>() { Status = "success", Data = resultDTO };
-            return TypedResults.Created(_basepath, payload);
+            return TypedResults.Created(_path, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -54,7 +54,7 @@ namespace api_cinema_challenge.EndPoints
             var resultDTO = new CustomerDTO(result);
 
             var payload = new Payload<CustomerDTO>() { Status = "success", Data = resultDTO };
-            return TypedResults.Created(_basepath, payload);
+            return TypedResults.Created(_path, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
