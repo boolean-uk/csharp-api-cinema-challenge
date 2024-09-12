@@ -12,6 +12,8 @@ namespace api_cinema_challenge.Models.Movie
         public int Id { get; set; }
         [Column("TITLE")]
         public string Title { get; set; }
+        [Column("RATING")]
+        public string rating { get; set; }
         [Column("DESCRIPTION")]
         public string Description { get; set; }
         [Column("RUNTIME")]

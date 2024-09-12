@@ -8,6 +8,7 @@
             {
                 Id = movie.Id,
                 Title = movie.Title,
+                rating = movie.rating,
                 Description = movie.Description,
                 runtimeMins = movie.runtimeMins,
                 Screenings = movie.Screenings,
@@ -16,12 +17,13 @@
             };
         }
 
-        public static List<MovieDTO> MapListToDTO(this List<MovieDTO> movies)
+        public static List<MovieDTO> MapListToDTO(this List<Movie> movies)
         {
             return movies.Select(movie => new MovieDTO
             {
                 Id = movie.Id,
                 Title = movie.Title,
+                rating = movie.rating,
                 Description = movie.Description,
                 runtimeMins = movie.runtimeMins,
                 Screenings = movie.Screenings,
