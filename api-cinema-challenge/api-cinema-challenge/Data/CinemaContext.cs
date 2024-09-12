@@ -27,7 +27,7 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Customer>().HasKey(x => x.id);
             modelBuilder.Entity<Movie>().HasKey(x => x.Id);
             modelBuilder.Entity<Screening>().HasKey(x => x.Id);
-            modelBuilder.Entity<Ticket>().HasKey(x => x.Id);
+            modelBuilder.Entity<Ticket>().HasKey(x => new { x.Id, x.numSeats});
         }
 
         public DbSet<Customer> Customers { get; set; }

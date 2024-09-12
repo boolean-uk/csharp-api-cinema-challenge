@@ -19,10 +19,10 @@ namespace api_cinema_challenge.Repository
         public MovieDTO UpdateMovie(int id, string title, string rating, string description, int runtime);
         public MovieDTO DeleteMovie(int id);
 
-        public ScreeningDTO CreateScreening();
-        public ScreeningDTO GetScreenings();
+        public ScreeningDTO CreateScreening(int screenNumber, int capacity, DateTime startsAt);
+        public List<ScreeningDTO> GetScreenings();
 
-        public TicketDTO BookTicket();
+        public TicketDTO BookTicket(int id);
         public List<TicketDTO> GetTickets();
 
     }

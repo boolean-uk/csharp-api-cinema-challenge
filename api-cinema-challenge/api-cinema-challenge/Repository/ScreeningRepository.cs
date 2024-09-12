@@ -4,7 +4,7 @@ namespace api_cinema_challenge.Repository
 {
     public partial class Repository : IRepository
     {
-        public Payload<ScreeningDTO> CreateScreening();
-        public Payload<ScreeningDTO> GetScreenings();
+        public ScreeningDTO CreateScreening(int screenNumber, int capacity, DateTime startsAt);
+        public List<ScreeningDTO> GetScreenings();
     }
 }
