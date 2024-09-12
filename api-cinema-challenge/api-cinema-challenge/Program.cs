@@ -25,6 +25,8 @@ if (app.Environment.IsDevelopment())
 
 app.ConfigureCustomerEndpoint();
 app.ConfigureMovieEndpoint();
+app.ConfigureScreeningEndpoint();
+//app.ConfigureTicketEndpoint();
 
 app.UseHttpsRedirection();
 app.Run();

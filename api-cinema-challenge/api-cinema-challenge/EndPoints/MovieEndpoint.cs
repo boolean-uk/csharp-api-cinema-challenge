@@ -17,9 +17,6 @@ namespace api_cinema_challenge.EndPoints
             movie.MapGet("/", GetMovies);
             movie.MapPut("/{id}", UpdateMovie);
             movie.MapDelete("/{id}", DeleteMovie);
-
-            movie.MapPost("/{id}/screenings", CreateScreening);
-            movie.MapGet("/{id}/screenings", GetScreenings);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -84,41 +81,6 @@ namespace api_cinema_challenge.EndPoints
 
             var payload = new Payload<MovieDTO>() { Status = "success", Data = resultDTO };
             return TypedResults.Ok(payload);
-        }
-
-
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateScreening(IRepository<Screening> repository, int id, ScreeningView view)
-        {
-            DateTime creationTime = DateTime.UtcNow;
-            var model = new Screening()
-            { 
-                MovieId = id,
-                ScreenId = view.ScreenNumber,
-                Capacity = view.Capacity,
-                StartsAt = DateTime.Parse(view.StartsAt).ToUniversalTime(),
-                CreatedAt = creationTime,
-                UpdatedAt = creationTime
-            };
-            var result = await repository.Create(["Movie"], model);
-            var resultDTO = new ScreeningDTO(result);
-
-            var payload = new Payload<ScreeningDTO>() { Status = "success", Data = resultDTO };
-            return TypedResults.Created(_basepath, resultDTO);
-        }
-
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetScreenings(IRepository<Screening> repository, int id)
-        {
-            var resultList = await repository.GetAll(["Movie"], s => s.MovieId == id);
-            var resultDTOs = new List<ScreeningDTO>();
-            foreach (var result in resultList)
-            {
-                resultDTOs.Add(new ScreeningDTO(result));
-            }
-
-            var payload = new Payload<List<ScreeningDTO>>() { Status = "success", Data = resultDTOs };
-            return TypedResults.Ok(resultDTOs);
         }
     }
 }
