@@ -1,6 +1,9 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
-using api_cinema_challenge.ViewModels;
+using api_cinema_challenge.VIewModelsCustomer;
+using api_cinema_challenge.ViewModelsMovie;
+using api_cinema_challenge.ViewModelsScreening;
+using api_cinema_challenge.ViewModelsTicket;
 using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repositories
@@ -26,17 +29,13 @@ namespace api_cinema_challenge.Repositories
             //Response
             return ConstructCustomerDTO(entity);
         }
-        public async Task<ICollection<CustomerDTO>> GetCustomers()
+        public async Task<CustomerGetDTO> GetCustomers()
         {
             //Get Customers
             var customers = await _db.Customers.ToListAsync();
 
-            //Add to list of DTOs
-            List<CustomerDTO> result = new List<CustomerDTO>();
-            foreach (var customer in customers)
-            {
-                result.Add(ConstructCustomerDTO(customer));
-            }
+            //Construct the result DTO
+            var result = ConstructCustomerGetDTO(customers);
 
             //Response
             return result;
@@ -79,6 +78,10 @@ namespace api_cinema_challenge.Repositories
             //Response
             return ConstructCustomerDTO(customer);
         }
+        private CustomerGetDTO ConstructCustomerGetDTO(List<Customer> customers)
+        {
+            return new CustomerGetDTO(customers);
+        }
         private CustomerDTO ConstructCustomerDTO(Customer customer)
         {
             return new CustomerDTO(customer);
@@ -96,17 +99,13 @@ namespace api_cinema_challenge.Repositories
             //Response
             return ConstructMovieDTO(entity);
         }
-        public async Task<ICollection<MovieDTO>> GetMovies()
+        public async Task<MovieGetDTO> GetMovies()
         {
             //Get Movies
             var movies = await _db.Movies.ToListAsync();
 
-            //Add to list of DTOs
-            List<MovieDTO> result = new List<MovieDTO>();
-            foreach (var movie in movies)
-            {
-                result.Add(ConstructMovieDTO(movie));
-            }
+            //Construct the result DTO
+            var result = ConstructMovieGetDTO(movies);
 
             //Response
             return result;
@@ -150,6 +149,10 @@ namespace api_cinema_challenge.Repositories
             //Response
             return ConstructMovieDTO(movie);
         }
+        private MovieGetDTO ConstructMovieGetDTO(List<Movie> movies)
+        {
+            return new MovieGetDTO(movies);
+        }
         private MovieDTO ConstructMovieDTO(Movie movie)
         {
             return new MovieDTO(movie);
@@ -167,22 +170,56 @@ namespace api_cinema_challenge.Repositories
             //Response
             return ConstructScreeningDTO(entity);
         }
-        public async Task<ICollection<ScreeningDTO>> GetScreenings(int id)
+        public async Task<ScreeningGetDTO> GetScreenings(int id)
         {
             //Get the screenings
             var screenings = await _db.Screenings.Include(s => s.Movie).Where(m => m.MovieId == id).ToListAsync();
-            List<ScreeningDTO> result = new List<ScreeningDTO>();
-            foreach (var screening in screenings)
-            {
-                result.Add(ConstructScreeningDTO(screening));
-            }
+            
+            //Construct the result DTO
+            var result = ConstructGetScreeningDTO(screenings);
 
             //Response
             return result;
         }
+        private ScreeningGetDTO ConstructGetScreeningDTO(List<Screening> screenings)
+        {
+            return new ScreeningGetDTO(screenings);
+        }
         private ScreeningDTO ConstructScreeningDTO(Screening screening)
         {
             return new ScreeningDTO(screening);
+        }
+
+
+
+        //--Tickets--
+        public async Task<TicketDTO> AddTicket(Ticket entity)
+        {
+            //Add the ticket
+            await _db.AddAsync(entity);
+            await _db.SaveChangesAsync();
+
+            //Response
+            return ConstructTicketDTO(entity);
+        }
+        public async Task<TicketGetDTO> GetTickets(int customerId, int screeningId)
+        {
+            //Get all tickets
+            var tickets = await _db.Tickets.Include(t => t.Customer).Include(t => t.Screening).Where(m => m.CustomerId == customerId).Where(m => m.ScreeningId == screeningId).ToListAsync();
+
+            //Construct the result DTO
+            var result = ConstructGetTicketDTO(tickets);
+
+            //Response
+            return result;
+        }
+        private TicketGetDTO ConstructGetTicketDTO(List<Ticket> tickets)
+        {
+            return new TicketGetDTO(tickets);
+        }
+        private TicketDTO ConstructTicketDTO(Ticket ticket)
+        {
+            return new TicketDTO(ticket);
         }
     }
 }

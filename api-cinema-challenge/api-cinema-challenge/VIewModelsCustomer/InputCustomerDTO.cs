@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace api_cinema_challenge.ViewModels
+namespace api_cinema_challenge.VIewModelsCustomer
 {
     public class InputCustomerDTO
     {

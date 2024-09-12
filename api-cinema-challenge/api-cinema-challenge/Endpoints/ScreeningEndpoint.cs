@@ -1,6 +1,6 @@
 ﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Repositories;
-using api_cinema_challenge.ViewModels;
+using api_cinema_challenge.ViewModelsScreening;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 
@@ -35,7 +35,7 @@ namespace api_cinema_challenge.Endpoints
                 var result = await repository.AddScreening(screening);
 
                 //Response
-                return TypedResults.Created($"http://localhost:/screenings/{result.id}", result);
+                return TypedResults.Created($"http://localhost:7195/screenings/{result.data.id}", result);
             }
             catch (Exception ex)
             {

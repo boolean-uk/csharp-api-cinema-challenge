@@ -1,6 +1,6 @@
 ﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Repositories;
-using api_cinema_challenge.ViewModels;
+using api_cinema_challenge.VIewModelsCustomer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
@@ -35,7 +35,7 @@ namespace api_cinema_challenge.Endpoints
                 var result = await repository.AddCustomer(customer);
 
                 //Response
-                return TypedResults.Created($"http://localhost:/customers/{result.id}", result);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.data.id}", result);
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace api_cinema_challenge.Endpoints
                 var result = await repository.UpdateCustomer(id, customer);
 
                 //Response
-                return TypedResults.Created($"http://localhost:/customers/{result.id}", result);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.data.id}", result);
             }
             catch (Exception ex)
             {

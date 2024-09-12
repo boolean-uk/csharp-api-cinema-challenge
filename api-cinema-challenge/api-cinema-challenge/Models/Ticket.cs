@@ -3,23 +3,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
-    [Table("customers")]
-    public class Customer
+    [Table("tickets")]
+    public class Ticket
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
         public int Id { get; set; }
-        [Column("name")]
-        public string Name { get; set; }
-        [Column("email")]
-        public string Email { get; set; }
-        [Column("phone")]
-        public string Phone { get; set; }
+        [Column("numSeats")]
+        public int NumSeats { get; set; }
         [Column("createdAt")]
         public DateTime CreatedAt { get; set; }
         [Column("updatedAt")]
         public DateTime UpdatedAt { get; set; }
-        public List<Ticket> tickets { get; set; }
+        [Column("customerId")]
+        [ForeignKey("customer")]
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
+        [Column("screeningId")]
+        [ForeignKey("screening")]
+        public int ScreeningId { get; set; }
+        public Screening Screening { get; set; }
     }
 }

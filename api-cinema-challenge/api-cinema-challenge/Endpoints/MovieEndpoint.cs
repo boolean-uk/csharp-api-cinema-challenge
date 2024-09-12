@@ -1,7 +1,9 @@
 ﻿using api_cinema_challenge.Models;
 using api_cinema_challenge.Repositories;
-using api_cinema_challenge.ViewModels;
+using api_cinema_challenge.ViewModelsMovie;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -18,7 +20,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateMovie(IRepository repository, InputMovieDTO data)
+        public static async Task<IResult> CreateMovie(IRepository repository, InputCreateMovieDTO data)
         {
             try
             {
@@ -34,8 +36,25 @@ namespace api_cinema_challenge.Endpoints
                 movie.UpdatedAt = movie.CreatedAt;
                 var result = await repository.AddMovie(movie);
 
+                if (data.screenings != null)
+                {
+                    CultureInfo culture = CultureInfo.InvariantCulture;
+                    foreach (var screen in data.screenings)
+                    {
+                        Screening screening = new Screening()
+                        {
+                            ScreenNumber = screen.ScreenNumber,
+                            Capacity = screen.Capacity,
+                            StartsAt = DateTime.ParseExact(screen.StartsAt, "yyyy-MM-dd HH:mm:ss", culture).ToUniversalTime(),
+                            MovieId = result.data.id,
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        await repository.AddScreening(screening);
+                    }
+                }
+
                 //Response
-                return TypedResults.Created($"http://localhost:/movies/{result.id}", result);
+                return TypedResults.Created($"http://localhost:7195/movies/{result.data.id}", result);
             }
             catch (Exception ex)
             {
@@ -77,7 +96,7 @@ namespace api_cinema_challenge.Endpoints
                 var result = await repository.UpdateMovie(id, movie);
 
                 //Response
-                return TypedResults.Created($"http://localhost:/movies/{result.id}", result);
+                return TypedResults.Created($"http://localhost:7195/movies/{result.data.id}", result);
             }
             catch (Exception ex)
             {

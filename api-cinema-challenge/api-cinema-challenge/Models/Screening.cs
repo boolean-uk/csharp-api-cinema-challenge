@@ -24,5 +24,6 @@ namespace api_cinema_challenge.Models
         public DateTime CreatedAt { get; set; }
         [Column("updatedAt")]
         public DateTime UpdatedAt { get; set; }
+        public List<Ticket> tickets { get; set; }
     }
 }
