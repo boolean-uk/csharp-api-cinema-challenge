@@ -11,7 +11,7 @@ namespace api_cinema_challenge.Data
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
-            this.Database.EnsureCreated();
+            //this.Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

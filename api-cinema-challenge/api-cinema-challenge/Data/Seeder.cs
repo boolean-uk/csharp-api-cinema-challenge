@@ -33,34 +33,39 @@ namespace api_cinema_challenge.Data
 
             DateTime now = DateTime.UtcNow;
 
-            for (int i = 0; i < _customers.Count; i++)
+            for (int i = 0; i < _customerData.Count; i++)
             {
-                _customers.Add(new Customer() { 
-                    Id = i + 1, 
-                    Name = _customerData[i].Item1, 
-                    Email = _customerData[i].Item2, 
-                    Phone = _customerData[i].Item3, 
-                    CreatedAt = now, 
-                    UpdatedAt = now });
+                _customers.Add(new Customer()
+                {
+                    Id = i + 1,
+                    Name = _customerData[i].Item1,
+                    Email = _customerData[i].Item2,
+                    Phone = _customerData[i].Item3,
+                    CreatedAt = now,
+                    UpdatedAt = now
+                });
             }
 
             for (int i = 0; i < _movieData.Count; i++)
             {
-                _movies.Add(new Movie() { 
-                    Id = i + 1, 
-                    Title = _movieData[i].Item1, 
-                    Rating = _movieData[i].Item2, 
-                    Description = _movieData[i].Item3, 
-                    CreatedAt = now, 
-                    UpdatedAt = now });
+                _movies.Add(new Movie()
+                {
+                    Id = i + 1,
+                    Title = _movieData[i].Item1,
+                    Rating = _movieData[i].Item2,
+                    Description = _movieData[i].Item3,
+                    CreatedAt = now,
+                    UpdatedAt = now
+                });
             }
 
             for (int i = 0; i < _customers.Count * 2; i++)
             {
-                _screenings.Add(new Screening() { 
-                    Id = i + 1, 
-                    ScreenNumber = rnd.Next(30,200), 
-                    Capacity = rnd.Next(30, 80), 
+                _screenings.Add(new Screening()
+                {
+                    Id = i + 1,
+                    ScreenNumber = rnd.Next(30, 200),
+                    Capacity = rnd.Next(30, 80),
                     StartsAt = now + (TimeSpan.FromHours(i + 1)),
                     MovieId = rnd.Next(1, _movies.Count + 1),
                     CreatedAt = now,
