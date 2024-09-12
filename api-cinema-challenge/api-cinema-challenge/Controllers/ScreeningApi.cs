@@ -1,6 +1,7 @@
 ﻿namespace api_cinema_challenge.Controllers
 {
-    public class ScreeningApi
+    public static class ScreeningApi
     {
+
     }
 }

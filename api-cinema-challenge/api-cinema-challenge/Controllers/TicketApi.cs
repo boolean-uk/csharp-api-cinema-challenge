@@ -11,7 +11,7 @@ namespace api_cinema_challenge.Controllers
         public static void ConfigureTicketApi(this WebApplication app)
         {
             var tickets = app.MapGroup("tickets");
-            tickets.MapGet("/", CreateTicket);
+            tickets.MapPost("/", CreateTicket);
             tickets.MapGet("/", GetTickets);
             //tickets.MapGet("/", UpdateTicket);
             //tickets.MapGet("/", DeleteTicket);

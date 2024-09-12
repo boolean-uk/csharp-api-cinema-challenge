@@ -11,10 +11,10 @@ namespace api_cinema_challenge.Controllers
         public static void ConfigureMovieApi(this WebApplication app)
         {
             var movies = app.MapGroup("movies");
-            movies.MapGet("/", CreateMovie);
+            movies.MapPost("/", CreateMovie);
             movies.MapGet("/", GetMovies);
-            movies.MapGet("/", UpdateMovie);
-            movies.MapGet("/", DeleteMovie);
+            movies.MapPut("/", UpdateMovie);
+            movies.MapDelete("/", DeleteMovie);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
