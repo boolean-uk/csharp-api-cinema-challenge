@@ -7,7 +7,6 @@ namespace api_cinema_challenge.Models
     public class Movie
     {
         [Key]
-        [Required]
         [Column("id")]
         public int Id { get; set; }
 

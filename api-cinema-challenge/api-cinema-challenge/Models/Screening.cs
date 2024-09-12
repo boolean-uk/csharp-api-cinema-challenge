@@ -7,7 +7,6 @@ namespace api_cinema_challenge.Models
     public class Screening
     {
         [Key]
-        [Required]
         [Column("id")]
         public int Id { get; set; }
 
@@ -29,5 +28,7 @@ namespace api_cinema_challenge.Models
         [ForeignKey("movieFk")]
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
+
+        List<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

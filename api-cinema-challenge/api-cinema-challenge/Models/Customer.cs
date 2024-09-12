@@ -7,7 +7,6 @@ namespace api_cinema_challenge.Models
     public class Customer
     {
         [Key]
-        [Required]
         [Column("id")]
         public int Id { get; set; }
 
@@ -25,5 +24,7 @@ namespace api_cinema_challenge.Models
 
         [Column("phone")]
         public string Phone { get; set; }
+
+        List<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

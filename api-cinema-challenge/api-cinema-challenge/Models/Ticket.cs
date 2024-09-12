@@ -7,7 +7,6 @@ namespace api_cinema_challenge.Models
     public class Ticket
     {
         [Key]
-        [Required]
         [Column("id")]
         public int Id { get; set; }
 
@@ -19,5 +18,13 @@ namespace api_cinema_challenge.Models
 
         [Column("numSeats")]
         public int NumSeats { get; set; }
+
+        [ForeignKey("customerFk")]
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
+
+        [ForeignKey("screeningFk")]
+        public int ScreeningId { get; set; }
+        public Screening Screening { get; set; }
     }
 }
