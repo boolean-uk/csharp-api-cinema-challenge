@@ -29,5 +29,7 @@ app.ConfigureMovieEndpoint();
 app.ConfigureScreeningEndpoint();
 app.ConfigureTicketEndpoint();
 
+app.SeedCinemaApi();
+
 app.UseHttpsRedirection();
 app.Run();
