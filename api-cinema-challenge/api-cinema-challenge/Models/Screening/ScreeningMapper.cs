@@ -15,7 +15,7 @@
             };
         }
 
-        public static List<ScreeningDTO> MapToDTO(this List<Screening> screenings)
+        public static List<ScreeningDTO> MapListToDTO(this List<Screening> screenings)
         {
             return screenings.Select(screening => new ScreeningDTO
             {

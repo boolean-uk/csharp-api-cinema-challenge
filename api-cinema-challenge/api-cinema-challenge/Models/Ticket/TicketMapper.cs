@@ -13,7 +13,7 @@
             };
         }
 
-        public static List<TicketDTO> MapToDTO(this List<Ticket> tickets)
+        public static List<TicketDTO> MapListToDTO(this List<Ticket> tickets)
         {
             return tickets.Select(ticket => new TicketDTO
             {
