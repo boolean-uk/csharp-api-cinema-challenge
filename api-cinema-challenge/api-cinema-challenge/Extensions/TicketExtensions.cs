@@ -6,12 +6,12 @@ namespace api_cinema_challenge.Extensions
 {
     public static class TicketExtensions
     {
-        public static Ticket ToTicket(this TicketPostmodel ticketPost)
+        public static Ticket ToTicket(this TicketPostmodel ticketPost, int customerId, int screeningId)
         {
             return new Ticket
             {
-                CustomerId = ticketPost.CustomerId,
-                ScreeningId = ticketPost.ScreeningId,
+                CustomerId = customerId,
+                ScreeningId = screeningId,
                 NumSeats = ticketPost.NumSeats,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,

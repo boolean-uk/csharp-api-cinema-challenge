@@ -21,14 +21,27 @@ namespace api_cinema_challenge.Endpoints
             customers.MapPost("/{id}/screenings/{screeningId}", BookTicket);
         }
 
-        private static async Task<IResult> BookTicket(IRepository repository, int customerId, int screeningId)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> BookTicket(IRepository repository, TicketPostmodel ticketPost, int customerId, int screeningId)
         {
-            throw new NotImplementedException();
+            var ticket = ticketPost.ToTicket(customerId, screeningId);
+            var resultingTicket = await repository.CreateTicket(ticket);
+
+            Payload<TicketDTO> payload = new () { Status = "success", Data = resultingTicket.ToTicketDTO() };
+
+            return TypedResults.Created($"https://localhost:7195/customers/{customerId}/screenings/{screeningId}", payload);
+
         }
 
-        private static async Task<IResult> GetAllCustomerScreeningTickets(IRepository repository, int customerId, int screeningId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetAllCustomerScreeningTickets(IRepository repository, int customerId, int screeningId)
         {
-            throw new NotImplementedException();
+            var tickets = await repository.GetAllTickets(customerId, screeningId);
+            List<TicketDTO> ticketsDTO = (from ticket in tickets select ticket.ToTicketDTO()).ToList();
+
+            Payload<List<TicketDTO>> payload = new() { Status = "success", Data = ticketsDTO };
+
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -51,13 +64,13 @@ namespace api_cinema_challenge.Endpoints
 
             Payload<CustomerDTO> payload = new () { Status = "success", Data = customer.ToCustomerDTO() };
 
-            return TypedResults.Created("", payload);
+            return TypedResults.Created($"https://localhost:7195/customers/{customer.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> UpdateCustomer(IRepository repository, CustomerUpdateModel customerUpdate)
+        public static async Task<IResult> UpdateCustomer(IRepository repository, CustomerPostModel customerUpdate, int customerId)
         {
-            var customer = await repository.GetACustomer(customerUpdate.Id);
+            var customer = await repository.GetACustomer(customerId);
 
             if (!string.IsNullOrEmpty(customerUpdate.Name)) customer.Name = customerUpdate.Name;
 
@@ -67,11 +80,11 @@ namespace api_cinema_challenge.Endpoints
 
             customer.UpdatedAt = DateTime.UtcNow;
 
-            await repository.UpdateCustomer(customer);
+            var resultingCustomer = await repository.UpdateCustomer(customer);
 
-            Payload<CustomerDTO> payload = new() { Status = "success", Data = customer.ToCustomerDTO() };
+            Payload<CustomerDTO> payload = new() { Status = "success", Data = resultingCustomer.ToCustomerDTO() };
 
-            return TypedResults.Created("", payload);
+            return TypedResults.Created($"https://localhost:7195/customers/{resultingCustomer.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

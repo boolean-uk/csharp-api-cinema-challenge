@@ -35,6 +35,13 @@ namespace api_cinema_challenge.Repositories
             return screening;
         }
 
+        public async Task<Ticket> CreateTicket(Ticket ticket)
+        {
+            _db.Tickets.Add(ticket);
+            await _db.SaveChangesAsync();
+            return ticket;
+        }
+
         public async Task<Customer> DeleteCustomer(int id)
         {
             var customer = await _db.Customers.FindAsync(id);
@@ -72,9 +79,9 @@ namespace api_cinema_challenge.Repositories
             return await _db.Screenings.Where(x => x.MovieId == id).ToListAsync();
         }
 
-        public async Task<ICollection<Ticket>> GetAllTickets()
+        public async Task<ICollection<Ticket>> GetAllTickets(int customerId, int screeningId)
         {
-            return await _db.Tickets.ToListAsync();
+            return await _db.Tickets.Where(x => x.CustomerId == customerId && x.ScreeningId == screeningId).ToListAsync();
         }
 
         public async Task<Movie> GetMovie(int id)
@@ -104,20 +111,6 @@ namespace api_cinema_challenge.Repositories
             _db.Movies.Update(movie);
             await _db.SaveChangesAsync();
             return movie;
-        }
-
-        public async Task<Screening> UpdateScreening(Screening screening)
-        {
-            _db.Screenings.Update(screening);
-            await _db.SaveChangesAsync();
-            return screening;
-        }
-
-        public async Task<Ticket> UpdateTicket(Ticket ticket)
-        {
-            _db.Tickets.Update(ticket);
-            await _db.SaveChangesAsync();
-            return ticket;
         }
     }
 }

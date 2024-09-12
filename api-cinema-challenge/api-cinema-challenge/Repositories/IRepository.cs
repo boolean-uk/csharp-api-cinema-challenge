@@ -24,12 +24,11 @@ namespace api_cinema_challenge.Repositories
         Task<ICollection<Screening>> GetAllScreenings(int id);
         Task<Screening> GetScreening(int id);
         Task<Screening> CreateScreening(Screening screening);
-        Task<Screening> UpdateScreening(Screening screening);
 
         // ----------- TICKET ----------- 
-        Task<ICollection<Ticket>> GetAllTickets();
+        Task<ICollection<Ticket>> GetAllTickets(int customerId, int screeningId);
         Task<Ticket> GetTicket(int id);
-        Task<Ticket> UpdateTicket(Ticket ticket);
+        Task<Ticket> CreateTicket(Ticket ticket);
 
     }
 }

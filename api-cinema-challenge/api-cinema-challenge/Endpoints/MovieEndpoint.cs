@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Endpoints
 
             Payload<ScreeningDTO> payload = new() { Status = "success", Data = screeningResult.ToScreeningDTO() };
 
-            return TypedResults.Created("", payload);
+            return TypedResults.Created($"https://localhost:7195/movies/{movieId}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,13 +72,13 @@ namespace api_cinema_challenge.Endpoints
 
             Payload<MovieDTO> payload = new() { Status = "success", Data = movie.ToMovieDTO() };
 
-            return TypedResults.Created("", payload);
+            return TypedResults.Created($"https://localhost:7195/movies/{movie.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> UpdateMovie(IRepository repository, MovieUpdateModel movieUpdate)
+        public static async Task<IResult> UpdateMovie(IRepository repository, MoviePostModel movieUpdate, int movieId)
         {
-            var movie = await repository.GetMovie(movieUpdate.Id);
+            var movie = await repository.GetMovie(movieId);
 
             if(!string.IsNullOrEmpty(movieUpdate.Title)) movie.Title = movieUpdate.Title;
             if (!string.IsNullOrEmpty(movieUpdate.Description)) movie.Description = movieUpdate.Description;
@@ -90,7 +90,7 @@ namespace api_cinema_challenge.Endpoints
 
             Payload<MovieDTO> payload = new() { Status = "success", Data= resultingMovie.ToMovieDTO() };
 
-            return TypedResults.Created("", payload);
+            return TypedResults.Created($"https://localhost:7195/movies/{resultingMovie.Id}", payload);
 
         }
 

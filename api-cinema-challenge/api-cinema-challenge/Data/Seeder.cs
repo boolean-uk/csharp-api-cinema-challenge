@@ -72,10 +72,11 @@ namespace api_cinema_challenge.Data
 
             if (!db.Screenings.Any())
             {
-                db.Screenings.AddRange(
+                var screenings = new List<Screening>
+                {
                     new Screening
                     {
-                        MovieId = 1,
+                        MovieId = db.Movies.First(m => m.Title == "Dodgeball").Id,
                         ScreenNumber = 5,
                         Capacity = 40,
                         StartsAt = DateTime.UtcNow.AddDays(2),
@@ -84,7 +85,7 @@ namespace api_cinema_challenge.Data
                     },
                     new Screening
                     {
-                        MovieId = 2,
+                        MovieId = db.Movies.First(m => m.Title == "Inception").Id,
                         ScreenNumber = 3,
                         Capacity = 50,
                         StartsAt = DateTime.UtcNow.AddDays(3),
@@ -93,72 +94,81 @@ namespace api_cinema_challenge.Data
                     },
                     new Screening
                     {
-                        MovieId = 3,
+                        MovieId = db.Movies.First(m => m.Title == "The Matrix").Id,
                         ScreenNumber = 1,
                         Capacity = 60,
                         StartsAt = DateTime.UtcNow.AddDays(4),
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
-                    });
+                    }
+                };
+                db.Screenings.AddRange(screenings);
                 await db.SaveChangesAsync();
             }
+        
 
             if (!db.Tickets.Any())
             {
-                db.Tickets.AddRange(
+                var tickets = new List<Ticket>
+                {
                     new Ticket
                     {
-                        CustomerId = 2,
+                        CustomerId = db.Customers.First(c => c.Name == "Nigel Sibbert").Id,
                         NumSeats = 1,
-                        ScreeningId = 1,
+                        ScreeningId = db.Screenings.First(s => s.ScreenNumber == 5).Id,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
                     },
                     new Ticket
                     {
-                        CustomerId = 3,
+                        CustomerId = db.Customers.First(c => c.Name == "Dave Ames").Id,
                         NumSeats = 2,
-                        ScreeningId = 2,
+                        ScreeningId = db.Screenings.First(s => s.ScreenNumber == 3).Id,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
                     },
                     new Ticket
                     {
-                        CustomerId = 1,
+                        CustomerId = db.Customers.First(c => c.Name == "Agron Metaj").Id,
                         NumSeats = 3,
-                        ScreeningId = 3,
+                        ScreeningId = db.Screenings.First(s => s.ScreenNumber == 1).Id,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
-                    });
+                    }
+                };
+
+                db.Tickets.AddRange(tickets);
                 await db.SaveChangesAsync();
             }
 
-        }
-        public static async Task PurgeCinemaDbTables(this WebApplication app)
+}
+        public static async void PurgeCinemaDbTables(this WebApplication app)
         {
             using var db = new CinemaContext();
 
             if (db.Tickets.Any())
             {
                 db.Tickets.RemoveRange(db.Tickets);
+                await db.SaveChangesAsync();
             }
 
             if (db.Screenings.Any())
             {
                 db.Screenings.RemoveRange(db.Screenings);
+                await db.SaveChangesAsync();
             }
 
             if (db.Movies.Any())
             {
                 db.Movies.RemoveRange(db.Movies);
+                await db.SaveChangesAsync();
             }
 
             if (db.Customers.Any())
             {
                 db.Customers.RemoveRange(db.Customers);
+                await db.SaveChangesAsync();
             }
-
-            await db.SaveChangesAsync();
         }
 
     }
