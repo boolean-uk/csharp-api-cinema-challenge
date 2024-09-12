@@ -43,6 +43,8 @@ namespace api_cinema_challenge.Repository
         {
             return await _db.Customers
                 .Include(x => x.Tickets)
+                .ThenInclude(x => x.Screening)
+                .ThenInclude(x => x.Movie)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -50,6 +52,8 @@ namespace api_cinema_challenge.Repository
         {
             return await _db.Customers
                 .Include(x => x.Tickets)
+                .ThenInclude(x => x.Screening)
+                .ThenInclude(x => x.Movie)
                 .ToListAsync();
         }
 
@@ -57,6 +61,8 @@ namespace api_cinema_challenge.Repository
         {
             var target = await _db.Customers
                 .Include(x => x.Tickets)
+                .ThenInclude(x => x.Screening)
+                .ThenInclude(x => x.Movie)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             target.UpdatedAt = DateTime.UtcNow;

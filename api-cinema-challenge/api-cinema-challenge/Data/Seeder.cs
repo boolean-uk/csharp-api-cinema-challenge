@@ -66,7 +66,7 @@ namespace api_cinema_challenge.Data
                     Id = i + 1,
                     ScreenNumber = rnd.Next(30, 200),
                     Capacity = rnd.Next(30, 80),
-                    StartsAt = now + (TimeSpan.FromHours(i + 1)),
+                    StartsAt = now + (TimeSpan.FromHours(i + 4)),
                     MovieId = rnd.Next(1, _movies.Count + 1),
                     CreatedAt = now,
                     UpdatedAt = now
