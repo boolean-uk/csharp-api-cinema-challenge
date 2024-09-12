@@ -24,6 +24,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.ConfigureCinemaApi();
+app.ConfigureCustomersApi();
+app.ConfigureMoviesApi();
+app.ConfigureScreeningsApi();
 app.SeedCinemaApi();
 app.Run();
