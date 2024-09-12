@@ -1,5 +1,7 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Models.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repositories
 {
@@ -12,24 +14,53 @@ namespace api_cinema_challenge.Repositories
             _db = db;
         }
 
-        public Task<Movie> CreateMovie()
+        public async Task<Movie> CreateMovie(CreateMovieDto movieDto)
         {
-            throw new NotImplementedException();
+            Movie movie = new Movie();
+            movie.Title = movieDto.title;
+            movie.Rating = movieDto.rating;
+            movie.RuntimeMins = movieDto.runtimeMins;
+            movie.Description = movieDto.description;
+            movie.CreatedAt = DateTime.UtcNow;
+            movie.CreatedAt = DateTime.UtcNow;
+
+            await _db.AddAsync(movie);
+            await _db.SaveChangesAsync();
+            return movie;
         }
 
-        public Task<Movie> DeleteMovie()
+        public async Task<Movie> DeleteMovie(int id)
         {
-            throw new NotImplementedException();
+            Movie movieToBeDeleted = await _db.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            if(movieToBeDeleted == null)
+            {
+                return null;
+            }
+            _db.Remove(movieToBeDeleted);
+            await _db.SaveChangesAsync();
+            return movieToBeDeleted;
         }
 
-        public Task<ICollection<Movie>> GetMovies()
+        public async Task<ICollection<Movie>> GetMovies()
         {
-            throw new NotImplementedException();
+            return await _db.Movies.ToListAsync();
         }
 
-        public Task<Movie> UpdateMovie()
+        public async Task<Movie> UpdateMovie(int id, CreateMovieDto movieDto)
         {
-            throw new NotImplementedException();
+            Movie movieToBeUpdated = await _db.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            if(movieToBeUpdated == null)
+            {
+                return null;
+            }
+            movieToBeUpdated.Title = movieDto.title;
+            movieToBeUpdated.Rating = movieDto.rating;
+            movieToBeUpdated.RuntimeMins = movieDto.runtimeMins;
+            movieToBeUpdated.Description = movieDto.description;
+            movieToBeUpdated.UpdatedAt = DateTime.UtcNow;
+
+            await _db.SaveChangesAsync();
+            return movieToBeUpdated;
         }
     }
 }
