@@ -2,6 +2,8 @@
 using api_cinema_challenge.Models.Movie;
 using api_cinema_challenge.Models.Screening;
 using api_cinema_challenge.Models.Ticket;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Globalization;
 
 namespace api_cinema_challenge.Data
@@ -96,16 +98,16 @@ namespace api_cinema_challenge.Data
 
         List<string> _dates = new List<string>
         {
-            "2024-09-12 13:45:00 UTC +0200",
-            "2024-09-12 14:00:00 UTC +0200",
-            "2024-09-12 14:15:00 UTC +0200",
-            "2024-09-12 14:30:00 UTC +0200",
-            "2024-09-12 14:45:00 UTC +0200",
-            "2024-09-12 15:00:00 UTC +0200",
-            "2024-09-12 15:15:00 UTC +0200",
-            "2024-09-12 15:30:00 UTC +0200",
-            "2024-09-12 15:45:00 UTC +0200",
-            "2024-09-12 16:00:00 UTC +0200"
+            "2024-09-12 13:45:00 UTC",
+            "2024-09-12 14:00:00 UTC",
+            "2024-09-12 14:15:00 UTC",
+            "2024-09-12 14:30:00 UTC",
+            "2024-09-12 14:45:00 UTC",
+            "2024-09-12 15:00:00 UTC",
+            "2024-09-12 15:15:00 UTC",
+            "2024-09-12 15:30:00 UTC",
+            "2024-09-12 15:45:00 UTC",
+            "2024-09-12 16:00:00 UTC"
         };
 
         private List<Customer> _customers = new List<Customer>();
@@ -138,10 +140,8 @@ namespace api_cinema_challenge.Data
                 screening.ScreenNumber = x;
                 screening.Capacity = _capacities[screenRandom.Next(_capacities.Count)];
                 string date = _dates[screenRandom.Next(_dates.Count)];
-                string text = "11/23/2011 23:59:59 UTC +0800";
-                string pattern = "MM/dd/yyyy HH:mm:ss 'UTC' zzz";
-                DateTimeOffset fan = DateTime.ParseExact(text, pattern, CultureInfo.InvariantCulture);
-                screening.StartsAt = DateTime.ParseExact(date, "yyyy/MM/dd HH:mm:ss 'UTC' zzz", CultureInfo.InvariantCulture);
+                string format = "yyyy-MM-dd HH:mm:ss 'UTC'";
+                screening.StartsAt = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
                 _screenings.Add(screening);
             }
 
@@ -155,21 +155,24 @@ namespace api_cinema_challenge.Data
                 movie.runtimeMins = _runtimes[movieRandom.Next(_runtimes.Count)];
                 _movies.Add(movie);
             }
-            //for (int x = 1; x < 30; x++)
-            //{
-            //    Ticket ticket = new Ticket();
-            //    ticket.Id = _movies[ticketRandom.Next(_movies.Count)].Id;
-            //    if (_tickets.Count == 0)
-            //    {
-            //        ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - 1;
-            //    }
-            //    else if (_tickets.Count > 0) 
-            //    {
-            //        ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - _tickets.Where(x => x.Id == ticket.Id).Max(x => x.numSeats);
-            //    }
-            //    _tickets.Add(ticket);
+            for (int x = 1; x < 30; x++)
+            {
+                Ticket ticket = new Ticket();
+                ticket.Id = _movies[ticketRandom.Next(_movies.Count)].Id;
+                if (_tickets.Count() == 0)
+                {
+                    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - 1;
+                }
+                else if (_tickets.Where(x => x.Id == ticket.Id).Count() != 0)
+                {
+                    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - _tickets.Where(x => x.Id == ticket.Id).Max(x => x.numSeats);
+                }
 
-            //}
+                //ensure no duplicate composite keys exist
+                if (_tickets.Where()
+                _tickets.Add(ticket);
+
+            }
 
 
 
