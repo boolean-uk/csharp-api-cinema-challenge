@@ -23,6 +23,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movie = await repository.AddMovie(title, rating, description, runtimeMins);
+                Console.WriteLine(movie.Title + " " + movie.Rating);
                 return movie != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(movie)) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)

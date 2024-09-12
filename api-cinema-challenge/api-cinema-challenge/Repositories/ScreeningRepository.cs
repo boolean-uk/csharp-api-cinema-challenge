@@ -7,9 +7,10 @@ namespace api_cinema_challenge.Repositories
     {
         public async Task<Screening> AddScreening(int screenNumber, int capacity, DateTime startsAt)
         {
-            await _db.Screens.AddAsync(new Screening(screenNumber, capacity, startsAt));
+            var screen = new Screening() { Id = _db.Screens.Count(), ScreenNumber = screenNumber, StartsAt = startsAt, Capacity = capacity, Created = DateTime.Now, Updated = DateTime.Now };
+            await _db.Screens.AddAsync(screen);
             await _db.SaveChangesAsync();
-            return new Screening(screenNumber, capacity, startsAt);
+            return screen;
         }
 
         public async Task<IEnumerable<Screening>> GetScreening()

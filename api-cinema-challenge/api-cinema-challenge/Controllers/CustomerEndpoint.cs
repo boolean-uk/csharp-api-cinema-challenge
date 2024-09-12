@@ -28,9 +28,7 @@ namespace api_cinema_challenge.Controllers
             }
             catch (Exception ex)
             {
-                using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
-                ILogger logger = factory.CreateLogger("Errors");
-                logger.LogInformation(ex.ToString());
+
 
                 return TypedResults.BadRequest("Bad Request");
             }

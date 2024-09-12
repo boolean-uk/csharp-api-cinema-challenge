@@ -7,7 +7,7 @@ namespace api_cinema_challenge.Repositories
     {
         public async Task<Ticket> AddTicket(int screeningId)
         {
-            var ticket = new Ticket(screeningId);
+            var ticket = new Ticket() { Id = _db.Ticket.Count() + 1, ScreeningId = screeningId, Created = DateTime.Now };
             await _db.Ticket.AddAsync(ticket);
             await _db.SaveChangesAsync();
             return ticket;

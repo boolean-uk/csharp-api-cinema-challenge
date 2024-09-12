@@ -7,9 +7,10 @@ namespace api_cinema_challenge.Repositories
     {
         public async Task<Customer> AddCustomer(string name, string email, string phonenumber)
         {
-            await _db.Customers.AddAsync(new Customer(name, email, phonenumber));
+            var customer = new Customer() { Id = _db.Customers.Count() + 1, Name = name, Email = email, Phone = phonenumber, Created = DateTime.Now, Updated = DateTime.Now };
+            await _db.Customers.AddAsync(customer);
             await _db.SaveChangesAsync();
-            return new Customer(name, email, phonenumber);
+            return customer;
         }
 
         public async Task<Customer> DeleteCustomer(int id)
@@ -28,9 +29,9 @@ namespace api_cinema_challenge.Repositories
         public async Task<Customer> UppdateCustomer(int id, string? name, string? email, string? phone)
         {
             var customer = await _db.Customers.FirstOrDefaultAsync(c => c.Id == id);
-            if (name is not null) { customer.Name = name; }
-            if (email is not null) { customer.Email = email; }
-            if (phone is not null) { customer.Phone = phone; }
+            if (name is not null) { customer.Name = name; customer.Updated = DateTime.Now; }
+            if (email is not null) { customer.Email = email; customer.Updated = DateTime.Now; }
+            if (phone is not null) { customer.Phone = phone; customer.Updated = DateTime.Now; }
             await _db.SaveChangesAsync();
             return customer;
         }
