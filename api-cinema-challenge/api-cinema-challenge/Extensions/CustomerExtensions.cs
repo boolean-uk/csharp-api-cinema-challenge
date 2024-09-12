@@ -25,7 +25,7 @@ namespace api_cinema_challenge.Extensions
                 Id = customer.Id,
                 Name = customer.Name,
                 Email = customer.Email,
-                PhoneNr = customer.Phone,
+                Phone = customer.Phone,
                 CreatedAt = customer.CreatedAt,
                 UpdatedAt = customer.UpdatedAt
             };

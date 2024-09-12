@@ -5,12 +5,10 @@ namespace api_cinema_challenge.ViewModels
     public class ScreeningPostModel
     {
         [Required]
-        public int MovieId { get; set; }
-        [Required]
         public int ScreenNumber { get; set; }
         [Required]
         public int Capacity { get; set; }
         [Required]
-        public DateTime StartsAt { get; set; }
+        public string StartsAt { get; set; }
     }
 }

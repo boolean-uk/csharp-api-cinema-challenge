@@ -59,20 +59,11 @@ namespace api_cinema_challenge.Endpoints
         {
             var customer = await repository.GetACustomer(customerUpdate.Id);
 
-            if (!string.IsNullOrEmpty(customerUpdate.Name))
-            {
-                customer.Name = customerUpdate.Name;
-            }
+            if (!string.IsNullOrEmpty(customerUpdate.Name)) customer.Name = customerUpdate.Name;
 
-            if (!string.IsNullOrEmpty(customerUpdate.Email))
-            {
-                customer.Email = customerUpdate.Email;
-            }
+            if (!string.IsNullOrEmpty(customerUpdate.Email)) customer.Email = customerUpdate.Email;
 
-            if (!string.IsNullOrEmpty(customerUpdate.Phone))
-            {
-                customer.Phone = customerUpdate.Phone;
-            }
+            if (!string.IsNullOrEmpty(customerUpdate.Phone)) customer.Phone = customerUpdate.Phone;
 
             customer.UpdatedAt = DateTime.UtcNow;
 

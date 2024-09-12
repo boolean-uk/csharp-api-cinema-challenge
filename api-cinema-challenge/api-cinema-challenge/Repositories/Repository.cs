@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repositories
 {
-    public class CustomerRepository : IRepository
+    public class Repository : IRepository
     {
         private CinemaContext _db;
 
-        public CustomerRepository(CinemaContext db)
+        public Repository(CinemaContext db)
         {
             _db = db;
         }

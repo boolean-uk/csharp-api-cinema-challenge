@@ -19,14 +19,14 @@ namespace api_cinema_challenge.Extensions
             };
         }
 
-        public static Screening ToScreening(this ScreeningPostModel screeningPost)
+        public static Screening ToScreening(this ScreeningPostModel screeningPost, int movieId)
         {
             return new Screening
             {
-                MovieId = screeningPost.MovieId,
+                MovieId = movieId,
                 ScreenNumber = screeningPost.ScreenNumber,
                 Capacity = screeningPost.Capacity,
-                StartsAt = screeningPost.StartsAt,
+                StartsAt = DateTime.Parse(screeningPost.StartsAt).ToUniversalTime(),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

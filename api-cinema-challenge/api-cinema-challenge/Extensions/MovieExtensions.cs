@@ -16,11 +16,11 @@ namespace api_cinema_challenge.Extensions
                 Rating = movie.Rating,
                 Description = movie.Description,
                 RuntimeMins = movie.RuntimeMins,
-                Screenings = screeningsDTO,
                 CreatedAt = movie.CreatedAt,
                 UpdatedAt = movie.UpdatedAt,
             };
         }
+
         public static Movie ToMovie(this MoviePostModel moviePost) 
         {
             return new Movie

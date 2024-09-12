@@ -10,7 +10,6 @@ namespace api_cinema_challenge.DTO
         public string Rating { get; set; }
         public string Description { get; set; }
         public int RuntimeMins { get; set; }
-        public ICollection<ScreeningDTO> Screenings { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

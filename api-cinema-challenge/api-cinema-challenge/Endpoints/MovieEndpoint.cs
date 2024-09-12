@@ -1,6 +1,10 @@
-﻿using api_cinema_challenge.Repositories;
+﻿using api_cinema_challenge.DTO;
+using api_cinema_challenge.Extensions;
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Repositories;
 using api_cinema_challenge.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -18,7 +22,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> CreateMovieScreening(IRepository repository, int movieId)
+        private static async Task<IResult> CreateMovieScreening(IRepository repository, int movieId ,ScreeningPostModel screeningPost)
         {
             throw new NotImplementedException();
         }
@@ -32,25 +36,62 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllMovies(IRepository repository)
         {
-            throw new NotImplementedException();
+            var movies = await repository.GetAllMovies();
+            List<MovieDTO> moviesDTO = (from movie in movies select movie.ToMovieDTO()).ToList();
+
+            Payload<List<MovieDTO>> payload = new() { Status = "success", Data = moviesDTO };
+
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> CreateMovie(IRepository repository, MoviePostModel moviePost)
         {
-            throw new NotImplementedException();
+            Movie movie = moviePost.ToMovie();
+
+            movie = await repository.CreateMovie(movie);
+
+            if (moviePost.Screenings is not null)
+            {
+                foreach(var screeningPost in moviePost.Screenings)
+                {
+                    var screening = screeningPost.ToScreening(movie.Id);
+                    var resultingScreening = await repository.CreateScreening(screening);
+                }
+            }
+
+            Payload<MovieDTO> payload = new() { Status = "success", Data = movie.ToMovieDTO() };
+
+            return TypedResults.Created("", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> UpdateMovie(IRepository repository, MovieUpdateModel movieUpdate)
         {
-            throw new NotImplementedException();
+            var movie = await repository.GetMovie(movieUpdate.Id);
+
+            if(!string.IsNullOrEmpty(movieUpdate.Title)) movie.Title = movieUpdate.Title;
+            if (!string.IsNullOrEmpty(movieUpdate.Description)) movie.Description = movieUpdate.Description;
+            if (!string.IsNullOrEmpty(movieUpdate.Rating)) movie.Rating = movieUpdate.Rating;
+            if(movieUpdate.RuntimeMins != 0) movie.RuntimeMins = movieUpdate.RuntimeMins;
+            movie.UpdatedAt = DateTime.UtcNow;
+
+            var resultingMovie = await repository.UpdateMovie(movie);
+
+            Payload<MovieDTO> payload = new() { Status = "success", Data= resultingMovie.ToMovieDTO() };
+
+            return TypedResults.Created("", payload);
+
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> DeleteMovie(IRepository repository)
+        public static async Task<IResult> DeleteMovie(IRepository repository, int id)
         {
-            throw new NotImplementedException();
+            var movie = await repository.DeleteMovie(id);
+
+            Payload<MovieDTO> payload = new() { Status = "success", Data = movie.ToMovieDTO() };
+
+            return TypedResults.Ok(payload);
         }
     }
 }
