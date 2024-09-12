@@ -1,3 +1,4 @@
+using api_cinema_challenge.Controllers;
 using api_cinema_challenge.Data;
 using api_cinema_challenge.Repository;
 
@@ -20,6 +21,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
+app.ConfigureCustomerApi();
+app.ConfigureMovieApi();
+app.ConfigureScreeningApi();
+app.ConfigureTicketApi();
 
 app.Run();
