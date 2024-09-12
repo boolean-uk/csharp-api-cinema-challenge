@@ -9,7 +9,7 @@ namespace api_cinema_challenge.Repository
     {
         public TicketDTO BookTicket(int id)
         {
-            Ticket ticket = null;
+            Ticket ticket = null; // id is wrong, fix
             if (_db.Tickets.Where(x => x.Id == id).Count() > 0)
             {
                 _db.Tickets.Add(ticket = new Ticket() { Id = _db.Tickets.Max(x => x.Id) + 1, numSeats = _db.Screenings.FirstOrDefault(x => x.Id == id).Capacity - _db.Tickets.Where(x => x.Id == id).Max(x => x.numSeats) });

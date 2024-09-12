@@ -28,6 +28,13 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Movie>().HasKey(x => x.Id);
             modelBuilder.Entity<Screening>().HasKey(x => x.Id);
             modelBuilder.Entity<Ticket>().HasKey(x => new { x.Id, x.numSeats});
+
+            Seeder seeder = new Seeder();
+
+            modelBuilder.Entity<Customer>().HasData(seeder.Customers);
+            modelBuilder.Entity<Movie>().HasData(seeder.Movies);
+            modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
+            //modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
         }
 
         public DbSet<Customer> Customers { get; set; }

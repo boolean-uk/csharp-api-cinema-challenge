@@ -32,6 +32,7 @@ namespace api_cinema_challenge.Repository
         {
             Customer customer = null;
             _db.Customers.Remove(customer = _db.Customers.FirstOrDefault(x => x.id == id));
+            _db.SaveChanges();
             return customer != null ? customer.MapToDTO() : null;
         }
     }
