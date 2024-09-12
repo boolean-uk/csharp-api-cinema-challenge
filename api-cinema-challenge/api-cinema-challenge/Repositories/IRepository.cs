@@ -21,7 +21,7 @@ namespace api_cinema_challenge.Repositories
         Task<Movie> DeleteMovie(int id);
 
         // ----------- SCREENING ----------- 
-        Task<ICollection<Screening>> GetAllScreenings();
+        Task<ICollection<Screening>> GetAllScreenings(int id);
         Task<Screening> GetScreening(int id);
         Task<Screening> CreateScreening(Screening screening);
         Task<Screening> UpdateScreening(Screening screening);

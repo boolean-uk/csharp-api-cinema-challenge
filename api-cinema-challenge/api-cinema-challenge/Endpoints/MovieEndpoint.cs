@@ -24,13 +24,23 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status201Created)]
         private static async Task<IResult> CreateMovieScreening(IRepository repository, int movieId ,ScreeningPostModel screeningPost)
         {
-            throw new NotImplementedException();
+            var screening = screeningPost.ToScreening(movieId);
+            var screeningResult = await repository.CreateScreening(screening);
+
+            Payload<ScreeningDTO> payload = new() { Status = "success", Data = screeningResult.ToScreeningDTO() };
+
+            return TypedResults.Created("", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         private static async Task<IResult> GetMovieScreenings(IRepository repository, int movieId)
         {
-            throw new NotImplementedException();
+            var screenings = await repository.GetAllScreenings(movieId);
+            List<ScreeningDTO> screeningsDTO = (from screening in screenings select screening.ToScreeningDTO()).ToList();
+
+            Payload<List<ScreeningDTO>> payload = new () { Status = "success", Data = screeningsDTO };
+
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

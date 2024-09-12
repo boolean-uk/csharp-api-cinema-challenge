@@ -67,9 +67,9 @@ namespace api_cinema_challenge.Repositories
             return await _db.Movies.Include(s => s.Screenings).ToListAsync();
         }
 
-        public async Task<ICollection<Screening>> GetAllScreenings()
+        public async Task<ICollection<Screening>> GetAllScreenings(int id)
         {
-            return await _db.Screenings.ToListAsync();
+            return await _db.Screenings.Where(x => x.MovieId == id).ToListAsync();
         }
 
         public async Task<ICollection<Ticket>> GetAllTickets()
