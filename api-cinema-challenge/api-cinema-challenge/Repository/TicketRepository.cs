@@ -7,13 +7,22 @@ namespace api_cinema_challenge.Repository
 {
     public partial class Repository : IRepository
     {
-        public Payload<TicketDTO> BookTicket(int id)
+        public TicketDTO BookTicket(int id)
         {
-            throw new NotImplementedException();
+            Ticket ticket = null;
+            if (_db.Tickets.Where(x => x.Id == id).Count() > 0)
+            {
+                _db.Tickets.Add(ticket = new Ticket() { Id = _db.Tickets.Max(x => x.Id) + 1, numSeats = _db.Screenings.FirstOrDefault(x => x.Id == id).Capacity - _db.Tickets.Where(x => x.Id == id).Max(x => x.numSeats) });
+            }
+            else
+            {
+                _db.Tickets.Add(ticket = new Ticket() { Id = _db.Tickets.Max(x => x.Id) + 1, numSeats = _db.Screenings.FirstOrDefault(x => x.Id == id).Capacity - 1 });
+            }
+            return ticket != null ? ticket.MapToDTO() : null;
         }
-        public Payload<List<TicketDTO>> GetTickets()
+        public List<TicketDTO> GetTickets()
         {
-            throw new NotImplementedException();
+            return _db.Tickets.ToList().MapListToDTO();
 
         }
     }
