@@ -7,21 +7,23 @@ namespace api_cinema_challenge.Repository
 {
     public interface IRepository
     {
+        //done
         public CustomerDTO CreateCustomer(string name, string email, string phone);
         public List<CustomerDTO> GetCustomers();
         public CustomerDTO UpdateCustomer(int id, string name, string email, string phone);
         public CustomerDTO DeleteCustomer(int id);
 
-        public Payload<MovieDTO> CreateMovie();
-        public Payload<List<MovieDTO>> GetMovies();
-        public Payload<MovieDTO> UpdateMovies();
-        public Payload<MovieDTO> DeleteMovie();
+        //underway
+        public MovieDTO CreateMovie(string title, string rating, string description, int runtime);
+        public List<MovieDTO> GetMovies();
+        public MovieDTO UpdateMovie(int id, string title, string rating, string description, int runtime);
+        public MovieDTO DeleteMovie(int id);
 
-        public Payload<ScreeningDTO> CreateScreening();
-        public Payload<ScreeningDTO> GetScreenings();
+        public ScreeningDTO CreateScreening();
+        public ScreeningDTO GetScreenings();
 
-        public Payload<TicketDTO> BookTicket();
-        public Payload<List<TicketDTO>> GetTickets();
+        public TicketDTO BookTicket();
+        public List<TicketDTO> GetTickets();
 
     }
 }
