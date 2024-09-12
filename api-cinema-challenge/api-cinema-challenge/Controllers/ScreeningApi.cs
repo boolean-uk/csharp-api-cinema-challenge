@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Controllers
         private static async Task<IResult> CreateScreening(IRepository repository, int screenNumber, int capacity, DateTime startsAt)
         {
             try
-            {
+            {TestInput(screenNumber); TestInput(capacity); 
                 Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>();
                 payload.data = repository.CreateScreening(screenNumber, capacity, startsAt);
                 return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();
@@ -45,6 +45,11 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest();
 
             }
+        }
+
+        private static void TestInput(int input)
+        {
+            int test = input;
         }
     }
 }

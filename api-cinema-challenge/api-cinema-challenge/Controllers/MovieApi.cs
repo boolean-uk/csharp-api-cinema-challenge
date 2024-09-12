@@ -23,7 +23,7 @@ namespace api_cinema_challenge.Controllers
         private static async Task<IResult> DeleteMovie(IRepository repository, int id)
         {
             try
-            {
+            {TestInput(id);
                 Payload<MovieDTO> payload = new Payload<MovieDTO>();
                 payload.data = repository.DeleteMovie(id);
                 return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
@@ -41,7 +41,7 @@ namespace api_cinema_challenge.Controllers
         private static async Task<IResult> UpdateMovie(IRepository repository, int id, string title, string rating, string description, int runtime)
         {
             try
-            {
+            {TestInput(id); TestInput(runtime);
                 Payload<MovieDTO> payload = new Payload<MovieDTO>();
                 payload.data = repository.UpdateMovie(id, title, rating, description, runtime);
                 return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
@@ -76,7 +76,7 @@ namespace api_cinema_challenge.Controllers
         private static async Task<IResult> CreateMovie(IRepository repository, string title, string rating, string description, int runtime)
         {
             try
-            {
+            {TestInput(runtime);
                 Payload<MovieDTO> payload = new Payload<MovieDTO>();
                 payload.data = repository.CreateMovie(title, rating, description, runtime);
                 return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();
@@ -88,6 +88,11 @@ namespace api_cinema_challenge.Controllers
 
 
 
+        }
+
+        private static void TestInput(int input)
+        {
+            int test = input;
         }
     }
 }

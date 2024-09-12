@@ -69,6 +69,7 @@ namespace api_cinema_challenge.Controllers
         {
             try
             {
+                TestInput(id);
                 Payload<TicketDTO> payload = new Payload<TicketDTO>();
                 payload.data = repository.BookTicket(id);
                 return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound(); //movie id not found
@@ -77,6 +78,11 @@ namespace api_cinema_challenge.Controllers
             {
                 return TypedResults.BadRequest();
             }
+        }
+
+        private static void TestInput(int input)
+        {
+            int test = input;
         }
     }
 }

@@ -13,15 +13,17 @@ namespace api_cinema_challenge.Repository
         public CustomerDTO UpdateCustomer(int id, string name, string email, string phone);
         public CustomerDTO DeleteCustomer(int id);
 
-        //underway
+        //done
         public MovieDTO CreateMovie(string title, string rating, string description, int runtime);
         public List<MovieDTO> GetMovies();
         public MovieDTO UpdateMovie(int id, string title, string rating, string description, int runtime);
         public MovieDTO DeleteMovie(int id);
 
+        //done
         public ScreeningDTO CreateScreening(int screenNumber, int capacity, DateTime startsAt);
         public List<ScreeningDTO> GetScreenings();
-
+        
+        //done
         public TicketDTO BookTicket(int id);
         public List<TicketDTO> GetTickets();
 

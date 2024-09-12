@@ -21,7 +21,7 @@ namespace api_cinema_challenge.Controllers
         private static async Task<IResult> DeleteCustomer(IRepository repository, int id)
         {
             try
-            {
+            {TestInput(id);
                 Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
                 payload.data = repository.DeleteCustomer(id);
                 return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
@@ -39,7 +39,7 @@ namespace api_cinema_challenge.Controllers
         private static async Task<IResult> UpdateCustomer(IRepository repository, int customerId, string name, string email, string phone)
         {
             try
-            {
+            {TestInput(customerId);
                 Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
                 payload.data = repository.UpdateCustomer(customerId, name, email, phone);
                 return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
@@ -82,5 +82,11 @@ namespace api_cinema_challenge.Controllers
                 return TypedResults.BadRequest();
             }
         }
+
+        private static void TestInput(int input)
+        {
+            int test = input;
+        }
+
     }
 }
