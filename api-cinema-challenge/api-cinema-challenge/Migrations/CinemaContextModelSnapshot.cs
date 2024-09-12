@@ -62,92 +62,92 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(1886),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4180),
                             Email = "john.wick@hollywoodmail.com",
-                            Name = "Ragnar Sandler",
+                            Name = "Arnold Obama",
                             Phone = "(555) 123-7890",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2003)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4222)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2030),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4228),
                             Email = "r.stone@actionstar.net",
-                            Name = "Elvis Lothbrok",
+                            Name = "Oprah Schwarzenegger",
                             Phone = "(555) 987-6543",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2042)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4231)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2078),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4234),
                             Email = "stallone.sylvester@moviefan.com",
-                            Name = "Oprah Mouse",
+                            Name = "Arnold Obama",
                             Phone = "(555) 246-8102",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2081)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4237)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2085),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4239),
                             Email = "v.diesel@stuntman.com",
-                            Name = "Kate Schwarzenegger",
+                            Name = "Mickey Xavier",
                             Phone = "(555) 369-1470",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2088)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4241)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2092),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4244),
                             Email = "arnold@cybermail.com",
-                            Name = "Elvis Mouse",
+                            Name = "Felix Presley",
                             Phone = "(555) 482-9357",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2095)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4246)
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2100),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4250),
                             Email = "j.bourne@spyfilms.org",
-                            Name = "Donald Sandler",
+                            Name = "Oprah Schwarzenegger",
                             Phone = "(555) 678-9123",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2102)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4252)
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2106),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4255),
                             Email = "bruce.willis@explosions.net",
-                            Name = "Felix Mathiasson",
+                            Name = "Adam Lothbrok",
                             Phone = "(555) 314-1592",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2109)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4257)
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2118),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4260),
                             Email = "n.cage@thrillride.com",
-                            Name = "Charles Xavier",
+                            Name = "Felix Mouse",
                             Phone = "(555) 753-9514",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2129)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4262)
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2177),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4265),
                             Email = "l.neeson@hollywoodhero.com",
-                            Name = "Donald Schwarzenegger",
+                            Name = "Felix Xavier",
                             Phone = "(555) 806-4213",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2181)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4267)
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2186),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4270),
                             Email = "the.rock@adventurezone.net",
-                            Name = "Neo Mouse",
+                            Name = "Adam Winslow",
                             Phone = "(555) 467-8921",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2190)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4273)
                         });
                 });
 
@@ -195,113 +195,113 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2199),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4283),
                             Description = "Cyborg assassin hunts future savior.",
                             Rating = "R",
                             RunTimeMins = 107,
                             Title = "The Terminator",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2204)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4286)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2211),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4291),
                             Description = "Commandos hunted by alien warrior.",
                             Rating = "R",
                             RunTimeMins = 107,
                             Title = "Predator",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2214)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4294)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2218),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4371),
                             Description = "Ex-soldier fights to rescue daughter.",
                             Rating = "R",
                             RunTimeMins = 90,
                             Title = "Commando",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2221)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4374)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2225),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4377),
                             Description = "Man questions reality and identity.",
                             Rating = "R",
                             RunTimeMins = 113,
                             Title = "Total Recall",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2227)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4379)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2231),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4382),
                             Description = "Prison break with unlikely alliance.",
                             Rating = "R",
                             RunTimeMins = 115,
                             Title = "The Escape Plan",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2265)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4384)
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2273),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4388),
                             Description = "Soldier returns to rescue POWs.",
                             Rating = "R",
                             RunTimeMins = 96,
                             Title = "Rambo: First Blood Part II",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2277)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4390)
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2280),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4393),
                             Description = "Boxer fights Soviet powerhouse.",
                             Rating = "PG",
                             RunTimeMins = 91,
                             Title = "Rocky IV",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2283)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4395)
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2287),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4397),
                             Description = "Cop battles violent crime cult.",
                             Rating = "R",
                             RunTimeMins = 87,
                             Title = "Cobra",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2290)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4399)
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2293),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4402),
                             Description = "Frozen cop versus unfrozen criminal.",
                             Rating = "R",
                             RunTimeMins = 115,
                             Title = "Demolition Man",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2296)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4404)
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2300),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4407),
                             Description = "Rescuer fights criminals on mountains.",
                             Rating = "R",
                             RunTimeMins = 113,
                             Title = "Cliffhanger",
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2304)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4409)
                         });
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
-                    b.Property<int>("MovieId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("MovieId");
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MovieId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Capacity")
                         .HasColumnType("integer")
@@ -311,12 +311,9 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("CreatedAt");
 
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("MovieId")
                         .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnName("MovieId");
 
                     b.Property<int>("ScreenNumber")
                         .HasColumnType("integer")
@@ -330,110 +327,110 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("StartsAt");
 
-                    b.HasKey("MovieId");
+                    b.HasKey("Id");
 
                     b.ToTable("Screenings");
 
                     b.HasData(
                         new
                         {
-                            MovieId = 1,
-                            Capacity = 43,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2355),
                             Id = 1,
-                            ScreenNumber = 1,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2359),
-                            startsAt = new DateTime(2025, 3, 21, 9, 21, 38, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 2,
-                            Capacity = 43,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2370),
-                            Id = 2,
-                            ScreenNumber = 2,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2373),
-                            startsAt = new DateTime(2025, 3, 2, 22, 32, 47, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 3,
-                            Capacity = 50,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2380),
-                            Id = 3,
-                            ScreenNumber = 3,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2383),
-                            startsAt = new DateTime(2025, 1, 10, 6, 32, 5, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 4,
-                            Capacity = 46,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2395),
-                            Id = 4,
-                            ScreenNumber = 4,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2398),
-                            startsAt = new DateTime(2024, 10, 10, 13, 27, 18, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 5,
-                            Capacity = 47,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2404),
-                            Id = 5,
-                            ScreenNumber = 5,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2407),
-                            startsAt = new DateTime(2025, 3, 15, 16, 32, 3, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 6,
-                            Capacity = 42,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2420),
-                            Id = 6,
-                            ScreenNumber = 6,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2423),
-                            startsAt = new DateTime(2024, 11, 17, 0, 34, 1, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 7,
-                            Capacity = 44,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2430),
-                            Id = 7,
-                            ScreenNumber = 7,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2433),
-                            startsAt = new DateTime(2025, 3, 25, 20, 33, 43, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 8,
-                            Capacity = 35,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2442),
-                            Id = 8,
-                            ScreenNumber = 8,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2445),
-                            startsAt = new DateTime(2025, 4, 15, 20, 55, 31, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 9,
-                            Capacity = 37,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2451),
-                            Id = 9,
-                            ScreenNumber = 9,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2454),
-                            startsAt = new DateTime(2024, 10, 28, 16, 45, 27, 0, DateTimeKind.Utc)
-                        },
-                        new
-                        {
-                            MovieId = 10,
                             Capacity = 24,
-                            CreatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2461),
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4453),
+                            MovieId = 1,
+                            ScreenNumber = 1,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4457),
+                            startsAt = new DateTime(2025, 2, 12, 18, 33, 55, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Capacity = 35,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4466),
+                            MovieId = 2,
+                            ScreenNumber = 2,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4468),
+                            startsAt = new DateTime(2024, 10, 6, 7, 37, 14, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Capacity = 51,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4474),
+                            MovieId = 3,
+                            ScreenNumber = 3,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4476),
+                            startsAt = new DateTime(2024, 11, 4, 7, 7, 21, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Capacity = 39,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4482),
+                            MovieId = 4,
+                            ScreenNumber = 4,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4484),
+                            startsAt = new DateTime(2025, 2, 18, 3, 18, 50, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Capacity = 38,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4492),
+                            MovieId = 5,
+                            ScreenNumber = 5,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4494),
+                            startsAt = new DateTime(2024, 12, 1, 5, 12, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Capacity = 52,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4500),
+                            MovieId = 6,
+                            ScreenNumber = 6,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4502),
+                            startsAt = new DateTime(2025, 1, 26, 3, 15, 53, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Capacity = 43,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4508),
+                            MovieId = 7,
+                            ScreenNumber = 7,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4510),
+                            startsAt = new DateTime(2024, 10, 30, 15, 5, 49, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Capacity = 22,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4514),
+                            MovieId = 8,
+                            ScreenNumber = 8,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4517),
+                            startsAt = new DateTime(2024, 12, 10, 10, 48, 56, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Capacity = 23,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4523),
+                            MovieId = 9,
+                            ScreenNumber = 9,
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4525),
+                            startsAt = new DateTime(2025, 3, 27, 0, 44, 50, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
                             Id = 10,
+                            Capacity = 39,
+                            CreatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4531),
+                            MovieId = 10,
                             ScreenNumber = 10,
-                            UpdatedAt = new DateTime(2024, 9, 12, 9, 36, 55, 26, DateTimeKind.Utc).AddTicks(2464),
-                            startsAt = new DateTime(2025, 3, 24, 23, 5, 56, 0, DateTimeKind.Utc)
+                            UpdatedAt = new DateTime(2024, 9, 12, 13, 16, 41, 952, DateTimeKind.Utc).AddTicks(4533),
+                            startsAt = new DateTime(2025, 4, 14, 16, 46, 2, 0, DateTimeKind.Utc)
                         });
                 });
 #pragma warning restore 612, 618

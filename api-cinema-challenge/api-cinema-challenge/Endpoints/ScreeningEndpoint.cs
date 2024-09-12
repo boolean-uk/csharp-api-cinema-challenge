@@ -1,4 +1,10 @@
 ﻿
+using api_cinema_challenge.Payloads;
+using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace api_cinema_challenge.Endpoints
 {
     public static class ScreeningEndpoint
@@ -11,14 +17,31 @@ namespace api_cinema_challenge.Endpoints
             screeningGroup.MapGet("/GetAllScreening{id}", GetScreeningsByMovieId);
         }
 
-        private static async Task<IResult> GetScreeningsByMovieId(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        private static async Task<IResult> GetScreeningsByMovieId(IRepository repository, int movieId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return TypedResults.Ok(await repository.GetScreenings(movieId));
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
 
-        private static async Task<IResult> CreateScreeningByMovieId(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        private static async Task<IResult> CreateScreeningByMovieId(IRepository repository, int movieId, ScreeningPayload payload)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await repository.CreateScreening(movieId, payload);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
     }
 }

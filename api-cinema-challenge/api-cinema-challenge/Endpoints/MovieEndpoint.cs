@@ -1,4 +1,9 @@
 ﻿
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Payloads;
+using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Mvc;
+
 namespace api_cinema_challenge.Endpoints
 {
     public static class MovieEndpoint
@@ -13,24 +18,51 @@ namespace api_cinema_challenge.Endpoints
             movieGroup.MapDelete("DeleteMovie/{id}", DeleteMovieById);
         }
 
-        private static async Task<IResult> DeleteMovieById(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        private static async Task<IResult> DeleteMovieById(IRepository repository, int movieId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return TypedResults.Ok(await repository.DeleteMovie(movieId));
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
 
-        private static async Task<IResult> UpdateMovieById(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        private static async Task<IResult> UpdateMovieById(IRepository repository, int movieId, MoviePayload payload)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await repository.UpdateMovie(movieId, payload);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
 
-        private static async Task<IResult> GetMovies(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        private static async Task<IResult> GetMovies(IRepository repository)
         {
-            throw new NotImplementedException();
+            return TypedResults.Ok(await repository.GetMovies());
         }
 
-        private static async Task<IResult> CreateMovie(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        private static async Task<IResult> CreateMovie(IRepository repository, MoviePayload payload)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await repository.CreateMovie(payload);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
     }
 }

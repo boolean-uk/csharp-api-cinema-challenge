@@ -1,5 +1,9 @@
 ﻿
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Payloads;
+using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.DataProtection.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -15,24 +19,52 @@ namespace api_cinema_challenge.Endpoints
             customerGroup.MapDelete("DeleteCustomer/{id}", DeleteCustomerById);
         }
 
-        public static async Task<IResult> DeleteCustomerById()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> DeleteCustomerById(IRepository repository, int customerId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return TypedResults.Ok(await repository.DeleteCustomer(customerId));
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
 
-        public static async Task<IResult> UpdateCustomerById(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> UpdateCustomerById(IRepository repository, int customerId, CustomerPayload payload)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await repository.UpdateCustomer(customerId, payload);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
 
-        public static async Task<IResult> GetCustomers(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetCustomers(IRepository repository)
         {
-            throw new NotImplementedException();
+         
+            return TypedResults.Ok(await repository.GetCustomers());
         }
 
-        public static async Task<IResult> CreateCustomer(HttpContext context)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> CreateCustomer(IRepository repository, CustomerPayload payload)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await repository.CreateCustomer(payload);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
     }
 }
