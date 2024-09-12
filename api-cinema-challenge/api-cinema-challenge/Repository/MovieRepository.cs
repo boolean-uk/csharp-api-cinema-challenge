@@ -8,7 +8,7 @@ namespace api_cinema_challenge.Repository
         public MovieDTO CreateMovie(string title, string rating, string description, int runtime)
         {
             Movie movie = null;
-            _db.Movies.Add(movie = new Movie() { Id = _db.Movies.Max(x => x.Id), Title = title, rating = rating, Description = description, runtimeMins = runtime });
+            _db.Movies.Add(movie = new Movie() { Id = _db.Movies.Max(x => x.Id) + 1, Title = title, rating = rating, Description = description, runtimeMins = runtime });
             _db.SaveChanges();
             return movie.MapToDTO();
         }

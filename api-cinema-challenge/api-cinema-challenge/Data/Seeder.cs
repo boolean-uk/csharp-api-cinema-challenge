@@ -93,6 +93,20 @@ namespace api_cinema_challenge.Data
             173,
         };
 
+        List<string> _dates = new List<string>
+        {
+            "2024-09-12 13:45:00",
+            "2024-09-12 14:00:00",
+            "2024-09-12 14:15:00",
+            "2024-09-12 14:30:00",
+            "2024-09-12 14:45:00",
+            "2024-09-12 15:00:00",
+            "2024-09-12 15:15:00",
+            "2024-09-12 15:30:00",
+            "2024-09-12 15:45:00",
+            "2024-09-12 16:00:00"
+        };
+
         private List<Customer> _customers = new List<Customer>();
         private List<Screening> _screenings = new List<Screening>();
         private List<Movie> _movies = new List<Movie>();
@@ -122,6 +136,8 @@ namespace api_cinema_challenge.Data
                 screening.Id = x;
                 screening.ScreenNumber = x;
                 screening.Capacity = _capacities[screenRandom.Next(_capacities.Count)];
+                string date = _dates[screenRandom.Next(_dates.Count)];
+                screening.StartsAt = DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss", null);
                 _screenings.Add(screening);
             }
 
