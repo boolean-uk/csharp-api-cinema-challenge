@@ -57,5 +57,21 @@ namespace api_cinema_challenge.DTOs
 
             return responseMovie;
         }
+
+        public static ResponseScreeningDTO MapToDTO(Screening screening)
+        {
+            ResponseScreeningDTO responseScreening = new ResponseScreeningDTO();
+            responseScreening.Id = screening.Id;
+            responseScreening.ScreenNumber = screening.ScreenNumber;
+            responseScreening.Capacity = screening.Capacity;
+            responseScreening.MovieId = screening.MovieId;
+            responseScreening.MovieTitle = screening.Movie.Title;
+            responseScreening.StartsAt = screening.StartsAt;
+            responseScreening.CreatedAt = screening.CreatedAt;
+            responseScreening.UpdatedAt = screening.UpdatedAt;
+            responseScreening.NumOfTicketsSold = screening.Tickets.Count;
+
+            return responseScreening;
+        }
     }
 }

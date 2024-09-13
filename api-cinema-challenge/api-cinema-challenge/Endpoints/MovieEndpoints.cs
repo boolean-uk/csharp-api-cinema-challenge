@@ -62,8 +62,8 @@ namespace api_cinema_challenge.Endpoints
         public static async Task<IResult> GetMovies(IMovieRepository repository)
         {
             var results = await repository.GetMovies();
-            List<Movie> Movies = results.ToList();
-            if (Movies.Count <= 0)
+            List<Movie> movies = results.ToList();
+            if (movies.Count <= 0)
             {
                 return TypedResults.NoContent();
             }
@@ -71,9 +71,9 @@ namespace api_cinema_challenge.Endpoints
             Payload<List<ResponseMovieDTO>> payload = new Payload<List<ResponseMovieDTO>>();
             List<ResponseMovieDTO> responseMovies = new List<ResponseMovieDTO>();
 
-            foreach (Movie c in Movies)
+            foreach (Movie m in movies)
             {
-                responseMovies.Add(Mapper.MapToDTO(c));
+                responseMovies.Add(Mapper.MapToDTO(m));
             }
 
             payload.data = responseMovies;
