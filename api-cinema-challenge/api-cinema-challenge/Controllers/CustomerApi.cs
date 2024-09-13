@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models.Customer;
+using api_cinema_challenge.Models.Ticket;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,8 @@ namespace api_cinema_challenge.Controllers
 {
     public static class CustomerApi
     {
+        private static string payloadStatusSuccess = "Success";
+        private static string payloadStatusFailure = "Failure";
         public static void ConfigureCustomerApi(this WebApplication app)
         {
             var customers = app.MapGroup("customers");
@@ -24,11 +27,12 @@ namespace api_cinema_challenge.Controllers
             {TestInput(id);
                 Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
                 payload.data = repository.DeleteCustomer(id);
-                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
+                payload = checkPayload(payload);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound(payload);
             }
             catch (Exception ex)
             {
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest(ex);
             }
 
         }
@@ -42,11 +46,12 @@ namespace api_cinema_challenge.Controllers
             {TestInput(customerId);
                 Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
                 payload.data = repository.UpdateCustomer(customerId, name, email, phone);
-                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
+                payload = checkPayload(payload);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound(payload);
             }
             catch (Exception ex)
             {
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest(ex);
             }
         }
 
@@ -59,11 +64,12 @@ namespace api_cinema_challenge.Controllers
             {
                 Payload<List<CustomerDTO>> payload = new Payload<List<CustomerDTO>>();
                 payload.data = repository.GetCustomers();
-                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound();
+                payload = checkPayloadList(payload);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound(payload);
             }
             catch (Exception ex)
             {
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest(ex);
             }
         }
 
@@ -75,11 +81,40 @@ namespace api_cinema_challenge.Controllers
             {
                 Payload<CustomerDTO> payload = new Payload<CustomerDTO>();
                 payload.data = repository.CreateCustomer(name, email, phone);
-                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();
+                payload = checkPayload(payload);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest(payload);
             }
-            catch
+            catch (Exception ex) 
             {
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest(ex);
+            }
+        }
+
+        private static Payload<CustomerDTO> checkPayload(Payload<CustomerDTO> payload)
+        {
+            if (payload.data != null)
+            {
+                payload.status = payloadStatusSuccess;
+                return payload;
+            }
+            else
+            {
+                payload.status = payloadStatusFailure;
+                return payload;
+            }
+        }
+
+        private static Payload<List<CustomerDTO>> checkPayloadList(Payload<List<CustomerDTO>> payload)
+        {
+            if (payload.data != null)
+            {
+                payload.status = payloadStatusSuccess;
+                return payload;
+            }
+            else
+            {
+                payload.status = payloadStatusFailure;
+                return payload;
             }
         }
 

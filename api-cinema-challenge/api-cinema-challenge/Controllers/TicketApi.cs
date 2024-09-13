@@ -8,6 +8,8 @@ namespace api_cinema_challenge.Controllers
     [Route("/tickets")]
     public static class TicketApi
     {
+        private static string payloadStatusSuccess = "Success";
+        private static string payloadStatusFailure = "Failure";
         public static void ConfigureTicketApi(this WebApplication app)
         {
             var tickets = app.MapGroup("tickets");
@@ -23,10 +25,11 @@ namespace api_cinema_challenge.Controllers
             {
                 Payload<List<TicketDTO>> payload = new Payload<List<TicketDTO>>();
                 payload.data = repository.GetTickets();
-                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();
+                payload = checkPayloadList(payload);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest(payload);
             }
             catch (Exception ex) {
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest(ex);
             }
 
         }
@@ -42,11 +45,39 @@ namespace api_cinema_challenge.Controllers
                 TestInput(id);
                 Payload<TicketDTO> payload = new Payload<TicketDTO>();
                 payload.data = repository.BookTicket(id);
-                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound(); //movie id not found
+                payload = checkPayload(payload);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.NotFound(payload); //movie id not found
             }
             catch (Exception ex)
             {
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest(ex);
+            }
+        }
+
+        private static Payload<TicketDTO> checkPayload(Payload<TicketDTO> payload)
+        {
+            if (payload.data != null)
+            {
+                payload.status = payloadStatusSuccess;
+                return payload;
+            } else
+            {
+                payload.status = payloadStatusFailure; 
+                return payload;
+            }
+        }
+
+        private static Payload<List<TicketDTO>> checkPayloadList(Payload<List<TicketDTO>> payload)
+        {
+            if (payload.data != null)
+            {
+                payload.status = payloadStatusSuccess;
+                return payload;
+            }
+            else
+            {
+                payload.status = payloadStatusFailure;
+                return payload;
             }
         }
 

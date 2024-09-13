@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models.Screening;
+using api_cinema_challenge.Models.Ticket;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,8 @@ namespace api_cinema_challenge.Controllers
     [Route("/screenings")]
     public static class ScreeningApi
     {
+        private static string payloadStatusSuccess = "Success";
+        private static string payloadStatusFailure = "Failure";
         public static void ConfigureScreeningApi(this WebApplication app)
         {
             var screenings = app.MapGroup("screenings");
@@ -23,10 +26,11 @@ namespace api_cinema_challenge.Controllers
             {TestInput(screenNumber); TestInput(capacity); 
                 Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>();
                 payload.data = repository.CreateScreening(screenNumber, capacity, startsAt);
-                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();
+                payload = checkPayload(payload);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest(payload);
             }
             catch (Exception ex) { 
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest(ex);
             }
         }
 
@@ -38,12 +42,41 @@ namespace api_cinema_challenge.Controllers
             {
                 Payload<List<ScreeningDTO>> payload = new Payload<List<ScreeningDTO>>();
                 payload.data = repository.GetScreenings();
-                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest();
+                payload = checkPayloadList(payload);
+                return payload.data != null ? TypedResults.Ok(payload) : TypedResults.BadRequest(payload);
 
             }
             catch (Exception ex) { 
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest(ex);
 
+            }
+        }
+
+        private static Payload<ScreeningDTO> checkPayload(Payload<ScreeningDTO> payload)
+        {
+            if (payload.data != null)
+            {
+                payload.status = payloadStatusSuccess;
+                return payload;
+            }
+            else
+            {
+                payload.status = payloadStatusFailure;
+                return payload;
+            }
+        }
+
+        private static Payload<List<ScreeningDTO>> checkPayloadList(Payload<List<ScreeningDTO>> payload)
+        {
+            if (payload.data != null)
+            {
+                payload.status = payloadStatusSuccess;
+                return payload;
+            }
+            else
+            {
+                payload.status = payloadStatusFailure;
+                return payload;
             }
         }
 
