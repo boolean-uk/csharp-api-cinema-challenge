@@ -176,7 +176,7 @@ namespace api_cinema_challenge.Endpoints
                     entity.Title = !string.IsNullOrEmpty(model.Title) ? model.Title : entity.Title;
                     entity.Rating = !string.IsNullOrEmpty(model.Rating) ? model.Rating : entity.Rating;
                     entity.Description = !string.IsNullOrEmpty(model.Description) ? model.Description : entity.Description;
-                    entity.RuntimeMins = !string.IsNullOrEmpty(model.RuntimeMins.ToString()) ? model.RuntimeMins : entity.RuntimeMins;
+                    entity.RuntimeMins = model.RuntimeMins != null ? model.RuntimeMins.Value : entity.RuntimeMins;
                     entity.UpdatedAt = DateTime.UtcNow;
                     var result = await movieRepo.Update(entity);
 

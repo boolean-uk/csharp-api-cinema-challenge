@@ -10,6 +10,6 @@ namespace api_cinema_challenge.DTOs.Movie
         
         public string? Description { get; set; }
         
-        public int RuntimeMins { get; set; }
+        public int? RuntimeMins { get; set; }
     }
 }
