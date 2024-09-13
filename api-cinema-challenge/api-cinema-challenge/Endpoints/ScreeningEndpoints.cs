@@ -13,7 +13,7 @@ namespace api_cinema_challenge.Endpoints
 
             screenings.MapPost("/", CreateScreening);
             screenings.MapGet("/", GetScreenings);
-            screenings.MapGet("/ByMovieId/{id}", GetScreeningsByMovie);
+            screenings.MapGet("/movies/{id}", GetScreeningsByMovie);
             screenings.MapGet("/{id}", GetScreeningById);
             screenings.MapPut("/{id}", UpdateScreening);
             screenings.MapDelete("/{id}", DeleteScreening);
@@ -44,7 +44,7 @@ namespace api_cinema_challenge.Endpoints
 
                 Payload<ResponseScreeningDTO> payload = new Payload<ResponseScreeningDTO>();
                 payload.data = Mapper.MapToDTO(newScreening);
-                return TypedResults.Created($"https://localhost:7054/Screenings/{payload.data.Id}", payload.data);
+                return TypedResults.Created($"https://localhost:7054/screenings/{payload.data.Id}", payload.data);
             }
             catch (Exception ex)
             {

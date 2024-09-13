@@ -7,5 +7,7 @@ namespace api_cinema_challenge.Repository
         Task<Ticket> CreateTicket(Ticket entity);
         Task<IEnumerable<Ticket>> GetTickets();
         Task<IEnumerable<Ticket>> GetTicketsByScreening(int id);
+        Task<Ticket> GetTicketById(int id);
+        Task<Ticket> DeleteTicket(int id);
     }
 }

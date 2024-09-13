@@ -49,7 +49,7 @@ namespace api_cinema_challenge.Endpoints
                 }
 
                 payload.data = Mapper.MapToDTO(await movieRepository.GetMovieById(newMovie.Id));
-                return TypedResults.Created($"https://localhost:7054/Movies/{payload.data.Id}", payload.data);
+                return TypedResults.Created($"https://localhost:7054/movies/{payload.data.Id}", payload.data);
             }
             catch (Exception ex)
             {

@@ -17,7 +17,11 @@ namespace api_cinema_challenge.Repository
         {
             await _db.AddAsync(entity);
             await _db.SaveChangesAsync();
-            return entity;
+            return await _db.Customers
+                .Include(x => x.Tickets)
+                .ThenInclude(x => x.Screening)
+                .ThenInclude(x => x.Movie)
+                .FirstOrDefaultAsync(x => x.Id == entity.Id);
         }
 
         public async Task<IEnumerable<Customer>> GetCustomers()

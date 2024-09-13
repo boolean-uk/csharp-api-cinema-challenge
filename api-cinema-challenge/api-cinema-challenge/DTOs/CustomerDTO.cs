@@ -28,6 +28,4 @@ namespace api_cinema_challenge.DTOs
         public string Email { get; set; }
         public string Phone { get; set; }
     }
-
-    
 }

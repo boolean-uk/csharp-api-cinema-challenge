@@ -17,29 +17,63 @@ namespace api_cinema_challenge.Repository
         {
             await _db.AddAsync(entity);
             await _db.SaveChangesAsync();
-            return entity;
+            return await _db.Tickets
+                .Include(x => x.Customer)
+                .Include(x => x.Screening)
+                .ThenInclude(x => x.Movie)
+                .FirstOrDefaultAsync(x => x.Id == entity.Id);
         }
 
         public async Task<IEnumerable<Ticket>> GetTickets()
         {
             return await _db.Tickets
-                .Include(x => x.Screening)
                 .Include(x => x.Customer)
+                .Include(x => x.Screening)
+                .ThenInclude(x => x.Movie)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Ticket>> GetTicketsByScreening(int id)
         {
-            var screeningTarget = await _db.Screenings
-                .Include(x => x.Tickets)
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var target = await _db.Tickets
+                .Include(x => x.Customer)
+                .Include(x => x.Screening)
+                .ThenInclude(x => x.Movie)
+                .Where(x => x.ScreeningId == id)
+                .ToListAsync();
 
-            if (screeningTarget == null)
+            if (target == null)
             {
                 return Enumerable.Empty<Ticket>();
             }
 
-            return screeningTarget.Tickets;
+            return target;
+        }
+
+        public async Task<Ticket> GetTicketById(int id)
+        {
+            return await _db.Tickets
+                .Include(x => x.Customer)
+                .Include(x => x.Screening)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Ticket> DeleteTicket(int id)
+        {
+            var target = await _db.Tickets
+                .Include(x => x.Customer)
+                .Include(x => x.Screening)
+                .ThenInclude(x => x.Movie)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (target == null)
+            {
+                return null;
+            }
+
+            _db.Tickets.Remove(target);
+            await _db.SaveChangesAsync();
+            return target;
         }
     }
 }
