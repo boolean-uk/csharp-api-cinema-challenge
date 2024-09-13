@@ -21,7 +21,7 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+           
         }
 
         public DbSet<Customer> Customers { get; set; }
