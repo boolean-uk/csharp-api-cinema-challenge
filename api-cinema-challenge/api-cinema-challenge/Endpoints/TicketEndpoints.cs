@@ -48,7 +48,9 @@ namespace api_cinema_challenge.Endpoints
 
                 Payload<ResponseTicketDTO> payload = new Payload<ResponseTicketDTO>();
                 payload.data = Mapper.MapToDTO(newTicket);
-                return TypedResults.Created($"https://localhost:7054/tickets/{payload.data.Id}", payload.data);
+                payload.status = System.Net.HttpStatusCode.OK;
+
+                return TypedResults.Created($"https://localhost:7054/tickets/{payload.data.Id}", payload);
             }
             catch (Exception ex)
             {
@@ -76,8 +78,9 @@ namespace api_cinema_challenge.Endpoints
             }
 
             payload.data = responseTickets;
+            payload.status = System.Net.HttpStatusCode.OK;
 
-            return TypedResults.Ok(payload.data);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -100,8 +103,9 @@ namespace api_cinema_challenge.Endpoints
                     responseTickets.Add(Mapper.MapToDTO(t));
                 }
                 payload.data = responseTickets;
+                payload.status = System.Net.HttpStatusCode.OK;
 
-                return TypedResults.Ok(payload.data);
+                return TypedResults.Ok(payload);
             }
             catch (Exception ex)
             {
@@ -123,8 +127,9 @@ namespace api_cinema_challenge.Endpoints
 
                 Payload<ResponseTicketDTO> payload = new Payload<ResponseTicketDTO>();
                 payload.data = Mapper.MapToDTO(result);
+                payload.status = System.Net.HttpStatusCode.OK;
 
-                return TypedResults.Ok(payload.data);
+                return TypedResults.Ok(payload);
             }
             catch (Exception ex)
             {
@@ -142,7 +147,9 @@ namespace api_cinema_challenge.Endpoints
 
                 Payload<ResponseTicketDTO> payload = new Payload<ResponseTicketDTO>();
                 payload.data = Mapper.MapToDTO(target);
-                return TypedResults.Ok(payload.data);
+                payload.status = System.Net.HttpStatusCode.OK;
+
+                return TypedResults.Ok(payload);
             }
             catch (Exception ex)
             {

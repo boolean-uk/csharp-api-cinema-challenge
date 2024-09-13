@@ -44,7 +44,9 @@ namespace api_cinema_challenge.Endpoints
 
                 Payload<ResponseScreeningDTO> payload = new Payload<ResponseScreeningDTO>();
                 payload.data = Mapper.MapToDTO(newScreening);
-                return TypedResults.Created($"https://localhost:7054/screenings/{payload.data.Id}", payload.data);
+                payload.status = System.Net.HttpStatusCode.OK;
+
+                return TypedResults.Created($"https://localhost:7054/screenings/{payload.data.Id}", payload);
             }
             catch (Exception ex)
             {
@@ -72,8 +74,9 @@ namespace api_cinema_challenge.Endpoints
             }
 
             payload.data = responseScreenings;
+            payload.status = System.Net.HttpStatusCode.OK;
 
-            return TypedResults.Ok(payload.data);
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -96,8 +99,9 @@ namespace api_cinema_challenge.Endpoints
                     responseScreenings.Add(Mapper.MapToDTO(s));
                 }
                 payload.data = responseScreenings;
+                payload.status = System.Net.HttpStatusCode.OK;
 
-                return TypedResults.Ok(payload.data);
+                return TypedResults.Ok(payload);
             }
             catch (Exception ex)
             {
@@ -119,8 +123,9 @@ namespace api_cinema_challenge.Endpoints
 
                 Payload<ResponseScreeningDTO> payload = new Payload<ResponseScreeningDTO>();
                 payload.data = Mapper.MapToDTO(result);
+                payload.status = System.Net.HttpStatusCode.OK;
 
-                return TypedResults.Ok(payload.data);
+                return TypedResults.Ok(payload);
             }
             catch (Exception ex)
             {
@@ -157,8 +162,9 @@ namespace api_cinema_challenge.Endpoints
 
                 Payload<ResponseScreeningDTO> payload = new Payload<ResponseScreeningDTO>();
                 payload.data = Mapper.MapToDTO(updatedTarget);
+                payload.status = System.Net.HttpStatusCode.OK;
 
-                return TypedResults.Ok(payload.data);
+                return TypedResults.Ok(payload);
             }
             catch (Exception ex)
             {
@@ -176,7 +182,9 @@ namespace api_cinema_challenge.Endpoints
 
                 Payload<ResponseScreeningDTO> payload = new Payload<ResponseScreeningDTO>();
                 payload.data = Mapper.MapToDTO(target);
-                return TypedResults.Ok(payload.data);
+                payload.status = System.Net.HttpStatusCode.OK;
+
+                return TypedResults.Ok(payload);
             }
             catch (Exception ex)
             {
