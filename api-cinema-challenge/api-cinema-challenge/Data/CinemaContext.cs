@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace api_cinema_challenge.Data
@@ -20,7 +21,20 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Ticket>()
+                .HasKey(t => new { t.ScreeningId, t.CustomerID });
 
+            Seeder seeder = new Seeder();
+
+            modelBuilder.Entity<Movie>().HasData(seeder.Movies);
+            modelBuilder.Entity<Customer>().HasData(seeder.Customers);
+            modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
+            modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
         }
+
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
     }
 }
