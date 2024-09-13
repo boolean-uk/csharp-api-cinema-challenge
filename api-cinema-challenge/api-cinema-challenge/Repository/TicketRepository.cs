@@ -10,14 +10,15 @@ namespace api_cinema_challenge.Repository
         public TicketDTO BookTicket(int id)
         {
             Ticket ticket = null; // id is wrong, fix
-            if (_db.Tickets.Where(x => x.Id == id).Count() > 0 && _db.Tickets.Where(x => x.Id == ticket.Id).Min(x => x.numSeats) - 1 >= 0)
+            if (_db.Tickets.Where(x => x.Id == id).Count() > 0 && _db.Tickets.Where(x => x.Id == id).Min(x => x.numSeats) - 1 >= 0)
             {
-                _db.Tickets.Add(ticket = new Ticket() { Id = id, numSeats = _db.Tickets.Where(x => x.Id == ticket.Id).Min(x => x.numSeats) - 1 });
+                _db.Tickets.Add(ticket = new Ticket() { Id = id, numSeats = _db.Tickets.Where(x => x.Id == id).Min(x => x.numSeats) - 1 });
             }
-            else
+            else if (_db.Tickets.Where(x => x.Id == id).Count() == 0)
             {
-                _db.Tickets.Add(ticket = new Ticket() { Id = id, numSeats = _db.Screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - 1 });
+                _db.Tickets.Add(ticket = new Ticket() { Id = id, numSeats = _db.Screenings.FirstOrDefault(x => x.Id == id).Capacity - 1 });
             }
+            _db.SaveChanges();
             return ticket != null ? ticket.MapToDTO() : null;
         }
         public List<TicketDTO> GetTickets()

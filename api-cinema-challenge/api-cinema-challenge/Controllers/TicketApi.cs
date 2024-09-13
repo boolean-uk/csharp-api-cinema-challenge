@@ -13,37 +13,7 @@ namespace api_cinema_challenge.Controllers
             var tickets = app.MapGroup("tickets");
             tickets.MapPost("/", CreateTicket);
             tickets.MapGet("/", GetTickets);
-            //tickets.MapGet("/", UpdateTicket);
-            //tickets.MapGet("/", DeleteTicket);
         }
-
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //private static async Task<IResult> DeleteTicket(IRepository repository, int id)
-        //{
-        //    try
-        //    {
-        //    Payload<TicketDTO> payload = new Payload<TicketDTO>();
-
-        //    }
-        //    catch (Exception ex) { }
-
-        //}
-
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //private static async Task<IResult> UpdateTicket(IRepository repository, int id, int numSeats)
-        //{
-        //    try
-        //    {
-        //    Payload<TicketDTO> payload = new Payload<TicketDTO>();
-
-        //    }
-        //    catch (Exception ex) { }
-
-        //}
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
