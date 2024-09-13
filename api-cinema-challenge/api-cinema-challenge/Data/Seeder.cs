@@ -156,19 +156,24 @@ namespace api_cinema_challenge.Data
                 movie.runtimeMins = _runtimes[movieRandom.Next(_runtimes.Count)];
                 _movies.Add(movie);
             }
-            for (int x = 1; x < 30; x++)
+            for (int x = 1; x < 120; x++)
             {
                 Ticket ticket = new Ticket();
                 ticket.Id = _movies[ticketRandom.Next(_movies.Count)].Id;
-                ticket.numSeats = 40;
-                //if (_tickets.Count() == 0)
-                //{
-                //    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - 1;
-                //}
-                //else if (_tickets.Where(x => x.Id == ticket.Id).Count() != 0)
-                //{
-                //    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - _tickets.Where(x => x.Id == ticket.Id).Max(x => x.numSeats);
-                //}
+
+                //get max of movie
+                //get all tickets that have matching id
+                //get the ticket with the lowest seat num
+                //assign that -1 to new ticket
+
+                if (_tickets.Where(x => x.Id == ticket.Id).Count() == 0)
+                {
+                    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - 1;
+                }
+                else if (_tickets.Where(x => x.Id == ticket.Id).Count() != 0 && _tickets.Where(x => x.Id == ticket.Id).Min(x => x.numSeats) - 1 >= 0)
+                {
+                    ticket.numSeats = _tickets.Where(x => x.Id == ticket.Id).Min(x => x.numSeats) - 1;
+                }
 
                 //ensure no duplicate composite keys exist
                 List<Ticket> dupesList = new List<Ticket>(_tickets);
