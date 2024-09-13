@@ -6,12 +6,12 @@ using api_cinema_challenge.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IRepository, Repository>();
-
+builder.Services.AddControllers();
 
 
 

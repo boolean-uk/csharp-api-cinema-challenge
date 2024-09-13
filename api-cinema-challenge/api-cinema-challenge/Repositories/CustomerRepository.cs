@@ -7,7 +7,9 @@ namespace api_cinema_challenge.Repositories
     {
         public async Task<Customer> AddCustomer(string name, string email, string phonenumber)
         {
-            var customer = new Customer() { Id = _db.Customers.Count() + 1, Name = name, Email = email, Phone = phonenumber, Created = DateTime.Now, Updated = DateTime.Now };
+            DateTime dt = DateTime.Now; Console.WriteLine("{0} {1}", dt, dt.Kind);
+            DateTime ut = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+            var customer = new Customer() { Id = _db.Customers.Count() + 1, Name = name, Email = email, Phone = phonenumber, CreatedAt = ut, UpdatedAt = ut };
             await _db.Customers.AddAsync(customer);
             await _db.SaveChangesAsync();
             return customer;
@@ -28,10 +30,12 @@ namespace api_cinema_challenge.Repositories
 
         public async Task<Customer> UppdateCustomer(int id, string? name, string? email, string? phone)
         {
+            DateTime dt = DateTime.Now; Console.WriteLine("{0} {1}", dt, dt.Kind);
+            DateTime ut = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
             var customer = await _db.Customers.FirstOrDefaultAsync(c => c.Id == id);
-            if (name is not null) { customer.Name = name; customer.Updated = DateTime.Now; }
-            if (email is not null) { customer.Email = email; customer.Updated = DateTime.Now; }
-            if (phone is not null) { customer.Phone = phone; customer.Updated = DateTime.Now; }
+            if (name is not null) { customer.Name = name; customer.UpdatedAt = ut; }
+            if (email is not null) { customer.Email = email; customer.UpdatedAt = ut; }
+            if (phone is not null) { customer.Phone = phone; customer.UpdatedAt = ut; }
             await _db.SaveChangesAsync();
             return customer;
         }

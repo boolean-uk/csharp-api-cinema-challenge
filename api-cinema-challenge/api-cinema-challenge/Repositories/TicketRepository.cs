@@ -7,15 +7,15 @@ namespace api_cinema_challenge.Repositories
     {
         public async Task<Ticket> AddTicket(int screeningId)
         {
-            var ticket = new Ticket() { Id = _db.Ticket.Count() + 1, ScreeningId = screeningId, Created = DateTime.Now };
-            await _db.Ticket.AddAsync(ticket);
+            var ticket = new Ticket() { Id = _db.Tickets.Count() + 1, NumSeats = screeningId, CreatedAt = DateTime.UtcNow };
+            await _db.Tickets.AddAsync(ticket);
             await _db.SaveChangesAsync();
             return ticket;
         }
 
-        public async  Task<IEnumerable<Ticket>> GetTicket()
+        public async Task<IEnumerable<Ticket>> GetTicket()
         {
-            return await _db.Ticket.ToListAsync();
+            return await _db.Tickets.ToListAsync();
         }
     }
 }

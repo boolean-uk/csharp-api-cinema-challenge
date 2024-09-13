@@ -1,7 +1,6 @@
 ﻿using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
 
 namespace api_cinema_challenge.Data
 {
@@ -18,23 +17,16 @@ namespace api_cinema_challenge.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString);
-            optionsBuilder.LogTo(message => Debug.WriteLine(message));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Seeder seeder = new Seeder();
-            modelBuilder.Entity<Customer>().HasData(seeder.Customers);
-            modelBuilder.Entity<Customer>().HasKey(x => new { x.Id });
-           // modelBuilder.Entity<Movie>().HasKey(x => new { x.Id });
-           // modelBuilder.Entity<Screening>().HasKey(x => new { x.Id });
-          //  modelBuilder.Entity<Ticket>().HasKey(x => new { x.Id });
-
+            
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screens { get; set; }
-        public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

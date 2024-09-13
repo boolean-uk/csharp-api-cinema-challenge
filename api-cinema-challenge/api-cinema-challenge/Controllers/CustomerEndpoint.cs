@@ -9,11 +9,11 @@ namespace api_cinema_challenge.Controllers
     {
         public static void ConfigureCustomerEndpoint(this WebApplication app)
         {
-            var customers = app.MapGroup("/customer");
+            var customers = app.MapGroup("customers");
             customers.MapPost("/", AddCustomer);
             customers.MapGet("/", GetCustomers);
             customers.MapPut("/{id}", UppdateCustomer);
-            customers.MapDelete("/", DeleteCustomer);
+            customers.MapDelete("/{id}", DeleteCustomer);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -28,8 +28,9 @@ namespace api_cinema_challenge.Controllers
             }
             catch (Exception ex)
             {
-
-
+                using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
+                ILogger logger = factory.CreateLogger("Errors");
+                logger.LogInformation(ex.ToString());
                 return TypedResults.BadRequest("Bad Request");
             }
         }
@@ -37,7 +38,7 @@ namespace api_cinema_challenge.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> GetCustomers(IRepository repository)
+         private static async Task<IResult> GetCustomers(IRepository repository)
         {
             try
             {
@@ -52,7 +53,7 @@ namespace api_cinema_challenge.Controllers
 
                 return TypedResults.BadRequest("Bad Request");
             }
-        }
+}
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

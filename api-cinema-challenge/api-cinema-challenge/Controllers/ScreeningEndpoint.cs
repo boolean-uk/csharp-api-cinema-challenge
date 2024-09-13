@@ -8,7 +8,7 @@ namespace api_cinema_challenge.Controllers
     {
         public static void ConfigureScreeningEndpoint(this WebApplication app)
         {
-            var screening = app.MapGroup("/Screening");
+            var screening = app.MapGroup("screenings");
             screening.MapPost("/", AddScreening);
             screening.MapGet("/", GetScreening);
         }
@@ -41,7 +41,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var screening = await repository.GetScreening();
-                return screening != null ? TypedResults.Ok(DTOConvert.DTOConvertList(screening)) : TypedResults.NotFound("NotFound");
+                return screening != null ? TypedResults.Ok(screening) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {

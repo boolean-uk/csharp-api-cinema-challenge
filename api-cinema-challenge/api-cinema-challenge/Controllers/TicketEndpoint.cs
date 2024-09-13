@@ -9,7 +9,7 @@ namespace api_cinema_challenge.Controllers
 
         public static void ConfigureTicetsEndpoint(this WebApplication app)
         {
-            var ticket = app.MapGroup("/Ticket");
+            var ticket = app.MapGroup("tickets");
             ticket.MapPost("/", AddTicket);
             ticket.MapGet("/", GetTicket);
         }
@@ -22,7 +22,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var ticket = await repository.AddTicket(screeningId);
-                return ticket != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(ticket)) : TypedResults.NotFound("NotFound");
+                return ticket != null ? TypedResults.Ok(ticket) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var ticket = await repository.GetTicket();
-                return ticket != null ? TypedResults.Ok(DTOConvert.DTOConvertList(ticket)) : TypedResults.NotFound("NotFound");
+                return ticket != null ? TypedResults.Ok(ticket) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {

@@ -15,8 +15,8 @@ namespace api_cinema_challenge.Models
         public string Email { get; set; }
         [Required]
         public string Phone { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
     }
 }

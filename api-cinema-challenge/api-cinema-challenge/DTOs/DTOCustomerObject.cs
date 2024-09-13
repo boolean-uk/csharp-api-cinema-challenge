@@ -9,14 +9,5 @@
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        public DTOCustomerObject (int id, string name, string email, string phone, DateTime createdAt, DateTime uppdatedAt)
-        {
-            this.Id = id;
-            this.Name = name;
-            this.Email = email;
-            this.Phone = phone;
-            this.Created = createdAt;
-            this.Updated = uppdatedAt;
-        }
     }
 }

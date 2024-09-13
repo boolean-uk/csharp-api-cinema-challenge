@@ -2,16 +2,16 @@
 {
     public class DTOScreeningObject
     {
-        private int _id;
+        private int Id;
         private int _screenNumber;
         private int _capacity;
         private DateTime _startsAt;
         private readonly DateTime _created;
         private DateTime _updated;
 
-        public DTOScreeningObject (int id, int screenNumber, int capacity, DateTime startsAt, DateTime created, DateTime updated)
+        public DTOScreeningObject(int id, int screenNumber, int capacity, DateTime startsAt, DateTime created, DateTime updated)
         {
-            _id = id;
+            Id = id;
             _screenNumber = screenNumber;
             _capacity = capacity;
             _startsAt = startsAt;

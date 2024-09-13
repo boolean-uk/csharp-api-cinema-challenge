@@ -9,7 +9,9 @@ namespace api_cinema_challenge.Repositories
     {
         public async Task<Movie> AddMovie(string title, string rating, string description, int runtimeMins)
         {
-            var movie = new Movie() { Id = _db.Movies.Count()+1, Title = title, Rating = rating, Description = description, RuntimeMins = runtimeMins, Created = DateTime.Now, Updated = DateTime.Now };
+            DateTime dt = DateTime.Now; Console.WriteLine("{0} {1}", dt, dt.Kind);
+            DateTime ut = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+            var movie = new Movie() { Id = _db.Movies.Count() + 1, Title = title, Rating = rating, Description = description, RuntimeMins = runtimeMins, Screenings = new List<Screening>(), CreatedAt = ut, UpdatedAt = ut };
             await _db.Movies.AddAsync(movie);
             await _db.SaveChangesAsync();
             return movie;
@@ -30,11 +32,13 @@ namespace api_cinema_challenge.Repositories
 
         public async Task<Movie> UppdateMovie(int id, string? title, string? rating, string? description, int? runtimeMins)
         {
+            DateTime dt = DateTime.Now; Console.WriteLine("{0} {1}", dt, dt.Kind);
+            DateTime ut = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
             var movie = await _db.Movies.FirstOrDefaultAsync(c => c.Id == id);
-            if (title is not null) { movie.Title = title; movie.Updated = DateTime.Now; }
-            if (rating is not null) { movie.Rating = rating; movie.Updated = DateTime.Now; }
-            if (description is not null) { movie.Description = description; movie.Updated = DateTime.Now; }
-            if (runtimeMins is not null && runtimeMins > 1) { movie.RuntimeMins = (int)runtimeMins; movie.Updated = DateTime.Now; }
+            if (title is not null) { movie.Title = title; movie.UpdatedAt = ut; }
+            if (rating is not null) { movie.Rating = rating; movie.UpdatedAt = ut; }
+            if (description is not null) { movie.Description = description; movie.UpdatedAt = ut; }
+            if (runtimeMins is not null && runtimeMins > 1) { movie.RuntimeMins = (int)runtimeMins; movie.UpdatedAt = ut; }
 
             await _db.SaveChangesAsync();
             return movie;

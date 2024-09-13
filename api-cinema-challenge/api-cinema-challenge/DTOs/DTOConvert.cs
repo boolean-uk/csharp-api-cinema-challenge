@@ -8,40 +8,40 @@ namespace api_cinema_challenge.DTOs
     {
         internal static DTOCustomerObject DTOConvertObject(Customer customer)
         {
-            return new DTOCustomerObject(customer.Id,customer.Name, customer.Email,customer.Phone,customer.Created,customer.Updated);
+            return new DTOCustomerObject() { Id = customer.Id, Name = customer.Name, Email = customer.Email, Phone = customer.Phone, Created = customer.CreatedAt, Updated = customer.UpdatedAt };
         }
 
         internal static DTOMovieObject DTOConvertObject(Movie movie)
         {
-            return new DTOMovieObject(movie.Id,movie.Title, movie.Description, movie.Rating, movie.RuntimeMins, movie.Screenings, movie.Created, movie.Updated);
+            return new DTOMovieObject() { Id =movie.Id, Title = movie.Title, Description = movie.Description, Rating = movie.Rating, RuntimeMins = movie.RuntimeMins, Screenings = movie.Screenings, Created= movie.CreatedAt, Updated = movie.UpdatedAt };
         }
 
         internal static DTOScreeningObject DTOConvertObject(Screening screening)
         {
-            return new DTOScreeningObject(screening.Id, screening.ScreenNumber,screening.Capacity, screening.StartsAt, screening.Created, screening.Updated);
+            return new DTOScreeningObject(screening.Id, screening.ScreenNumber,screening.Capacity, screening.StartsAt, screening.CreatedAt, screening.UpdatedAt);
         }
 
-        internal static DTOTicketObject DTOConvertObject(Ticket ticket)
-        {
-            return new DTOTicketObject(ticket.Id, ticket.ScreeningId, ticket.Created);
-        }
+        //internal static DTOTicketObject DTOConvertObject(Ticket ticket)
+        //{
+        //    return new DTOTicketObject(ticket.Id, ticket.NumSeats, ticket.CreatedAt);
+        //}
 
         internal static IEnumerable<DTOCustomerObject> DTOConvertList(IEnumerable<Customer> customers)
         {
-            return customers.Select(customer => new DTOCustomerObject(customer.Id, customer.Name, customer.Email, customer.Phone, customer.Created, customer.Updated));
+            return customers.Select(customer => new DTOCustomerObject() { Id = customer.Id, Name= customer.Name, Email = customer.Email, Phone = customer.Phone, Created = customer.CreatedAt, Updated = customer.UpdatedAt });
         }
         internal static IEnumerable<DTOMovieObject> DTOConvertList(IEnumerable<Movie> movies)
         {
-            return movies.Select(movie => new DTOMovieObject(movie.Id, movie.Title, movie.Description, movie.Rating, movie.RuntimeMins, movie.Screenings, movie.Created, movie.Updated));
+            return movies.Select(movie => new DTOMovieObject() { Id = movie.Id, Title = movie.Title, Description = movie.Description, Rating = movie.Rating, RuntimeMins = movie.RuntimeMins, Screenings = movie.Screenings, Created = movie.CreatedAt, Updated = movie.UpdatedAt });
         }
 
-        internal static IEnumerable<DTOScreeningObject> DTOConvertList(IEnumerable<Screening> screenings)
-        {
-            return screenings.Select(screening => new DTOScreeningObject(screening.Id, screening.ScreenNumber, screening.Capacity, screening.StartsAt, screening.Created, screening.Updated));
-        }
-        internal static IEnumerable<DTOTicketObject> DTOConvertList(IEnumerable<Ticket> tickets)
-        {
-            return tickets.Select(ticket => new DTOTicketObject(ticket.Id, ticket.ScreeningId, ticket.Created));
-        }
+        //internal static IEnumerable<DTOScreeningObject> DTOConvertList(IEnumerable<Screening> screenings)
+        //{
+        //    return screenings.Select(screening => new DTOScreeningObject(screening.Id, screening.ScreenNumber, screening.Capacity, screening.StartsAt, screening.CreatedAt, screening.UpdatedAt));
+        //}
+        //internal static IEnumerable<DTOTicketObject> DTOConvertList(IEnumerable<Ticket> tickets)
+        //{
+        //    return tickets.Select(ticket => new DTOTicketObject(ticket.Id, ticket.NumSeats, ticket.CreatedAt));
+        //}
     }
 }
