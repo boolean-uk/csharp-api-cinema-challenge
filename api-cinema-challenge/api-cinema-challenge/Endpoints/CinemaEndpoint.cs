@@ -69,6 +69,10 @@ namespace api_cinema_challenge.Endpoints
 
                 if (entity != null)
                 {
+                    if(model.Name == "string") model.Name = string.Empty;
+                    if(model.Email == "string") model.Email = string.Empty;
+                    if(model.Phone == "string") model.Phone = string.Empty;
+
                     entity.Name = !string.IsNullOrEmpty(model.Name) ? model.Name : entity.Name;
                     entity.Email = !string.IsNullOrEmpty(model.Email) ? model.Email : entity.Email;
                     entity.Phone = !string.IsNullOrEmpty(model.Phone) ? model.Phone : entity.Phone;
@@ -173,6 +177,10 @@ namespace api_cinema_challenge.Endpoints
 
                 if (entity != null)
                 {
+                    if(model.Title == "string") model.Title = string.Empty;
+                    if(model.Description == "string") model.Description = string.Empty;
+                    if(model.Rating == "string") model.Rating = string.Empty;
+                    if(model.RuntimeMins == 0) model.RuntimeMins = null;
                     entity.Title = !string.IsNullOrEmpty(model.Title) ? model.Title : entity.Title;
                     entity.Rating = !string.IsNullOrEmpty(model.Rating) ? model.Rating : entity.Rating;
                     entity.Description = !string.IsNullOrEmpty(model.Description) ? model.Description : entity.Description;
