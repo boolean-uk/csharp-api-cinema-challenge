@@ -2,6 +2,7 @@
 using api_cinema_challenge.Models.Dtos;
 using api_cinema_challenge.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace api_cinema_challenge.EndPoints
 {
@@ -13,6 +14,7 @@ namespace api_cinema_challenge.EndPoints
             group.MapGet("/", GetAllMovies);
             group.MapPost("/", CreateMovie);
             group.MapPut("/{id:int}", UpdateMovie);
+            group.MapDelete("/{id:int}", DeleteMovie);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -26,7 +28,10 @@ namespace api_cinema_challenge.EndPoints
         public static async Task<IResult> CreateMovie(IMovieRepository repository, CreateMovieDto model)
         {
             Movie movieCreated = await repository.CreateMovie(model);
-            return TypedResults.Ok(movieCreated);
+            Payload<Movie> payload = new Payload<Movie>();
+            payload.status = "success";
+            payload.data = movieCreated;
+            return TypedResults.Created("", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -38,7 +43,11 @@ namespace api_cinema_challenge.EndPoints
             {
                 return TypedResults.NotFound("Id does not exist");
             }
-            return TypedResults.Created("", movieUpdated);
+            Payload<Movie> payload = new Payload<Movie>();
+            payload.status = "success";
+            payload.data = movieUpdated;
+
+            return TypedResults.Created("", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -51,7 +60,10 @@ namespace api_cinema_challenge.EndPoints
             {
                 return TypedResults.NotFound("Does not exist");
             }
-            return TypedResults.Ok(movieDeleted);
+            Payload<Movie> payload = new Payload<Movie>();
+            payload.status = "success";
+            payload.data = movieDeleted;
+            return TypedResults.Ok(payload);
         }
     }
 }

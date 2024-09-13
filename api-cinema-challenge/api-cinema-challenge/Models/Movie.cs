@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace api_cinema_challenge.Models
 {
     public class Movie
     {
+        [Key]
         public int Id { get; set; }
         public string Title { get; set; }
         public string Rating { get; set; }
@@ -11,6 +14,8 @@ namespace api_cinema_challenge.Models
         public int RuntimeMins { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        [JsonIgnore]
+        public List<Screening> Screenings { get; set; } = new List<Screening>();
 
         public Movie()
         {

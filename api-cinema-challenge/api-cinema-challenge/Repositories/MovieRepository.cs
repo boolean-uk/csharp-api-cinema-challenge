@@ -24,6 +24,20 @@ namespace api_cinema_challenge.Repositories
             movie.CreatedAt = DateTime.UtcNow;
             movie.CreatedAt = DateTime.UtcNow;
 
+            if(movieDto.Screenings!= null)
+            {
+                foreach(var s in movieDto.Screenings)
+                {
+                    Screening screening = new Screening();
+                    screening.ScreenNumber = s.screenNumber;
+                    screening.Capacity = s.capacity;
+                    screening.StartsAt = s.startsAt;
+                    screening.CreatedAt = DateTime.UtcNow;
+                    screening.UpdatedAt = DateTime.UtcNow;
+                    movie.Screenings.Add(screening);
+                }   
+            }
+
             await _db.AddAsync(movie);
             await _db.SaveChangesAsync();
             return movie;

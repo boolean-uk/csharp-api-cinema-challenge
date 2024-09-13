@@ -21,14 +21,24 @@ namespace api_cinema_challenge.EndPoints
         public static async Task<IResult> GetAllCustomers(ICustomerRepository repository)
         {
             var customers = await repository.GetCustomers();
-            return TypedResults.Ok(customers);
+
+            Payload<ICollection<Customer>> payload = new Payload<ICollection<Customer>>();
+            payload.status = "success";
+            payload.data = customers;
+
+            return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> CreateCustomer(ICustomerRepository repository, CreateCustomerDto model)
         {
             Customer customerCreated = await repository.CreateCustomer(model);
-            return TypedResults.Created("", customerCreated);
+
+            Payload<Customer> payload = new Payload<Customer>();
+            payload.status = "success";
+            payload.data = customerCreated;
+
+            return TypedResults.Created("", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -40,7 +50,12 @@ namespace api_cinema_challenge.EndPoints
             {
                 return TypedResults.NotFound(error404);
             }
-            return TypedResults.Created("", customerUpdated);
+
+            Payload<Customer> payload = new Payload<Customer>();
+            payload.status = "success";
+            payload.data = customerUpdated;
+
+            return TypedResults.Created("", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -52,7 +67,12 @@ namespace api_cinema_challenge.EndPoints
             {
                 return TypedResults.NotFound(error404);
             }
-            return TypedResults.Ok(customerDeleted);
+
+            Payload<Customer> payload = new Payload<Customer>();
+            payload.status = "success";
+            payload.data = customerDeleted;
+
+            return TypedResults.Ok(payload);
         }
     }
 }

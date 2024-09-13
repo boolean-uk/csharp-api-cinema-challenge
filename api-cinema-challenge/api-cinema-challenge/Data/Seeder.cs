@@ -27,8 +27,8 @@ namespace api_cinema_challenge.Data
             _customers.Add(customer2);
 
             //Screenings
-            Screening screening1 = new Screening(1, 1, 50, DateTime.UtcNow);
-            Screening screening2 = new Screening(2, 2, 100, DateTime.UtcNow);
+            Screening screening1 = new Screening(1, 1, 50, DateTime.UtcNow, movie1.Id);
+            Screening screening2 = new Screening(2, 2, 100, DateTime.UtcNow, movie2.Id);
             _screening.Add(screening1);
             _screening.Add(screening2);
 
