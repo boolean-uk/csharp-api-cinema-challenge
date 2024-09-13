@@ -38,7 +38,7 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 var result = await repository.UpdateCustomer(customerId, payload);
-                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Data.Id}", result);
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 var result = await repository.CreateCustomer(payload);
-                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Data.Id}", result);
             }
             catch (Exception ex)
             {

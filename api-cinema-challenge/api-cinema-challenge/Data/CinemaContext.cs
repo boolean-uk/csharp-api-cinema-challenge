@@ -29,11 +29,14 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
+            modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
 
     }
 }

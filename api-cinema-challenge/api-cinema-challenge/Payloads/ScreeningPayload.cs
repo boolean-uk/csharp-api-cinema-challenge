@@ -7,6 +7,8 @@ namespace api_cinema_challenge.Payloads
     {
         public int ScreenNumber { get; set; }
         public int Capacity { get; set; }
+        
+        
         [RegularExpression(@"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}", ErrorMessage = "Invalid Format. Expected Format: YYYY-MM-DD HH:MM:SS")]
         public string StartsAt { get; set; }
 

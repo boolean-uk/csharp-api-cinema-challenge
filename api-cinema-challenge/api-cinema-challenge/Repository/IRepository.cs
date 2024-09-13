@@ -5,16 +5,18 @@ namespace api_cinema_challenge.Repository
 {
     public interface IRepository
     {
-        Task<IEnumerable<CustomerDTO>> GetCustomers();
-        Task<IEnumerable<MovieDTO>> GetMovies();
-        Task<IEnumerable<ScreeningDTO>> GetScreenings(int movieId);
-        Task<CustomerDTO> CreateCustomer(CustomerPayload payload);
-        Task<MovieDTO> CreateMovie(MoviePayload payload);
-        Task<ScreeningDTO> CreateScreening(int movieId, ScreeningPayload payload);
-        Task<CustomerDTO> UpdateCustomer(int customerId, CustomerPayload payload);
-        Task<MovieDTO> UpdateMovie(int movieId, MoviePayload payload);
-        Task<CustomerDTO> DeleteCustomer(int customerId);
-        Task<MovieDTO> DeleteMovie(int movieId);
+        Task<ResponseDTOs<CustomerDTO>> GetCustomers();
+        Task<ResponseDTOs<MovieDTO>> GetMovies();
+        Task<ResponseDTOs<ScreeningDTO>> GetScreenings(int movieId);
+        Task<ResponseDTO<CustomerDTO>> CreateCustomer(CustomerPayload payload);
+        Task<ResponseDTO<MovieDTO>> CreateMovie(MoviePayload payload);
+        Task<ResponseDTO<ScreeningDTO>> CreateScreening(int movieId, ScreeningPayload payload);
+        Task<ResponseDTO<CustomerDTO>> UpdateCustomer(int customerId, CustomerPayload payload);
+        Task<ResponseDTO<MovieDTO>> UpdateMovie(int movieId, MoviePayload payload);
+        Task<ResponseDTO<CustomerDTO>> DeleteCustomer(int customerId);
+        Task<ResponseDTO<MovieDTO>> DeleteMovie(int movieId);
+        Task<ResponseDTO<TicketDTO>> BookTicket(int numSeats, int customerId, int screeningId);
+        Task<ResponseDTOs<TicketDTO>> GetTickets(int customerId, int screeningId);
 
     }
 }

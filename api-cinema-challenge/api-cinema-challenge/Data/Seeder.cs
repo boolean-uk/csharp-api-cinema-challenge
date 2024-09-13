@@ -13,6 +13,7 @@ namespace api_cinema_challenge.Data
         private List<Customer> _customers = new List<Customer>();
         private List<Movie> _movies = new List<Movie>();
         private List<Screening> _screenings = new List<Screening>();
+        private List<Ticket> _tickets = new List<Ticket>();
 
         private DateTime RandomizeDate()
         {
@@ -174,12 +175,18 @@ namespace api_cinema_challenge.Data
                 screening.Id = i;
 
                 _screenings.Add(screening);
+
+                Ticket ticket = new Ticket(random.Next(1, 3 + 1), i, i);
+                ticket.Id = i;
+                _tickets.Add(ticket);
             }
+
         }
         
         public List<Customer> Customers { get { return _customers; } } 
         public List<Movie> Movies { get { return _movies; } } 
-        public List<Screening> Screenings { get { return _screenings; } } 
+        public List<Screening> Screenings { get { return _screenings; } }
 
+        public List<Ticket> Tickets { get { return _tickets; } }
     }
 }

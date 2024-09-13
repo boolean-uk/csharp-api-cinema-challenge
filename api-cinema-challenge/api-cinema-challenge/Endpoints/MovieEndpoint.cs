@@ -13,7 +13,7 @@ namespace api_cinema_challenge.Endpoints
             var movieGroup = app.MapGroup("movie");
 
             movieGroup.MapPost("/CreateMovie", CreateMovie);
-            movieGroup.MapGet("/GetAllMovie", GetMovies);
+            movieGroup.MapGet("/GetAllMovies", GetMovies);
             movieGroup.MapPut("/UpdateMovie/{id}", UpdateMovieById);
             movieGroup.MapDelete("DeleteMovie/{id}", DeleteMovieById);
         }
@@ -37,7 +37,7 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 var result = await repository.UpdateMovie(movieId, payload);
-                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Data.Id}", result);
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 var result = await repository.CreateMovie(payload);
-                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Data.Id}", result);
             }
             catch (Exception ex)
             {

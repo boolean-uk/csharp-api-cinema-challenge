@@ -16,7 +16,7 @@ namespace api_cinema_challenge.Repository
         {
             _db = db;
         }
-        public async Task<CustomerDTO> CreateCustomer(CustomerPayload payload)
+        public async Task<ResponseDTO<CustomerDTO>> CreateCustomer(CustomerPayload payload)
         {
             if(payload.Name == null || payload.Name == "" ||
                 payload.Email == null || payload.Email == "" ||
@@ -28,7 +28,8 @@ namespace api_cinema_challenge.Repository
             _db.Customers.Add(customer);
             await _db.SaveChangesAsync();
 
-            return MakeCustomerDTO(customer);
+            ResponseDTO<CustomerDTO> result = new ResponseDTO<CustomerDTO>("success", MakeCustomerDTO(customer));
+            return result;
         }
 
         private CustomerDTO MakeCustomerDTO(Customer customer)
@@ -43,7 +44,7 @@ namespace api_cinema_challenge.Repository
             return customerDTO;
         }
 
-        public async Task<MovieDTO> CreateMovie(MoviePayload payload)
+        public async Task<ResponseDTO<MovieDTO>> CreateMovie(MoviePayload payload)
         {
             if (payload.Title == null || payload.Title == "" ||
               payload.Rating == null || payload.Rating == "" ||
@@ -54,9 +55,26 @@ namespace api_cinema_challenge.Repository
             }
             Movie movie = new Movie(payload.Title, payload.Rating, payload.Description, payload.RunTimeMins);
             _db.Movies.Add(movie);
+
             await _db.SaveChangesAsync();
 
-            return MakeMovieDTO(movie);
+            foreach (var screenLoad in payload.Screens)
+            {
+                try
+                {
+                    await CreateScreening(movie.Id, screenLoad);
+                }
+                catch 
+                {
+                    throw new Exception("Unable to create screening because of invalid data input!");
+                }
+            }
+
+
+            await _db.SaveChangesAsync();
+
+            ResponseDTO<MovieDTO> result = new ResponseDTO<MovieDTO>("success", MakeMovieDTO(movie));
+            return result;
         }
 
         private MovieDTO MakeMovieDTO(Movie movie)
@@ -72,7 +90,7 @@ namespace api_cinema_challenge.Repository
             return dto;
         }
 
-        public async Task<ScreeningDTO> CreateScreening(int movieId, ScreeningPayload payload)
+        public async Task<ResponseDTO<ScreeningDTO>> CreateScreening(int movieId, ScreeningPayload payload)
         {
             if(payload.ScreenNumber < 0 || payload.Capacity < 1)
             {
@@ -89,7 +107,8 @@ namespace api_cinema_challenge.Repository
             _db.Screenings.Add(screening);
             await _db.SaveChangesAsync();
 
-            return MakeScreeningDTO(screening);
+            ResponseDTO<ScreeningDTO> result = new ResponseDTO<ScreeningDTO>("success", MakeScreeningDTO(screening));
+            return result;
         }
 
         private ScreeningDTO MakeScreeningDTO(Screening screening)
@@ -105,7 +124,7 @@ namespace api_cinema_challenge.Repository
            return dto;
         }
 
-        public async Task<CustomerDTO> DeleteCustomer(int customerId)
+        public async Task<ResponseDTO<CustomerDTO>> DeleteCustomer(int customerId)
         {
             var customer = _db.Customers.FirstOrDefault(x => x.Id == customerId);
             if(customer == null)
@@ -115,10 +134,11 @@ namespace api_cinema_challenge.Repository
             _db.Customers.Remove(customer);
             await _db.SaveChangesAsync();
 
-            return MakeCustomerDTO(customer);
+            ResponseDTO<CustomerDTO> result = new ResponseDTO<CustomerDTO>("success", MakeCustomerDTO(customer));
+            return result;
         }
 
-        public async Task<MovieDTO> DeleteMovie(int movieId)
+        public async Task<ResponseDTO<MovieDTO>> DeleteMovie(int movieId)
         {
             var movie = _db.Movies.FirstOrDefault(x => x.Id == movieId);
             if (movie == null)
@@ -128,10 +148,11 @@ namespace api_cinema_challenge.Repository
             _db.Movies.Remove(movie);
             await _db.SaveChangesAsync();
 
-            return MakeMovieDTO(movie);
+            ResponseDTO<MovieDTO> result = new ResponseDTO<MovieDTO>("success", MakeMovieDTO(movie));
+            return result;
         }
 
-        public async Task<IEnumerable<CustomerDTO>> GetCustomers()
+        public async Task<ResponseDTOs<CustomerDTO>> GetCustomers()
         {
             var customers = await _db.Customers.ToListAsync();
             List<CustomerDTO> customerDTOs = new List<CustomerDTO>();
@@ -139,10 +160,11 @@ namespace api_cinema_challenge.Repository
             {
                 customerDTOs.Add(MakeCustomerDTO(customer));
             }
-            return customerDTOs;
+            ResponseDTOs<CustomerDTO> result = new ResponseDTOs<CustomerDTO>("success", customerDTOs);
+            return result;
         }
 
-        public async Task<IEnumerable<MovieDTO>> GetMovies()
+        public async Task<ResponseDTOs<MovieDTO>> GetMovies()
         {
             var movies = await _db.Movies.ToListAsync();
             List<MovieDTO> movieDTOs = new List<MovieDTO>();
@@ -150,10 +172,11 @@ namespace api_cinema_challenge.Repository
             {
                 movieDTOs.Add(MakeMovieDTO(movie));
             }
-            return movieDTOs;
+            ResponseDTOs<MovieDTO> result = new ResponseDTOs<MovieDTO>("success", movieDTOs);
+            return result;
         }
 
-        public async Task<IEnumerable<ScreeningDTO>> GetScreenings(int movieId)
+        public async Task<ResponseDTOs<ScreeningDTO>> GetScreenings(int movieId)
         {
             var screenings = await _db.Screenings.Where(x => x.MovieId == movieId).ToListAsync();
             List<ScreeningDTO> screeningDTOs = new List<ScreeningDTO>();
@@ -164,10 +187,11 @@ namespace api_cinema_challenge.Repository
                     screeningDTOs.Add(MakeScreeningDTO(s));
                 }
             }
-            return screeningDTOs;
+            ResponseDTOs<ScreeningDTO> result = new ResponseDTOs<ScreeningDTO>("success", screeningDTOs);
+            return result;
         }
 
-        public async Task<CustomerDTO> UpdateCustomer(int customerId, CustomerPayload payload)
+        public async Task<ResponseDTO<CustomerDTO>> UpdateCustomer(int customerId, CustomerPayload payload)
         {
             if (payload.Name == null || payload.Name == "" ||
                 payload.Email == null || payload.Email == "" ||
@@ -186,10 +210,12 @@ namespace api_cinema_challenge.Repository
             customer.UpdatedAt = DateTime.Now.ToUniversalTime();
 
             await _db.SaveChangesAsync();
-            return MakeCustomerDTO(customer);
+
+            ResponseDTO<CustomerDTO> result = new ResponseDTO<CustomerDTO>("success", MakeCustomerDTO(customer));
+            return result;
         }
 
-        public async Task<MovieDTO> UpdateMovie(int movieId, MoviePayload payload)
+        public async Task<ResponseDTO<MovieDTO>> UpdateMovie(int movieId, MoviePayload payload)
         {
             if (payload.Title == null || payload.Title == "" ||
               payload.Rating == null || payload.Rating == "" ||
@@ -210,7 +236,46 @@ namespace api_cinema_challenge.Repository
             movie.UpdatedAt = DateTime.Now.ToUniversalTime();
 
             await _db.SaveChangesAsync();
-            return MakeMovieDTO(movie);
+
+            ResponseDTO<MovieDTO> result = new ResponseDTO<MovieDTO>("success", MakeMovieDTO(movie));
+            return result;
+        }
+
+        public async Task<ResponseDTO<TicketDTO>> BookTicket(int numSeats, int customerId, int screeningId)
+        {
+            if(numSeats < 1) // need at least 1 tickets
+            {
+                throw new Exception("At least 1 ticket must be booked");
+            }
+            Ticket ticket = new Ticket(numSeats, customerId, screeningId);
+            _db.Tickets.Add(ticket);
+            await _db.SaveChangesAsync();
+
+            ResponseDTO<TicketDTO> result = new ResponseDTO<TicketDTO>("success", MakeTicketDTO(ticket));
+            return result;
+        }
+
+        private TicketDTO MakeTicketDTO(Ticket ticket)
+        {
+            TicketDTO dto = new TicketDTO();
+            dto.Id = ticket.Id;
+            dto.UpdatedAt = ticket.UpdatedAt;
+            dto.CreatedAt = ticket.CreatedAt;
+            dto.NumSeats = ticket.NumberOfSeats;
+
+            return dto;
+        }
+
+        public async Task<ResponseDTOs<TicketDTO>> GetTickets(int customerId, int screeningId)
+        {
+            var tickets = await _db.Tickets.Where(ci => ci.CustomerId == customerId).Where(si => si.ScreeningId == screeningId).ToListAsync();
+            List<TicketDTO> movieDTOs = new List<TicketDTO>();
+            foreach (var ticket in tickets)
+            {
+                movieDTOs.Add(MakeTicketDTO(ticket));
+            }
+            ResponseDTOs<TicketDTO> result = new ResponseDTOs<TicketDTO>("success", movieDTOs);
+            return result;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace api_cinema_challenge.Endpoints
             var screeningGroup = app.MapGroup("screening");
 
             screeningGroup.MapPost("/CreateScreening/{id}", CreateScreeningByMovieId);
-            screeningGroup.MapGet("/GetAllScreening{id}", GetScreeningsByMovieId);
+            screeningGroup.MapGet("/GetAllScreenings{id}", GetScreeningsByMovieId);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -36,7 +36,7 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 var result = await repository.CreateScreening(movieId, payload);
-                return TypedResults.Created($"http://localhost:7195/customers/{result.Id}", result);
+                return TypedResults.Created($"http://localhost:7195/customers/{result.Data.Id}", result);
             }
             catch (Exception ex)
             {

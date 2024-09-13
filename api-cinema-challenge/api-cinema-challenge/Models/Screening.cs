@@ -28,7 +28,7 @@ namespace api_cinema_challenge.Models
         [Column("CreatedAt")]
         public DateTime CreatedAt { get; set; }
 
-        [Column("Updated A")]
+        [Column("Updated At")]
         public DateTime UpdatedAt { get; set; }
 
         public Screening( int movieId, int screenNumber, int capacity, DateTime startsAt)
