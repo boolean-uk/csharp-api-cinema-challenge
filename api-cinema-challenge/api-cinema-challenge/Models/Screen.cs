@@ -9,6 +9,8 @@ namespace api_cinema_challenge.Models
         public int Id { get; set; }
         [Column("ScreenNumber")]
         public int ScreenNumber { get; set; }
+        [Column("Capacity")]
+        public int Capacity { get; set; }
         [Column("CreatedAt")]
         public DateTime createdAt { get; set; } = DateTime.UtcNow;
         [Column("UpdatedAt")]

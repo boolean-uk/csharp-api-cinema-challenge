@@ -36,15 +36,24 @@ namespace api_cinema_challenge.Data
                 {
                     db.Movies.Add(new Movie()
                     {
-                        MovieName = "Oppenheimer"
+                        MovieName = "Oppenheimer",
+                        Rating = "PG-15",
+                        Description = "Explosive",
+                        RuntimeMins = 140
                     });
                     db.Movies.Add(new Movie()
                     {
-                        MovieName = "Barbie"
+                        MovieName = "Barbie",
+                        Rating = "PG-6",
+                        Description = "It is Barbie",
+                        RuntimeMins = 140
                     });
                     db.Movies.Add(new Movie()
                     {
-                        MovieName = "Shrek"
+                        MovieName = "Shrek",
+                        Rating = "PG-6",
+                        Description = "It is his swamp",
+                        RuntimeMins = 140
                     });
                     await db.SaveChangesAsync();
                 }
@@ -52,15 +61,18 @@ namespace api_cinema_challenge.Data
                 {
                     db.Screens.Add(new Screen()
                     {
-                        ScreenNumber = 1
+                        ScreenNumber = 1,
+                        Capacity = 60
                     });
                     db.Screens.Add(new Screen()
                     {
-                        ScreenNumber = 2
+                        ScreenNumber = 2,
+                        Capacity = 60
                     });
                     db.Screens.Add(new Screen()
                     {
-                        ScreenNumber = 3
+                        ScreenNumber = 3,
+                        Capacity = 60
                     });
                     await db.SaveChangesAsync();
                 }
@@ -93,17 +105,17 @@ namespace api_cinema_challenge.Data
                 {
                     db.Tickets.Add(new Ticket()
                     {
-                        CustomerID = 2,
+                        CustomerID = 1,
                         ScreeningID = 1
                     });
                     db.Tickets.Add(new Ticket()
                     {
-                        CustomerID = 3,
+                        CustomerID = 2,
                         ScreeningID = 2
                     });
                     db.Tickets.Add(new Ticket()
                     {
-                        CustomerID = 4,
+                        CustomerID = 3,
                         ScreeningID = 3
                     });
                     await db.SaveChangesAsync();
