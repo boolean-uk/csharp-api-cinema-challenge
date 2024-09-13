@@ -4,6 +4,7 @@ using api_cinema_challenge.Models.Screening;
 using api_cinema_challenge.Models.Ticket;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace api_cinema_challenge.Data
@@ -159,19 +160,25 @@ namespace api_cinema_challenge.Data
             {
                 Ticket ticket = new Ticket();
                 ticket.Id = _movies[ticketRandom.Next(_movies.Count)].Id;
-                if (_tickets.Count() == 0)
-                {
-                    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - 1;
-                }
-                else if (_tickets.Where(x => x.Id == ticket.Id).Count() != 0)
-                {
-                    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - _tickets.Where(x => x.Id == ticket.Id).Max(x => x.numSeats);
-                }
+                ticket.numSeats = 40;
+                //if (_tickets.Count() == 0)
+                //{
+                //    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - 1;
+                //}
+                //else if (_tickets.Where(x => x.Id == ticket.Id).Count() != 0)
+                //{
+                //    ticket.numSeats = _screenings.FirstOrDefault(x => x.Id == ticket.Id).Capacity - _tickets.Where(x => x.Id == ticket.Id).Max(x => x.numSeats);
+                //}
 
                 //ensure no duplicate composite keys exist
-                if (_tickets.Where()
-                _tickets.Add(ticket);
+                List<Ticket> dupesList = new List<Ticket>(_tickets);
+                dupesList.Add(ticket);
+                var dupes = dupesList.GroupBy(x => new {x.Id, x.numSeats}).Where(x => x.Skip(1).Any()).Any();
 
+                if (!dupes)
+                {
+                    _tickets.Add(ticket);
+                }
             }
 
 
