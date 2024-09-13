@@ -5,6 +5,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace api_cinema_challenge.Models
 {
+    [Table("ticket")]
     public class Ticket
     {
         [Key, Required, Column("id")]

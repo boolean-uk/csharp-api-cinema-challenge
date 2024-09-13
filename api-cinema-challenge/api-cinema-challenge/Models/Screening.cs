@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
+    [Table("screening")]
     public class Screening
     {
         [Key, Required, Column("id")]

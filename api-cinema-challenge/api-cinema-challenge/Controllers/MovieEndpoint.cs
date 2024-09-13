@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.DTOs;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,8 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movie = await repository.AddMovie(title, rating, description, runtimeMins);
-                return movie != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(movie)) : TypedResults.NotFound("NotFound");
+                var dto = DTOConvert.DTOConvertObject(movie);
+                return movie != null ? TypedResults.Ok(new Payload<DTOMovieObject> { data = dto }) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -43,7 +45,8 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movies = await repository.GetMovie();
-                return movies != null ? TypedResults.Ok(DTOConvert.DTOConvertList(movies)) : TypedResults.NotFound("NotFound");
+                var dto = DTOConvert.DTOConvertList(movies);
+                return movies != null ? TypedResults.Ok(new Payload<IEnumerable<DTOMovieObject>> { data = dto }) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -63,7 +66,8 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movie = await repository.UppdateMovie(id, title, rating, description, runtimeMins);
-                return movie != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(movie)) : TypedResults.NotFound("NotFound");
+                var dto = DTOConvert.DTOConvertObject(movie);
+                return movie != null ? TypedResults.Ok(new Payload<DTOMovieObject> { data = dto }) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -83,7 +87,9 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var movie = await repository.DeleteMovie(id);
-                return movie != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(movie)) : TypedResults.NotFound("NotFound");
+                var dto = DTOConvert.DTOConvertObject(movie);
+                return movie != null ? TypedResults.Ok(new Payload<DTOMovieObject> { data = dto }) : TypedResults.NotFound("NotFound");
+
             }
             catch (Exception ex)
             {

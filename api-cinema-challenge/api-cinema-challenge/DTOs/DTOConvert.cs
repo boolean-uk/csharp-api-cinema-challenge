@@ -21,10 +21,10 @@ namespace api_cinema_challenge.DTOs
             return new DTOScreeningObject(screening.Id, screening.ScreenNumber,screening.Capacity, screening.StartsAt, screening.CreatedAt, screening.UpdatedAt);
         }
 
-        //internal static DTOTicketObject DTOConvertObject(Ticket ticket)
-        //{
-        //    return new DTOTicketObject(ticket.Id, ticket.NumSeats, ticket.CreatedAt);
-        //}
+        internal static DTOTicketObject DTOConvertObject(Ticket ticket)
+        {
+            return new DTOTicketObject(ticket.Id, ticket.NumSeats, ticket.CreatedAt);
+        }
 
         internal static IEnumerable<DTOCustomerObject> DTOConvertList(IEnumerable<Customer> customers)
         {
@@ -35,13 +35,13 @@ namespace api_cinema_challenge.DTOs
             return movies.Select(movie => new DTOMovieObject() { Id = movie.Id, Title = movie.Title, Description = movie.Description, Rating = movie.Rating, RuntimeMins = movie.RuntimeMins, Screenings = movie.Screenings, Created = movie.CreatedAt, Updated = movie.UpdatedAt });
         }
 
-        //internal static IEnumerable<DTOScreeningObject> DTOConvertList(IEnumerable<Screening> screenings)
-        //{
-        //    return screenings.Select(screening => new DTOScreeningObject(screening.Id, screening.ScreenNumber, screening.Capacity, screening.StartsAt, screening.CreatedAt, screening.UpdatedAt));
-        //}
-        //internal static IEnumerable<DTOTicketObject> DTOConvertList(IEnumerable<Ticket> tickets)
-        //{
-        //    return tickets.Select(ticket => new DTOTicketObject(ticket.Id, ticket.NumSeats, ticket.CreatedAt));
-        //}
+        internal static IEnumerable<DTOScreeningObject> DTOConvertList(IEnumerable<Screening> screenings)
+        {
+            return screenings.Select(screening => new DTOScreeningObject(screening.Id, screening.ScreenNumber, screening.Capacity, screening.StartsAt, screening.CreatedAt, screening.UpdatedAt));
+        }
+        internal static IEnumerable<DTOTicketObject> DTOConvertList(IEnumerable<Ticket> tickets)
+        {
+            return tickets.Select(ticket => new DTOTicketObject(ticket.Id, ticket.NumSeats, ticket.CreatedAt));
+        }
     }
 }

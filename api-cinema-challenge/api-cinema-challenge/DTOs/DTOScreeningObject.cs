@@ -2,12 +2,12 @@
 {
     public class DTOScreeningObject
     {
-        private int Id;
-        private int _screenNumber;
-        private int _capacity;
-        private DateTime _startsAt;
-        private readonly DateTime _created;
-        private DateTime _updated;
+        public int Id { get; set; }
+        public int _screenNumber { get; set; }
+        public int _capacity { get; set; }
+        public DateTime _startsAt { get; set; }
+        public  DateTime _created { get; set; }
+        public DateTime _updated { get; set; }
 
         public DTOScreeningObject(int id, int screenNumber, int capacity, DateTime startsAt, DateTime created, DateTime updated)
         {

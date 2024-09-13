@@ -1,16 +1,16 @@
-﻿//namespace api_cinema_challenge.DTOs
-//{
-//    public class DTOTicketObject
-//    {
-//        private readonly int Id;
-//        private readonly int _screeningId;
-//        private readonly DateTime _create;
+﻿namespace api_cinema_challenge.DTOs
+{
+    public class DTOTicketObject
+    {
+        public int Id { get; set; }
+        public int _screeningId { get; set; }
+        public DateTime _create { get; set; }
 
-//        public DTOTicketObject (int id, int screeningId, DateTime create)
-//        {
-//            Id = id;
-//            _screeningId = screeningId;
-//            _create = create;
-//        }
-//    }
-//}
+        public DTOTicketObject(int id, int screeningId, DateTime create)
+        {
+            Id = id;
+            _screeningId = screeningId;
+            _create = create;
+        }
+    }
+}

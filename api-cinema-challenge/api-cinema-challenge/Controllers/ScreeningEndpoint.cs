@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.DTOs;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,9 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var screening = await repository.AddScreening(screenNumber, capacity, startsAt);
-                return screening != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(screening)) : TypedResults.NotFound("NotFound");
+                var dto = DTOConvert.DTOConvertObject(screening);
+                return screening != null ? TypedResults.Ok(new Payload<DTOScreeningObject> { data = dto }) : TypedResults.NotFound("NotFound");
+
             }
             catch (Exception ex)
             {
@@ -41,7 +44,8 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var screening = await repository.GetScreening();
-                return screening != null ? TypedResults.Ok(screening) : TypedResults.NotFound("NotFound");
+                var dto = DTOConvert.DTOConvertList(screening);
+                return screening != null ? TypedResults.Ok(new Payload<IEnumerable<DTOScreeningObject>> { data = dto }) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {

@@ -24,7 +24,8 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var customer = await repository.AddCustomer(name, email, phonenumber);
-                return customer != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(customer)) : TypedResults.NotFound();
+                var dto = DTOConvert.DTOConvertObject(customer);
+                return customer != null ? TypedResults.Ok(new Payload<DTOCustomerObject> { data = dto}) : TypedResults.NotFound();
             }
             catch (Exception ex)
             {
@@ -43,7 +44,8 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var customers = await repository.GetCustomers();
-                return customers != null ? TypedResults.Ok(DTOConvert.DTOConvertList(customers)) : TypedResults.NotFound("NotFound");
+                var dtos = DTOConvert.DTOConvertList(customers);
+                return customers != null ? TypedResults.Ok(new Payload<IEnumerable<DTOCustomerObject>> { data = dtos}) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -63,7 +65,8 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var customer = await repository.UppdateCustomer(id,name, email, phone);
-                return customer != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(customer)) : TypedResults.NotFound("NotFound");
+                var dto = DTOConvert.DTOConvertObject(customer);
+                return customer != null ? TypedResults.Ok(new Payload<DTOCustomerObject> { data = dto }) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {
@@ -83,7 +86,8 @@ namespace api_cinema_challenge.Controllers
             try
             {
                 var customer = await repository.DeleteCustomer(id);
-                return customer != null ? TypedResults.Ok(DTOConvert.DTOConvertObject(customer)) : TypedResults.NotFound("NotFound");
+                var dto = DTOConvert.DTOConvertObject(customer);
+                return customer != null ? TypedResults.Ok(new Payload<DTOCustomerObject> { data = dto }) : TypedResults.NotFound("NotFound");
             }
             catch (Exception ex)
             {

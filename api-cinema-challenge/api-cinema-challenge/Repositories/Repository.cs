@@ -14,6 +14,7 @@ namespace api_cinema_challenge.Repositories
 
         /// This class is split in to the repository files "CustomerRepository", "MovieRepository", "ScreeningRepository" and "TicketRepository
         /// This is done to ensure easy oversight of the functions.
+       
 
     }
 }
