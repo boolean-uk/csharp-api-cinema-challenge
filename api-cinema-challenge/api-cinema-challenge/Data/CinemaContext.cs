@@ -23,8 +23,7 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           modelBuilder.Entity<Ticket>().HasKey(t => new { t.CustomerId, t.ScreeningId });
-
+           
             Seeder seeder = new Seeder();
             modelBuilder.Entity<Customer>().HasData(seeder.Customers);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);

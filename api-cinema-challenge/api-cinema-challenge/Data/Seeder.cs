@@ -51,7 +51,7 @@ namespace api_cinema_challenge.Data
                 Title = "Dodgeball",
                 Rating = "PG-13",
                 Description = "The greatest movie ever made.",
-                RuntimeMinutes = 126,
+                RuntimeMins = 126,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -62,7 +62,7 @@ namespace api_cinema_challenge.Data
                 Title = "Forrest Gump",
                 Rating = "PG-13",
                 Description = "The story of a lifetime.",
-                RuntimeMinutes = 142,
+                RuntimeMins = 142,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

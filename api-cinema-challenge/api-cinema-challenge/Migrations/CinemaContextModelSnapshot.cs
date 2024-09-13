@@ -62,29 +62,29 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1649),
+                            CreatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1502),
                             Email = "roger@rogan.com",
                             Name = "Roger Rogan",
                             Phone = "+44729389128",
-                            UpdatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1649)
+                            UpdatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1503)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1651),
+                            CreatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1505),
                             Email = "chris@muse.mu",
                             Name = "Chris Wolstenholme",
                             Phone = "+44729388192",
-                            UpdatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1651)
+                            UpdatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1506)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1653),
+                            CreatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1508),
                             Email = "lisa@timber.com",
                             Name = "Lisa Timber",
                             Phone = "+47123456789",
-                            UpdatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1653)
+                            UpdatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1509)
                         });
                 });
 
@@ -111,7 +111,7 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("text")
                         .HasColumnName("rating");
 
-                    b.Property<int>("RuntimeMinutes")
+                    b.Property<int>("RuntimeMins")
                         .HasColumnType("integer")
                         .HasColumnName("runtimeMinutes");
 
@@ -132,22 +132,22 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1672),
+                            CreatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1556),
                             Description = "The greatest movie ever made.",
                             Rating = "PG-13",
-                            RuntimeMinutes = 126,
+                            RuntimeMins = 126,
                             Title = "Dodgeball",
-                            UpdatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1672)
+                            UpdatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1557)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1674),
+                            CreatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1559),
                             Description = "The story of a lifetime.",
                             Rating = "PG-13",
-                            RuntimeMinutes = 142,
+                            RuntimeMins = 142,
                             Title = "Forrest Gump",
-                            UpdatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1675)
+                            UpdatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1560)
                         });
                 });
 
@@ -193,63 +193,66 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             Capacity = 40,
-                            CreatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1686),
+                            CreatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1599),
                             MovieId = 1,
                             ScreenNumber = 2,
-                            StartsAt = new DateTime(2024, 9, 14, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1681),
-                            UpdatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1686)
+                            StartsAt = new DateTime(2024, 9, 15, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1589),
+                            UpdatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1600)
                         },
                         new
                         {
                             Id = 2,
                             Capacity = 80,
-                            CreatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1688),
+                            CreatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1604),
                             MovieId = 2,
                             ScreenNumber = 4,
-                            StartsAt = new DateTime(2024, 9, 13, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1688),
-                            UpdatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1689)
+                            StartsAt = new DateTime(2024, 9, 14, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1602),
+                            UpdatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1604)
                         });
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
                 {
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("customerid");
+                        .HasColumnName("id");
 
-                    b.Property<int>("ScreeningId")
-                        .HasColumnType("integer")
-                        .HasColumnName("screeningid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("integer")
-                        .HasColumnName("id");
+                        .HasColumnName("customerid");
 
                     b.Property<int>("NumSeats")
                         .HasColumnType("integer")
                         .HasColumnName("numSeats");
 
+                    b.Property<int>("ScreeningId")
+                        .HasColumnType("integer")
+                        .HasColumnName("screeningid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated");
 
-                    b.HasKey("CustomerId", "ScreeningId");
+                    b.HasKey("Id");
 
                     b.ToTable("tickets");
 
                     b.HasData(
                         new
                         {
-                            CustomerId = 1,
-                            ScreeningId = 1,
-                            CreatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1693),
                             Id = 1,
+                            CreatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1617),
+                            CustomerId = 1,
                             NumSeats = 2,
-                            UpdatedAt = new DateTime(2024, 9, 12, 13, 33, 54, 400, DateTimeKind.Utc).AddTicks(1693)
+                            ScreeningId = 1,
+                            UpdatedAt = new DateTime(2024, 9, 13, 9, 33, 45, 233, DateTimeKind.Utc).AddTicks(1618)
                         });
                 });
 #pragma warning restore 612, 618

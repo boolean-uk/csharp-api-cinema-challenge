@@ -14,10 +14,12 @@ namespace api_cinema_challenge.Models
 
         [JsonIgnore]
         [Column("customerid")]
+        [ForeignKey("Customer")]
         public int CustomerId { get; set; }
 
         [JsonIgnore]
         [Column("screeningid")]
+        [ForeignKey("Screening")]
         public int ScreeningId { get; set; }
 
         [Column("created")]

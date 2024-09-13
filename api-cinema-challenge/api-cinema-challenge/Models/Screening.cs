@@ -8,7 +8,6 @@ namespace api_cinema_challenge.Models
     {
         [Column("id")]
         public int Id { get; set; }
-
         
         [Column("movieid")]
         [ForeignKey("Movie")]

@@ -1,5 +1,7 @@
 ﻿using api_cinema_challenge.DTOs.Screening;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace api_cinema_challenge.DTOs.Movie
 {
@@ -15,7 +17,9 @@ namespace api_cinema_challenge.DTOs.Movie
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Runtime minutes is required")]
-        public int RuntimeMinutes {  get; set; }
+        public int RuntimeMins {  get; set; }
+
+        
         public List<ScreeningPostModel>? Screenings {  get; set; } 
     }
 }
