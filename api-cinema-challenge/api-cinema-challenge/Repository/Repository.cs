@@ -77,13 +77,14 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Model> Delete(string[] inclusions, Model model)
         {
+            // get original values from the database...
+            _dbSet.Attach(model);
+            await _db.Entry(model).ReloadAsync();
+
             foreach (string inclusion in inclusions)
             {
                 await _db.Entry(model).Reference(inclusion).LoadAsync();
             }
-            // get original values from the database...
-            _dbSet.Attach(model);
-            await _db.Entry(model).ReloadAsync();
 
             _dbSet.Remove(model);
             await _db.SaveChangesAsync();
