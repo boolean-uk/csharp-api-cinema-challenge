@@ -20,23 +20,13 @@ namespace api_cinema_challenge.Repository
             return entity;
         }
 
-        public async Task<Customer> DeleteCustomer(int id)
+        public async Task<IEnumerable<Customer>> GetCustomers()
         {
-            var customerTarget = await _db.Customers.FirstOrDefaultAsync(x => x.Id == id);
-            if (customerTarget == null)
-            {
-                return null;
-            }
-
-            var ticketTarget = await _db.Tickets.FirstOrDefaultAsync(x => x.CustomerId == id);
-            if (ticketTarget != null)
-            {
-                ticketTarget.CustomerId = 0;
-            }
-
-            _db.Customers.Remove(customerTarget);
-            await _db.SaveChangesAsync();
-            return customerTarget;
+            return await _db.Customers
+                .Include(x => x.Tickets)
+                .ThenInclude(x => x.Screening)
+                .ThenInclude(x => x.Movie)
+                .ToListAsync();
         }
 
         public async Task<Customer> GetCustomerById(int id)
@@ -46,15 +36,6 @@ namespace api_cinema_challenge.Repository
                 .ThenInclude(x => x.Screening)
                 .ThenInclude(x => x.Movie)
                 .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task<IEnumerable<Customer>> GetCustomers()
-        {
-            return await _db.Customers
-                .Include(x => x.Tickets)
-                .ThenInclude(x => x.Screening)
-                .ThenInclude(x => x.Movie)
-                .ToListAsync();
         }
 
         public async Task<Customer> UpdateCustomer(int id, Customer entity)
@@ -70,7 +51,33 @@ namespace api_cinema_challenge.Repository
             target.Email = entity.Email;
             target.Phone = entity.Phone;
 
+            _db.Attach(target).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
             return target;
+        }
+
+        public async Task<Customer> DeleteCustomer(int id)
+        {
+            var customerTarget = await _db.Customers
+                .Include(x => x.Tickets)
+                .ThenInclude(x => x.Screening)
+                .ThenInclude(x => x.Movie)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (customerTarget == null)
+            {
+                return null;
+            }
+            
+            // Removes related tickets
+            foreach (Ticket t in customerTarget.Tickets)
+            {
+                _db.Tickets.Remove(t);
+            }
+
+            _db.Customers.Remove(customerTarget);
+            await _db.SaveChangesAsync();
+
+            return customerTarget;
         }
     }
 }

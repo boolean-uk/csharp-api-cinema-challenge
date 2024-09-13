@@ -20,25 +20,6 @@ namespace api_cinema_challenge.Repository
             return entity;
         }
 
-        public async Task<Movie> DeleteMovie(int id)
-        {
-            var movieTarget = await _db.Movies.FirstOrDefaultAsync(x => x.Id == id);
-            if (movieTarget == null)
-            {
-                return null;
-            }
-
-            var screeningTarget = await _db.Screenings.FirstOrDefaultAsync(x => x.MovieId == id);
-            if (screeningTarget != null)
-            {
-                screeningTarget.MovieId = 0;
-            }
-
-            _db.Movies.Remove(movieTarget);
-            await _db.SaveChangesAsync();
-            return movieTarget;
-        }
-
         public async Task<Movie> GetMovieById(int id)
         {
             return await _db.Movies
@@ -64,7 +45,34 @@ namespace api_cinema_challenge.Repository
             target.Rating = entity.Rating;
             target.Description = entity.Description;
 
+            _db.Attach(target).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
             return target;
+        }
+
+        public async Task<Movie> DeleteMovie(int id)
+        {
+            var movieTarget = await _db.Movies
+                .Include(x => x.Screenings)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (movieTarget == null)
+            {
+                return null;
+            }
+
+            // Removing movie screenings and related tickets
+            foreach (Screening s in movieTarget.Screenings)
+            {
+                foreach (Ticket t in s.Tickets)
+                {
+                    _db.Tickets.Remove(t);
+                }
+                _db.Screenings.Remove(s);
+            }
+
+            _db.Movies.Remove(movieTarget);
+            await _db.SaveChangesAsync();
+            return movieTarget;
         }
     }
 }

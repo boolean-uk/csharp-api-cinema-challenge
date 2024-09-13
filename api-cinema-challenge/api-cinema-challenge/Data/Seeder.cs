@@ -14,17 +14,17 @@ namespace api_cinema_challenge.Data
             ("Jonas", "Jonas@booleanExperis.com", "+4785672819"),
             ("Nigel", "Nigel@booleanExperis.com", "+4454316548"),
             ("David", "David@booleanExperis.com", "+4498741897"),
-            ("AJ", "AJ@booleanExperis.com", "+4716716214"),
-            ("John", "John@booleanExperis.com", "+2754254372")
+            ("AJ", "AJ@booleanExperis.com", "+2754254372"),
+            ("John", "John@booleanExperis.com", "+4716716214")
         };
 
-        private List<(string, string, string)> _movieData = new List<(string, string, string)>()
+        private List<(string, string, string, int)> _movieData = new List<(string, string, string, int)>()
         {
-            ("Terminator",  "PG-16", "Good robot fighting bad robot to save the future"),
-            ("Avatar", "PG-13", "Blue psychedelic monkey people have sex with their tails and are trying to save their planet from bad humans"),
-            ("Lord of the rings", "PG-13", "Boys trip where friends are trying to burn their buds marrige ring to save him"),
-            ("The Matrix", "PG-16", "Red or blue pill? You choose"),
-            ("Finding Nemo", "PG-8", "Fish and chips")
+            ("Terminator",  "PG-16", "Good robot fighting bad robot to save the future", 120),
+            ("Avatar", "PG-13", "Blue psychedelic monkey people have sex with their tails and are trying to save their planet from bad humans", 180),
+            ("Lord of the rings", "PG-13", "Boys trip where friends are trying to burn their buds marrige ring to save him", 220),
+            ("The Matrix", "PG-16", "Red or blue pill? You choose", 160),
+            ("Finding Nemo", "PG-8", "Fish and chips", 110)
         };
 
         public Seeder()
@@ -54,6 +54,7 @@ namespace api_cinema_challenge.Data
                     Title = _movieData[i].Item1,
                     Rating = _movieData[i].Item2,
                     Description = _movieData[i].Item3,
+                    RuntimeMins = _movieData[i].Item4,
                     CreatedAt = now,
                     UpdatedAt = now
                 });

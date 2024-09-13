@@ -26,7 +26,14 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 Payload<ResponseCustomerDTO> payload = new Payload<ResponseCustomerDTO>();
-                var newCustomer = await repository.CreateCustomer(new Customer() { Name = model.Name, Email = model.Email, Phone = model.Phone, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow });
+                var newCustomer = await repository.CreateCustomer(new Customer() { 
+                    Name = model.Name, 
+                    Email = model.Email, 
+                    Phone = model.Phone, 
+                    CreatedAt = DateTime.UtcNow, 
+                    UpdatedAt = DateTime.UtcNow 
+                });
+                
                 payload.data = Mapper.MapToDTO(newCustomer);
                 return TypedResults.Created($"https://localhost:7054/customers/{payload.data.Id}", payload.data);
             }
@@ -95,7 +102,12 @@ namespace api_cinema_challenge.Endpoints
                     return TypedResults.NotFound("Customer Not Found");
                 }
 
-                var updatedTarget = await repository.UpdateCustomer(id, new Customer() { Name = model.Name, Email = model.Email, Phone = model.Phone, UpdatedAt = DateTime.UtcNow });
+                var updatedTarget = await repository.UpdateCustomer(id, new Customer() { 
+                    Name = model.Name, 
+                    Email = model.Email, 
+                    Phone = model.Phone, 
+                    UpdatedAt = DateTime.UtcNow 
+                });
 
                 Payload<ResponseCustomerDTO> payload = new Payload<ResponseCustomerDTO>();
                 payload.data = Mapper.MapToDTO(updatedTarget);

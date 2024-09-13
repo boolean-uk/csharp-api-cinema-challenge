@@ -18,7 +18,7 @@
         public string Rating { get; set; }
         public string Description { get; set; }
         public int RuntimeMins { get; set; }
-        public List<int> Screenings { get; set; }
+        public List<PostScreeningDTOMovieLess> Screenings { get; set; }
     }
 
     public class PutMovieDTO
@@ -27,6 +27,5 @@
         public string Rating { get; set; }
         public string Description { get; set; }
         public int RuntimeMins { get; set; }
-        public List<int> Screenings { get; set; }
     }
 }
