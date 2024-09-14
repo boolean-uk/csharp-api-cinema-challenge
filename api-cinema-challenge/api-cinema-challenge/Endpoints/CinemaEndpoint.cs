@@ -31,11 +31,10 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateCustomer(IRepository repository, CustomerPostModel model)
+        public static async Task<IResult> CreateCustomer(IRepository repository, CustomerPostPutModel model)
         {
             try
             {
-                Payload<Customer> payload = new Payload<Customer>();
                 Customer newCustomer = new Customer() 
                 {
                     Name = model.Name,
@@ -45,7 +44,10 @@ namespace api_cinema_challenge.Endpoints
                     UpdatedAt = DateTime.UtcNow
                 };
 
-                payload.Data = newCustomer;
+                Payload<Customer> payload = new Payload<Customer>()
+                {
+                    Data = newCustomer
+                };
 
                 var creatingCustomer = await repository.CreateCustomer(payload.Data);
                 var createdCustomer = await repository.GetCustomerById(creatingCustomer.Id);
@@ -101,13 +103,35 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> UpdateCustomerById(IRepository repository, int id)
+        public static async Task<IResult> UpdateCustomerById(IRepository repository, CustomerPostPutModel model, int id)
         {
             try
             {
-                Payload<Customer> payload = new Payload<Customer>();
+                var target = await repository.GetCustomerById(id);
 
-                return TypedResults.Ok();
+                target.Name = model.Name;
+                target.Email = model.Email;
+                target.Phone = model.Phone;
+                target.UpdatedAt = DateTime.UtcNow;
+
+                Payload<Customer> payload = new Payload<Customer>()
+                {
+                    Data = target
+                };
+
+                await repository.UpdateCustomer(payload.Data);
+
+                CustomerDTO customerDTO = new CustomerDTO 
+                {
+                    Id = target.Id,
+                    Name = target.Name,
+                    Email = target.Email,
+                    Phone = target.Phone,
+                    CreatedAt = target.CreatedAt,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                return TypedResults.Ok(customerDTO);
             }
             catch (KeyNotFoundException ex)
             {
@@ -150,11 +174,10 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> CreateMovie(IRepository repository, MoviePostModel model)
+        public static async Task<IResult> CreateMovie(IRepository repository, MoviePostPutModel model)
         {
             try
             {
-                Payload<Movie> payload = new Payload<Movie>();
                 Movie newMovie = new Movie()
                 {
                     Title = model.Title,
@@ -165,7 +188,10 @@ namespace api_cinema_challenge.Endpoints
                     UpdatedAt = DateTime.UtcNow
                 };
 
-                payload.Data = newMovie;
+                Payload<Movie> payload = new Payload<Movie>()
+                {
+                    Data = newMovie
+                };
 
                 var creatingMovie = await repository.CreateMovie(payload.Data);
                 var createdMovie = await repository.GetMovieById(creatingMovie.Id);
@@ -223,13 +249,37 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> UpdateMovieById(IRepository repository, int id)
+        public static async Task<IResult> UpdateMovieById(IRepository repository, MoviePostPutModel model, int id)
         {
             try
             {
-                Payload<Movie> payload = new Payload<Movie>();
+                var target = await repository.GetMovieById(id);
 
-                return TypedResults.Ok();
+                target.Title = model.Title;
+                target.Rating = model.Rating;
+                target.Description = model.Description;
+                target.RuntimeMins = model.RuntimeMins;
+                target.UpdatedAt = DateTime.UtcNow;
+
+                Payload<Movie> payload = new Payload<Movie>()
+                {
+                    Data = target
+                };
+
+                await repository.UpdateMovie(payload.Data);
+
+                MovieDTO movieDTO = new MovieDTO
+                {
+                    Id = target.Id,
+                    Title = target.Title,
+                    Rating = target.Rating,
+                    Description = target.Description,
+                    RuntimeMins = target.RuntimeMins,
+                    CreatedAt = target.CreatedAt,
+                    UpdatedAt = target.UpdatedAt
+                };
+
+                return TypedResults.Ok(movieDTO);
             }
             catch (KeyNotFoundException ex)
             {
@@ -277,8 +327,7 @@ namespace api_cinema_challenge.Endpoints
         public static async Task<IResult> CreateScreening(IRepository repository, ScreeningPostModel model, int movieId)
         {
             try
-            {
-                Payload<Screening> payload = new Payload<Screening>();
+            { 
                 Screening newScreening = new Screening()
                 {
                     ScreenNumber = model.ScreenNumber,
@@ -289,7 +338,10 @@ namespace api_cinema_challenge.Endpoints
                     MovieId = movieId
                 };
 
-                payload.Data = newScreening;
+                Payload<Screening> payload = new Payload<Screening>() 
+                {
+                    Data = newScreening
+                };
 
                 var creatingScreening = await repository.CreateScreening(payload.Data);
                 var createdScreening = await repository.GetScreeningById(creatingScreening.Id);

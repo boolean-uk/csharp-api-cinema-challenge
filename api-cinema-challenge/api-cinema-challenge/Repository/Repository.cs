@@ -42,9 +42,12 @@ namespace api_cinema_challenge.Repository
             return entity;
         }
 
-        public async Task<Customer> UpdateCustomer(int customerId)
+        public async Task<Customer> UpdateCustomer(Customer entity)
         {
-            throw new NotImplementedException();
+            _db.Attach(entity).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return entity;
         }
 
         public async Task<Customer> DeleteCustomer(int customerId)
@@ -85,9 +88,12 @@ namespace api_cinema_challenge.Repository
             return entity;
         }
 
-        public async Task<Movie> UpdateMovie(int movieId)
+        public async Task<Movie> UpdateMovie(Movie entity)
         {
-            throw new NotImplementedException();
+            _db.Attach(entity).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return entity;
         }
 
         public async Task<Movie> DeleteMovie(int movieId)

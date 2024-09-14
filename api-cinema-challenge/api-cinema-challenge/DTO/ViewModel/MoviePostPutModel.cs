@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api_cinema_challenge.DTO.ViewModel
 {
-    public class MoviePostModel
+    public class MoviePostPutModel
     {
         public string Title { get; set; }
         public string Rating { get; set; }

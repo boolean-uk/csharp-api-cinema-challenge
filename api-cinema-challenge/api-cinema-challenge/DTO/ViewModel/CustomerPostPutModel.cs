@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api_cinema_challenge.DTO.ViewModel
 {
-    public class CustomerPostModel
+    public class CustomerPostPutModel
     { 
         public string Name { get; set; }
 
