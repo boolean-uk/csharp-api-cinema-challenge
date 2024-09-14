@@ -36,8 +36,31 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 Payload<Customer> payload = new Payload<Customer>();
+                Customer newCustomer = new Customer() 
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Phone = model.Phone,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
 
-                return TypedResults.Ok();
+                payload.Data = newCustomer;
+
+                var creatingCustomer = await repository.CreateCustomer(payload.Data);
+                var createdCustomer = await repository.GetCustomerById(creatingCustomer.Id);
+
+                CustomerDTO customerDTO = new CustomerDTO() 
+                {
+                    Id = createdCustomer.Id,
+                    Name = createdCustomer.Name,
+                    Email = createdCustomer.Email,
+                    Phone = createdCustomer.Phone,
+                    CreatedAt = createdCustomer.CreatedAt,
+                    UpdatedAt = createdCustomer.UpdatedAt
+                };
+
+                return TypedResults.Ok(customerDTO);
             }
             catch (Exception ex)
             {
@@ -112,8 +135,33 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 Payload<Movie> payload = new Payload<Movie>();
+                Movie newMovie = new Movie()
+                {
+                    Title = model.Title,
+                    Rating = model.Rating,
+                    Description = model.Description,
+                    RuntimeMins = model.RuntimeMins,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
 
-                return TypedResults.Ok();
+                payload.Data = newMovie;
+
+                var creatingMovie = await repository.CreateMovie(payload.Data);
+                var createdMovie = await repository.GetMovieById(creatingMovie.Id);
+
+                MovieDTO movieDTO = new MovieDTO()
+                {
+                    Id = createdMovie.Id,
+                    Title = createdMovie.Title,
+                    Rating = createdMovie.Rating,
+                    Description = createdMovie.Description,
+                    RuntimeMins = createdMovie.RuntimeMins,
+                    CreatedAt = createdMovie.CreatedAt,
+                    UpdatedAt = createdMovie.UpdatedAt
+                };
+
+                return TypedResults.Ok(movieDTO);
             }
             catch (Exception ex)
             {
@@ -190,8 +238,32 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 Payload<Screening> payload = new Payload<Screening>();
+                Screening newScreening = new Screening()
+                {
+                    ScreenNumber = model.ScreenNumber,
+                    Capacity = model.Capacity,
+                    StartsAt = model.StartsAt,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    MovieId = movieId
+                };
 
-                return TypedResults.Ok();
+                payload.Data = newScreening;
+
+                var creatingScreening = await repository.CreateScreening(payload.Data);
+                var createdScreening = await repository.GetScreeningById(creatingScreening.Id);
+
+                ScreeningDTO screeningDTO = new ScreeningDTO()
+                {
+                    Id = createdScreening.Id,
+                    ScreenNumber = createdScreening.ScreenNumber,
+                    Capacity = createdScreening.Capacity,
+                    StartsAt = createdScreening.StartsAt,
+                    CreatedAt = createdScreening.CreatedAt,
+                    UpdatedAt = createdScreening.UpdatedAt
+                };
+
+                return TypedResults.Ok(screeningDTO);
             }
             catch (Exception ex)
             {

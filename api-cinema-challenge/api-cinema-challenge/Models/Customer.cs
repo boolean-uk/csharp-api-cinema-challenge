@@ -26,7 +26,7 @@ namespace api_cinema_challenge.Models
         public DateTime UpdatedAt { get; set; }
 
         [ForeignKey("screenings")]
-        public int ScreeningID { get; set; }
-        public Screening Screening { get; set; }
+        public int? ScreeningId { get; set; }
+        public Screening? Screening { get; set; }
     }
 }

@@ -36,7 +36,7 @@ namespace api_cinema_challenge.Data
                 StartsAt = DateTime.UtcNow,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                MovieID = 1,
+                MovieId = 1,
             };
             _screenings.Add(newScreening);
 
@@ -48,7 +48,7 @@ namespace api_cinema_challenge.Data
                 Phone = "+44729388192",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                ScreeningID = 1,
+                ScreeningId = 1,
             });
         }
     }
