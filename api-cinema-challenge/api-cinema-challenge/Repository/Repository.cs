@@ -85,7 +85,10 @@ namespace api_cinema_challenge.Repository
         // Screenings
         public async Task<IEnumerable<Screening>> GetAllScreenings(int movieId)
         {
-            return await _db.Screenings.Where(s => s.MovieID == movieId).ToListAsync();
+            return await _db.Screenings
+                .Where(s => s.MovieID == movieId)
+                .Include(a => a.Movie)
+                .ToListAsync();
         }
 
         public async Task<Screening> CreateScreening(Screening entity)
