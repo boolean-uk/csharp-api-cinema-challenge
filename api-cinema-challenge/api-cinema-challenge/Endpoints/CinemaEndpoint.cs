@@ -1,5 +1,8 @@
-﻿using api_cinema_challenge.DTO.ViewModel;
+﻿using api_cinema_challenge.DTO;
+using api_cinema_challenge.DTO.ViewModel;
+using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Endpoints
 {
@@ -26,54 +29,150 @@ namespace api_cinema_challenge.Endpoints
             cinema.MapGet("/screenings", GetScreenings);
         }
 
-        public static async Task<IResult> GetScreenings(IRepository repository)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async Task<IResult> CreateScreening(IRepository repository, ScreeningPostModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async Task<IResult> DeleteMovieById(IRepository repository, int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async Task<IResult> UpdateMovieById(IRepository repository, int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async Task<IResult> CreateMovie(IRepository repository, MoviePostModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async Task<IResult> DeleteCustomerById(IRepository repository, int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async Task<IResult> UpdateCustomerById(IRepository repository, int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async Task<IResult> GetCustomers(IRepository repository)
-        {
-            throw new NotImplementedException();
-        }
-
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> CreateCustomer(IRepository repository, CustomerPostModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Payload<Customer> payload = new Payload<Customer>();
+
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetCustomers(IRepository repository)
+        {
+            try 
+            {
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> UpdateCustomerById(IRepository repository, int id)
+        {
+            try
+            {
+                Payload<Customer> payload = new Payload<Customer>();
+
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> DeleteCustomerById(IRepository repository, int id)
+        {
+            try
+            {
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> CreateMovie(IRepository repository, MoviePostModel model)
+        {
+            try
+            {
+                Payload<Movie> payload = new Payload<Movie>();
+
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllMovies(IRepository repository)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> UpdateMovieById(IRepository repository, int id)
+        {
+            try
+            {
+                Payload<Movie> payload = new Payload<Movie>();
+
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> DeleteMovieById(IRepository repository, int id)
+        {
+            try
+            {
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> CreateScreening(IRepository repository, ScreeningPostModel model, int movieId)
+        {
+            try
+            {
+                Payload<Screening> payload = new Payload<Screening>();
+
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetScreenings(IRepository repository, int movieId)
+        {
+            try
+            {
+                return TypedResults.Ok();
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
     }
 }
