@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.DTO;
+using api_cinema_challenge.DTO.Responses;
 using api_cinema_challenge.DTO.ViewModel;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
@@ -13,20 +14,20 @@ namespace api_cinema_challenge.Endpoints
             var cinema = app.MapGroup("cinema");
 
             // Customers
-            cinema.MapPost("/customers/create", CreateCustomer);
+            cinema.MapPost("/customers", CreateCustomer);
             cinema.MapGet("/customers", GetCustomers);
-            cinema.MapPut("/customers/update/{id}", UpdateCustomerById);
-            cinema.MapDelete("/customers/delete/{id}", DeleteCustomerById);
+            cinema.MapPut("/customers/{id}", UpdateCustomerById);
+            cinema.MapDelete("/customers/{id}", DeleteCustomerById);
 
             // Movies
-            cinema.MapPost("/movies/create", CreateMovie);
-            cinema.MapGet("/movies", GetAllMovies);
-            cinema.MapPut("/movies/update/{id}", UpdateMovieById);
-            cinema.MapDelete("/movies/delete/{id}", DeleteMovieById);
+            cinema.MapPost("/movies", CreateMovie);
+            cinema.MapGet("/movies", GetMovies);
+            cinema.MapPut("/movies/{id}", UpdateMovieById);
+            cinema.MapDelete("/movies/{id}", DeleteMovieById);
 
             // Screenings
-            cinema.MapPost("/screenings/create", CreateScreening);
-            cinema.MapGet("/screenings", GetScreenings);
+            cinema.MapPost("/movies/{id}/screenings", CreateScreening);
+            cinema.MapGet("/movies/{id}/screenings", GetScreenings);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -49,7 +50,25 @@ namespace api_cinema_challenge.Endpoints
         {
             try 
             {
-                return TypedResults.Ok();
+                GetAllResponse<CustomerDTO> response = new GetAllResponse<CustomerDTO>();
+                var customers = await repository.GetAllCustomers();
+
+                foreach (Customer customer in customers) 
+                {
+                    CustomerDTO customerDTO = new CustomerDTO() 
+                    {
+                        Id = customer.Id,
+                        Name = customer.Name,
+                        Email = customer.Email,
+                        Phone = customer.Phone,
+                        CreatedAt = customer.CreatedAt,
+                        UpdatedAt = customer.UpdatedAt
+                    };
+
+                    response.ResponseData.Add(customerDTO);
+                }
+
+                return TypedResults.Ok(response.ResponseData);
             }
             catch (Exception ex)
             {
@@ -103,11 +122,30 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAllMovies(IRepository repository)
+        public static async Task<IResult> GetMovies(IRepository repository)
         {
             try
             {
-                return TypedResults.Ok();
+                GetAllResponse<MovieDTO> response = new GetAllResponse<MovieDTO>();
+                var movies = await repository.GetAllMovies();
+
+                foreach (Movie movie in movies)
+                {
+                    MovieDTO movieDTO = new MovieDTO()
+                    {
+                        Id = movie.Id,
+                        Title = movie.Title,
+                        Rating = movie.Rating,
+                        Description = movie.Description,
+                        RuntimeMins = movie.RuntimeMins,
+                        CreatedAt = movie.CreatedAt,
+                        UpdatedAt = movie.UpdatedAt    
+                    };
+
+                    response.ResponseData.Add(movieDTO);
+                }
+
+                return TypedResults.Ok(response.ResponseData);
             }
             catch (Exception ex)
             {
@@ -167,7 +205,25 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                return TypedResults.Ok();
+                GetAllResponse<ScreeningDTO> response = new GetAllResponse<ScreeningDTO>();
+                var screenings = await repository.GetAllScreenings(movieId);
+
+                foreach (Screening screening in screenings)
+                {
+                    ScreeningDTO screeningDTO = new ScreeningDTO()
+                    {
+                        Id = screening.Id,
+                        ScreenNumber = screening.ScreenNumber,
+                        Capacity = screening.Capacity,
+                        StartsAt = screening.StartsAt,
+                        CreatedAt = screening.CreatedAt,
+                        UpdatedAt = screening.UpdatedAt,
+                    };
+
+                    response.ResponseData.Add(screeningDTO);
+                }
+
+                return TypedResults.Ok(response.ResponseData);
             }
             catch (Exception ex)
             {

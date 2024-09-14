@@ -4,6 +4,7 @@ namespace api_cinema_challenge.Data
 {
     public class Seeder
     {
+        #region Properties
         private List<Movie> _movies = new List<Movie>();
         private List<Screening> _screenings = new List<Screening>();
         private List<Customer> _customers = new List<Customer>();
@@ -11,6 +12,7 @@ namespace api_cinema_challenge.Data
         public List<Movie> Movies { get => _movies; }
         public List<Screening> Screenings { get => _screenings; }
         public List<Customer> Customers { get => _customers; }
+        #endregion
 
         public Seeder()
         {
@@ -19,7 +21,7 @@ namespace api_cinema_challenge.Data
                 Id = 1,
                 Title = "Dodgeball",
                 Rating = "PG-13",
-                Description = "The greates movie ever made.",
+                Description = "The greatest movie ever made.",
                 RuntimeMins = 126,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow

@@ -5,11 +5,13 @@ namespace api_cinema_challenge.Data
 {
     public class CinemaContext : DbContext
     {
+        #region Properties
         private string _connectionString;
 
         public DbSet<Screening> Screenings { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        #endregion
 
         public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
         {
