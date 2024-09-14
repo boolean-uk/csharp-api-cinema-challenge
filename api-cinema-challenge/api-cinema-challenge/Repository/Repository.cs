@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
 {
@@ -37,19 +38,19 @@ namespace api_cinema_challenge.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Screening>> GetAllCScreenings(int movieId)
+        public Task<IEnumerable<Screening>> GetAllScreenings(int movieId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Customer>> GetAllCustomers()
+        public async Task<IEnumerable<Customer>> GetAllCustomers()
         {
-            throw new NotImplementedException();
+            return await _db.Customers.ToListAsync();
         }
 
-        public Task<IEnumerable<Movie>> GetAllMovies()
+        public async Task<IEnumerable<Movie>> GetAllMovies()
         {
-            throw new NotImplementedException();
+            return await _db.Movies.ToListAsync();
         }
 
         public Task<Customer> UpdateACustomer(int customerId)

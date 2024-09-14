@@ -10,7 +10,7 @@ namespace api_cinema_challenge.Repository
         Task<Customer> DeleteACustomer(int customerId);
 
 
-        Task<IEnumerable<Screening>> GetAllCScreenings(int movieId);
+        Task<IEnumerable<Screening>> GetAllScreenings(int movieId);
         Task<Screening> CreateScreening(int movieId);
 
         Task<IEnumerable<Movie>> GetAllMovies();
