@@ -13,39 +13,13 @@ namespace api_cinema_challenge.Repository
             _db = db;
         }
 
-        public Task<Customer> CreateACustomer(Customer entity)
+        // Movies CRUD
+        public async Task<Movie> CreateAMovie(Movie entity)
         {
-            throw new NotImplementedException();
-        }
+            _db.Movies.Add(entity);
+            await _db.SaveChangesAsync();
 
-        public Task<Movie> CreateAMovie(Movie entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Screening> CreateScreening(int movieId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Customer> DeleteACustomer(int customerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Movie> DeleteAMovie(int movieId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Screening>> GetAllScreenings(int movieId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Customer>> GetAllCustomers()
-        {
-            return await _db.Customers.ToListAsync();
+            return entity;
         }
 
         public async Task<IEnumerable<Movie>> GetAllMovies()
@@ -53,14 +27,70 @@ namespace api_cinema_challenge.Repository
             return await _db.Movies.ToListAsync();
         }
 
+        public async Task<Movie> UpdateAMovie(int movieId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Movie> DeleteAMovie(int movieId)
+        {
+            var target = await _db.Movies.FirstOrDefaultAsync(x => x.Id == movieId);
+
+            if (target == null)
+                throw new Exception($"Movie with id {movieId} does not exist.");
+
+            _db.Movies.Remove(target);
+
+            await _db.SaveChangesAsync();
+
+            return target;
+        }
+
+        // Customer CRUD
+        public async Task<Customer> CreateACustomer(Customer entity)
+        {
+            _db.Customers.Add(entity);
+            await _db.SaveChangesAsync();
+
+            return entity;
+        }
+
+        public async Task<IEnumerable<Customer>> GetAllCustomers()
+        {
+            return await _db.Customers.ToListAsync();
+        }
+
         public Task<Customer> UpdateACustomer(int customerId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Movie> UpdateAMovie(int movieId)
+        public async Task<Customer> DeleteACustomer(int customerId)
         {
-            throw new NotImplementedException();
+            var target = await _db.Customers.FirstOrDefaultAsync(x => x.Id == customerId);
+
+            if (target == null)
+                throw new Exception($"Customer with id {customerId} does not exist.");
+
+            _db.Customers.Remove(target);
+
+            await _db.SaveChangesAsync();
+
+            return target;
+        }
+
+        // Screenings
+        public async Task<IEnumerable<Screening>> GetAllScreenings(int movieId)
+        {
+            return await _db.Screenings.Where(s => s.MovieID == movieId).ToListAsync();
+        }
+
+        public async Task<Screening> CreateScreening(Screening entity)
+        {
+            _db.Screenings.Add(entity);
+            await _db.SaveChangesAsync();
+
+            return entity;
         }
     }
 }
