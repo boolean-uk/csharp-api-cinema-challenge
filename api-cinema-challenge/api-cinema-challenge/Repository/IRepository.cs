@@ -8,8 +8,8 @@ namespace api_cinema_challenge.Repository
         Task<Customer> CreateCustomer(Customer entity);
         Task<IEnumerable<Customer>> GetAllCustomers();
         Task<Customer> GetCustomerById(int customerId);
-        Task<Customer> UpdateACustomer(int customerId);
-        Task<Customer> DeleteACustomer(int customerId);
+        Task<Customer> UpdateCustomer(int customerId);
+        Task<Customer> DeleteCustomer(int customerId);
 
         // Screenings
         Task<IEnumerable<Screening>> GetAllScreenings(int movieId);
@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Repository
         Task<Movie> CreateMovie(Movie entity);
         Task<IEnumerable<Movie>> GetAllMovies();
         Task<Movie> GetMovieById(int movieId);
-        Task<Movie> UpdateAMovie(int movieId);
-        Task<Movie> DeleteAMovie(int movieId);
+        Task<Movie> UpdateMovie(int movieId);
+        Task<Movie> DeleteMovie(int movieId);
     }
 }

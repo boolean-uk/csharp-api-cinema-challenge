@@ -109,6 +109,10 @@ namespace api_cinema_challenge.Endpoints
 
                 return TypedResults.Ok();
             }
+            catch (KeyNotFoundException ex)
+            {
+                return TypedResults.NotFound(ex.Message);
+            }
             catch (Exception ex)
             {
                 return TypedResults.Problem(ex.Message);
@@ -121,7 +125,23 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                return TypedResults.Ok();
+                var target = await repository.DeleteCustomer(id);
+
+                CustomerDTO customerDTO = new CustomerDTO() 
+                {
+                    Id = target.Id,
+                    Name = target.Name,
+                    Email = target.Email,
+                    Phone = target.Phone,
+                    CreatedAt = target.CreatedAt,
+                    UpdatedAt = target.UpdatedAt
+                };
+
+                return TypedResults.Ok(customerDTO);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return TypedResults.NotFound(ex.Message);
             }
             catch (Exception ex)
             {
@@ -211,6 +231,10 @@ namespace api_cinema_challenge.Endpoints
 
                 return TypedResults.Ok();
             }
+            catch (KeyNotFoundException ex)
+            {
+                return TypedResults.NotFound(ex.Message);
+            }
             catch (Exception ex)
             {
                 return TypedResults.Problem(ex.Message);
@@ -223,7 +247,24 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                return TypedResults.Ok();
+                var target = await repository.DeleteMovie(id);
+
+                MovieDTO movieDTO = new MovieDTO()
+                {
+                    Id = target.Id,
+                    Title = target.Title,
+                    Rating = target.Rating,
+                    Description = target.Description,
+                    RuntimeMins = target.RuntimeMins,
+                    CreatedAt = target.CreatedAt,
+                    UpdatedAt = target.UpdatedAt
+                };
+
+                return TypedResults.Ok(movieDTO);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return TypedResults.NotFound(ex.Message);
             }
             catch (Exception ex)
             {
@@ -265,6 +306,10 @@ namespace api_cinema_challenge.Endpoints
 
                 return TypedResults.Ok(screeningDTO);
             }
+            catch (KeyNotFoundException ex)
+            {
+                return TypedResults.NotFound(ex.Message);
+            }
             catch (Exception ex)
             {
                 return TypedResults.Problem(ex.Message);
@@ -296,6 +341,10 @@ namespace api_cinema_challenge.Endpoints
                 }
 
                 return TypedResults.Ok(response.ResponseData);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return TypedResults.NotFound(ex.Message);
             }
             catch (Exception ex)
             {

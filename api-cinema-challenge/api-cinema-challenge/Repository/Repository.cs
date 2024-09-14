@@ -37,22 +37,22 @@ namespace api_cinema_challenge.Repository
                 .FirstOrDefaultAsync(c => c.Id == customerId);
 
             if (entity == null)
-                throw new Exception($"Customer with id {customerId} does not exist.");
+                throw new KeyNotFoundException($"Customer with id {customerId} does not exist.");
 
             return entity;
         }
 
-        public async Task<Customer> UpdateACustomer(int customerId)
+        public async Task<Customer> UpdateCustomer(int customerId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Customer> DeleteACustomer(int customerId)
+        public async Task<Customer> DeleteCustomer(int customerId)
         {
             var entity = await _db.Customers.FirstOrDefaultAsync(x => x.Id == customerId);
 
             if (entity == null)
-                throw new Exception($"Customer with id {customerId} does not exist.");
+                throw new KeyNotFoundException($"Customer with id {customerId} does not exist.");
 
             _db.Customers.Remove(entity);
 
@@ -80,22 +80,22 @@ namespace api_cinema_challenge.Repository
             var entity = await _db.Movies.FirstOrDefaultAsync(a => a.Id == movieId);
 
             if (entity == null)
-                throw new Exception($"Movie with id {movieId} does not exist.");
+                throw new KeyNotFoundException($"Movie with id {movieId} does not exist.");
 
             return entity;
         }
 
-        public async Task<Movie> UpdateAMovie(int movieId)
+        public async Task<Movie> UpdateMovie(int movieId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Movie> DeleteAMovie(int movieId)
+        public async Task<Movie> DeleteMovie(int movieId)
         {
             var target = await _db.Movies.FirstOrDefaultAsync(x => x.Id == movieId);
 
             if (target == null)
-                throw new Exception($"Movie with id {movieId} does not exist.");
+                throw new KeyNotFoundException($"Movie with id {movieId} does not exist.");
 
             _db.Movies.Remove(target);
 
@@ -107,6 +107,11 @@ namespace api_cinema_challenge.Repository
         // Screenings
         public async Task<Screening> CreateScreening(Screening entity)
         {
+            var target = await _db.Movies.FirstOrDefaultAsync(a => a.Id == entity.MovieId);
+
+            if (target == null)
+                throw new KeyNotFoundException($"Movie with id {entity.MovieId} does not exist.");
+
             _db.Screenings.Add(entity);
             await _db.SaveChangesAsync();
 
@@ -115,6 +120,11 @@ namespace api_cinema_challenge.Repository
 
         public async Task<IEnumerable<Screening>> GetAllScreenings(int movieId)
         {
+            var entity = await _db.Movies.FirstOrDefaultAsync(a => a.Id == movieId);
+
+            if (entity == null)
+                throw new KeyNotFoundException($"Movie with id {movieId} does not exist.");
+            
             return await _db.Screenings
                 .Where(s => s.MovieId == movieId)
                 .Include(a => a.Movie)
@@ -128,7 +138,7 @@ namespace api_cinema_challenge.Repository
                 .FirstOrDefaultAsync(b => b.Id == screeningId);
 
             if (entity == null)
-                throw new Exception($"Screening with id {screeningId} does not exist.");
+                throw new KeyNotFoundException($"Screening with id {screeningId} does not exist.");
 
             return entity;
         }
