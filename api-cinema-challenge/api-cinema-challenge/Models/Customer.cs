@@ -9,7 +9,6 @@ namespace api_cinema_challenge.Models
         [Key]
         [Column("Id")]
         public int Id { get; set; }
-
         [Column("names")]
         public string Name { get; set; }
         [Column("emails")]
@@ -21,6 +20,6 @@ namespace api_cinema_challenge.Models
         [Column("updatedAt")]
         public DateTime updatedAt { get; set; } 
         
-        public List<Ticket> Tickets { get; set; }
+        //public List<Ticket> Tickets { get; set; }
     }
 }

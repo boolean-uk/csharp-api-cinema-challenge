@@ -101,22 +101,22 @@ namespace api_cinema_challenge.Migrations
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "Id", "emails", "names", "phoneNumbers", "createdAt", "updatedAt" },
-                values: new object[] { 1, "boby@koak.com", "Bob", "12341512", new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7788), new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7789) });
+                values: new object[] { 1, "boby@koak.com", "Bob", "12341512", new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4341), new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4343) });
 
             migrationBuilder.InsertData(
                 table: "Movie",
                 columns: new[] { "MovieId", "CreatedAt", "Description", "Rating", "Title", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7888), "Description", 12, "Lion King", new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7888) });
+                values: new object[] { 1, new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4455), "Description", 12, "Lion King", new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4455) });
 
             migrationBuilder.InsertData(
                 table: "Screening",
                 columns: new[] { "ScreeningId", "Capacity", "CreatedAt", "MovieId", "StartsAt", "UpdatedAt" },
-                values: new object[] { 1, 30, new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7916), 1, new DateTime(2024, 9, 14, 16, 50, 44, 297, DateTimeKind.Utc).AddTicks(7906), new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7917) });
+                values: new object[] { 1, 30, new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4480), 1, new DateTime(2024, 9, 14, 19, 53, 21, 396, DateTimeKind.Utc).AddTicks(4468), new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4481) });
 
             migrationBuilder.InsertData(
                 table: "Ticket",
                 columns: new[] { "Id", "CustomerId", "NumberOfSeats", "ScreeningId", "CreatedAt", "UpdateAt" },
-                values: new object[] { 1, 1, 1, 1, new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7933), new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7933) });
+                values: new object[] { 1, 1, 1, 1, new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4493), new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4494) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Screening_MovieId",

@@ -65,8 +65,8 @@ namespace api_cinema_challenge.Migrations
                             Email = "boby@koak.com",
                             Name = "Bob",
                             Phone = "12341512",
-                            createdAt = new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7788),
-                            updatedAt = new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7789)
+                            createdAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4341),
+                            updatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4343)
                         });
                 });
 
@@ -109,11 +109,11 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7888),
+                            CreatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4455),
                             Description = "Description",
                             Rating = 12,
                             Title = "Lion King",
-                            UpdatedAt = new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7888)
+                            UpdatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4455)
                         });
                 });
 
@@ -157,10 +157,10 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             Capacity = 30,
-                            CreatedAt = new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7916),
+                            CreatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4480),
                             MovieId = 1,
-                            StartsAt = new DateTime(2024, 9, 14, 16, 50, 44, 297, DateTimeKind.Utc).AddTicks(7906),
-                            UpdatedAt = new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7917)
+                            StartsAt = new DateTime(2024, 9, 14, 19, 53, 21, 396, DateTimeKind.Utc).AddTicks(4468),
+                            UpdatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4481)
                         });
                 });
 
@@ -208,8 +208,8 @@ namespace api_cinema_challenge.Migrations
                             CustomerId = 1,
                             NumberOfSeats = 1,
                             ScreeningId = 1,
-                            createdAt = new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7933),
-                            updatedAt = new DateTime(2024, 9, 14, 16, 38, 44, 297, DateTimeKind.Utc).AddTicks(7933)
+                            createdAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4493),
+                            updatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4494)
                         });
                 });
 
@@ -227,7 +227,7 @@ namespace api_cinema_challenge.Migrations
             modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.Customer", "customer")
-                        .WithMany("Tickets")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -241,11 +241,6 @@ namespace api_cinema_challenge.Migrations
                     b.Navigation("customer");
 
                     b.Navigation("screening");
-                });
-
-            modelBuilder.Entity("api_cinema_challenge.Models.Customer", b =>
-                {
-                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

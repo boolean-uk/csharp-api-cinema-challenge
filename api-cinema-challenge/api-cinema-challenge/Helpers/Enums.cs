@@ -8,4 +8,10 @@
         R = 17,
         NC17 = 18
     }
+
+    public enum Status
+    {
+        Success,
+        Failure
+    }
 }
