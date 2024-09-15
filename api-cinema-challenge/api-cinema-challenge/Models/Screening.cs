@@ -20,11 +20,16 @@ namespace api_cinema_challenge.Models
         public DateTime StartsAt { get; set; }
 
         [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [Column("updated_at")]
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+        [ForeignKey("movie")]
+        [Column("movie_id")]
+        public int MovieId { get; set; }
         public Movie Movie { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }
