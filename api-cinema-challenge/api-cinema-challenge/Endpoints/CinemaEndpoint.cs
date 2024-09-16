@@ -128,7 +128,7 @@ namespace api_cinema_challenge.Endpoints
                     Email = target.Email,
                     Phone = target.Phone,
                     CreatedAt = target.CreatedAt,
-                    UpdatedAt = DateTime.UtcNow
+                    UpdatedAt = target.UpdatedAt
                 };
 
                 return TypedResults.Ok(customerDTO);
