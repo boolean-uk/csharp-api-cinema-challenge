@@ -27,8 +27,8 @@ namespace api_cinema_challenge.Models
 
 
         [ForeignKey("screenings")]
-        public int ScreeningId { get; set; }
-        public Screening Screening { get; set; }
+        public int? ScreeningId { get; set; }
+        public Screening? Screening { get; set; }
 
 
     }

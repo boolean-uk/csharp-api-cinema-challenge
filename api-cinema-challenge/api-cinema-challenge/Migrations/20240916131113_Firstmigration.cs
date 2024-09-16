@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api_cinema_challenge.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class Firstmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,7 +41,7 @@ namespace api_cinema_challenge.Migrations
                     startsAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     createdAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    MovieId = table.Column<int>(type: "integer", nullable: false)
+                    MovieId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,8 +50,7 @@ namespace api_cinema_challenge.Migrations
                         name: "FK_screenings_movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "movies",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -65,7 +64,7 @@ namespace api_cinema_challenge.Migrations
                     phone = table.Column<string>(type: "text", nullable: false),
                     createdAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ScreeningId = table.Column<int>(type: "integer", nullable: false)
+                    ScreeningId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -74,24 +73,23 @@ namespace api_cinema_challenge.Migrations
                         name: "FK_customers_screenings_ScreeningId",
                         column: x => x.ScreeningId,
                         principalTable: "screenings",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.InsertData(
                 table: "movies",
                 columns: new[] { "id", "createdAt", "description", "rating", "runtimeMins", "title", "updatedAt" },
-                values: new object[] { 1, new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5417), "The greates movie ever made.", "PG-13", 126, "Dodgeball", new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5418) });
+                values: new object[] { 1, new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5599), "The greates movie ever made.", "PG-13", 126, "Dodgeball", new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5601) });
 
             migrationBuilder.InsertData(
                 table: "screenings",
                 columns: new[] { "id", "capacity", "createdAt", "MovieId", "screenNumber", "startsAt", "updatedAt" },
-                values: new object[] { 1, 40, new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5423), 1, 5, new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5423), new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5424) });
+                values: new object[] { 1, 40, new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5610), 1, 5, new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5609), new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5610) });
 
             migrationBuilder.InsertData(
                 table: "customers",
                 columns: new[] { "id", "createdAt", "email", "name", "phone", "ScreeningId", "updatedAt" },
-                values: new object[] { 1, new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5427), "Chris@muse.mu", "Chris Wolstenholme", "+44729388192", 1, new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5428) });
+                values: new object[] { 1, new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5615), "Chris@muse.mu", "Chris Wolstenholme", "+44729388192", 1, new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5616) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_customers_ScreeningId",

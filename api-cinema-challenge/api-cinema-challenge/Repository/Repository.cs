@@ -91,7 +91,14 @@ namespace api_cinema_challenge.Repository
             return newMovie;
         }
 
+        public async Task<Customer> GetCustomerById(int id)
+        {
+            return await _db.Customers.FirstOrDefaultAsync(c => c.Id == id);
+        }
 
-       
+        public async Task<Movie> GetMovieById(int id)
+        {
+            return await _db.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        }
     }
 }

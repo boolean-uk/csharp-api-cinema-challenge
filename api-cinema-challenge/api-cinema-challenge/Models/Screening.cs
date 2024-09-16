@@ -27,8 +27,8 @@ namespace api_cinema_challenge.Models
         public DateTime UpdatedAt { get; set; }
 
         [ForeignKey("movies")]
-        public int MovieId { get; set; }
-        public Movie Movie { get; set; }
+        public int? MovieId { get; set; }
+        public Movie? Movie { get; set; }
 
     }
 }

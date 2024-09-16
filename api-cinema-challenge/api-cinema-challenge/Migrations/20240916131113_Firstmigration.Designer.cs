@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240913084325_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20240916131113_Firstmigration")]
+    partial class Firstmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,7 +53,7 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("text")
                         .HasColumnName("phone");
 
-                    b.Property<int>("ScreeningId")
+                    b.Property<int?>("ScreeningId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -70,12 +70,12 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5427),
+                            CreatedAt = new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5615),
                             Email = "Chris@muse.mu",
                             Name = "Chris Wolstenholme",
                             Phone = "+44729388192",
                             ScreeningId = 1,
-                            UpdatedAt = new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5428)
+                            UpdatedAt = new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5616)
                         });
                 });
 
@@ -123,12 +123,12 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5417),
+                            CreatedAt = new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5599),
                             Description = "The greates movie ever made.",
                             Rating = "PG-13",
                             RuntimeMins = 126,
                             Title = "Dodgeball",
-                            UpdatedAt = new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5418)
+                            UpdatedAt = new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5601)
                         });
                 });
 
@@ -149,7 +149,7 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("createdAt");
 
-                    b.Property<int>("MovieId")
+                    b.Property<int?>("MovieId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ScreenNumber")
@@ -175,11 +175,11 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             Capacity = 40,
-                            CreatedAt = new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5423),
+                            CreatedAt = new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5610),
                             MovieId = 1,
                             ScreenNumber = 5,
-                            StartsAt = new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5423),
-                            UpdatedAt = new DateTime(2024, 9, 13, 8, 43, 25, 430, DateTimeKind.Utc).AddTicks(5424)
+                            StartsAt = new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5609),
+                            UpdatedAt = new DateTime(2024, 9, 16, 13, 11, 13, 440, DateTimeKind.Utc).AddTicks(5610)
                         });
                 });
 
@@ -187,9 +187,7 @@ namespace api_cinema_challenge.Migrations
                 {
                     b.HasOne("api_cinema_challenge.Models.Screening", "Screening")
                         .WithMany()
-                        .HasForeignKey("ScreeningId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ScreeningId");
 
                     b.Navigation("Screening");
                 });
@@ -198,9 +196,7 @@ namespace api_cinema_challenge.Migrations
                 {
                     b.HasOne("api_cinema_challenge.Models.Movie", "Movie")
                         .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MovieId");
 
                     b.Navigation("Movie");
                 });
