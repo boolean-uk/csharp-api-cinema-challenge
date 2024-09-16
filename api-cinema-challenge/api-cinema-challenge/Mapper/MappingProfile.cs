@@ -40,5 +40,21 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ScreeningId, opt => opt.Ignore())
             .ForMember(dest => dest.CustomerId, opt => opt.Ignore());
 
+
+        CreateMap<Movie, GetMovieDTO>();
+
+        CreateMap<PostMovieDTO, Movie>()
+            .ForMember(dest => dest.Screenings, opt => opt.Condition(src => src.Screenings != null && src.Screenings.Any()))
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
+
+
+        CreateMap<PatchMovieDTO, Movie>()
+            .ForMember(dest => dest.Title, opt => opt.Condition(src => !string.IsNullOrEmpty(src.Title)))
+            .ForMember(dest => dest.Rating, opt => opt.Condition(src => !string.IsNullOrEmpty(src.Rating)))
+            .ForMember(dest => dest.Description, opt => opt.Condition(src => !string.IsNullOrEmpty(src.Description)))
+            .ForMember(dest => dest.RuntimeMins, opt => opt.Condition(src => src.RuntimeMins.HasValue));
+
     }
 }

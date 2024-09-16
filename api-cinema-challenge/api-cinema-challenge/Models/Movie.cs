@@ -20,7 +20,7 @@ namespace api_cinema_challenge.Models
         public string Description { get; set; }
 
         [Column("runtimeMins")]
-        public int RuntimeMins { get; set; }
+        public int? RuntimeMins { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
