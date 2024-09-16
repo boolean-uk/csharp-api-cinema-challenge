@@ -31,5 +31,14 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Tickets, opt => opt.Ignore())
             .ForMember(dest => dest.MovieId, opt => opt.Ignore());
 
+        CreateMap<Ticket, GetTicketDTO>();
+
+        CreateMap<PostTicketDTO, Ticket>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.ScreeningId, opt => opt.Ignore())
+            .ForMember(dest => dest.CustomerId, opt => opt.Ignore());
+
     }
 }
