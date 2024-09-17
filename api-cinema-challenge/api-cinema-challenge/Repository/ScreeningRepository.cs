@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.Data;
 using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
 {
@@ -19,9 +20,18 @@ namespace api_cinema_challenge.Repository
             return entity;
         }
 
-        public Task<List<Screening>> GetAllEntities()
+        public async Task<Screening> GetEntities(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Screenings.FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public async Task<List<Screening>> GetAllEntities(int id)
+        {
+            var screenings = await _db.Screenings
+                .Where(x => x.MovieId == id)
+                .ToListAsync();
+
+            return screenings;
+
         }
     }
 }

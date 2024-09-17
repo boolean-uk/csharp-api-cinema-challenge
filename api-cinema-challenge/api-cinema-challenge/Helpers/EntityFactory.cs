@@ -4,9 +4,9 @@ using System.Security.Cryptography.Xml;
 
 namespace api_cinema_challenge.Helpers
 {
-    public static class Transfer
+    public static class TransformDTO
     {
-        public static Customer PostCustomer(PostCustomerDTO DTOobject)
+        public static Customer ToCustomer(PostCustomerDTO DTOobject)
         {
             Customer customer = new()
             {
@@ -21,7 +21,7 @@ namespace api_cinema_challenge.Helpers
             return customer;
 
         }
-        public static GetCustomerDTO GetCustomer(Customer customer)
+        public static GetCustomerDTO ToCustomerDTO(Customer customer)
         {
             GetCustomerDTO DTOobject = new()
             {
@@ -35,7 +35,7 @@ namespace api_cinema_challenge.Helpers
 
             return DTOobject;
         }
-        public static Customer UpdateCustomer(PostCustomerDTO DTOobject)
+        public static Customer ForCustomerUpdate(PostCustomerDTO DTOobject)
         {
             Customer customer = new()
             {
@@ -48,32 +48,75 @@ namespace api_cinema_challenge.Helpers
 
             return customer;
         }
-        public static Movie PostMovie(PostMovieDTO DTOobject)
+        public static Movie ToMovie(PostMovieDTO movieDTO)
         {
-            Movie Movie = new()
+            Movie movie = new()
             {
-
-                Title = DTOobject.Title,
-                Rating = DTOobject.Rating,
-                Description = DTOobject.Dectription,
-                RuntimeMins = DTOobject.RuntimeMins,
+                Title = movieDTO.Title,
+                Rating = movieDTO.Rating,
+                Description = movieDTO.Description,
+                RuntimeMins = movieDTO.RuntimeMins,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                
             };
-            
-            return Movie;
+
+            return movie;
         }
 
-        public static Screening PostScreening(PostScreeningDTO DTOobject)
+        public static Screening ToScreeningFromMovie(PostMovieDTO movieDTO, int movieId)
         {
             Screening screening = new()
             {
-                Capacity = DTOobject.capacity,
-                ScreenNumber = DTOobject.screenNumber,
-                StartsAt = DTOobject.startsAt,
+                MovieId = movieId,
+                Capacity = movieDTO.Screening.capacity,
+                ScreenNumber = movieDTO.Screening.screenNumber,
+                StartsAt = movieDTO.Screening.startsAt,
+            };
+
+            return screening;
+        }
+        public static Screening ToScreening(PostScreeningDTO screeningDTO, int movieId)
+        {
+            Screening screening = new()
+            {
+                MovieId = movieId,
+                Capacity = screeningDTO.capacity,
+                ScreenNumber = screeningDTO.screenNumber,
+                StartsAt = screeningDTO.startsAt,
+                UpdatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow
             };
             return screening;
+        }
+        public static GetMovieDTO ToMovieDTO(Movie movie)
+        {
+            GetMovieDTO getMovieDTO = new GetMovieDTO()
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Rating = movie.Rating,
+                Description = movie.Description,
+                RuntimeMins = movie.RuntimeMins,
+                CreatedAt = movie.CreatedAt,
+                UpdatedAt = movie.UpdatedAt
+            };
+
+            return getMovieDTO;
+        }
+
+        public static GetScreeningDTO ToScreeningDTO(Screening entity)
+        {
+            GetScreeningDTO GetScreeningDTO = new()
+            {
+                Id = entity.Id,
+                ScreenNumber = entity.ScreenNumber,
+                StartsAt = entity.StartsAt,
+                UpdatedAt = entity.UpdatedAt,
+                CreatedAt = entity.CreatedAt,
+
+            };
+            return GetScreeningDTO;
+
         }
     }
 }

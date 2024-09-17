@@ -29,7 +29,7 @@ app.UseHttpsRedirection();
 
 app.ConfigureCustomerEndpoint();
 app.ConfigureMovieEndpoint();
-app.ConfigureScreeningEndpoint();
+
 
 app.Run();
 

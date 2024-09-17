@@ -24,6 +24,9 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<Movie>().Navigation(x => x.Screenings).AutoInclude();
+
+
             modelBuilder.Entity<Customer>()
                 .HasData(
                 new Customer
@@ -57,7 +60,6 @@ namespace api_cinema_challenge.Data
                     UpdatedAt = DateTime.UtcNow,
                     MovieId = 1
                 });
-
             modelBuilder.Entity<Ticket>()
                 .HasData(
                 new Ticket
@@ -70,7 +72,7 @@ namespace api_cinema_challenge.Data
                     ScreeningId = 1
 
                 });
-            modelBuilder.Entity<Movie>().Navigation(x => x.Screenings).AutoInclude();
+            
 
         }
         public DbSet<Customer> Customers { get; set; }

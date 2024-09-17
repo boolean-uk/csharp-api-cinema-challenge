@@ -11,12 +11,15 @@ namespace api_cinema_challenge.Repository
         private CinemaContext _db;
 
         public CustomerRepository(CinemaContext db)
-        { 
-            _db = db; 
+        {
+            _db = db;
         }
 
         public async Task<Customer> CreateEntity(Customer entity)
         {
+            if ((entity.Name == null) || (entity.Email == null) || (entity.Phone == null))
+                throw new ArgumentNullException();
+
             await _db.AddAsync(entity);
             await _db.SaveChangesAsync();
             return entity;
@@ -26,10 +29,11 @@ namespace api_cinema_challenge.Repository
         {
             var entity = await _db.Customers.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (entity == null)
-                return null;
 
-             _db.Customers.Remove(entity);
+            if (entity == null)
+                throw new KeyNotFoundException("The database does not have element with provided Id");
+
+            _db.Customers.Remove(entity);
             _db.SaveChangesAsync();
 
             return entity;

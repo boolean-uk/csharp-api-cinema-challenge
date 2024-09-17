@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Data;
+using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,24 @@ namespace api_cinema_challenge.Repository
             _db = db;
         }
 
+        public async Task<bool> CheckIfEntityHasAScreening(int movieId, DateTime startsAt)
+        {
+            var entityScreenings = await GetAllEntityScreenings(movieId);
+
+            bool hasScreening = entityScreenings
+                .Select(x => x.StartsAt)
+                .ToList()
+                .Contains(startsAt);
+
+            return hasScreening;
+        }
+
         public async Task<Movie> CreateEntity(Movie entity)
         {
             await _db.AddAsync(entity);
             await _db.SaveChangesAsync();
 
-            return await _db.Movies.Include(x => x.Screenings).FirstOrDefaultAsync(e => e.Id == entity.Id);
+            return await _db.Movies.FirstOrDefaultAsync(e => e.Id == entity.Id);
         }
 
         public async Task<Screening> CreateEntityScreening(Screening screening)
@@ -46,17 +59,28 @@ namespace api_cinema_challenge.Repository
 
         public async Task<List<Movie>> GetAllEntities()
         {
-            return await _db.Movies.ToListAsync();
+            var result = await _db.Movies.ToListAsync();
+            return result;
+        }
+
+        public async Task<List<Screening>> GetAllEntityScreenings(int movieId)
+        {
+            var screenings = await _db.Screenings
+                .Where(x => x.MovieId == movieId)
+                .ToListAsync();
+
+            return screenings;
         }
 
         public async Task<Movie> GetAnEntityById(int id)
         {
-            return await _db.Movies
-                .Include(x => x.Screenings)
-                .FirstOrDefaultAsync(x => x.Id == id);
+
+            var target = await _db.Movies.FirstOrDefaultAsync(x => x.Id == id);
+            return target;
         }
 
-        public async Task<Movie> UpdateEntity(Movie entity, int searchId)
+
+        public async Task<Movie> UpdateEntity(UpdateMovieDTO entity, int searchId)
         {
             var target = await _db.Movies
                 .FirstOrDefaultAsync(x => x.Id == searchId);
@@ -65,8 +89,11 @@ namespace api_cinema_challenge.Repository
             target.Rating = entity.Rating;
             target.Description = entity.Description;
             target.UpdatedAt = DateTime.UtcNow;
+            target.RuntimeMins = entity.RuntimeMins;
+
 
             await _db.SaveChangesAsync();
+
             return target;
         }
     }

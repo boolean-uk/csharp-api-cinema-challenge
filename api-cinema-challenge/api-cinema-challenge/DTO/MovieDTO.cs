@@ -7,9 +7,8 @@ namespace api_cinema_challenge.DTO
     {
         public string Title { get; set; }
         public Rating Rating { get; set; }
-        public string Dectription { get; set; }
+        public string Description { get; set; }
         public int RuntimeMins { get; set; }
-        
         public PostScreeningDTO Screening { get; set; }
 
 
@@ -17,6 +16,22 @@ namespace api_cinema_challenge.DTO
 
     public class GetMovieDTO
     {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public Rating Rating { get; set; }
+        public string Description { get; set; }
+        public int RuntimeMins { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
        
+
+    }
+
+    public class UpdateMovieDTO
+    {
+        public string Title { get; set; }
+        public Rating Rating { get; set; }
+        public string Description { get; set; }
+        public int RuntimeMins { get; set; }
     }
 }
