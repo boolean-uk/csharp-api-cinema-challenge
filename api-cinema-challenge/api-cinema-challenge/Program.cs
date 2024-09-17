@@ -10,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
-builder.Services.AddScoped<IRepository<Customer>, CustomerRepository>();
+builder.Services.AddScoped<ICustomer<Customer>, CustomerRepository>();
+builder.Services.AddScoped<IMovie<Movie>, MovieRepository>();
+builder.Services.AddScoped<IScreening<Screening>, ScreeningRepository>();
 
 
 var app = builder.Build();
@@ -26,6 +28,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.ConfigureCustomerEndpoint();
+app.ConfigureMovieEndpoint();
+app.ConfigureScreeningEndpoint();
 
 app.Run();
 

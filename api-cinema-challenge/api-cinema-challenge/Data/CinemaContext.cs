@@ -70,7 +70,7 @@ namespace api_cinema_challenge.Data
                     ScreeningId = 1
 
                 });
-
+            modelBuilder.Entity<Movie>().Navigation(x => x.Screenings).AutoInclude();
 
         }
         public DbSet<Customer> Customers { get; set; }

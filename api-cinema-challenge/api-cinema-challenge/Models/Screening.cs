@@ -13,6 +13,9 @@ namespace api_cinema_challenge.Models
         [Column("Capacity")]
         public int Capacity { get; set; }
 
+        [Column("ScreenNumber")]
+        public int ScreenNumber { get; set; }
+
         [Column("StartsAt")]
         public DateTime StartsAt { get; set; }
 
@@ -26,6 +29,7 @@ namespace api_cinema_challenge.Models
         [ForeignKey("Movie")]
         [Column("MovieId")]
         public int MovieId { get; set; }
+        
         public Movie movie { get; set; }
 
     }

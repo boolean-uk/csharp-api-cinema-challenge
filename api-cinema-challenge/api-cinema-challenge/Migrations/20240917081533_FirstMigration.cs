@@ -38,6 +38,7 @@ namespace api_cinema_challenge.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Rating = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
+                    RuntimeMins = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -53,6 +54,7 @@ namespace api_cinema_challenge.Migrations
                     ScreeningId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Capacity = table.Column<int>(type: "integer", nullable: false),
+                    ScreenNumber = table.Column<int>(type: "integer", nullable: false),
                     StartsAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -101,22 +103,22 @@ namespace api_cinema_challenge.Migrations
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "Id", "emails", "names", "phoneNumbers", "createdAt", "updatedAt" },
-                values: new object[] { 1, "boby@koak.com", "Bob", "12341512", new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4341), new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4343) });
+                values: new object[] { 1, "boby@koak.com", "Bob", "12341512", new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3231), new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3234) });
 
             migrationBuilder.InsertData(
                 table: "Movie",
-                columns: new[] { "MovieId", "CreatedAt", "Description", "Rating", "Title", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4455), "Description", 12, "Lion King", new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4455) });
+                columns: new[] { "MovieId", "CreatedAt", "Description", "Rating", "RuntimeMins", "Title", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3386), "Description", 12, 0, "Lion King", new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3386) });
 
             migrationBuilder.InsertData(
                 table: "Screening",
-                columns: new[] { "ScreeningId", "Capacity", "CreatedAt", "MovieId", "StartsAt", "UpdatedAt" },
-                values: new object[] { 1, 30, new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4480), 1, new DateTime(2024, 9, 14, 19, 53, 21, 396, DateTimeKind.Utc).AddTicks(4468), new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4481) });
+                columns: new[] { "ScreeningId", "Capacity", "CreatedAt", "MovieId", "ScreenNumber", "StartsAt", "UpdatedAt" },
+                values: new object[] { 1, 30, new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3415), 1, 0, new DateTime(2024, 9, 17, 8, 27, 32, 446, DateTimeKind.Utc).AddTicks(3401), new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3416) });
 
             migrationBuilder.InsertData(
                 table: "Ticket",
                 columns: new[] { "Id", "CustomerId", "NumberOfSeats", "ScreeningId", "CreatedAt", "UpdateAt" },
-                values: new object[] { 1, 1, 1, 1, new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4493), new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4494) });
+                values: new object[] { 1, 1, 1, 1, new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3430), new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3430) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Screening_MovieId",

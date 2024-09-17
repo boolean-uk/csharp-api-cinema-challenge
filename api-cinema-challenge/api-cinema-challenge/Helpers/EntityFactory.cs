@@ -10,7 +10,7 @@ namespace api_cinema_challenge.Helpers
         {
             Customer customer = new()
             {
-                
+
                 Name = DTOobject.Name,
                 Email = DTOobject.Email,
                 Phone = DTOobject.Phone,
@@ -47,6 +47,33 @@ namespace api_cinema_challenge.Helpers
             };
 
             return customer;
+        }
+        public static Movie PostMovie(PostMovieDTO DTOobject)
+        {
+            Movie Movie = new()
+            {
+
+                Title = DTOobject.Title,
+                Rating = DTOobject.Rating,
+                Description = DTOobject.Dectription,
+                RuntimeMins = DTOobject.RuntimeMins,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                
+            };
+            
+            return Movie;
+        }
+
+        public static Screening PostScreening(PostScreeningDTO DTOobject)
+        {
+            Screening screening = new()
+            {
+                Capacity = DTOobject.capacity,
+                ScreenNumber = DTOobject.screenNumber,
+                StartsAt = DTOobject.startsAt,
+            };
+            return screening;
         }
     }
 }

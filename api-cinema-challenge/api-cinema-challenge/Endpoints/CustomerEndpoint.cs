@@ -13,14 +13,14 @@ namespace api_cinema_challenge.Endpoints
         {
             var customerGroup = app.MapGroup("/Customers");
 
-            customerGroup.MapPost("/Create", CreateCustomer);
-            customerGroup.MapGet("/GetAllCustomers", GetAllCustomers);
-            customerGroup.MapPut("/UpdateCustomer/{id}", UpdateACustomer);
-            customerGroup.MapDelete("/DeleteCustomer/{id}", DeleteACustomer);
+            customerGroup.MapPost("/", CreateCustomer);
+            customerGroup.MapGet("/", GetAllCustomers);
+            customerGroup.MapPut("/{id}", UpdateACustomer);
+            customerGroup.MapDelete("/{id}", DeleteACustomer);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> DeleteACustomer(IRepository<Customer> repository, int id)
+        private static async Task<IResult> DeleteACustomer(ICustomer<Customer> repository, int id)
         {
             var entity = await repository.DeleteEntity(id);
 
@@ -43,7 +43,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task<IResult> CreateCustomer(IRepository<Customer> repository, PostCustomerDTO customerDTO)
+        private static async Task<IResult> CreateCustomer(ICustomer<Customer> repository, PostCustomerDTO customerDTO)
         {
 
             Customer customer = Transfer.PostCustomer(customerDTO);
@@ -70,7 +70,7 @@ namespace api_cinema_challenge.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        private static async Task<IResult> GetAllCustomers(IRepository<Customer> repository)
+        private static async Task<IResult> GetAllCustomers(ICustomer<Customer> repository)
         {
             CollectionResponse<GetCustomerDTO> response = new();
             Payload<List<GetCustomerDTO>> payload = new();
@@ -91,7 +91,7 @@ namespace api_cinema_challenge.Endpoints
         }
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> UpdateACustomer(IRepository<Customer> repository, PostCustomerDTO customerDTO, int id)
+        private static async Task<IResult> UpdateACustomer(ICustomer<Customer> repository, PostCustomerDTO customerDTO, int id)
         {
 
             Customer customer = Transfer.UpdateCustomer(customerDTO);

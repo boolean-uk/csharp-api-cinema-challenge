@@ -12,7 +12,7 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240914194122_FirstMigration")]
+    [Migration("20240917081533_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -68,8 +68,8 @@ namespace api_cinema_challenge.Migrations
                             Email = "boby@koak.com",
                             Name = "Bob",
                             Phone = "12341512",
-                            createdAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4341),
-                            updatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4343)
+                            createdAt = new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3231),
+                            updatedAt = new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3234)
                         });
                 });
 
@@ -95,6 +95,10 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("Rating");
 
+                    b.Property<int>("RuntimeMins")
+                        .HasColumnType("integer")
+                        .HasColumnName("RuntimeMins");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
@@ -112,11 +116,12 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4455),
+                            CreatedAt = new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3386),
                             Description = "Description",
                             Rating = 12,
+                            RuntimeMins = 0,
                             Title = "Lion King",
-                            UpdatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4455)
+                            UpdatedAt = new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3386)
                         });
                 });
 
@@ -141,6 +146,10 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("MovieId");
 
+                    b.Property<int>("ScreenNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("ScreenNumber");
+
                     b.Property<DateTime>("StartsAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("StartsAt");
@@ -160,10 +169,11 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             Capacity = 30,
-                            CreatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4480),
+                            CreatedAt = new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3415),
                             MovieId = 1,
-                            StartsAt = new DateTime(2024, 9, 14, 19, 53, 21, 396, DateTimeKind.Utc).AddTicks(4468),
-                            UpdatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4481)
+                            ScreenNumber = 0,
+                            StartsAt = new DateTime(2024, 9, 17, 8, 27, 32, 446, DateTimeKind.Utc).AddTicks(3401),
+                            UpdatedAt = new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3416)
                         });
                 });
 
@@ -211,15 +221,15 @@ namespace api_cinema_challenge.Migrations
                             CustomerId = 1,
                             NumberOfSeats = 1,
                             ScreeningId = 1,
-                            createdAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4493),
-                            updatedAt = new DateTime(2024, 9, 14, 19, 41, 21, 396, DateTimeKind.Utc).AddTicks(4494)
+                            createdAt = new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3430),
+                            updatedAt = new DateTime(2024, 9, 17, 8, 15, 32, 446, DateTimeKind.Utc).AddTicks(3430)
                         });
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.Movie", "movie")
-                        .WithMany()
+                        .WithMany("Screenings")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -244,6 +254,11 @@ namespace api_cinema_challenge.Migrations
                     b.Navigation("customer");
 
                     b.Navigation("screening");
+                });
+
+            modelBuilder.Entity("api_cinema_challenge.Models.Movie", b =>
+                {
+                    b.Navigation("Screenings");
                 });
 #pragma warning restore 612, 618
         }

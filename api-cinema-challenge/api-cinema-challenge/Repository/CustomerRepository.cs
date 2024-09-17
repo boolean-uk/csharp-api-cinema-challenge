@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
 {
-    public class CustomerRepository : IRepository<Customer>
+    public class CustomerRepository : ICustomer<Customer>
     {
         private CinemaContext _db;
 

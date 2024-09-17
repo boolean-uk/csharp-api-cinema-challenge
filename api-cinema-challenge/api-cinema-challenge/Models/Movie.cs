@@ -18,10 +18,15 @@ namespace api_cinema_challenge.Models
         [Column("Description")]
         public string Description { get; set; }
 
+        [Column("RuntimeMins")]
+        public int RuntimeMins { get; set; }
+
         [Column("CreatedAt")]
         public DateTime CreatedAt { get; set; }
 
         [Column("UpdatedAt")]
         public DateTime UpdatedAt { get; set; }
+
+        public ICollection<Screening> Screenings { get; set; } = [];
     }
 }
