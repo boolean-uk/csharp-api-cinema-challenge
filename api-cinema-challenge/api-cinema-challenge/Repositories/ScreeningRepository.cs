@@ -52,7 +52,11 @@ namespace api_cinema_challenge.Repositories
         {
             Movie target = await _db.Movies
                 .Include(m => m.Screenings)
+                .ThenInclude(m => m.Tickets)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (target == null)
+            { return null; }
            
             return target.Screenings;
         }

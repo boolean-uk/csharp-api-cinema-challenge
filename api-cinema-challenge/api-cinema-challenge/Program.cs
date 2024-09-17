@@ -27,5 +27,8 @@ app.UseHttpsRedirection();
 
 //Endpoints
 app.ConfigureCustomerEndpoints();
+app.ConfigureMovieEndpoints();
+app.ConfigureScreeningEndpoints();
+app.ConfigureTicketEndpoints();
 
 app.Run();
