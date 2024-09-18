@@ -30,6 +30,6 @@ namespace api_cinema_challenge.Repository
     public interface ITickets<T>
     {
         Task<T> CreateEntity(T entity);
-        Task<List<T>> GetAllEntities(int movieId);
+        Task<List<T>> GetAllEntities(int customerId, int screeningId);
     }
 }

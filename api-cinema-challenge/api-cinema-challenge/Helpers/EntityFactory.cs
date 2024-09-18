@@ -1,5 +1,6 @@
 ﻿using api_cinema_challenge.DTO;
 using api_cinema_challenge.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Security.Cryptography.Xml;
 
 namespace api_cinema_challenge.Helpers
@@ -117,6 +118,30 @@ namespace api_cinema_challenge.Helpers
             };
             return GetScreeningDTO;
 
+        }
+        public static Ticket ToTicket(PostTicketDTO ticketDTO, int customerId, int screeningId)
+        {
+            Ticket ticket = new()
+            {
+                NumberOfSeats = ticketDTO.numTicket,
+                createdAt = DateTime.UtcNow,
+                updatedAt = DateTime.UtcNow,
+                CustomerId = customerId,
+                ScreeningId = screeningId
+
+            };
+            return ticket;
+        }
+        public static GetTicketDTO ToTicketDTO(Ticket ticket)
+        {
+            GetTicketDTO getTicketDTO = new()
+            {
+                Id = ticket.Id,
+                NumSeats = ticket.NumberOfSeats,
+                CreatedAt = ticket.createdAt,
+                UpdatedAt = ticket.updatedAt,
+            };
+            return getTicketDTO;
         }
     }
 }

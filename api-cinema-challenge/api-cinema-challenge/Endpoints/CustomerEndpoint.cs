@@ -17,7 +17,58 @@ namespace api_cinema_challenge.Endpoints
             customerGroup.MapGet("/", GetAllCustomers);
             customerGroup.MapPut("/{id}", UpdateACustomer);
             customerGroup.MapDelete("/{id}", DeleteACustomer);
+            customerGroup.MapPost("/{customerId}/screenings/{screeningId}", CreateTicket);
+            customerGroup.MapGet("/{customerId}/screenings/{screeningId}", GetAllTickets);
         }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetAllTickets(ITickets<Ticket> repository, int customerId, int screeningId)
+        {
+            try
+            {
+                var entities = await repository.GetAllEntities(customerId, screeningId);
+                Payload<List<GetTicketDTO>> payload = new();
+                payload.load = new();
+
+
+                foreach (Ticket entity in entities)
+                {
+                    payload.load.Add(TransformDTO.ToTicketDTO(entity));
+                }
+
+                if (payload.load != null)
+                {
+                    payload.Status = "Success";
+                }
+
+                return TypedResults.Ok(payload);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.BadRequest(ex.Message);
+                
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> CreateTicket(ITickets<Ticket> repository, PostTicketDTO ticketDTO, int customerId, int screeningId)
+        {
+            try
+            {
+                Ticket ticket = TransformDTO.ToTicket(ticketDTO, customerId, screeningId);
+                var entity = await repository.CreateEntity(ticket);
+                GetTicketDTO getTicket = TransformDTO.ToTicketDTO(entity);
+                Payload<GetTicketDTO> payload = new();
+                payload.load = getTicket;
+                payload.Status = "Success";
+
+                return TypedResults.Created("Created", payload);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> DeleteACustomer(ICustomer<Customer> repository, int id)
@@ -66,9 +117,9 @@ namespace api_cinema_challenge.Endpoints
                 }
                 return TypedResults.Created("Success, saved in neonDB", payload);
             }
-            catch (Exception ex) 
+            catch (ArgumentNullException ex)
             {
-
+                return TypedResults.BadRequest(ex.Message);
             }
         }
 
@@ -77,49 +128,62 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public static async Task<IResult> GetAllCustomers(ICustomer<Customer> repository)
         {
-            CollectionResponse<GetCustomerDTO> response = new();
-            Payload<List<GetCustomerDTO>> payload = new();
-
-            var customerEntries = await repository.GetAllEntities();
-
-            foreach (var customerEntry in customerEntries)
+            try
             {
-                response.Load.Add(TransformDTO.ToCustomerDTO(customerEntry));
+                CollectionResponse<GetCustomerDTO> response = new();
+                Payload<List<GetCustomerDTO>> payload = new();
+
+                var customerEntries = await repository.GetAllEntities();
+
+                foreach (var customerEntry in customerEntries)
+                {
+                    response.Load.Add(TransformDTO.ToCustomerDTO(customerEntry));
+                }
+                payload.load = response.Load;
+                payload.Status = "Success";
+
+                return TypedResults.Ok(payload);
+
             }
-            payload.load = response.Load;
-            payload.Status = "Success";
-
-            if (response.Load.Count == 0)
+            catch (InvalidOperationException ex)
+            {
                 return TypedResults.NoContent();
+            }
 
-            return TypedResults.Ok(payload);
         }
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> UpdateACustomer(ICustomer<Customer> repository, PostCustomerDTO customerDTO, int id)
         {
-
-            Customer customer = TransformDTO.ForCustomerUpdate(customerDTO);
-            var entity = await repository.UpdateEntity(customer, id);
-
-            if (entity == null)
+            try
             {
-                return TypedResults.NotFound();
+                Customer customer = TransformDTO.ForCustomerUpdate(customerDTO);
+                var entity = await repository.UpdateEntity(customer, id);
+
+                if (entity == null)
+                {
+                    return TypedResults.NotFound();
+                }
+
+                Payload<Customer> payload = new();
+
+                if (!(customerDTO == default(PostCustomerDTO)))
+                {
+                    payload.load = entity;
+                    payload.Status = "Success";
+                }
+                else
+                {
+                    payload.load = entity;
+                }
+
+                return TypedResults.Created("Updated in neonDB", payload);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return TypedResults.NotFound(ex.Message);
             }
 
-            Payload<Customer> payload = new();
-
-            if (!(customerDTO == default(PostCustomerDTO)))
-            {
-                payload.load = entity;
-                payload.Status = "Success";
-            }
-            else
-            {
-                payload.load = entity;
-            }
-
-            return TypedResults.Created("Updated in neonDB", payload);
         }
 
 

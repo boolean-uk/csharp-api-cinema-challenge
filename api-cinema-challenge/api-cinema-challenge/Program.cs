@@ -13,6 +13,7 @@ builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<ICustomer<Customer>, CustomerRepository>();
 builder.Services.AddScoped<IMovie<Movie>, MovieRepository>();
 builder.Services.AddScoped<IScreening<Screening>, ScreeningRepository>();
+builder.Services.AddScoped<ITickets<Ticket>, TicketRepository>();
 
 
 var app = builder.Build();
