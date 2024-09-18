@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace api_cinema_challenge.Endpoints
 {
     public static class CustomerEndpoint
+    ///CustomerEndpoint routs Customers and their Tickets to a brazor application. 
+    ///It utilizes methods from TransformDTO class
+    ///to convert transported objects from and to DTO objects
     {
         public static void ConfigureCustomerEndpoint(this WebApplication app)
         {
@@ -20,6 +23,7 @@ namespace api_cinema_challenge.Endpoints
             customerGroup.MapPost("/{customerId}/screenings/{screeningId}", CreateTicket);
             customerGroup.MapGet("/{customerId}/screenings/{screeningId}", GetAllTickets);
         }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAllTickets(ITickets<Ticket> repository, int customerId, int screeningId)
         {

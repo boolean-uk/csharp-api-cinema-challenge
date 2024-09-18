@@ -12,8 +12,8 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240917104907_firstMigration")]
-    partial class firstMigration
+    [Migration("20240918080656_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,8 +68,8 @@ namespace api_cinema_challenge.Migrations
                             Email = "boby@koak.com",
                             Name = "Bob",
                             Phone = "12341512",
-                            createdAt = new DateTime(2024, 9, 17, 10, 49, 6, 102, DateTimeKind.Utc).AddTicks(9096),
-                            updatedAt = new DateTime(2024, 9, 17, 10, 49, 6, 102, DateTimeKind.Utc).AddTicks(9098)
+                            createdAt = new DateTime(2024, 9, 18, 8, 6, 56, 425, DateTimeKind.Utc).AddTicks(8032),
+                            updatedAt = new DateTime(2024, 9, 18, 8, 6, 56, 425, DateTimeKind.Utc).AddTicks(8035)
                         });
                 });
 
@@ -116,12 +116,12 @@ namespace api_cinema_challenge.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 17, 10, 49, 6, 102, DateTimeKind.Utc).AddTicks(9228),
+                            CreatedAt = new DateTime(2024, 9, 18, 8, 6, 56, 425, DateTimeKind.Utc).AddTicks(8137),
                             Description = "Description",
                             Rating = 12,
                             RuntimeMins = 0,
                             Title = "Lion King",
-                            UpdatedAt = new DateTime(2024, 9, 17, 10, 49, 6, 102, DateTimeKind.Utc).AddTicks(9229)
+                            UpdatedAt = new DateTime(2024, 9, 18, 8, 6, 56, 425, DateTimeKind.Utc).AddTicks(8138)
                         });
                 });
 
@@ -169,11 +169,11 @@ namespace api_cinema_challenge.Migrations
                         {
                             Id = 1,
                             Capacity = 30,
-                            CreatedAt = new DateTime(2024, 9, 17, 10, 49, 6, 102, DateTimeKind.Utc).AddTicks(9258),
+                            CreatedAt = new DateTime(2024, 9, 18, 8, 6, 56, 425, DateTimeKind.Utc).AddTicks(8167),
                             MovieId = 1,
                             ScreenNumber = 0,
-                            StartsAt = new DateTime(2024, 9, 17, 11, 1, 6, 102, DateTimeKind.Utc).AddTicks(9245),
-                            UpdatedAt = new DateTime(2024, 9, 17, 10, 49, 6, 102, DateTimeKind.Utc).AddTicks(9258)
+                            StartsAt = new DateTime(2024, 9, 18, 8, 18, 56, 425, DateTimeKind.Utc).AddTicks(8152),
+                            UpdatedAt = new DateTime(2024, 9, 18, 8, 6, 56, 425, DateTimeKind.Utc).AddTicks(8167)
                         });
                 });
 
@@ -221,15 +221,15 @@ namespace api_cinema_challenge.Migrations
                             CustomerId = 1,
                             NumberOfSeats = 1,
                             ScreeningId = 1,
-                            createdAt = new DateTime(2024, 9, 17, 10, 49, 6, 102, DateTimeKind.Utc).AddTicks(9283),
-                            updatedAt = new DateTime(2024, 9, 17, 10, 49, 6, 102, DateTimeKind.Utc).AddTicks(9283)
+                            createdAt = new DateTime(2024, 9, 18, 8, 6, 56, 425, DateTimeKind.Utc).AddTicks(8212),
+                            updatedAt = new DateTime(2024, 9, 18, 8, 6, 56, 425, DateTimeKind.Utc).AddTicks(8213)
                         });
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.Movie", "movie")
-                        .WithMany("Screenings")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -254,11 +254,6 @@ namespace api_cinema_challenge.Migrations
                     b.Navigation("customer");
 
                     b.Navigation("screening");
-                });
-
-            modelBuilder.Entity("api_cinema_challenge.Models.Movie", b =>
-                {
-                    b.Navigation("Screenings");
                 });
 #pragma warning restore 612, 618
         }
