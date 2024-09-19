@@ -40,7 +40,7 @@ namespace api_cinema_challenge.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Rating = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Runtime = table.Column<int>(type: "integer", nullable: false),
+                    RuntimeMins = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -53,16 +53,16 @@ namespace api_cinema_challenge.Migrations
                 name: "Screenings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Capacity = table.Column<int>(type: "integer", nullable: false),
+                    ScreenNumber = table.Column<int>(type: "integer", nullable: false),
                     StartsAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Capacity = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Screenings", x => x.Id);
+                    table.PrimaryKey("PK_Screenings", x => new { x.ScreenNumber, x.StartsAt });
                 });
 
             migrationBuilder.CreateTable(

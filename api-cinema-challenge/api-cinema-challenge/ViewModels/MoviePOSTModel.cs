@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using api_cinema_challenge.Models;
 
-namespace api_cinema_challenge.Models
+namespace api_cinema_challenge.ViewModels
 {
-    [Table("Movies")]
-    public class Movie : BaseClass
+    public class MoviePOSTModel
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Rating { get; set; }
         public string Description { get; set; }
         public int RuntimeMins { get; set; }
+        public List<ScreeningPOSTModel>? Screenings {  get; set; }
     }
 }

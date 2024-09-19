@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Controllers
 {
-    public static class CinemaEndpoint
+    public static class CustomerEndpoint
     {
-        public static void ConfigureCinemaEndpoint(this WebApplication app)
+        public static void ConfigureCustomerEndpoint(this WebApplication app)
         {
-            var cinemaGroup = app.MapGroup("/customers");
+            var customerGroup = app.MapGroup("/customers");
 
-            cinemaGroup.MapGet("/", GetCustomers);
-            cinemaGroup.MapPost("/", CreateCustomer);
-            cinemaGroup.MapPut("/{id}", UpdateCustomer);
-            cinemaGroup.MapDelete("/{id}", DeleteCustomer);
+            customerGroup.MapGet("/", GetCustomers);
+            customerGroup.MapPost("/", CreateCustomer);
+            customerGroup.MapPut("/{id}", UpdateCustomer);
+            customerGroup.MapDelete("/{id}", DeleteCustomer);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]

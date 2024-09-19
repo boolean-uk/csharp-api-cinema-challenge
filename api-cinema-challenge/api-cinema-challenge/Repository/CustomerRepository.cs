@@ -15,7 +15,8 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Customer> AddAsync(Customer entity)
         {
-            await _databaseContext.Customers.AddAsync(entity);
+            //await _databaseContext.Customers.AddAsync(entity);
+            _databaseContext.Customers.Attach(entity).State = EntityState.Added;
             await _databaseContext.SaveChangesAsync();
             return entity;
         }
@@ -32,11 +33,6 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Customer> UpdateAsync(Customer entity)
         {
-            //var changed = await _databaseContext.Customers.FirstOrDefaultAsync(x => x.Id == id);
-            //if (changed != null)
-            //{
-                
-            //}
             _databaseContext.Attach(entity).State = EntityState.Modified;
             await _databaseContext.SaveChangesAsync();
             return entity;

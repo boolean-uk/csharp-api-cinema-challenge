@@ -12,7 +12,7 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240918105008_FirstMigration")]
+    [Migration("20240919092932_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -170,7 +170,7 @@ namespace api_cinema_challenge.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Runtime")
+                    b.Property<int>("RuntimeMins")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -187,11 +187,11 @@ namespace api_cinema_challenge.Migrations
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ScreenNumber")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("StartsAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
@@ -199,13 +199,13 @@ namespace api_cinema_challenge.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("StartsAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("ScreenNumber", "StartsAt");
 
                     b.ToTable("Screenings");
                 });

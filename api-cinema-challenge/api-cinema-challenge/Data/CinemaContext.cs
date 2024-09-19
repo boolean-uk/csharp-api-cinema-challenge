@@ -19,6 +19,8 @@ namespace api_cinema_challenge.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_connectionString);
+            optionsBuilder.EnableSensitiveDataLogging();
+
         }
 
         public override int SaveChanges()
@@ -40,7 +42,7 @@ namespace api_cinema_challenge.Data
 
             foreach (var entity in entities)
             {
-                var now = DateTime.Now.ToUniversalTime();
+                var now = DateTime.Now.ToLocalTime();
 
                 if (entity.State == EntityState.Added)
                 {
@@ -55,8 +57,9 @@ namespace api_cinema_challenge.Data
             // Primary Keys
             modelBuilder.Entity<Customer>().HasKey(x => x.Id);
             modelBuilder.Entity<Movie>().HasKey(x => x.Id);
-            modelBuilder.Entity<Screening>().HasKey(x => x.Id);
+            modelBuilder.Entity<Screening>().HasKey(x => new { x.ScreenNumber, x.StartsAt });
             modelBuilder.Entity<Ticket>().HasKey(x => x.Id);
+                
 
             // Seed data:
             List<Customer> customers = new List<Customer>()
@@ -154,6 +157,8 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Customer>().HasData(customers);
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
 
     }
 }
