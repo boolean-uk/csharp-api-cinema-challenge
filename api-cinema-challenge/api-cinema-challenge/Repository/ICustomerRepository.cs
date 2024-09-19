@@ -10,5 +10,7 @@ namespace api_cinema_challenge.Repository
         Task<Customer> GetCustomerById(int id);
         Task<Customer> UpdateAsync(Customer entity);
         Task<Customer> DeleteAsync(int id);
+        Task<Ticket> BookTickets(Ticket entity);
+        Task<IEnumerable<Ticket>> GetTickets(int customerId, int screeningId);
     }
 }

@@ -7,7 +7,7 @@ namespace api_cinema_challenge.Models
     public class Customer : BaseClass
     {
         [Key]
-        public int Id { get; set; }
+        public int CustomerId { get; set; }
         [Column("name")]
         public string Name { get; set; }
         [Column("email")]

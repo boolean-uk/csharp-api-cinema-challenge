@@ -37,7 +37,7 @@ namespace api_cinema_challenge.Controllers
                 {
                     await screeningRepository.AddAsync(new Screening()
                     {
-                        Id = newMovie.Id, // Needs to be the int of the newly made movie, I think xD
+                        MovieId = newMovie.Id, // Needs to be the int of the newly made movie, I think xD
                         ScreenNumber = screening.ScreenNumber,
                         Capacity = screening.Capacity,
                         StartsAt = screening.StartsAt,
@@ -57,7 +57,7 @@ namespace api_cinema_challenge.Controllers
             Payload<MovieDTO> payload = new Payload<MovieDTO>();
             payload.data = responseMovie;
             payload.status = "success";
-            return TypedResults.Created(payload.status, payload.data);
+            return TypedResults.Created(payload.status, payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -142,7 +142,7 @@ namespace api_cinema_challenge.Controllers
                 Payload<MovieDTO> payload = new Payload<MovieDTO>();
                 payload.data = responseMovie;
                 payload.status = "success";
-                return TypedResults.Created(payload.status, payload.data);
+                return TypedResults.Created(payload.status, payload);
             }
             else
             {
@@ -186,14 +186,15 @@ namespace api_cinema_challenge.Controllers
             {
                 var newScreening = await repository.AddAsync(new Screening()
                 {
-                    Id = id,
+                    MovieId = id,
                     ScreenNumber = model.ScreenNumber,
                     Capacity = model.Capacity,
                     StartsAt = model.StartsAt
                 });
                 ScreeningDTO newScreeningDTO = new ScreeningDTO()
                 {
-                    Id = id,
+                    MovieTitle = await movieRepository.GetTitleById(id),
+                    Id = newScreening.ScreeningId,
                     ScreenNumber = newScreening.ScreenNumber,
                     Capacity = newScreening.Capacity,
                     StartsAt = newScreening.StartsAt,
@@ -203,7 +204,7 @@ namespace api_cinema_challenge.Controllers
                 Payload<ScreeningDTO> payload = new Payload<ScreeningDTO>();
                 payload.data = newScreeningDTO;
                 payload.status = "success";
-                return TypedResults.Ok(payload);
+                return TypedResults.Created(payload.status, payload);
             }
             else
             {
@@ -226,7 +227,8 @@ namespace api_cinema_challenge.Controllers
                 {
                     payload.data.Add (new ScreeningDTO()
                     {
-                        Id = screening.Id,
+                        MovieTitle = await movieRepository.GetTitleById(id),
+                        Id = screening.ScreeningId,
                         ScreenNumber = screening.ScreenNumber,
                         Capacity = screening.Capacity,
                         StartsAt = screening.StartsAt,

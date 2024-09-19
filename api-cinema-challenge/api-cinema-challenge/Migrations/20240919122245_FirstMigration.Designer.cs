@@ -12,7 +12,7 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20240919095956_FirstMigration")]
+    [Migration("20240919122245_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -27,11 +27,11 @@ namespace api_cinema_challenge.Migrations
 
             modelBuilder.Entity("api_cinema_challenge.Models.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CustomerId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -54,14 +54,14 @@ namespace api_cinema_challenge.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            CustomerId = 1,
                             CreatedAt = new DateTime(2024, 1, 14, 23, 0, 0, 0, DateTimeKind.Utc),
                             Email = "audrey.hepburn@example.com",
                             Name = "Audrey Hepburn",
@@ -70,7 +70,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            CustomerId = 2,
                             CreatedAt = new DateTime(2024, 2, 19, 23, 0, 0, 0, DateTimeKind.Utc),
                             Email = "donald.trump@example.com",
                             Name = "Donald Trump",
@@ -79,7 +79,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            CustomerId = 3,
                             CreatedAt = new DateTime(2024, 3, 24, 23, 0, 0, 0, DateTimeKind.Utc),
                             Email = "elvis.presley@example.com",
                             Name = "Elvis Presley",
@@ -88,7 +88,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            CustomerId = 4,
                             CreatedAt = new DateTime(2024, 4, 9, 22, 0, 0, 0, DateTimeKind.Utc),
                             Email = "barack.obama@example.com",
                             Name = "Barack Obama",
@@ -97,7 +97,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            CustomerId = 5,
                             CreatedAt = new DateTime(2024, 5, 4, 22, 0, 0, 0, DateTimeKind.Utc),
                             Email = "oprah.winfrey@example.com",
                             Name = "Oprah Winfrey",
@@ -106,7 +106,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 6,
+                            CustomerId = 6,
                             CreatedAt = new DateTime(2024, 6, 14, 22, 0, 0, 0, DateTimeKind.Utc),
                             Email = "jimi.hendrix@example.com",
                             Name = "Jimi Hendrix",
@@ -115,7 +115,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            CustomerId = 7,
                             CreatedAt = new DateTime(2024, 7, 19, 22, 0, 0, 0, DateTimeKind.Utc),
                             Email = "mick.jagger@example.com",
                             Name = "Mick Jagger",
@@ -124,7 +124,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 8,
+                            CustomerId = 8,
                             CreatedAt = new DateTime(2024, 8, 24, 22, 0, 0, 0, DateTimeKind.Utc),
                             Email = "kate.winslet@example.com",
                             Name = "Kate Winslet",
@@ -133,7 +133,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 9,
+                            CustomerId = 9,
                             CreatedAt = new DateTime(2024, 9, 4, 22, 0, 0, 0, DateTimeKind.Utc),
                             Email = "charles.windsor@example.com",
                             Name = "Charles Windsor",
@@ -142,7 +142,7 @@ namespace api_cinema_challenge.Migrations
                         },
                         new
                         {
-                            Id = 10,
+                            CustomerId = 10,
                             CreatedAt = new DateTime(2024, 9, 9, 22, 0, 0, 0, DateTimeKind.Utc),
                             Email = "kate.middleton@example.com",
                             Name = "Kate Middleton",
@@ -187,11 +187,11 @@ namespace api_cinema_challenge.Migrations
 
             modelBuilder.Entity("api_cinema_challenge.Models.Screening", b =>
                 {
-                    b.Property<int>("ScreenNumber")
+                    b.Property<int>("ScreeningId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartsAt")
-                        .HasColumnType("timestamp with time zone");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ScreeningId"));
 
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
@@ -199,13 +199,19 @@ namespace api_cinema_challenge.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("MovieId")
                         .HasColumnType("integer");
+
+                    b.Property<int>("ScreenNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartsAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("ScreenNumber", "StartsAt");
+                    b.HasKey("ScreeningId");
 
                     b.ToTable("Screenings");
                 });
@@ -221,10 +227,13 @@ namespace api_cinema_challenge.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("MovieId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
                     b.Property<int>("NumSeats")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScreeningId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")

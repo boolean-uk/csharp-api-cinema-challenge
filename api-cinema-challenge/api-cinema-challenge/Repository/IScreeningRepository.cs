@@ -6,5 +6,6 @@ namespace api_cinema_challenge.Repository
     {
         Task<Screening> AddAsync(Screening entity);
         Task<IEnumerable<Screening>> GetScreenings(int id);
+        Task<Screening> GetScreeningById (int id);
     }
 }

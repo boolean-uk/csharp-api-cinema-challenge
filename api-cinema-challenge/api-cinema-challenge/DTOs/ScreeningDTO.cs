@@ -2,6 +2,7 @@
 {
     public class ScreeningDTO
     {
+        public string MovieTitle { get; set; }
         public int Id { get; set; }
         public int ScreenNumber { get; set; }
         public int Capacity { get; set; }

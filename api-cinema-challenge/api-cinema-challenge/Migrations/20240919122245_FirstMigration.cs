@@ -18,7 +18,7 @@ namespace api_cinema_challenge.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    CustomerId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
@@ -28,7 +28,7 @@ namespace api_cinema_challenge.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,16 +53,18 @@ namespace api_cinema_challenge.Migrations
                 name: "Screenings",
                 columns: table => new
                 {
+                    ScreeningId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MovieId = table.Column<int>(type: "integer", nullable: false),
                     ScreenNumber = table.Column<int>(type: "integer", nullable: false),
-                    StartsAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Id = table.Column<int>(type: "integer", nullable: false),
                     Capacity = table.Column<int>(type: "integer", nullable: false),
+                    StartsAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Screenings", x => new { x.ScreenNumber, x.StartsAt });
+                    table.PrimaryKey("PK_Screenings", x => x.ScreeningId);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +74,8 @@ namespace api_cinema_challenge.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     NumSeats = table.Column<int>(type: "integer", nullable: false),
-                    MovieId = table.Column<int>(type: "integer", nullable: false),
+                    ScreeningId = table.Column<int>(type: "integer", nullable: false),
+                    CustomerId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -83,7 +86,7 @@ namespace api_cinema_challenge.Migrations
 
             migrationBuilder.InsertData(
                 table: "Customers",
-                columns: new[] { "Id", "CreatedAt", "email", "name", "phone", "UpdatedAt" },
+                columns: new[] { "CustomerId", "CreatedAt", "email", "name", "phone", "UpdatedAt" },
                 values: new object[,]
                 {
                     { 1, new DateTime(2024, 1, 14, 23, 0, 0, 0, DateTimeKind.Utc), "audrey.hepburn@example.com", "Audrey Hepburn", "+47 12345678", new DateTime(2024, 9, 11, 22, 0, 0, 0, DateTimeKind.Utc) },

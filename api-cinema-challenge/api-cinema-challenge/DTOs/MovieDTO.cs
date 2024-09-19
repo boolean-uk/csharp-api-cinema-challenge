@@ -11,6 +11,5 @@ namespace api_cinema_challenge.DTOs
         public int RuntimeMins { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        //public List<Screening>? Screenings { get; set; }
     }
 }

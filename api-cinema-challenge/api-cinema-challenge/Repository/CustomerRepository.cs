@@ -23,7 +23,7 @@ namespace api_cinema_challenge.Repository
 
         public async Task<Customer> GetCustomerById(int id)
         {
-            return await _databaseContext.Customers.FirstOrDefaultAsync(x => x.Id == id);
+            return await _databaseContext.Customers.FirstOrDefaultAsync(x => x.CustomerId == id);
         }
 
         public async Task<IEnumerable<Customer>> GetCustomers()
@@ -51,6 +51,20 @@ namespace api_cinema_challenge.Repository
             {
                 return null;
             }
+        }
+
+        public async Task<Ticket> BookTickets(Ticket entity)
+        {
+            _databaseContext.Tickets.Attach(entity).State = EntityState.Added;
+            await _databaseContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<IEnumerable<Ticket>> GetTickets(int customerId, int screeningId)
+        {
+            return await _databaseContext.Tickets.Where(x => x.CustomerId == customerId)
+                .Where(x => x.ScreeningId == screeningId)
+                .ToListAsync();
         }
     }
 }

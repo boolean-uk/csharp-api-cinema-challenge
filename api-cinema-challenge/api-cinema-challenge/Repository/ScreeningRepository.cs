@@ -20,7 +20,12 @@ namespace api_cinema_challenge.Repository
 
         public async Task<IEnumerable<Screening>> GetScreenings(int id)
         {
-            return await _context.Screenings.Where(x =>  x.Id == id).ToListAsync();
+            return await _context.Screenings.Where(x =>  x.ScreeningId == id).ToListAsync();
+        }
+
+        public async Task<Screening> GetScreeningById(int id)
+        {
+            return await _context.Screenings.FirstOrDefaultAsync(x => x.ScreeningId == id);
         }
     }
 }

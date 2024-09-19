@@ -50,5 +50,11 @@ namespace api_cinema_challenge.Repository
             await _databaseContext.SaveChangesAsync();
             return entity;
         }
+
+        public async Task<string> GetTitleById(int id)
+        {
+            var movie = await _databaseContext.Movies.FirstOrDefaultAsync(x => x.Id == id);
+            return movie.Title;
+        }
     }
 }

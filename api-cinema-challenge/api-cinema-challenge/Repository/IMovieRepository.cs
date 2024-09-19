@@ -9,5 +9,6 @@ namespace api_cinema_challenge.Repository
         Task<Movie> GetMovieById(int id);
         Task<Movie> UpdateAsync(Movie entity);
         Task<Movie> DeleteAsync(int id);
+        Task<string> GetTitleById(int id);
     }
 }

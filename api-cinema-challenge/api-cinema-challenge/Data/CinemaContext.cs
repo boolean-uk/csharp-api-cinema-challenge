@@ -55,9 +55,9 @@ namespace api_cinema_challenge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Primary Keys
-            modelBuilder.Entity<Customer>().HasKey(x => x.Id);
+            modelBuilder.Entity<Customer>().HasKey(x => x.CustomerId);
             modelBuilder.Entity<Movie>().HasKey(x => x.Id);
-            modelBuilder.Entity<Screening>().HasKey(x => new { x.ScreenNumber, x.StartsAt });
+            modelBuilder.Entity<Screening>().HasKey(x => x.ScreeningId);
             modelBuilder.Entity<Ticket>().HasKey(x => x.Id);
                 
 
@@ -66,7 +66,7 @@ namespace api_cinema_challenge.Data
             {
                 new Customer
             {
-                Id = 1,
+                CustomerId = 1,
                 Name = "Audrey Hepburn",
                 Email = "audrey.hepburn@example.com",
                 Phone = "+47 12345678",
@@ -75,7 +75,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 2,
+                CustomerId = 2,
                 Name = "Donald Trump",
                 Email = "donald.trump@example.com",
                 Phone = "+47 23456789",
@@ -84,7 +84,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 3,
+                CustomerId = 3,
                 Name = "Elvis Presley",
                 Email = "elvis.presley@example.com",
                 Phone = "+47 34567890",
@@ -93,7 +93,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 4,
+                CustomerId = 4,
                 Name = "Barack Obama",
                 Email = "barack.obama@example.com",
                 Phone = "+47 45678901",
@@ -102,7 +102,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 5,
+                CustomerId = 5,
                 Name = "Oprah Winfrey",
                 Email = "oprah.winfrey@example.com",
                 Phone = "+47 56789012",
@@ -111,7 +111,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 6,
+                CustomerId = 6,
                 Name = "Jimi Hendrix",
                 Email = "jimi.hendrix@example.com",
                 Phone = "+47 67890123",
@@ -120,7 +120,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 7,
+                CustomerId = 7,
                 Name = "Mick Jagger",
                 Email = "mick.jagger@example.com",
                 Phone = "+47 78901234",
@@ -129,7 +129,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 8,
+                CustomerId = 8,
                 Name = "Kate Winslet",
                 Email = "kate.winslet@example.com",
                 Phone = "+47 89012345",
@@ -138,7 +138,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 9,
+                CustomerId = 9,
                 Name = "Charles Windsor",
                 Email = "charles.windsor@example.com",
                 Phone = "+47 90123456",
@@ -147,7 +147,7 @@ namespace api_cinema_challenge.Data
             },
                 new Customer
             {
-                Id = 10,
+                CustomerId = 10,
                 Name = "Kate Middleton",
                 Email = "kate.middleton@example.com",
                 Phone = "+47 01234567",
@@ -159,6 +159,7 @@ namespace api_cinema_challenge.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
 
     }
 }
