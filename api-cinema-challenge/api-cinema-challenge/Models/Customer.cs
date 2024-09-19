@@ -27,7 +27,7 @@ namespace api_cinema_challenge.Models
         [ForeignKey("screenings")]
         [Column("screening_id")]
         public int? ScreeningId { get; set; }
-        public Screening? screening { get; set; }
+        public Screening screening { get; set; }
 
     }
 }

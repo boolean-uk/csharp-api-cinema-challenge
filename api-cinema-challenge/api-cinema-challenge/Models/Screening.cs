@@ -25,7 +25,11 @@ namespace api_cinema_challenge.Models
      [Column("updatedAt")]
      public DateTime updatedAt { get; set; }
 
-     //linking to foreign keys
+     [ForeignKey("movies")]
+     [Column("movie_id")]
+     public int? MovieId { get; set; }
+
+     public Movie? movie { get; set; }
 
 
     }
