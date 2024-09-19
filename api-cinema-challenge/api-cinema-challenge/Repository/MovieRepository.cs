@@ -44,8 +44,6 @@ namespace api_cinema_challenge.Repository
             return await _databaseContext.Movies.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-
-
         public async Task<Movie> UpdateAsync(Movie entity)
         {
             _databaseContext.Attach(entity).State = EntityState.Modified;
