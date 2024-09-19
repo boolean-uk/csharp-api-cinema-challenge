@@ -1,6 +1,6 @@
 ﻿namespace api_cinema_challenge.DTOs.Screenin
 {
-    public class PostScreeningDto
+    public class PostScreeningDTO
     {
         public int ScreenNumber { get; set; }
         public int Capacity { get; set; }
