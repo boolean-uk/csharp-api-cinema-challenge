@@ -30,8 +30,6 @@
   <ItemGroup>
     <Folder Include="DTOs\" />
     <Folder Include="EndPoints\" />
-    <Folder Include="Models\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
