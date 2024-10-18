@@ -16,11 +16,11 @@ builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowS3Bucket", policy =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        policy.WithOrigins("http://http://aws-dennisosmani-day-2.s3-website.eu-north-1.amazonaws.com/") // Replace with your actual S3 bucket URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
