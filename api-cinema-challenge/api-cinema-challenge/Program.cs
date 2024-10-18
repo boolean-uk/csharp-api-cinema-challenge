@@ -13,16 +13,16 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IScreeningRepository, ScreeningRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowS3Bucket", policy =>
     {
-        policy.WithOrigins("http://aws-dennisosmani-day-2.s3-website.eu-north-1.amazonaws.com/") // Replace with your actual S3 bucket URL
+        policy.AllowAnyOrigin() // Temporarily allow all origins to check if the issue is with the origin itself
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
 
 var app = builder.Build();
 
