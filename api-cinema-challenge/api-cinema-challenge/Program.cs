@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowS3Bucket", policy =>
     {
-        policy.WithOrigins("http://http://aws-dennisosmani-day-2.s3-website.eu-north-1.amazonaws.com/") // Replace with your actual S3 bucket URL
+        policy.WithOrigins("http://aws-dennisosmani-day-2.s3-website.eu-north-1.amazonaws.com/") // Replace with your actual S3 bucket URL
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
