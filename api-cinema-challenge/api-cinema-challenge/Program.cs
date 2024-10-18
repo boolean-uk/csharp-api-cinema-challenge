@@ -42,4 +42,6 @@ app.ConfigureMovieEndpoints();
 app.ConfigureScreeningEndpoints();
 app.ConfigureTicketEndpoints();
 
+app.UseCors("AllowS3Bucket");
+
 app.Run();
