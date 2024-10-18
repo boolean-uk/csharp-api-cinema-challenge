@@ -26,6 +26,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseCors("AllowS3Bucket");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -42,6 +43,5 @@ app.ConfigureMovieEndpoints();
 app.ConfigureScreeningEndpoints();
 app.ConfigureTicketEndpoints();
 
-app.UseCors("AllowS3Bucket");
 
 app.Run();
