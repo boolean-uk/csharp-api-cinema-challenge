@@ -1,4 +1,4 @@
-﻿using api_cinema_challenge.Enum;
+﻿using api_cinema_challenge.Enums;
 
 namespace api_cinema_challenge.Models
 {

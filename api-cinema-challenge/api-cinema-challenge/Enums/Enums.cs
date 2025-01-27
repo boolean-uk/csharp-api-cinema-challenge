@@ -1,4 +1,4 @@
-﻿namespace api_cinema_challenge.Enum
+﻿namespace api_cinema_challenge.Enums
 {
     public enum SeatType
     {

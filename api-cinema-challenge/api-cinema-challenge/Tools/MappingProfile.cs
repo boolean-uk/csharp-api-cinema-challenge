@@ -18,6 +18,13 @@ namespace api_cinema_challenge.Tools
             CreateMap<Screening, ScreeningView>();
             CreateMap<Screening, ScreeningScreen>();
 
+            CreateMap<Seat, SeatView>()
+                .ForMember(dst => dst.SeatType, opt => opt.MapFrom(src => src.SeatType.ToString()));
+            CreateMap<Seat, SeatInternal>()
+                .ForMember(dst => dst.SeatType, opt => opt.MapFrom(src => src.SeatType.ToString()));
+
+            CreateMap<Ticket, TicketView>();
+
         }
     }
 }

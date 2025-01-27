@@ -9,29 +9,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Endpoints
 {
-    public static class SeatEndpoints
+    public static class ScreenEndpoints
     {
-        public static string Path { get; private set; } = "seats";
-        public static void ConfigureSeatsEndpoints(this WebApplication app)
+        public static string Path { get; private set; } = "screens";
+        public static void ConfigureScreensEndpoints(this WebApplication app)
         {
             var group = app.MapGroup(Path);
 
-            group.MapGet("/", GetSeats);
-            group.MapPost("/", CreateSeat);
-            group.MapGet("/{id}", GetSeat);
-            group.MapDelete("/{id}", DeleteSeat);
+            group.MapGet("/", GetScreens);
+            group.MapPost("/", CreateScreen);
+            group.MapGet("/{id}", GetScreen);
+            group.MapDelete("/{id}", DeleteScreen);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public static async Task<IResult> GetSeats(IRepository<Seat, int> repository, IMapper mapper)
+        public static async Task<IResult> GetScreens(IRepository<Screen, int> repository, IMapper mapper)
         {
             try
             {
-                IEnumerable<Seat> seats = await repository.GetAll(
-                    q => q.Include(x => x.Screen)
-                );
-                return TypedResults.Ok(new Payload { Data = mapper.Map<List<SeatView>>(seats) });
+                IEnumerable<Screen> screens = await repository.GetAll();
+                return TypedResults.Ok(new Payload { Data = mapper.Map<List<ScreenView>>(screens) });
             }
             catch (Exception ex)
             {
@@ -42,14 +40,12 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public static async Task<IResult> GetSeat(IRepository<Seat, int> repository, IMapper mapper, int id)
+        public static async Task<IResult> GetScreen(IRepository<Screen, int> repository, IMapper mapper, int id)
         {
             try
             {
-                Seat seat = await repository.Get(id,
-                    q => q.Include(x => x.Screen)
-                );
-                return TypedResults.Ok(mapper.Map<SeatView>(seat));
+                Screen screen = await repository.Get(id);
+                return TypedResults.Ok(mapper.Map<ScreenView>(screen));
             }
             catch (IdNotFoundException ex)
             {
@@ -65,28 +61,22 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public static async Task<IResult> CreateSeat(
-            IRepository<Seat, int> repository,
-            IRepository<Screen, int> screenRepository,
+        public static async Task<IResult> CreateScreen(
+            IRepository<Screen, int> repository,
             IMapper mapper,
-            SeatPost entity)
+            ScreenPost entity)
         {
             try
             {
-                SeatType seatType;
-                if (!Enum.TryParse(entity.SeatType, true, out seatType))
-                    return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = $"That is not a valid appointment type! Choose one of {string.Join(", ", Enum.GetValues<SeatType>())}" } });
-                Screen screen = await screenRepository.Get(entity.ScreenId);
-                Seat seat = await repository.Add(new Seat
+                Screen screen = await repository.Add(new Screen
                 {
-                    ScreenId = screen.Id,
-                    SeatType = seatType,
-                    Screen = screen
+                    Name = entity.Name,
+                    Capacity = entity.Capacity,
                 });
-                seat = await repository.Add(seat);
-                return TypedResults.Created($"{Path}/{seat.Id}", new Payload
+                screen = await repository.Add(screen);
+                return TypedResults.Created($"{Path}/{screen.Id}", new Payload
                 {
-                    Data = mapper.Map<SeatView>(seat)
+                    Data = mapper.Map<ScreenView>(screen)
                 });
             }
             catch (IdNotFoundException ex)
@@ -103,17 +93,15 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public static async Task<IResult> DeleteSeat(
-            IRepository<Seat, int> repository,
+        public static async Task<IResult> DeleteScreen(
+            IRepository<Screen, int> repository,
             IMapper mapper,
             int id)
         {
             try
             {
-                Seat seat = await repository.Get(id, q => q.Include(x => x.Screen));
-
-                await repository.Delete(id);
-                return TypedResults.Created($"{Path}/{seat.Id}", new Payload { Data = mapper.Map<SeatView>(seat) });
+                Screen screen = await repository.Delete(id);
+                return TypedResults.Created($"{Path}/{screen.Id}", new Payload { Data = mapper.Map<ScreenView>(screen) });
             }
             catch (IdNotFoundException ex)
             {
