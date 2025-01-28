@@ -28,7 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Endpoints\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="ViewModel\" />
+    <Folder Include="Repository\" />
   </ItemGroup>
 
 </Project>
