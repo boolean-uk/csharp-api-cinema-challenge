@@ -9,6 +9,7 @@ namespace api_cinema_challenge.Data
         private string _connectionString;
         
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
         public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -28,6 +29,11 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Customer>().HasData(
                 new Customer { Id = 1, Name = "John Doe", Email = "john's email", Phone = "john's phone", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Customer { Id = 2, Name = "Jane Doe", Email = "jane's email", Phone = "jane's phone", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+            );
+            
+            modelBuilder.Entity<Movie>().HasData(
+                new Movie { Id = 1, Title = "The Godfather", Rating = "", Description = "", RuntimeMins = 126, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Movie { Id = 2, Title = "The Shawshank Redemption", Rating = "", Description = "", RuntimeMins = 126, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
         }
         
