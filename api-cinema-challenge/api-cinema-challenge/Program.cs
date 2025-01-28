@@ -18,6 +18,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

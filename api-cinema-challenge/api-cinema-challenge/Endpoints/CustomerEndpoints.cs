@@ -16,6 +16,8 @@ namespace api_cinema_challenge.Endpoints
             customers.MapGet("/", GetCustomers);
             customers.MapPut("/{id}", UpdateCustomer);
             customers.MapDelete("/{id}", DeleteCustomer);
+            customers.MapPost("/{customer_id}/screenings/{screening_id}", CreateTicket);
+            customers.MapGet("/{customer_id}/screenings/{screening_id}", GetTickets);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -132,6 +134,72 @@ namespace api_cinema_challenge.Endpoints
 
 
             return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult>CreateTicket(IRepository<Ticket>TicketRepo, IRepository<Customer>CustomerRepo, IRepository<Screening> ScreeningRepo, int customerId, int screeningId, int numSeats)
+        {
+            Payload<TicketDTO>payload = new Payload<TicketDTO>();
+
+            payload.status = "success";
+
+            Customer customer = await CustomerRepo.GetById(customerId);
+            Screening screening = await ScreeningRepo.GetById(screeningId);
+
+            Ticket ticket = new Ticket
+            {
+                customer = customer,
+                numSeats = numSeats,
+                createdAt = DateTime.UtcNow,
+                updatedAt = DateTime.UtcNow,
+                screening = screening
+                
+            };
+
+            await TicketRepo.Insert(ticket);
+            await TicketRepo.Save();
+
+            
+            TicketDTO dto = new TicketDTO()
+            {
+                id = ticket.customer.Id,
+                numSeats = ticket.numSeats,
+                createdAt = ticket.createdAt,
+                updatedAt = ticket.updatedAt
+            };
+
+            payload.data.Add(dto);
+
+            return TypedResults.Ok(payload);
+
+
+        }
+
+        public static async Task<IResult>GetTickets(IRepository<Ticket> TicketRepo, IRepository<Customer> CustomerRepo, IRepository<Screening> ScreeningRepo,int customerId, int screeningId)
+        {
+            Payload<TicketDTO> payload = new Payload<TicketDTO>();
+            payload.status = "success";
+            var tickets = await TicketRepo.Get();
+            Customer customer = await CustomerRepo.GetById(customerId);
+            Screening screening = await ScreeningRepo.GetById(screeningId);
+
+            foreach (Ticket ticket in tickets)
+            {
+                if (ticket.screening == screening && ticket.customer == customer)
+                {
+                    
+                    TicketDTO dto = new TicketDTO()
+                    {
+                        id = customer.Id,
+                        numSeats = ticket.numSeats,
+                        createdAt = ticket.createdAt,
+                        updatedAt = ticket.updatedAt
+                    };
+                    payload.data.Add(dto);
+                }
+            }
+            return TypedResults.Ok(payload);
+
         }
 
     }
