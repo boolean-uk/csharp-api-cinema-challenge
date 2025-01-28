@@ -1,0 +1,37 @@
+@startuml
+
+class Customer {
+id INT
+name STRING
+email STRING
+phone STRING
+}
+
+class Movie {
+id INT
+title STRING
+rating STRING
+description STRING
+runtimeMins INT
+screenings List<Screening>
+}
+
+class Screening {
+id INT
+screenNumber INT
+capacity INT
+startsAt DateTime
+}
+
+class Ticket {
+id INT
+numSeats INT
+}
+
+
+
+Movie ||--o{ Screening
+Customer ||--o{ Ticket
+Ticket }o-|| Screening
+
+@enduml
