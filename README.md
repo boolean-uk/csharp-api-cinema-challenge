@@ -47,9 +47,12 @@ Entity with cyclical dependance:
             ...The whole structure repeats infinitely...
         }
     }
-  }
+  }t .
 }
 ```
+
+## Entity Diagram
+CHECK IMAGE FOLDER FOR ENTITY DIAGRAM
 
 Current:
 - Create the ERD
