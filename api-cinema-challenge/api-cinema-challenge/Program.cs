@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CinemaContext>();
 builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
@@ -25,6 +26,7 @@ if (app.Environment.IsDevelopment())
 
 app.ConfigureCustomerEndpoints();
 app.ConfigureMovieEndpoints();
+app.ConfigureScreeningEndpoints();
 
 app.UseHttpsRedirection();
 app.Run();

@@ -7,4 +7,5 @@ public class Movie : BaseEntity
     public string Rating { get; set; }
     public string Description { get; set; }
     public int RuntimeMins { get; set; }
+    public IEnumerable<Screening> Screenings { get; set; } = new List<Screening>();
 }
