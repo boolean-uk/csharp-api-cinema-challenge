@@ -65,3 +65,7 @@ Here are some reference documentation links that will be useful:
 
 - [Enitity Framwork Core Documentation](https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli)
 - [model-json-ignore-properties](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/ignore-properties?pivots=dotnet-7-0)
+
+
+## DB Relations
+![DB Diagram](image.png)
