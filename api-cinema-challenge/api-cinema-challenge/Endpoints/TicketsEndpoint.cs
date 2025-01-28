@@ -1,4 +1,7 @@
 ﻿
+using api_cinema_challenge.DTO.Request;
+using api_cinema_challenge.DTO.Response;
+using api_cinema_challenge.Extensions;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -17,19 +20,25 @@ namespace workshop.wwwapi.Endpoints
             ticketGroup.MapGet("/", GetAllTickets);
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        private static async Task<IResult> BookATicket(HttpContext context, IRepository<Tickets> repo, int customerId, int screeningsId, Create_Ticket dto)
+        {
+            var ticket = Create_Ticket.create(dto, screeningsId, customerId);
+
+            var entity = await repo.CreateEntry(ticket);
+
+            return TypedResults.Created(context.Get_endpointUrl(entity.Id), Get_Ticket.toPayload(entity));
+        }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> GetAllTickets( IRepository<Tickets> repo, int customerId, int screeningsId)
+        private static async Task<IResult> GetAllTickets( IRepository<Tickets> repo, int customerId, int screeningId)
         {
-            throw new NotImplementedException();
+
+            var entries = await repo.GetEntries(x => x.Where(x => x.ScreeningId == screeningId && x.CustomerId == customerId));
+            return TypedResults.Ok(Get_Ticket.toPayload(entries));
         }
         
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> BookATicket(HttpContext context, IRepository<Tickets> repo, int customerId, int screeningsId)
-        {
-            throw new NotImplementedException();
-        }
 
     }
 }

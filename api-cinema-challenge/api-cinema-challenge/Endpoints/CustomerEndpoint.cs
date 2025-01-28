@@ -2,6 +2,7 @@
 using api_cinema_challenge.DTO;
 using api_cinema_challenge.DTO.Request;
 using api_cinema_challenge.DTO.Response;
+using api_cinema_challenge.Extensions;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -27,31 +28,31 @@ namespace workshop.wwwapi.Endpoints
         {
             var customer = Create_Customer.create(dto);
             var entity = await repo.CreateEntry(customer);
-
-
-            return TypedResults.Ok(Get_Customer.toPayload(entity));
+            return TypedResults.Created(context.Get_endpointUrl(customer.Id), Get_Customer.toPayload(entity));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
         private static async Task<IResult> GetAllCustomers( IRepository<Customers> repo)
         {
-            throw new NotImplementedException();
+            var entries = await repo.GetEntries();
+            return TypedResults.Ok(Get_Customer.toPayload(entries));
         }
-        
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> UpdateACustomer(HttpContext context, IRepository<Customers> repo)
+        private static async Task<IResult> UpdateACustomer(HttpContext context, IRepository<Customers> repo, int id, Update_Customer dto)
         {
-            throw new NotImplementedException();
+            var ent = await Update_Customer.update(dto, repo, id);
+            return TypedResults.Ok(Get_Customer.toPayload(ent));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> DeleteACustomer( IRepository<Customers> repo)
+        private static async Task<IResult> DeleteACustomer(HttpContext context, IRepository<Customers> repo, int id)
         {
-            throw new NotImplementedException();
+            var ent = await Delete_Customer.delete(repo, id);
+            return TypedResults.Created(context.Get_endpointUrl(ent.Id), Get_Customer.toPayload(ent));
         }
 
     }

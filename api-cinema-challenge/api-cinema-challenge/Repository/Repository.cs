@@ -42,7 +42,30 @@ namespace api_cinema_challenge.Repository
             var a = await _table.AddAsync(entry);
             await _databaseContext.SaveChangesAsync();
             return entry;
+        }
+        public async Task<T?> UpdateEntry(Func<IQueryable<T>, IQueryable<T>> id, T entry)
+        {
+            IQueryable<T> q = _table.AsQueryable();
+            q = id.Invoke(q);
+            var foundEntry = await q.FirstOrDefaultAsync();
 
+            if (foundEntry == null) return null;
+            _table.Remove(foundEntry);
+            await _table.AddAsync(entry);            
+
+            await _databaseContext.SaveChangesAsync();
+            return await  id.Invoke(q).FirstAsync();
+        }
+        public async Task<T?> DeleteEntry(Func<IQueryable<T>, IQueryable<T>> id)
+        {
+            IQueryable<T> q = _table.AsQueryable();
+            q = id.Invoke(q);
+            var foundEntry = await q.FirstOrDefaultAsync();
+
+            if (foundEntry == null) return null;
+            _table.Remove(foundEntry);
+           await _databaseContext.SaveChangesAsync();
+            return foundEntry;
         }
 
 

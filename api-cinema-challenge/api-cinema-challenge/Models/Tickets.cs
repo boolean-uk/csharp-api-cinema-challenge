@@ -13,6 +13,8 @@ namespace api_cinema_challenge.Models
 
         [Column("screening_id")]
         public int ScreeningId { get; set; }
+        [Column("customer_id")]
+        public int CustomerId { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.Now.ToUniversalTime();

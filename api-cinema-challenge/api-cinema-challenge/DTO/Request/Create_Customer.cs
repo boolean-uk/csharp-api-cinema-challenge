@@ -5,13 +5,13 @@ using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.DTO.Request
 {
-    public class Create_Customer : IDTO_Request<Create_Customer, Customers>
+    public class Create_Customer : IDTO_Request_create<Create_Customer, Customers>
     {
         public string name {  get; set; }
         public string email {  get; set; }
         public string phone{  get; set; }
 
-        public static Customers create(Create_Customer dto)
+        public static Customers create(Create_Customer dto, params object[] pathargs)
         {
             return new Customers
             {
@@ -20,5 +20,6 @@ namespace api_cinema_challenge.DTO.Request
                 Email= dto.email
             };
         }
+
     }
 }

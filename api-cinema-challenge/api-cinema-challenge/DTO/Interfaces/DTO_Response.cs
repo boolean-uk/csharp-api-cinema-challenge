@@ -24,5 +24,14 @@ namespace api_cinema_challenge.DTO.Interfaces
             p.Status = status;
             return p;
         }
+        public static Payload<IEnumerable<T>, Y> toPayload(IEnumerable<Y> models, string status = "success")
+        {
+            var list = models.Select(x => { var a = new T(); a.Initialize(x); return a; }).ToList();
+
+            var p = new Payload<IEnumerable<T>,Y>();
+            p.Data = list;
+            p.Status = status;
+            return p;
+        }
     }
 }
