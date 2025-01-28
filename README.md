@@ -52,7 +52,7 @@ Entity with cyclical dependance:
 ```
 
 ## Entity Diagram
-![Entity Diagram]("Cinema-Picture.drawio.png")
+![Entity Diagram](Images/Cinema-Picture.drawio.png)
 
 Current:
 - Create the ERD
