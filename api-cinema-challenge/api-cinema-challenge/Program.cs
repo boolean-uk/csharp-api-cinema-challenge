@@ -11,6 +11,7 @@ builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

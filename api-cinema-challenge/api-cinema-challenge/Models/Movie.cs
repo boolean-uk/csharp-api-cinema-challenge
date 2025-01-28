@@ -15,7 +15,7 @@ namespace api_cinema_challenge.Models
         public string Title { get; set; }
 
         [Column("rating")]
-        public decimal Rating { get; set; }
+        public string Rating { get; set; }
 
         [Column("description")]
         public string Description { get; set; }

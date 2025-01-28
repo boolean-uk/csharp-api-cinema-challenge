@@ -19,8 +19,23 @@ namespace api_cinema_challenge.Data
 
                 if (!db.Movies.Any())
                 {
-                    db.Add(new Movie { Title = "The Shawshank Redemption", Rating = 9.3M, Description = "*Imagine a very good description*", RuntimeMins = 144, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow });
-                    db.Add(new Movie { Title = "The Godfather", Rating = 9.2M, Description = "*Imagine a very good description*", RuntimeMins = 175, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow });
+                    // Source: https://www.imdb.com/chart/top/
+                    db.Add(new Movie { 
+                        Title = "The Shawshank Redemption",
+                        Rating = "R",
+                        Description = "A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion.",
+                        RuntimeMins = 144,
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    });
+                    db.Add(new Movie {
+                        Title = "The Godfather",
+                        Rating = "R",
+                        Description = "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+                        RuntimeMins = 175,
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    });
                     await db.SaveChangesAsync();
                 }
 
