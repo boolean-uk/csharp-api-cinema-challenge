@@ -18,6 +18,7 @@ public class CinemaContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Screening> Screenings { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -28,7 +29,9 @@ public class CinemaContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Screening>().HasOne(s => s.Movie).WithMany(m => m.Screenings).HasForeignKey(s => s.MovieId);
-
+        modelBuilder.Entity<Ticket>().HasOne(t => t.Customer).WithMany(c => c.Tickets).HasForeignKey(t => t.CustomerId);
+        modelBuilder.Entity<Ticket>().HasOne(t => t.Screening).WithMany(s => s.Tickets).HasForeignKey(t => t.ScreeningId);
+        
         modelBuilder.Entity<Customer>().HasData(
             new Customer
             {
@@ -65,6 +68,17 @@ public class CinemaContext : DbContext
             {
                 Id = 2, ScreenNumber = 2, Capacity = 100, StartsAt = DateTime.UtcNow, MovieId = 2,
                 CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow
+            }
+        );
+        
+        modelBuilder.Entity<Ticket>().HasData(
+            new Ticket
+            {
+                Id = 1, CustomerId = 1, ScreeningId = 1, NumSeats = 3, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow
+            },
+            new Ticket
+            {
+                Id = 2, CustomerId = 2, ScreeningId = 2, NumSeats = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow
             }
         );
     }
