@@ -15,23 +15,34 @@ namespace api_cinema_challenge.Endpoints
         {
             var group = app.MapGroup(Path);
 
-            group.MapGet("/", GetTickets);
-            group.MapPost("/", CreateTicket);
+            app.MapPost($"/{CustomerEndpoints.Path}/{{customerId}}/{ScreeningEndpoints.Path}/{{screeningId}}", CreateTicket);
+            app.MapGet($"/{CustomerEndpoints.Path}/{{customerId}}/{ScreeningEndpoints.Path}/{{screeningId}}", GetTickets);
             group.MapGet("/{id}", GetTicket);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public static async Task<IResult> GetTickets(IRepository<Ticket, int> repository, IMapper mapper)
+        public static async Task<IResult> GetTickets(
+            IRepository<Ticket, int> repository, 
+            IRepository<Customer, int> customerRepository, 
+            IRepository<Screening, int> screeningRepository,
+            IMapper mapper,
+            int customerId,
+            int screeningId)
         {
             try
             {
-                IEnumerable<Ticket> tickets = await repository.GetAll(
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Screening).ThenInclude(x => x.Movie),
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Screening).ThenInclude(x => x.Screen),
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Seat)
+                _ = await customerRepository.Get(customerId);
+                _ = await screeningRepository.Get(screeningId);
+                IEnumerable<Ticket> tickets = await repository.FindAll(
+                    condition: x => x.ScreeningId == screeningId && x.CustomerId == customerId,
+                    includeChains: q => q.Include(x => x.Seat)
                 );
                 return TypedResults.Ok(new Payload { Data = mapper.Map<List<TicketView>>(tickets) });
+            }
+            catch (IdNotFoundException ex)
+            {
+                return TypedResults.NotFound(new Payload { Status = "failure", Data = new { ex.Message } });
             }
             catch (Exception ex)
             {
@@ -46,11 +57,8 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Ticket ticket = await repository.Get(id
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Screening).ThenInclude(x => x.Movie),
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Screening).ThenInclude(x => x.Screen),
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Seat)
-                );
+                Ticket ticket = await repository.Get(id,
+                    q => q.Include(x => x.Seat));
                 return TypedResults.Ok(mapper.Map<TicketView>(ticket));
             }
             catch (IdNotFoundException ex)
@@ -69,17 +77,29 @@ namespace api_cinema_challenge.Endpoints
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public static async Task<IResult> CreateTicket(
             IRepository<Ticket, int> repository,
-            IRepository<Ticket, int> ticketRepository,
+            IRepository<Customer, int> customerRepository,
+            IRepository<Screening, int> screeningRepository,
+            IRepository<Seat, int> seatRepository,
             IMapper mapper,
+            int customerId,
+            int screeningId,
             TicketPost entity)
         {
             try
             {
+                Customer customer = await customerRepository.Get(customerId);
+                Screening screening = await screeningRepository.Get(screeningId, q => q.Include(x => x.Tickets));
+                Seat seat = await seatRepository.Get(entity.SeatId);
+                if (screening.Tickets.Any(t => t.SeatId == entity.SeatId))
+                    return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = "The provided seat is already taken!" } });
+
                 Ticket ticket = await repository.Add(new Ticket
                 {
-
+                    SeatId = entity.SeatId,
+                    Seat = seat,
+                    CustomerId = customer.Id,
+                    ScreeningId = screening.Id,
                 });
-                ticket = await ticketRepository.Add(ticket);
                 return TypedResults.Created($"{Path}/{ticket.Id}", new Payload
                 {
                     Data = mapper.Map<TicketView>(ticket)

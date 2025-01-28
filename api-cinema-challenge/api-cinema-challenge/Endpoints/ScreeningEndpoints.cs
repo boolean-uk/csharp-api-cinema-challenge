@@ -16,23 +16,31 @@ namespace api_cinema_challenge.Endpoints
         {
             var group = app.MapGroup(Path);
 
-            group.MapGet("/", GetScreenings);
-            group.MapPost("/", CreateScreening);
+            app.MapGet($"{MovieEndpoints.Path}/{{movieId}}/{Path}", GetScreenings);
+            app.MapPost($"{MovieEndpoints.Path}/{{movieId}}/{Path}", CreateScreening);
             group.MapGet("/{id}", GetScreening);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public static async Task<IResult> GetScreenings(IRepository<Screening, int> repository, IMapper mapper)
+        public static async Task<IResult> GetScreenings(
+            IRepository<Screening, int> repository, 
+            IRepository<Movie, int> movieRepository, 
+            IMapper mapper,
+            int movieId)
         {
             try
             {
-                IEnumerable<Screening> screenings = await repository.GetAll(
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Screening).ThenInclude(x => x.Screening),
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Screening).ThenInclude(x => x.Screen),
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Seat)
+                Movie movie = await movieRepository.Get(movieId);
+                IEnumerable<Screening> screenings = await repository.FindAll(
+                    condition: x => x.MovieId == movieId,
+                    includeChains: q => q.Include(x => x.Screen)
                 );
                 return TypedResults.Ok(new Payload { Data = mapper.Map<List<ScreeningView>>(screenings) });
+            }
+            catch (IdNotFoundException ex)
+            {
+                return TypedResults.NotFound(new Payload { Status = "failure", Data = new { ex.Message } });
             }
             catch (Exception ex)
             {
@@ -47,10 +55,8 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Screening screening = await repository.Get(id
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Screening).ThenInclude(x => x.Screening),
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Screening).ThenInclude(x => x.Screen),
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Seat)
+                Screening screening = await repository.Get(id,
+                    q => q.Include(x => x.Screen)
                 );
                 return TypedResults.Ok(mapper.Map<ScreeningView>(screening));
             }
@@ -73,21 +79,23 @@ namespace api_cinema_challenge.Endpoints
             IRepository<Movie, int> movieRepository,
             IRepository<Screen, int> screenRepository,
             IMapper mapper,
-            ScreeningPost entity)
+            int movieId,
+            ScreeningMoviePost entity)
         {
             try
             {
+
                 DateTime startingAt;
                 string[] formats = { "yyyy-MM-dd hh-mm-ss", "dd-MM-yyyy hh-mm-ss" };
                 if (!DateTime.TryParseExact(entity.StartingAt, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out startingAt)) 
                     return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = $"The starting at date needs to be in one of the following formats: {string.Join(", ", formats)}" } });
-
-                Movie movie = await movieRepository.Get(entity.MovieId);
+                Movie movie = await movieRepository.Get(movieId);
                 Screen screen = await screenRepository.Get(entity.ScreenId);
                 Screening screening = await repository.Add(new Screening
                 {
                     MovieId = movie.Id,
                     ScreenId = screen.Id,
+                    Screen = screen,
                     StartingAt = startingAt
                 });
                 screening = await repository.Add(screening);

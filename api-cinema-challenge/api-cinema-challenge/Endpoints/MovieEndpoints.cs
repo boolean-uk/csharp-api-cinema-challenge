@@ -29,11 +29,7 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                IEnumerable<Movie> movies = await repository.GetAll(
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Screening).ThenInclude(x => x.Movie),
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Screening).ThenInclude(x => x.Screen),
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Seat)
-                );
+                IEnumerable<Movie> movies = await repository.GetAll();
                 return TypedResults.Ok(new Payload { Data = mapper.Map<List<MovieView>>(movies) });
             }
             catch (Exception ex)
@@ -49,11 +45,7 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Movie movie = await repository.Get(id
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Screening).ThenInclude(x => x.Movie),
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Screening).ThenInclude(x => x.Screen),
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Seat)
-                );
+                Movie movie = await repository.Get(id);
                 return TypedResults.Ok(mapper.Map<MovieView>(movie));
             }
             catch (IdNotFoundException ex)
@@ -93,16 +85,18 @@ namespace api_cinema_challenge.Endpoints
                     ReleaseDate = releaseDate
                 });
 
-                List<IResult> results = []; // What to do with these results?
-                entity.Screenings.ForEach(async screening =>
+                var tasks = entity.Screenings.Select(async screening =>
                 {
-                    results.Add(await ScreeningEndpoints.CreateScreening(screeningRepository, repository, screenRepository, mapper, new ScreeningPost(
+                    return await ScreeningEndpoints.CreateScreening(screeningRepository, repository, screenRepository, mapper, movie.Id, new ScreeningMoviePost(
                         screening.ScreenId,
-                        movie.Id,
                         screening.StartingAt
-                    )));
+                    ));
                 });
-                
+                //List<IResult> results = (await Task.WhenAll(tasks)).ToList();
+                _ = await Task.WhenAll(tasks); // Discarding for now in order to preserve the requested data structure.
+                // In the future these results should be logged, and the returned payload might contain information from them.
+                // Maybe even start using a "partial_success" payload, with both the movie data and information about fail / success for the screenings.
+
                 return TypedResults.Created($"{Path}/{movie.Id}", new Payload
                 {
                     Data = mapper.Map<MovieView>(movie)
@@ -136,6 +130,15 @@ namespace api_cinema_challenge.Endpoints
                 if (entity.Description != null) movie.Description = entity.Description;
                 if (entity.Rating != null) movie.Rating = entity.Rating;
                 if (entity.Runtime.HasValue) movie.Runtime = entity.Runtime.Value;
+                if (entity.ReleaseDate != null)
+                {
+                    DateTime releaseDate;
+                    string[] formats = { "yyyy-MM-dd", "dd-MM-yyyy" };
+                    if (!DateTime.TryParseExact(entity.ReleaseDate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out releaseDate))
+                        return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = $"The release date needs to be in one of the following formats: {string.Join(", ", formats)}" } });
+                    movie.ReleaseDate = releaseDate;
+                }
+
 
                 movie = await movieRepository.Update(movie);
                 return TypedResults.Created($"{Path}/{movie.Id}", new Payload

@@ -22,9 +22,16 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Ticket>()
                 .HasOne(x => x.Seat)
                 .WithMany(x => x.Tickets)
-                .HasForeignKey(x => x.SeatId)
+                .HasForeignKey(x => new { x.SeatId, x.ScreenId })
                 .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Ticket>()
+                .HasIndex(x => new { x.SeatId, x.ScreeningId })
+                .IsUnique();
 
+            modelBuilder.Entity<Seat>().HasKey(e => new {e.Id, e.ScreenId});
+            modelBuilder.Entity<Seat>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
             modelBuilder.Entity<Seat>()
                 .HasOne(x => x.Screen)
                 .WithMany(x => x.Seats)
@@ -43,6 +50,13 @@ namespace api_cinema_challenge.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Do seeding here!
+            Seeder seeder = new Seeder();
+            modelBuilder.Entity<Customer>().HasData(seeder.Customers);
+            modelBuilder.Entity<Movie>().HasData(seeder.Movies);
+            modelBuilder.Entity<Screen>().HasData(seeder.Screens);
+            modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
+            modelBuilder.Entity<Seat>().HasData(seeder.Seats);
+            modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
         }
 
         public DbSet<Customer> Customers { get; set; } 
