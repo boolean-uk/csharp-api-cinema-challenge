@@ -8,5 +8,7 @@ namespace api_cinema_challenge.Repository
         Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
         Task<T?> Get(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
         Task<T?> Update(T entity);
+        Task<T?> Add(T entity);
+        Task<T?> Delete(T entity);
     }
 }

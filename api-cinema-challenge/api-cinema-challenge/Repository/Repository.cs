@@ -37,4 +37,18 @@ public class Repository<T>(CinemaContext db) : IRepository<T> where T : class
         await db.SaveChangesAsync();
         return entity;
     }
+    
+    public async Task<T?> Add(T entity)
+    {
+        await db.Set<T>().AddAsync(entity);
+        await db.SaveChangesAsync();
+        return entity;
+    }
+    
+    public async Task<T?> Delete(T entity)
+    {
+        db.Set<T>().Remove(entity);
+        await db.SaveChangesAsync();
+        return entity;
+    }
 }
