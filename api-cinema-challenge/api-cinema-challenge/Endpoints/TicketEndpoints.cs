@@ -16,13 +16,14 @@ namespace api_cinema_challenge.Endpoints
             var group = app.MapGroup(Path);
 
             app.MapPost($"/{CustomerEndpoints.Path}/{{customerId}}/{ScreeningEndpoints.Path}/{{screeningId}}", CreateTicket);
-            app.MapGet($"/{CustomerEndpoints.Path}/{{customerId}}/{ScreeningEndpoints.Path}/{{screeningId}}", GetTickets);
+            app.MapGet($"/{CustomerEndpoints.Path}/{{customerId}}/{ScreeningEndpoints.Path}/{{screeningId}}", GetTicketsSpecific);
             group.MapGet("/{id}", GetTicket);
+            group.MapGet("/", GetTickets);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public static async Task<IResult> GetTickets(
+        public static async Task<IResult> GetTicketsSpecific(
             IRepository<Ticket, int> repository, 
             IRepository<Customer, int> customerRepository, 
             IRepository<Screening, int> screeningRepository,
@@ -36,6 +37,31 @@ namespace api_cinema_challenge.Endpoints
                 _ = await screeningRepository.Get(screeningId);
                 IEnumerable<Ticket> tickets = await repository.FindAll(
                     condition: x => x.ScreeningId == screeningId && x.CustomerId == customerId,
+                    includeChains: q => q.Include(x => x.Seat)
+                );
+                return TypedResults.Ok(new Payload { Data = mapper.Map<List<TicketView>>(tickets) });
+            }
+            catch (IdNotFoundException ex)
+            {
+                return TypedResults.NotFound(new Payload { Status = "failure", Data = new { ex.Message } });
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public static async Task<IResult> GetTickets(
+            IRepository<Ticket, int> repository,
+            IRepository<Customer, int> customerRepository,
+            IRepository<Screening, int> screeningRepository,
+            IMapper mapper)
+        {
+            try
+            {
+                IEnumerable<Ticket> tickets = await repository.GetAll(
                     includeChains: q => q.Include(x => x.Seat)
                 );
                 return TypedResults.Ok(new Payload { Data = mapper.Map<List<TicketView>>(tickets) });

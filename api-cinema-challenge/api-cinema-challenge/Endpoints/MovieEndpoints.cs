@@ -85,26 +85,18 @@ namespace api_cinema_challenge.Endpoints
                     ReleaseDate = releaseDate.ToUniversalTime()
                 });
 
-                //var tasks = entity.Screenings.Select(async screening =>
-                //{
-                //    return await ScreeningEndpoints.CreateScreening(screeningRepository, repository, screenRepository, mapper, movie.Id, new ScreeningMoviePost(
-                //        screening.ScreenId,
-                //        screening.StartingAt
-                //    ));
-                //});
-
-                List<IResult> results = [];
-                // In the future these results should be logged, and the returned payload might contain information from them.
-                // Maybe even start using a "partial_success" payload, with both the movie data and information about fail / success for the screenings.
+                //In the future these results should be logged, and the returned payload might contain information from them.
+                //Maybe even start using a "partial_success" payload, with both the movie data and information about fail / success for the screenings.
+                List<Screening> results = [];
                 foreach (var screening in entity.Screenings)
                 {
-                    IResult r = await ScreeningEndpoints.CreateScreening(screeningRepository, repository, screenRepository, mapper, movie.Id, new ScreeningMoviePost(
-                        screening.ScreenId,
-                        screening.StartingAt
-                    ));
+                    Screening r = await ScreeningEndpoints.CreateScreeningObject(repository, screenRepository, mapper, movie.Id, new ScreeningMoviePost(
+                            screening.ScreenId,
+                            screening.StartingAt
+                        ));
                     results.Add(r);
                 }
-
+                await screeningRepository.AddRange(results.ToArray());
 
                 return TypedResults.Created($"{Path}/{movie.Id}", new Payload
                 {

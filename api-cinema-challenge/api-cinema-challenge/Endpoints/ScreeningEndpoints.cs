@@ -85,24 +85,38 @@ namespace api_cinema_challenge.Endpoints
             try
             {
 
-                DateTime startingAt;
-                string[] formats = { "yyyy-MM-dd HH:mm:ss", "dd-MM-yyyy HH:mm:ss" };
-                if (!DateTime.TryParseExact(entity.StartingAt, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out startingAt)) 
-                    return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = $"The starting at date needs to be in one of the following formats: {string.Join(", ", formats)}" } });
-                Movie movie = await movieRepository.Get(movieId);
-                Screen screen = await screenRepository.Get(entity.ScreenId);
-                Screening screening = await repository.Add(new Screening
+                //DateTime startingAt;
+                //string[] formats = { "yyyy-MM-dd HH:mm:ss", "dd-MM-yyyy HH:mm:ss" };
+                //if (!DateTime.TryParseExact(entity.StartingAt, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out startingAt)) 
+                //    return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = $"The starting at date needs to be in one of the following formats: {string.Join(", ", formats)}" } });
+                //Movie movie = await movieRepository.Get(movieId);
+                //Screen screen = await screenRepository.Get(entity.ScreenId);
+                //Screening screening = await repository.Add(new Screening
+                //{
+                //    MovieId = movie.Id,
+                //    ScreenId = screen.Id,
+                //    Screen = screen,
+                //    StartingAt = startingAt.ToUniversalTime()
+                //});
+
+                try
                 {
-                    MovieId = movie.Id,
-                    ScreenId = screen.Id,
-                    Screen = screen,
-                    StartingAt = startingAt.ToUniversalTime()
-                });
-                screening = await repository.Add(screening);
-                return TypedResults.Created($"{Path}/{screening.Id}", new Payload
+                    Screening screening = await CreateScreeningObject(
+                        movieRepository,
+                        screenRepository,
+                        mapper,
+                        movieId,
+                        entity
+                    );
+                    screening = await repository.Add(screening);
+                    return TypedResults.Created($"{Path}/{screening.Id}", new Payload
+                    {
+                        Data = mapper.Map<ScreeningView>(screening)
+                    });
+                } catch (ArgumentException ex)
                 {
-                    Data = mapper.Map<ScreeningView>(screening)
-                });
+                    return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { ex.Message } });
+                }
             }
             catch (IdNotFoundException ex)
             {
@@ -114,28 +128,27 @@ namespace api_cinema_challenge.Endpoints
             }
         }
 
-        //public static async Screening CreateScreeningObject(
-        //    IRepository<Screening, int> repository,
-        //    IRepository<Movie, int> movieRepository,
-        //    IRepository<Screen, int> screenRepository,
-        //    IMapper mapper,
-        //    int movieId,
-        //    ScreeningMoviePost entity)
-        //{
-        //    DateTime startingAt;
-        //    string[] formats = { "yyyy-MM-dd HH:mm:ss", "dd-MM-yyyy HH:mm:ss" };
-        //    if (!DateTime.TryParseExact(entity.StartingAt, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out startingAt))
-        //        return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = $"The starting at date needs to be in one of the following formats: {string.Join(", ", formats)}" } });
-        //    Movie movie = await movieRepository.Get(movieId);
-        //    Screen screen = await screenRepository.Get(entity.ScreenId);
-        //    Screening screening = new Screening
-        //    {
-        //        MovieId = movie.Id,
-        //        ScreenId = screen.Id,
-        //        Screen = screen,
-        //        StartingAt = startingAt.ToUniversalTime()
-        //    };
-        //    return screening;
-        //}
+        public static async Task<Screening> CreateScreeningObject(
+            IRepository<Movie, int> movieRepository,
+            IRepository<Screen, int> screenRepository,
+            IMapper mapper,
+            int movieId,
+            ScreeningMoviePost entity)
+        {
+            DateTime startingAt;
+            string[] formats = { "yyyy-MM-dd HH:mm:ss", "dd-MM-yyyy HH:mm:ss" };
+            if (!DateTime.TryParseExact(entity.StartingAt, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out startingAt))
+                throw new ArgumentException($"The starting at date needs to be in one of the following formats: {string.Join(", ", formats)}");
+            Movie movie = await movieRepository.Get(movieId);
+            Screen screen = await screenRepository.Get(entity.ScreenId);
+            Screening screening = new Screening
+            {
+                MovieId = movie.Id,
+                ScreenId = screen.Id,
+                Screen = screen,
+                StartingAt = startingAt.ToUniversalTime()
+            };
+            return screening;
+        }
     }
 }
