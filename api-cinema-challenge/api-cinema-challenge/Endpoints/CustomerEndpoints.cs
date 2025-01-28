@@ -28,11 +28,7 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                IEnumerable<Customer> customers = await repository.GetAll(
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Screening).ThenInclude(x => x.Movie),
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Screening).ThenInclude(x => x.Screen),
-                    //q => q.Include(x => x.Tickets.Where(t => t.Screening.StartingAt > DateTime.UtcNow)).ThenInclude(x => x.Seat)
-                );
+                IEnumerable<Customer> customers = await repository.GetAll();
                 return TypedResults.Ok(new Payload { Data = mapper.Map<List<CustomerView>>(customers) });
             }
             catch (Exception ex)
@@ -48,11 +44,7 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Customer customer = await repository.Get(id
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Screening).ThenInclude(x => x.Movie),
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Screening).ThenInclude(x => x.Screen),
-                    //q => q.Include(x => x.Tickets).ThenInclude(x => x.Seat)
-                );
+                Customer customer = await repository.Get(id);
                 return TypedResults.Ok(mapper.Map<CustomerView>(customer));
             }
             catch (IdNotFoundException ex)
@@ -84,7 +76,6 @@ namespace api_cinema_challenge.Endpoints
                     Email = entity.Email,
                     Phone = entity.Phone,
                 });
-                customer = await customerRepository.Add(customer);
                 return TypedResults.Created($"{Path}/{customer.Id}", new Payload
                 {
                     Data = mapper.Map<CustomerView>(customer)

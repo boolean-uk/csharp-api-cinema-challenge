@@ -13,6 +13,7 @@ namespace api_cinema_challenge.Repository
 
 
         Task<T> Add(T entity);
+        Task<IEnumerable<T>> AddRange(params T[] entity);
         Task<T> Update(T entity);
         Task<T> Delete(U id);
         Task Save();

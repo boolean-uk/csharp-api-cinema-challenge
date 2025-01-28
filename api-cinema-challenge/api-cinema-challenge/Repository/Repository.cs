@@ -24,6 +24,13 @@ namespace api_cinema_challenge.Repository
             return entity;
         }
 
+        public async Task<IEnumerable<T>> AddRange(params T[] entity)
+        {
+            await _table.AddRangeAsync(entity);
+            await _db.SaveChangesAsync();
+            return entity;
+        }
+
         public async Task<T> Delete(U id)
         {
             T entity = await Get(id);

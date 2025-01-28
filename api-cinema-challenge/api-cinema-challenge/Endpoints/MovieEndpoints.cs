@@ -82,20 +82,29 @@ namespace api_cinema_challenge.Endpoints
                     Rating = entity.Rating,
                     Description = entity.Description,
                     Runtime = entity.Runtime,
-                    ReleaseDate = releaseDate
+                    ReleaseDate = releaseDate.ToUniversalTime()
                 });
 
-                var tasks = entity.Screenings.Select(async screening =>
+                //var tasks = entity.Screenings.Select(async screening =>
+                //{
+                //    return await ScreeningEndpoints.CreateScreening(screeningRepository, repository, screenRepository, mapper, movie.Id, new ScreeningMoviePost(
+                //        screening.ScreenId,
+                //        screening.StartingAt
+                //    ));
+                //});
+
+                List<IResult> results = [];
+                // In the future these results should be logged, and the returned payload might contain information from them.
+                // Maybe even start using a "partial_success" payload, with both the movie data and information about fail / success for the screenings.
+                foreach (var screening in entity.Screenings)
                 {
-                    return await ScreeningEndpoints.CreateScreening(screeningRepository, repository, screenRepository, mapper, movie.Id, new ScreeningMoviePost(
+                    IResult r = await ScreeningEndpoints.CreateScreening(screeningRepository, repository, screenRepository, mapper, movie.Id, new ScreeningMoviePost(
                         screening.ScreenId,
                         screening.StartingAt
                     ));
-                });
-                //List<IResult> results = (await Task.WhenAll(tasks)).ToList();
-                _ = await Task.WhenAll(tasks); // Discarding for now in order to preserve the requested data structure.
-                // In the future these results should be logged, and the returned payload might contain information from them.
-                // Maybe even start using a "partial_success" payload, with both the movie data and information about fail / success for the screenings.
+                    results.Add(r);
+                }
+
 
                 return TypedResults.Created($"{Path}/{movie.Id}", new Payload
                 {
@@ -136,7 +145,7 @@ namespace api_cinema_challenge.Endpoints
                     string[] formats = { "yyyy-MM-dd", "dd-MM-yyyy" };
                     if (!DateTime.TryParseExact(entity.ReleaseDate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out releaseDate))
                         return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = $"The release date needs to be in one of the following formats: {string.Join(", ", formats)}" } });
-                    movie.ReleaseDate = releaseDate;
+                    movie.ReleaseDate = releaseDate.ToUniversalTime();
                 }
 
 
