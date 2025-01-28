@@ -13,18 +13,18 @@ namespace api_cinema_challenge.Models
         public int MovieId { get; set; }
         [Required]
         [Column("ScreenNumber")]
-        public int screenNumber { get; set; }
+        public int ScreenNumber { get; set; }
         [Required]
         [Column("Capacity")]
-        public int capacity { get; set; }
+        public int Capacity { get; set; }
         [Required]
         [Column("StartsAt")]
-        public DateTime startsAt { get; set; }
+        public DateTime StartsAt { get; set; }
         [Required]
         [Column("EndsAt")]
-        public DateTime createdAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         [Required]
         [Column("CreatedAt")]
-        public DateTime updatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }
