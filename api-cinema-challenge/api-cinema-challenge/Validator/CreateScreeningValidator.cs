@@ -18,8 +18,5 @@ public class CreateScreeningValidator : AbstractValidator<CreateScreening>
         RuleFor(x => x.StartsAt)
             .NotEmpty().WithMessage("Start time is required.")
             .Must(startsAt => startsAt > DateTime.UtcNow).WithMessage("Start time must be in the future.");
-
-        RuleFor(x => x.MovieId)
-            .NotEmpty().WithMessage("Movie ID is required.");
     }
 }

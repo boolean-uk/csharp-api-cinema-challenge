@@ -1,10 +1,13 @@
 ﻿using api_cinema_challenge.DTO;
+using api_cinema_challenge.Enums;
 using api_cinema_challenge.Exceptions;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using api_cinema_challenge.Responses;
 using api_cinema_challenge.ViewModels;
 using AutoMapper;
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Numerics;
@@ -20,11 +23,14 @@ namespace api_cinema_challenge.Endpoints
 
             group.MapGet("/", GetCustomers);
             group.MapGet("/{id}", GetCustomerById);
+            group.MapGet("/{id}/screenings/{screeningId}", GetScreeningTickets);
             group.MapPost("/", CreateCustomer);
+            group.MapPost("/{id}/screenings/{screeningId}", CreateTicket);
             group.MapDelete("/{id}", DeleteCustomer);
             group.MapPut("/{id}", UpdateCustomer);
 
         }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -34,9 +40,33 @@ namespace api_cinema_challenge.Endpoints
             {
                 IEnumerable<Customer> customers = await repository.GetAll();
 
-                if (!customers.Any()) return TypedResults.NotFound();
+                if (!customers.Any()) return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, "No customers found."));
 
-                return TypedResults.Ok(mapper.Map<IEnumerable<CustomerDTO>>(customers));
+                ApiResponse<IEnumerable<CustomerDTO>> response = new ApiResponse<IEnumerable<CustomerDTO>>(ApiStatus.Success, mapper.Map<IEnumerable<CustomerDTO>>(customers));
+
+                return TypedResults.Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.InternalServerError(mapper.Map<ErrorResponse>(ex));
+            }
+
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public static async Task<IResult> GetScreeningTickets(IRepository<Ticket> repository, IMapper mapper, int customerId, int screeningId)
+        {
+            try
+            {
+
+                IEnumerable<Ticket> tickets = await repository.FindAll(t => t.CustomerId == customerId && t.ScreeningId == screeningId);
+                if (!tickets.Any()) return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, "No tickets found."));
+
+                ApiResponse<IEnumerable<TicketDTO>> response = new ApiResponse<IEnumerable<TicketDTO>>(ApiStatus.Success, mapper.Map<IEnumerable<TicketDTO>>(tickets));
+
+                return TypedResults.Ok(response);
             }
             catch (Exception ex)
             {
@@ -54,9 +84,14 @@ namespace api_cinema_challenge.Endpoints
             {
                 Customer customer = await repository.Get(c => c.Id == id);
 
-                if (customer == null) return TypedResults.NotFound($"No customer with id:{id} was found.");
+                if (customer == null)
+                {
+                    return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, $"No customer with id:{id} was found."));
+                }
 
-                return TypedResults.Ok(mapper.Map<CustomerDTO>(customer));
+                ApiResponse<CustomerDTO> response = new ApiResponse<CustomerDTO>(ApiStatus.Success, mapper.Map<CustomerDTO>(customer));
+
+                return TypedResults.Ok(response);
             }
             catch (Exception ex)
             {
@@ -76,11 +111,14 @@ namespace api_cinema_challenge.Endpoints
 
                 if (!validationResult.IsValid)
                 {
-                    return Results.BadRequest(validationResult.Errors);
+                    return Results.BadRequest(new ApiResponse<IEnumerable<ValidationFailure>>(ApiStatus.BadRequest, validationResult.Errors));
                 }
 
                 Customer customer = await repository.Get(c => c.Id == id);
-                if (customer == null) return TypedResults.NotFound($"No customer with id:{id} was found.");
+                if (customer == null)
+                {
+                    return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, $"No customer with id:{id} was found."));
+                }
 
                 customer.Name = entity.Name;
                 customer.Email = entity.Email;
@@ -89,13 +127,13 @@ namespace api_cinema_challenge.Endpoints
 
                 await repository.Update(customer);
 
-                return TypedResults.Ok(mapper.Map<CustomerDTO>(customer));
+                ApiResponse<CustomerDTO> response = new ApiResponse<CustomerDTO>(ApiStatus.Success, mapper.Map<CustomerDTO>(customer));
+                return TypedResults.Ok(response);
             }
             catch (Exception ex)
             {
                 return TypedResults.InternalServerError(mapper.Map<ErrorResponse>(ex));
             }
-
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -109,7 +147,7 @@ namespace api_cinema_challenge.Endpoints
 
                 if (!validationResult.IsValid)
                 {
-                    return Results.BadRequest(validationResult.Errors);
+                    return Results.BadRequest(new ApiResponse<IEnumerable<ValidationFailure>>(ApiStatus.BadRequest, validationResult.Errors));
                 }
 
                 Customer newCustomer = new Customer
@@ -121,16 +159,61 @@ namespace api_cinema_challenge.Endpoints
                     UpdatedAt = DateTime.UtcNow,
                 };
 
-
                 var customer = await repository.Add(newCustomer);
 
-                return TypedResults.Created($"https://localhost:7235/customers/", mapper.Map<CustomerDTO>(customer));
+                ApiResponse<CustomerDTO> response = new ApiResponse<CustomerDTO>(ApiStatus.Success, mapper.Map<CustomerDTO>(customer));
+                return TypedResults.Created($"https://localhost:7235/customers/{customer.Id}", response);
             }
             catch (Exception ex)
             {
                 return TypedResults.InternalServerError(mapper.Map<ErrorResponse>(ex));
             }
+        }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public static async Task<IResult> CreateTicket(IRepository<Ticket> repository, IRepository<Customer> customerRepository, IRepository<Screening> screeningRepository, IMapper mapper, IValidator<CreateTicket> validator, int customerId, int screeningId, CreateTicket entity)
+        {
+            try
+            {
+                var validationResult = await validator.ValidateAsync(entity);
+
+                if (!validationResult.IsValid)
+                {
+                    return Results.BadRequest(new ApiResponse<IEnumerable<ValidationFailure>>(ApiStatus.BadRequest, validationResult.Errors));
+                }
+
+                Customer customer = await customerRepository.Get(c => c.Id == customerId);
+                if (customer == null)
+                {
+                    return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, $"No customer with id:{customerId} was found."));
+                }
+
+                Screening screening = await screeningRepository.Get(c => c.Id == screeningId);
+                if (customer == null)
+                {
+                    return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, $"No customer with id:{screeningId} was found."));
+                }
+
+                Ticket newTicket = new Ticket
+                {
+                    NumSeats = entity.NumSeats,
+                    CustomerId = customerId,
+                    ScreeningId = screeningId,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                };
+
+                Ticket ticket = await repository.Add(newTicket);
+
+                ApiResponse<TicketDTO> response = new ApiResponse<TicketDTO>(ApiStatus.Success, mapper.Map<TicketDTO>(ticket));
+                return TypedResults.Created($"https://localhost:7235/customers/{customerId}/screenings/{screeningId}", response);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.InternalServerError(mapper.Map<ErrorResponse>(ex));
+            }
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -141,17 +224,21 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 Customer customer = await repository.Get(c => c.Id == id);
-                if (customer == null) return TypedResults.NotFound($"No customer with id:{id} was found.");
+
+                if (customer == null)
+                {
+                    return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, $"No customer with id:{id} was found."));
+                }
 
                 await repository.Delete(customer);
 
-                return TypedResults.Ok(mapper.Map<CustomerDTO>(customer));
+                ApiResponse<CustomerDTO> response = new ApiResponse<CustomerDTO>(ApiStatus.Success, mapper.Map<CustomerDTO>(customer));
+                return TypedResults.Ok(response);
             }
             catch (Exception ex)
             {
                 return TypedResults.InternalServerError(mapper.Map<ErrorResponse>(ex));
             }
-
         }
 
     }

@@ -5,6 +5,7 @@ using System;
 namespace api_cinema_challenge.Validator;
 public class CreateMovieValidator : AbstractValidator<CreateMovie>
 {
+
     public CreateMovieValidator()
     {
         RuleFor(m => m.Title)
@@ -22,5 +23,6 @@ public class CreateMovieValidator : AbstractValidator<CreateMovie>
         RuleFor(m => m.RuntimeMins)
             .NotEmpty().WithMessage("Runtime is required.")
             .InclusiveBetween(1, 300).WithMessage("Runtime must be between 1 and 300 minutes.");
+
     }
 }

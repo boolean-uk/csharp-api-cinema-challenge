@@ -29,6 +29,5 @@ app.UseHttpsRedirection();
 
 app.ConfigureCustomerEndpoints();
 app.ConfigureMovieEndpoints();
-app.ConfigureScreeningEndpoints();
 
 app.Run();

@@ -33,13 +33,12 @@ namespace api_cinema_challenge.Data
             private List<Customer> _customers = new List<Customer>();
             private List<Movie> _movies = new List<Movie>();
             private List<Screening> _screenings = new List<Screening>();
+            private List<Ticket> _tickets = new List<Ticket>();
 
             public Seeder()
             {
-                // Static date for CreatedAt and UpdatedAt
                 DateTime staticDate = new DateTime(2023, 10, 1).ToUniversalTime();
 
-                // Generate Customers
                 for (int i = 1; i <= 50; i++)
                 {
                     string firstName = _firstNames[(i - 1) % _firstNames.Count];
@@ -50,14 +49,13 @@ namespace api_cinema_challenge.Data
                         Id = i,
                         Name = $"{firstName} {lastName}",
                         Email = $"{firstName.ToLower()}.{lastName.ToLower()}@example.com",
-                        Phone = $"123-456-{i.ToString().PadLeft(4, '0')}", // Static phone number
+                        Phone = $"123-456-{i.ToString().PadLeft(4, '0')}", 
                         CreatedAt = staticDate,
                         UpdatedAt = staticDate
                     };
                     _customers.Add(customer);
                 }
 
-                // Generate Movies
                 for (int i = 1; i <= 10; i++)
                 {
                     Movie movie = new Movie
@@ -65,35 +63,51 @@ namespace api_cinema_challenge.Data
                         Id = i,
                         Title = _movieTitles[i - 1],
                         Description = $"Description for {_movieTitles[i - 1]}",
-                        Rating = _ratings[(i - 1) % _ratings.Count], // Static rating
-                        RuntimeMins = 90 + (i * 10), // Static runtime
+                        Rating = _ratings[(i - 1) % _ratings.Count], 
+                        RuntimeMins = 90 + (i * 10), 
                         CreatedAt = staticDate,
                         UpdatedAt = staticDate
                     };
                     _movies.Add(movie);
                 }
 
-                // Generate Screenings
-                for (int i = 1; i <= 30; i++)
+                for (int i = 1; i <= 28; i++)
                 {
                     int movieId = _movies[(i - 1) % _movies.Count].Id;
                     Screening screening = new Screening
                     {
                         Id = i,
-                        ScreenNumber = (i % 5) + 1, // Static screen number
-                        Capacity = 100, // Static capacity
-                        StartsAt = staticDate.AddDays(i).AddHours(10), // Static start time
+                        ScreenNumber = (i % 5) + 1, 
+                        Capacity = 100, 
+                        StartsAt = staticDate.AddDays(i).AddHours(10), 
                         MovieId = movieId,
                         CreatedAt = staticDate,
                         UpdatedAt = staticDate
                     };
                     _screenings.Add(screening);
                 }
+
+                for (int i = 1; i <= 100; i++) 
+                {
+                    int customerId = _customers[(i - 1) % _customers.Count].Id;
+                    int screeningId = _screenings[(i - 1) % _screenings.Count].Id;
+                    Ticket ticket = new Ticket
+                    {
+                        Id = i,
+                        NumSeats = (i % 5) + 1, 
+                        CreatedAt = staticDate,
+                        UpdatedAt = staticDate,
+                        CustomerId = customerId,
+                        ScreeningId = screeningId,
+                    };
+                    _tickets.Add(ticket);
+                }
             }
 
             public List<Customer> Customers => _customers;
             public List<Movie> Movies => _movies;
             public List<Screening> Screenings => _screenings;
+            public List<Ticket> Tickets => _tickets;
         }
     }
 }

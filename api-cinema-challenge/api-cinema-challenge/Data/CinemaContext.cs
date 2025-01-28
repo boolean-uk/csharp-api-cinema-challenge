@@ -22,16 +22,10 @@ namespace api_cinema_challenge.Data
         {
             Seeder seed = new Seeder();
 
-
-
-            modelBuilder.Entity<Customer>()
-                .HasKey(c => c.Id);
-
-            modelBuilder.Entity<Movie>()
-                .HasKey(m => m.Id);
-
-            modelBuilder.Entity<Screening>()
-                .HasKey(s => s.Id);
+            modelBuilder.Entity<Customer>().HasKey(c => c.Id);
+            modelBuilder.Entity<Movie>().HasKey(m => m.Id);
+            modelBuilder.Entity<Screening>().HasKey(s => s.Id);
+            modelBuilder.Entity<Ticket>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Screening>()
                 .HasOne(s => s.Movie)
@@ -39,10 +33,22 @@ namespace api_cinema_challenge.Data
                 .HasForeignKey(s => s.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Customer)
+                .WithMany(c => c.Tickets)
+                .HasForeignKey(t => t.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Screening)
+                .WithMany(s => s.Tickets)
+                .HasForeignKey(t => t.ScreeningId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Customer>().HasData(seed.Customers);
             modelBuilder.Entity<Movie>().HasData(seed.Movies);
             modelBuilder.Entity<Screening>().HasData(seed.Screenings);
+            modelBuilder.Entity<Ticket>().HasData(seed.Tickets);
         }
 
 
@@ -50,6 +56,8 @@ namespace api_cinema_challenge.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Screening> Screenings { get; set; }
-       
+        public DbSet<Ticket> Tickets { get; set; }
+
+
     }
 }

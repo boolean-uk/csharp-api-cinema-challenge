@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.ViewModels
 {
@@ -19,5 +20,7 @@ namespace api_cinema_challenge.ViewModels
         [Required(ErrorMessage = "Runtime is required.")]
         [Range(1, 300, ErrorMessage = "Runtime must be between 1 and 300 minutes.")]
         public int RuntimeMins { get; set; }
+
+        public IEnumerable<CreateScreening> Screenings { get; set; } = new List<CreateScreening>();
     }
 }

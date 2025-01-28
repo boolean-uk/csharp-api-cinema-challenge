@@ -15,7 +15,5 @@ namespace api_cinema_challenge.ViewModels
         [Required(ErrorMessage = "Start time is required.")]
         public DateTime StartsAt { get; set; }
 
-        [Required(ErrorMessage = "Movie ID is required.")]
-        public int MovieId { get; set; }
     }
 }

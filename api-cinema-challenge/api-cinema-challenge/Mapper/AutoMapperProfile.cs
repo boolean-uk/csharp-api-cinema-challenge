@@ -13,6 +13,7 @@ namespace api_cinema_challenge.Mapper
             CreateMap<Movie, MovieDTO>();
             CreateMap<Customer, CustomerDTO>();
             CreateMap<Screening, ScreeningDTO>();
+            CreateMap<Ticket, TicketDTO>();
             CreateMap<Exception, ErrorResponse>();
         }
     }

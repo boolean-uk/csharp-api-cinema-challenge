@@ -11,5 +11,7 @@
 
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }
