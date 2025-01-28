@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using api_cinema_challenge.Models.Interfaces;
 
 namespace api_cinema_challenge.Models
 {
     [Table("tickets")]
-    public class Tickets
+    public class Tickets : BaseCustomModel
     {
         [Column("id")]
         public int Id { get; set; }
