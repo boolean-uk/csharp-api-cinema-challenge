@@ -7,20 +7,20 @@ using api_cinema_challenge.Repository;
 
 namespace api_cinema_challenge.DTO.Request
 {
-    public class Update_Customer : IDTO_Request_update<Update_Customer, Customers>
+    public class Update_Customer : IDTO_Request_update<Update_Customer, Customer>
     {
         public string? name {  get; set; }
         public string? email {  get; set; }
         public string? phone{  get; set; }
 
-        public static async Task<Customers?> update(Update_Customer dto, IRepository<Customers> repo, params object[] id)
+        public static async Task<Customer?> update(Update_Customer dto, IRepository<Customer> repo, params object[] id)
         {
             var customer =  await repo.GetEntry(x => x.Where(x => (int)id[0] == x.Id));
             if (customer == null) throw new Exception("Not found");
 
             return await repo.UpdateEntry(
                 x => x.Where(x => (int)id[0] == x.Id),
-                new Customers
+                new Customer
                 {
                     Id = customer.Id,
                     Name = dto.name ?? customer.Name,

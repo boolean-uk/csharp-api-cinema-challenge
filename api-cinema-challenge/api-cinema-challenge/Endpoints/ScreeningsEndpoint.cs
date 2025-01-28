@@ -22,9 +22,9 @@ namespace workshop.wwwapi.Endpoints
 
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> CreateAScreening(HttpContext context, IRepository<Screenings> repo, int screeningId, Create_Screening dto)
+        private static async Task<IResult> CreateAScreening(HttpContext context, IRepository<Screening> repo, int id, Create_Screening dto)
         {
-            var screening = Create_Screening.create(dto, screeningId);
+            var screening = Create_Screening.create(dto, id);
 
             var entity = await repo.CreateEntry(screening);
 
@@ -33,7 +33,7 @@ namespace workshop.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> GetAllScreenings( IRepository<Screenings> repo, int id)
+        private static async Task<IResult> GetAllScreenings( IRepository<Screening> repo, int id)
         {
             var entries = await repo.GetEntries( x => x.Where( x => x.MovieId == id));
             return TypedResults.Ok(Get_Screening.toPayload(entries));

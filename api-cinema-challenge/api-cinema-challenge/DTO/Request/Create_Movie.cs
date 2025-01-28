@@ -5,7 +5,7 @@ using api_cinema_challenge.Models;
 
 namespace api_cinema_challenge.DTO.Request
 {
-    public class Create_Movie : IDTO_Request_create<Create_Movie, Movies>
+    public class Create_Movie : IDTO_Request_create<Create_Movie, Movie>
     {
         public string Title { get; set; }
         public string Rating { get; set; }
@@ -13,9 +13,9 @@ namespace api_cinema_challenge.DTO.Request
         public int RuntimeMins { get; set; }
         public List<Create_Screening> Screenings { get; set; }
 
-        public static Movies create(Create_Movie dto, params object[] pathargs)
+        public static Movie create(Create_Movie dto, params object[] pathargs)
         {
-            return new Movies
+            return new Movie
             {
                 Title = dto.Title,
                 Rating = dto.Rating,
@@ -23,19 +23,11 @@ namespace api_cinema_challenge.DTO.Request
                 RuntimeMins = dto.RuntimeMins
             };
         }
-        public static List<Screenings> create_screenings(Create_Movie dto, int movieId)
+        public static List<Screening> create_screenings(Create_Movie dto, int movieId)
         {
             return dto.Screenings.Select(
-                x => Create_Screening.create(x)).ToList();
-            //,
-            //    x => new Screenings
-            //{
-            //    MovieId = movieId,
-            //    ScreenNumber = x.ScreenNumber,
-            //    Capacity = x.Capacity,
-            //    StartsAt = x.StartsAt,
+                x => Create_Screening.create(x, movieId)).ToList();
 
-            //}).ToList();
         }
     }
 }

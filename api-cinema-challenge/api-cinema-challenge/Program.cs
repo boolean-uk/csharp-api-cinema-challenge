@@ -8,10 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IRepository<Customers>, Repository<Customers>>();
-builder.Services.AddScoped<IRepository<Movies>, Repository<Movies>>();
-builder.Services.AddScoped<IRepository<Screenings>, Repository<Screenings>>();
-builder.Services.AddScoped<IRepository<Tickets>, Repository<Tickets>>();
+builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 builder.Services.AddDbContext<CinemaContext>();
 
 var app = builder.Build();

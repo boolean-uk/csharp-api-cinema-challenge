@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api_cinema_challenge.DTO.Response
 {
-    public class Get_Movie : DTO_Response<Get_Movie, Movies>
+    public class Get_Movie : DTO_Response<Get_Movie, Movie>
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -15,7 +15,7 @@ namespace api_cinema_challenge.DTO.Response
         public DateTime CreatedAt { get; set; } = DateTime.Now.ToUniversalTime();
         public DateTime UpdatedAt { get; set; } = DateTime.Now.ToUniversalTime();
 
-        public override void Initialize(Movies model)
+        public override void Initialize(Movie model)
         {
             Id          = model.Id;
             Title       = model.Title;

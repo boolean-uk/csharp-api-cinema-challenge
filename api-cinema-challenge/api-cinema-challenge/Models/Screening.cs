@@ -4,7 +4,7 @@ using api_cinema_challenge.Models.Interfaces;
 namespace api_cinema_challenge.Models
 {
     [Table("screenings")]
-    public class Screenings : BaseCustomModel
+    public class Screening : BaseCustomModel
     {
         [Column("id")]
         public int Id { get; set; }
@@ -21,5 +21,9 @@ namespace api_cinema_challenge.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now.ToUniversalTime();
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.Now.ToUniversalTime();
+
+        //Navigation Properties:
+        public Movie Movie { get; set; }
+        public List<Ticket> Tickets { get; set; }
     }
 }

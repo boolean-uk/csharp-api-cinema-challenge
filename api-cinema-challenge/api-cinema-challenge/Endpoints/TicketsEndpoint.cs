@@ -21,7 +21,7 @@ namespace workshop.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> BookATicket(HttpContext context, IRepository<Tickets> repo, int customerId, int screeningsId, Create_Ticket dto)
+        private static async Task<IResult> BookATicket(HttpContext context, IRepository<Ticket> repo, int customerId, int screeningsId, Create_Ticket dto)
         {
             var ticket = Create_Ticket.create(dto, screeningsId, customerId);
 
@@ -32,7 +32,7 @@ namespace workshop.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> GetAllTickets( IRepository<Tickets> repo, int customerId, int screeningId)
+        private static async Task<IResult> GetAllTickets( IRepository<Ticket> repo, int customerId, int screeningId)
         {
 
             var entries = await repo.GetEntries(x => x.Where(x => x.ScreeningId == screeningId && x.CustomerId == customerId));

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api_cinema_challenge.DTO.Response
 {
-    public class Get_Customer : DTO_Response<Get_Customer, Customers>
+    public class Get_Customer : DTO_Response<Get_Customer, Customer>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -13,7 +13,7 @@ namespace api_cinema_challenge.DTO.Response
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public override void Initialize(Customers model)
+        public override void Initialize(Customer model)
         {
             Id = model.Id;
             Name = model.Name;

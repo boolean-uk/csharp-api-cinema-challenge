@@ -24,7 +24,7 @@ namespace workshop.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        private static async Task<IResult> CreateACustomer(HttpContext context, IRepository<Customers> repo, Create_Customer dto)
+        private static async Task<IResult> CreateACustomer(HttpContext context, IRepository<Customer> repo, Create_Customer dto)
         {
             var customer = Create_Customer.create(dto);
             var entity = await repo.CreateEntry(customer);
@@ -33,7 +33,7 @@ namespace workshop.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> GetAllCustomers( IRepository<Customers> repo)
+        private static async Task<IResult> GetAllCustomers( IRepository<Customer> repo)
         {
             var entries = await repo.GetEntries();
             return TypedResults.Ok(Get_Customer.toPayload(entries));
@@ -41,7 +41,7 @@ namespace workshop.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> UpdateACustomer(HttpContext context, IRepository<Customers> repo, int id, Update_Customer dto)
+        private static async Task<IResult> UpdateACustomer(HttpContext context, IRepository<Customer> repo, int id, Update_Customer dto)
         {
             var ent = await Update_Customer.update(dto, repo, id);
             return TypedResults.Ok(Get_Customer.toPayload(ent));
@@ -49,7 +49,7 @@ namespace workshop.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        private static async Task<IResult> DeleteACustomer(HttpContext context, IRepository<Customers> repo, int id)
+        private static async Task<IResult> DeleteACustomer(HttpContext context, IRepository<Customer> repo, int id)
         {
             var ent = await Delete_Customer.delete(repo, id);
             return TypedResults.Created(context.Get_endpointUrl(ent.Id), Get_Customer.toPayload(ent));
