@@ -35,7 +35,7 @@ public static class MovieEndpoints
     
     [ProducesResponseType(typeof(BaseResponse<MovieResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(BaseResponse<>), StatusCodes.Status404NotFound)]
-    public static async Task<IResult> GetMovie(IRepository<Movie> repository, IMapper mapper, int id)
+    private static async Task<IResult> GetMovie(IRepository<Movie> repository, IMapper mapper, int id)
     {
         var movie = await repository.Get(m => m.Id == id);
         if (movie == null) return TypedResults.NotFound(new BaseResponse<object?>(Consts.ErrorStatus, null));
@@ -49,7 +49,7 @@ public static class MovieEndpoints
     }
     
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public static async Task<IResult> CreateMovie(IRepository<Movie> repository, IMapper mapper, [FromBody] MoviePost body)
+    private static async Task<IResult> CreateMovie(IRepository<Movie> repository, IMapper mapper, [FromBody] MoviePost body)
     {
         var movie = mapper.Map<Movie>(body);
         await repository.Add(movie);
@@ -58,12 +58,12 @@ public static class MovieEndpoints
             mapper.Map<MovieResponse>(movie)
         );
 
-        return TypedResults.Created("/movies/" + movie.Id, response);
+        return TypedResults.Created($"/movies/{movie.Id}", response);
     }
     
     [ProducesResponseType(typeof(BaseResponse<MovieResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(BaseResponse<>), StatusCodes.Status404NotFound)]
-    public static async Task<IResult> UpdateMovie(IRepository<Movie> repository, IMapper mapper, int id, [FromBody] MoviePut body)
+    private static async Task<IResult> UpdateMovie(IRepository<Movie> repository, IMapper mapper, int id, [FromBody] MoviePut body)
     {
         var movie = await repository.Get(m => m.Id == id);
         if (movie == null) return TypedResults.NotFound(new BaseResponse<object?>(Consts.ErrorStatus, null));
@@ -84,7 +84,7 @@ public static class MovieEndpoints
     
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public static async Task<IResult> DeleteMovie(IRepository<Movie> repository, int id)
+    private static async Task<IResult> DeleteMovie(IRepository<Movie> repository, int id)
     {
         var movie = await repository.Get(m => m.Id == id);
         if (movie == null) return TypedResults.NotFound(new BaseResponse<object?>(Consts.ErrorStatus, null));

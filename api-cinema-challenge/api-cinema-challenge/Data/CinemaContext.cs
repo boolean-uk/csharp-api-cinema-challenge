@@ -103,10 +103,7 @@ public class CinemaContext : DbContext
         foreach (var entity in entities)
         {
             var now = DateTime.UtcNow;
-
-            Console.WriteLine(entity.State.ToString());
             if (entity.State == EntityState.Added) ((BaseEntity)entity.Entity).CreatedAt = now;
-
             if (entity.State == EntityState.Modified) ((BaseEntity)entity.Entity).UpdatedAt = now;
         }
     }

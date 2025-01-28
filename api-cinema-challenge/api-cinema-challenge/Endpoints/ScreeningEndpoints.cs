@@ -30,7 +30,7 @@ public static class ScreeningEndpoints
     }
     
     [ProducesResponseType(typeof(BaseResponse<ScreeningResponse>), StatusCodes.Status201Created)]
-    public static async Task<IResult> CreateScreening(IRepository<Screening> repository, IMapper mapper, int id, [FromBody] ScreeningPost body)
+    private static async Task<IResult> CreateScreening(IRepository<Screening> repository, IMapper mapper, int id, [FromBody] ScreeningPost body)
     {
         var screening = mapper.Map<Screening>(body);
         screening.MovieId = id;

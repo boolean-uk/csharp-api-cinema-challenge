@@ -28,9 +28,10 @@ public static class TicketEndpoints
 
         return TypedResults.Ok(response);
     }
-    
+
     [ProducesResponseType(typeof(BaseResponse<TicketResponse>), StatusCodes.Status201Created)]
-    public static async Task<IResult> CreateTicket(IRepository<Ticket> repository, IMapper mapper, int cid, int mid, [FromBody] TicketPost body)
+    private static async Task<IResult> CreateTicket(IRepository<Ticket> repository, IMapper mapper, int cid, int mid,
+        [FromBody] TicketPost body)
     {
         var ticket = mapper.Map<Ticket>(body);
         ticket.CustomerId = cid;
@@ -41,6 +42,6 @@ public static class TicketEndpoints
             mapper.Map<TicketResponse>(ticket)
         );
 
-        return TypedResults.Created("/customers/" + cid + "/screenings/" + mid + "/tickets/" + ticket.Id, response);
+        return TypedResults.Created($"/customers/{cid}/screenings/{mid}/tickets/" + ticket.Id, response);
     }
 }
