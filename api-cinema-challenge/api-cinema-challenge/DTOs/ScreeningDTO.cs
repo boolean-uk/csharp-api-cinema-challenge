@@ -1,6 +1,4 @@
-﻿using api_cinema_challenge.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-
+﻿
 namespace api_cinema_challenge.DTOs
 {
     public class ScreeningDTO

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace api_cinema_challenge.DTOs
 {
     public class MovieDTO
