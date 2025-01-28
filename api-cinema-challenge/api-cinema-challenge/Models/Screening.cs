@@ -13,6 +13,9 @@ namespace api_cinema_challenge.Models
         [Column("screen_number")]
         public int ScreenNumber { get; set; }
 
+        [Column("capasity")]
+        public int Capasity { get; set; }
+
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
 

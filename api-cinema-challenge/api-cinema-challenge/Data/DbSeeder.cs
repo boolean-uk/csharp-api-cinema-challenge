@@ -72,6 +72,7 @@ namespace api_cinema_challenge.Data
                         {
                             Movie_Id = inception.Id,
                             ScreenNumber = 1,
+                            Capasity = 80,
                             StartsAt = DateTime.UtcNow.AddDays(1),
                             CreatedAt = DateTime.UtcNow,
                             UpdatedAt = DateTime.UtcNow
@@ -80,6 +81,7 @@ namespace api_cinema_challenge.Data
                         {
                             Movie_Id = matrix.Id,
                             ScreenNumber = 2,
+                            Capasity = 58,
                             StartsAt = DateTime.UtcNow.AddDays(2),
                             CreatedAt = DateTime.UtcNow,
                             UpdatedAt = DateTime.UtcNow
