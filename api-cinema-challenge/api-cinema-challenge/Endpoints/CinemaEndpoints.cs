@@ -41,7 +41,7 @@ namespace api_cinema_challenge.Endpoints
             string name,
             string email,
             string phone
-            )
+        )
         {
             try
             {
@@ -83,7 +83,7 @@ namespace api_cinema_challenge.Endpoints
         public static async Task<IResult> GetCustomers(
             IRepository<Customer> customerRepository,
             IMapper mapper
-            )
+        )
         {
             try
             {
@@ -104,7 +104,7 @@ namespace api_cinema_challenge.Endpoints
             IRepository<Customer> customerRepository,
             IMapper mapper,
             int id
-            )
+        )
         {
             try
             {
@@ -134,7 +134,7 @@ namespace api_cinema_challenge.Endpoints
             string? name,
             string? email,
             string? phone
-            )
+        )
         {
             try
             {
@@ -221,7 +221,7 @@ namespace api_cinema_challenge.Endpoints
             string rating,
             string description,
             int runtimeMins,
-            List<ScreeningDTO>? screenings
+            List<ScreeningCreateDTO>? screenings
         )
         {
             try
@@ -231,9 +231,9 @@ namespace api_cinema_challenge.Endpoints
                     return TypedResults.BadRequest(new { status = "failure", message = "Title cannot be null or empty." });
                 }
 
-                if (string.IsNullOrWhiteSpace(rating) || !Regex.IsMatch(rating, @"^[A-Za-z0-9]+$"))
+                if (string.IsNullOrWhiteSpace(rating))
                 {
-                    return TypedResults.BadRequest(new { status = "failure", message = "Rating is required and must be alphanumeric." });
+                    return TypedResults.BadRequest(new { status = "failure", message = "Rating cannot be null or empty." });
                 }
 
                 if (string.IsNullOrWhiteSpace(description))
@@ -260,9 +260,22 @@ namespace api_cinema_challenge.Endpoints
                 {
                     foreach (var screeningDto in screenings)
                     {
-                        var screening = mapper.Map<Screening>(screeningDto);
-                        screening.MovieId = createdMovie.Id;
-                        await screeningRepository.Insert(screening);
+                        var screening = new Screening
+                        {
+                            MovieId = createdMovie.Id,
+                            ScreenNumber = screeningDto.ScreenNumber,
+                            Capacity = screeningDto.Capacity
+                        };
+
+                        if (DateTime.TryParse(screeningDto.StartsAt, out var parsedStartsAt))
+                        {
+                            screening.StartsAt = parsedStartsAt.ToUniversalTime();
+                            await screeningRepository.Insert(screening);
+                        }
+                        else
+                        {
+                            return TypedResults.BadRequest(new { status = "failure", message = "Invalid 'startsAt' format." });
+                        }
                     }
                 }
 
@@ -274,6 +287,7 @@ namespace api_cinema_challenge.Endpoints
                 return TypedResults.InternalServerError(new { status = "failure", message = "An unexpected error occurred.", details = ex.Message });
             }
         }
+
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -441,7 +455,7 @@ namespace api_cinema_challenge.Endpoints
                 var movie = await movieRepository.GetById(id);
                 if (movie == null)
                 {
-                    return TypedResults.NotFound(new { status = "failure", message = "Movie not found" });
+                    return TypedResults.NotFound(new { status = "failure", message = "Movie not found." });
                 }
 
                 if (screenNumber <= 0)
