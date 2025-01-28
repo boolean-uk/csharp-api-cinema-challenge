@@ -24,11 +24,8 @@
     </PackageReference>
     <PackageReference Include="newtonsoft.json" Version="13.0.3" />
     <PackageReference Include="npgsql.entityframeworkcore.postgresql" Version="9.0.3" />
+    <PackageReference Include="Scalar.AspNetCOre" Version="2.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
