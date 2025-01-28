@@ -19,7 +19,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public static async Task<IResult> Create(IRepository<Movie> repo, IMapper mapper, MoviePost model)
+        public static async Task<IResult> Create(IRepository<Movie> repo, IRepository<Screening> screeningRepo, IMapper mapper, MoviePost model)
         {
             try
             {
@@ -29,20 +29,33 @@ namespace api_cinema_challenge.Endpoints
                     Rating = model.Rating,
                     Description = model.Description,
                     RuntimeMins = model.RuntimeMins,
-                    Screenings = model.Screenings,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
-
                 var createdEntity = await repo.Insert(newEntity);
-                var dto = mapper.Map<MovieDTO>(createdEntity);
+
+                foreach (var s in model.Screenings)
+                {
+                    var newScreening = new Screening()
+                    {
+                        ScreenNumber = s.ScreenNumber,
+                        Capacity = s.Capacity,
+                        StartsAt = s.StartsAt,
+                        MovieId = createdEntity.Id,
+                    };
+
+                    await screeningRepo.Insert(newScreening);
+                }
+
+                var getEntity = await repo.GetById(createdEntity.Id);
+                var dto = mapper.Map<MovieDTO>(getEntity);
                 
                 var payload = new Payload<MovieDTO>
                 {
                     Status = "success",
                     Data = dto
                 };
-                return TypedResults.Created($"/{createdEntity.Id}", payload);
+                return TypedResults.Created($"/{getEntity.Id}", payload);
             }
             catch (Exception ex)
             {

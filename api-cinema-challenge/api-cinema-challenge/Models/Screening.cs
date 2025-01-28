@@ -21,7 +21,7 @@ namespace api_cinema_challenge.Models
 
         [ForeignKey("movies")]
         public int MovieId { get; set; }
-
+        public Movie Movie { get; set; }
         public List<Ticket> Ticket { get; set; }
 
     }

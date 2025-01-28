@@ -14,6 +14,6 @@ namespace api_cinema_challenge.DTO
 
         public int RuntimeMins { get; set; }
 
-        public List<Screening>? Screenings { get; set; }
+        public List<ScreeningPost>? Screenings { get; set; }
     }
 }

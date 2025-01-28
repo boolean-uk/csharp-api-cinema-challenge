@@ -35,6 +35,12 @@ namespace api_cinema_challenge.Data
                 .HasForeignKey(t => t.ScreeningId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Screening>()
+                .HasOne(s => s.Movie)
+                .WithMany(m => m.Screenings)
+                .HasForeignKey(s => s.MovieId)
+                .OnDelete(DeleteBehavior.Cascade);
+               
         }
 
         public DbSet<Customer> Customers { get; set; }

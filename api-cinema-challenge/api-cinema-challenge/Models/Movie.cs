@@ -22,6 +22,6 @@ namespace api_cinema_challenge.Models
         [Column("runtime_mins")]
         public int RuntimeMins { get; set; }
 
-        public List<Screening> Screenings { get; set; } 
+        public List<Screening> Screenings { get; set; } = [];
     }
 }
