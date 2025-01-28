@@ -1,11 +1,25 @@
 using api_cinema_challenge.Data;
+using api_cinema_challenge.EndPoints;
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<CinemaContext>();
+builder.Services.AddControllers();
+
+builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
+
+builder.Services.AddDbContext<CinemaContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
@@ -17,4 +31,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
+app.ConfigureCustomerEndPoints();
+app.ConfigureMovieEndPoints();
+
+await app.SeedCinemaData();
+
 app.Run();
