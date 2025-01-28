@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
     <Folder Include="Migrations\" />
+    <Folder Include="ViewModel\" />
   </ItemGroup>
 
 </Project>

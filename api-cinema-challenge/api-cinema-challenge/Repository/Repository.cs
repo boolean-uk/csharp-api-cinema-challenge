@@ -1,5 +1,7 @@
 ﻿using api_cinema_challenge.Data;
+using api_cinema_challenge.DTOs;
 using api_cinema_challenge.Models;
+using api_cinema_challenge.Payload;
 using Microsoft.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Repository
@@ -45,21 +47,52 @@ namespace api_cinema_challenge.Repository
         {
             return await _db.Movies.ToListAsync();
         }
-        public Task<Movie> GetMovie(int id)
+        public async Task<Movie?> GetMovie(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Movies.FirstOrDefaultAsync(m => m.Id == id);
         }
-        public Task<Movie> CreateMovie(Movie movie)
+        public async Task<Movie> CreateMovie(MovieDTO movieDTO)
         {
-            throw new NotImplementedException();
+            Movie movie = new Movie()
+            {
+                Title = movieDTO.Title,
+                Rating = movieDTO.Rating,
+                RuntimeMins = movieDTO.RuntimeMins,
+                Description = movieDTO.Description,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            await _db.AddAsync(movie);
+            await _db.SaveChangesAsync();
+            return movie;
         }
-        public Task<Movie> UpdateMovie(int id, Movie movie)
+        public async Task<Movie?> UpdateMovie(int id, MovieDTO movie)
         {
-            throw new NotImplementedException();
+            var movieToUpdate = await _db.Movies.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (movieToUpdate == null)
+            {
+                return null;
+            }
+            movieToUpdate.Title = movie.Title;
+            movieToUpdate.Rating = movie.Rating;
+            movieToUpdate.RuntimeMins = movie.RuntimeMins;
+            movieToUpdate.Description = movie.Description;
+            movieToUpdate.UpdatedAt = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
+
+            return movieToUpdate;
         }
-        public Task<Movie> DeleteMovie(int id)
+        public async Task<Movie?> DeleteMovie(int id)
         {
-            throw new NotImplementedException();
+            var movieToDelete = await _db.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            if(movieToDelete == null)
+            {
+                return null;
+            }
+            _db.Movies.Remove(movieToDelete);
+            await _db.SaveChangesAsync();
+            return movieToDelete;
         }
 
         // SCREENINGS _______________________________________________________
@@ -111,6 +144,22 @@ namespace api_cinema_challenge.Repository
             throw new NotImplementedException();
         }
 
-
+        // MISC _______________________________________________________
+        public Task<ApiResponse<T>> GeneratePayload<T>(T data)
+        {
+            return Task.FromResult(new ApiResponse<T>
+            {
+                Status = "success",
+                Data = data
+            });
+        }
+        public Task<ApiResponse<T>> GenerateErrorPayload<T>(T data, string message)
+        {
+            return Task.FromResult(new ApiResponse<T>
+            {
+                Status = message,
+                Data = data
+            });
+        }
     }
 }

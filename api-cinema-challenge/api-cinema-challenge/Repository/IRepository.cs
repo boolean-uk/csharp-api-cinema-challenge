@@ -1,4 +1,6 @@
-﻿using api_cinema_challenge.Models;
+﻿using api_cinema_challenge.DTOs;
+using api_cinema_challenge.Models;
+using api_cinema_challenge.Payload;
 
 namespace api_cinema_challenge.Repository
 {
@@ -12,11 +14,11 @@ namespace api_cinema_challenge.Repository
         Task<Customer> DeleteCustomer(int id);
 
         // Movies
-        Task<IEnumerable<Movie>> GetMovies();
-        Task<Movie> GetMovie(int id);
-        Task<Movie> CreateMovie(Movie movie);
-        Task<Movie> UpdateMovie(int id, Movie movie);
-        Task<Movie> DeleteMovie(int id);
+        Task<IEnumerable<Movie>> GetMovies(); //
+        Task<Movie?> GetMovie(int id); //
+        Task<Movie> CreateMovie(MovieDTO movie);
+        Task<Movie?> UpdateMovie(int id, MovieDTO movie);
+        Task<Movie?> DeleteMovie(int id);
 
         // Screenings
         Task<IEnumerable<Screening>> GetScreenings();
@@ -31,6 +33,10 @@ namespace api_cinema_challenge.Repository
         Task<Ticket> CreateTicket(Ticket ticket);
         Task<Ticket> UpdateTicket(int id, Ticket ticket);
         Task<Ticket> DeleteTicket(int id);
+
+        // MISC
+        Task<ApiResponse<T>> GeneratePayload<T>(T data);
+        Task<ApiResponse<T>> GenerateErrorPayload<T>(T data, string message);
 
 
     }
