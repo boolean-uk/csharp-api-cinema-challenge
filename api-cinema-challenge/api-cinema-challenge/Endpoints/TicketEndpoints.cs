@@ -51,15 +51,16 @@ namespace api_cinema_challenge.Endpoints
          * Get all tickets for a customer
          */
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAll(IRepository<Customer> repo, IMapper mapper, int id)
+        public static async Task<IResult> GetAll(IRepository<Ticket> repo, IMapper mapper, int customerId, int screeningId)
         {
             try
             {
-                var entities = await repo.GetByIdWithNestedIncludes(c => c.Id == id,
+                var entities = await repo.GetWithNestedIncludes(
                     query => query
-                    .Include(c => c.Tickets)
-                );
-                var dtos = mapper.Map<List<TicketDTO>>(entities.Tickets);
+                    .Where(t => t.CustomerId == customerId && t.ScreeningId == screeningId)
+                    .Include(t => t.Customer)
+                    .Include(t=>t.Screening));
+                var dtos = mapper.Map<List<TicketDTO>>(entities);
                 var payload = new Payload<List<TicketDTO>>();
                 payload.Status = "success";
                 payload.Data = dtos;
