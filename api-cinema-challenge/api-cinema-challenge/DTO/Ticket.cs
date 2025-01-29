@@ -6,7 +6,7 @@
         // Properties
         public int Id { get; set; }
         public string TicketType { get; set; }
-        public int Price { get; set; }
+        public double Price { get; set; }
         public ScreenName Screen { get; set; }
         public SeatInternal Seat { get; set; }
         public MovieSimple Movie { get; set; }

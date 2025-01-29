@@ -2,10 +2,10 @@
 {
     public enum SeatType
     {
-        Standard,
-        Premium,
-        Massage,
-        Sofa
+        Standard = 0,
+        Premium = 20,
+        Massage = 50,
+        Sofa = 10
     }
     public enum TicketType
     {

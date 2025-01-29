@@ -1,4 +1,5 @@
-﻿using api_cinema_challenge.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using api_cinema_challenge.Enums;
 
 namespace api_cinema_challenge.Models
 {
@@ -17,5 +18,8 @@ namespace api_cinema_challenge.Models
         private int _screenId;
         public int ScreenId { get { return Screening?.ScreenId ?? _screenId; } set { _screenId = value; } }
         public Seat Seat { get; set; }
+
+        [NotMapped]
+        public double Price => (int)TicketType + (int)Seat.SeatType;
     }
 }

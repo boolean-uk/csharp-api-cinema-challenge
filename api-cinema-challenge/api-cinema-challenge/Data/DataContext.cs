@@ -40,6 +40,9 @@ namespace api_cinema_challenge.Data
                 .WithMany(x => x.Seats)
                 .HasForeignKey(x => x.ScreenId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Seat>()
+                .Property(x => x.SeatType)
+                .HasConversion<string>();
 
             modelBuilder.Entity<Screening>()
                 .HasOne(x => x.Movie)

@@ -8,7 +8,7 @@ namespace api_cinema_challenge.Tools
     {
         public MappingProfile()
         {
-            CreateMap<Customer, CustomerView>();
+            CreateMap<Enum, string>().ConvertUsing(e => e.ToString());
 
             CreateMap<Movie, MovieView>();
             CreateMap<Movie, MovieSimple>();
@@ -25,15 +25,14 @@ namespace api_cinema_challenge.Tools
             CreateMap<Screening, ScreeningScreen>();
             CreateMap<Screening, ScreeningSimple>();
 
-            CreateMap<Seat, SeatView>()
-                .ForMember(dst => dst.SeatType, opt => opt.MapFrom(src => src.SeatType.ToString()));
-            CreateMap<Seat, SeatInternal>()
-                .ForMember(dst => dst.SeatType, opt => opt.MapFrom(src => src.SeatType.ToString()));
+            CreateMap<Seat, SeatView>();
+            CreateMap<Seat, SeatInternal>();
+
             CreateMap<Ticket, TicketView>()
-                .ForMember(dst => dst.TicketType, opt => opt.MapFrom(src => src.TicketType.ToString()))
                 .ForMember(dst => dst.Screen, opt => opt.MapFrom(src => src.Screening.Screen))
-                .ForMember(dst => dst.Movie, opt => opt.MapFrom(src => src.Screening.Movie))
-                .ForMember(dst => dst.Price, opt => opt.MapFrom(src => (int)src.TicketType));
+                .ForMember(dst => dst.Movie, opt => opt.MapFrom(src => src.Screening.Movie));
+
+            CreateMap<Customer, CustomerView>();
         }
     }
 }
