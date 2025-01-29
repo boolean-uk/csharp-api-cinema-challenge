@@ -28,5 +28,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.ConfigureCustomers();
+app.ConfigureMovies();
+app.ConfigureScreenings();
+app.ConfigureTickets();
 
 app.Run();

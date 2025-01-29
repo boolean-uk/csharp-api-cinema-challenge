@@ -55,11 +55,11 @@ namespace api_cinema_challenge.Data
                 );
 
             modelBuilder.Entity<Screening>().HasData(
-                new Screening() { Id = 1, MovieId = 1, ScreenNumber = 1, StartsAt = new DateTime(2010, 1, 1, 20, 0, 0, DateTimeKind.Utc) },
-                new Screening() { Id = 2, MovieId = 1, ScreenNumber = 2, StartsAt = new DateTime(2010, 1, 1, 20, 0, 0, DateTimeKind.Utc) },
-                new Screening() { Id = 3, MovieId = 2, ScreenNumber = 1, StartsAt = new DateTime(2014, 1, 1, 20, 0, 0, DateTimeKind.Utc) },
-                new Screening() { Id = 4, MovieId = 3, ScreenNumber = 1, StartsAt = new DateTime(2023, 1, 1, 20, 0, 0, DateTimeKind.Utc) },
-                new Screening() { Id = 5, MovieId = 3, ScreenNumber = 2, StartsAt = new DateTime(2023, 1, 1, 20, 0, 0, DateTimeKind.Utc) }
+                new Screening() { Id = 1, MovieId = 1, ScreenNumber = 1, Capacity = 40, StartsAt = new DateTime(2010, 1, 1, 20, 0, 0, DateTimeKind.Utc) },
+                new Screening() { Id = 2, MovieId = 1, ScreenNumber = 2, Capacity = 40, StartsAt = new DateTime(2010, 1, 1, 20, 0, 0, DateTimeKind.Utc) },
+                new Screening() { Id = 3, MovieId = 2, ScreenNumber = 1, Capacity = 30, StartsAt = new DateTime(2014, 1, 1, 20, 0, 0, DateTimeKind.Utc) },
+                new Screening() { Id = 4, MovieId = 3, ScreenNumber = 1, Capacity = 70, StartsAt = new DateTime(2023, 1, 1, 20, 0, 0, DateTimeKind.Utc) },
+                new Screening() { Id = 5, MovieId = 3, ScreenNumber = 2, Capacity = 80, StartsAt = new DateTime(2023, 1, 1, 20, 0, 0, DateTimeKind.Utc) }
                 );
 
             modelBuilder.Entity<Ticket>().HasData(

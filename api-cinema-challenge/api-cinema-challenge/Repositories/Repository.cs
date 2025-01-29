@@ -42,5 +42,10 @@ namespace api_cinema_challenge.Repositories
             _db.SaveChanges();
             return entity;
         }
+
+        public async Task<T> GetById(int id)
+        {
+            return _table.Find(id);
+        }
     }
 }

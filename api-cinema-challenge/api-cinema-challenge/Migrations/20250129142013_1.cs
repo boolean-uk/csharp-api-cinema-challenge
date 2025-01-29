@@ -107,10 +107,10 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "Id", "CreatedAt", "Email", "Name", "Phone", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(5215), "chris@evans.com", "Chris Evans", "11111111", new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(5217) },
-                    { 2, new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(5814), "chris@hemsworth.com", "Chris Hemsworth", "22222222", new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(5815) },
-                    { 3, new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(5816), "chris@pine.com", "Chris Pine", "33333333", new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(5817) },
-                    { 4, new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(5818), "chris@pratt.com", "Chris Pratt", "44444444", new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(5819) }
+                    { 1, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(3699), "chris@evans.com", "Chris Evans", "11111111", new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(3702) },
+                    { 2, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(4171), "chris@hemsworth.com", "Chris Hemsworth", "22222222", new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(4171) },
+                    { 3, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(4172), "chris@pine.com", "Chris Pine", "33333333", new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(4172) },
+                    { 4, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(4173), "chris@pratt.com", "Chris Pratt", "44444444", new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(4174) }
                 });
 
             migrationBuilder.InsertData(
@@ -118,9 +118,9 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "Rating", "RuntimeMins", "Title", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(9403), "WE HAVE TO GO DEEPER", "Very good", 150, "Inception", new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(9405) },
-                    { 2, new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(9903), "COME ON TARS", "Very good", 150, "Interstellar", new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(9903) },
-                    { 3, new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(9905), "I HAVE BECOME DEATH", "Very good", 150, "Oppenheimer", new DateTime(2025, 1, 29, 10, 16, 17, 526, DateTimeKind.Utc).AddTicks(9905) }
+                    { 1, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(7611), "WE HAVE TO GO DEEPER", "Very good", 150, "Inception", new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(7611) },
+                    { 2, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8105), "COME ON TARS", "Very good", 150, "Interstellar", new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8105) },
+                    { 3, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8107), "I HAVE BECOME DEATH", "Very good", 150, "Oppenheimer", new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8107) }
                 });
 
             migrationBuilder.InsertData(
@@ -128,11 +128,11 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "Id", "Capacity", "CreatedAt", "MovieId", "ScreenNumber", "StartsAt", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, 0, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(275), 1, 1, new DateTime(2010, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(276) },
-                    { 2, 0, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(719), 1, 2, new DateTime(2010, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(719) },
-                    { 3, 0, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(722), 2, 1, new DateTime(2014, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(722) },
-                    { 4, 0, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(723), 3, 1, new DateTime(2023, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(723) },
-                    { 5, 0, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(724), 3, 2, new DateTime(2023, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(725) }
+                    { 1, 40, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8450), 1, 1, new DateTime(2010, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8451) },
+                    { 2, 40, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8923), 1, 2, new DateTime(2010, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8924) },
+                    { 3, 30, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8925), 2, 1, new DateTime(2014, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8926) },
+                    { 4, 70, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8928), 3, 1, new DateTime(2023, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8928) },
+                    { 5, 80, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8929), 3, 2, new DateTime(2023, 1, 1, 20, 0, 0, 0, DateTimeKind.Utc), new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(8929) }
                 });
 
             migrationBuilder.InsertData(
@@ -140,12 +140,12 @@ namespace api_cinema_challenge.Migrations
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "ScreeningId", "UpdatedAt", "numSeats" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1008), 1, 1, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1009), 1 },
-                    { 2, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1284), 1, 2, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1284), 2 },
-                    { 3, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1285), 1, 3, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1286), 4 },
-                    { 4, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1287), 2, 1, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1287), 2 },
-                    { 5, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1288), 3, 2, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1288), 1 },
-                    { 6, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1289), 4, 3, new DateTime(2025, 1, 29, 10, 16, 17, 527, DateTimeKind.Utc).AddTicks(1289), 2 }
+                    { 1, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9189), 1, 1, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9189), 1 },
+                    { 2, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9448), 1, 2, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9448), 2 },
+                    { 3, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9450), 1, 3, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9450), 4 },
+                    { 4, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9451), 2, 1, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9451), 2 },
+                    { 5, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9452), 3, 2, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9452), 1 },
+                    { 6, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9453), 4, 3, new DateTime(2025, 1, 29, 14, 20, 12, 801, DateTimeKind.Utc).AddTicks(9453), 2 }
                 });
 
             migrationBuilder.CreateIndex(
