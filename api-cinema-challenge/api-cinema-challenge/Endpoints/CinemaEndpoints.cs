@@ -10,8 +10,6 @@ namespace api_cinema_challenge.Endpoints
     {
         public static void ConfigureCinemaEndpoint(this WebApplication app)
         {
-
-
             var movieGroup = app.MapGroup("movies");
             movieGroup.MapGet("/", GetMovies);
             movieGroup.MapGet("/{id}", GetMovie);
@@ -20,7 +18,7 @@ namespace api_cinema_challenge.Endpoints
             movieGroup.MapDelete("/{id}", DeleteMovie);
             //screenings for movies
             movieGroup.MapPost("/{movieId}/screenings", CreateScreening);
-            movieGroup.MapGet("/{id}/screenings", GetScreenings);
+            movieGroup.MapGet("/{movieId}/screenings", GetScreenings);
 
 
 
@@ -30,6 +28,10 @@ namespace api_cinema_challenge.Endpoints
             customerGroup.MapPost("/", CreateCustomer);
             customerGroup.MapPut("/{id}", UpdateCustomer);
             customerGroup.MapDelete("/{id}", DeleteCustomer);
+            // tickets
+            customerGroup.MapPost("/{customerId}/screenings/{screeningId}", CreateTicket);
+            customerGroup.MapGet("/{customerId}/screenings/{screeningId}", GetTickets);
+
 
         }
 
@@ -153,13 +155,41 @@ namespace api_cinema_challenge.Endpoints
             var deletedCustomer = await repository.DeleteCustomer(id);
             if (deletedCustomer == null)
             {
-                return Results.BadRequest(await repository.GenerateErrorPayload(deletedCustomer, $"Customer with id {id} was not found"));
+                return Results.NotFound(await repository.GenerateErrorPayload(deletedCustomer, $"Customer with id {id} was not found"));
             }
 
             return Results.Ok(await repository.GeneratePayload(deletedCustomer));
         }
 
+        // tickets for customers
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public static async Task<IResult> CreateTicket(IRepository repository, int customerId, int screeningId, TicketDTO ticketDTO)
+        {
+            var customer = await repository.GetCustomer(customerId);
+            if (customer == null)
+            {
+                return Results.NotFound(await repository.GenerateErrorPayload(customer, $"Customer with id {customerId} was not found"));
+            }
 
+            var screening = await repository.GetScreening(screeningId);
+            if (screening == null)
+            {
+                return Results.NotFound(await repository.GenerateErrorPayload(screening, $"Screening with id {screeningId} was not found"));
+
+            }
+
+            var ticket = await repository.CreateTicket(customer.Id, screening.Id, ticketDTO);
+
+            return Results.Created($"/customers/{customerId}/screenings/{screeningId}", await repository.GeneratePayload(ticket));
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetTickets(IRepository repository, int customerId, int screeningId)
+        {
+            var tickets = await repository.GetTickets(customerId, screeningId);
+            return Results.Ok(await repository.GeneratePayload(tickets));
+
+        }
 
     }
 }

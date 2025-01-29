@@ -146,10 +146,12 @@ namespace api_cinema_challenge.Repository
 
             return await _db.Screenings.Where(s => s.MovieId == movieId).ToListAsync();
         }
+
         public async Task<Screening?> GetScreening(int id)
         {
             return await _db.Screenings.FirstOrDefaultAsync(s => s.Id == id);
         }
+
         public async Task<Screening> CreateScreening(ScreeningDTO screeningDTO, int movieId)
         {
             Screening screening = new Screening()
@@ -169,30 +171,29 @@ namespace api_cinema_challenge.Repository
         // TICKETS _______________________________________________________
 
 
-        public Task<IEnumerable<Ticket>> GetTickets()
+        public async Task<IEnumerable<Ticket>> GetTickets(int customerId, int screeningId)
         {
-            throw new NotImplementedException();
+            return await _db.Tickets.Where(t => t.CustomerId == customerId && t.ScreeningId == screeningId).ToListAsync();
         }
 
-        public Task<Ticket> GetTicket(int id)
+        public async Task<Ticket> CreateTicket(int customerId, int screeningId, TicketDTO ticketDTO)
         {
-            throw new NotImplementedException();
+            Ticket ticket = new Ticket()
+            {
+                CustomerId = customerId,
+                ScreeningId = screeningId,
+                NumSeats = ticketDTO.NumSeats,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt= DateTime.UtcNow,
+            };
+
+            await _db.AddAsync(ticket);
+            await _db.SaveChangesAsync();
+
+            return ticket;
         }
 
-        public Task<Ticket> CreateTicket(Ticket ticket)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<Ticket> UpdateTicket(int id, Ticket ticket)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<Ticket> DeleteTicket(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        // MISC _______________________________________________________
+        // Payload _______________________________________________________
         public Task<ApiResponse<T>> GeneratePayload<T>(T data)
         {
             return Task.FromResult(new ApiResponse<T>

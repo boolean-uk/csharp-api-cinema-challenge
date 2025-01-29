@@ -24,6 +24,7 @@ namespace api_cinema_challenge.Models
         [Column("UpdatedAt")]
         public DateTime UpdatedAt { get; set; }
 
-
+        public Customer customer { get; set; }
+        public Screening screening { get; set; }
     }
 }

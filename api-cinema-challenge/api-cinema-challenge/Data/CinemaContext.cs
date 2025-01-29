@@ -125,104 +125,104 @@ namespace api_cinema_challenge.Data
                 }
             );
             modelBuilder.Entity<Screening>().HasData(
-        new Screening
-        {
-            Id = 1,
-            MovieId = 1,
-            ScreenNumber = 1,
-            Capacity = 100,
-            StartsAt = now.AddHours(2),
-            CreatedAt = now,
-            UpdatedAt = now
-        },
-        new Screening
-        {
-            Id = 2,
-            MovieId = 4,
-            ScreenNumber = 2,
-            Capacity = 80,
-            StartsAt = now.AddHours(3),
-            CreatedAt = now,
-            UpdatedAt = now
-        },
-        new Screening
-        {
-            Id = 3,
-            MovieId = 5,
-            ScreenNumber = 3,
-            Capacity = 120,
-            StartsAt = now.AddDays(1).AddHours(2),
-            CreatedAt = now,
-            UpdatedAt = now
-        },
-        new Screening
-        {
-            Id = 4,
-            MovieId = 3,
-            ScreenNumber = 1,
-            Capacity = 90,
-            StartsAt = now.AddDays(1).AddHours(5),
-            CreatedAt = now,
-            UpdatedAt = now
-        },
-        new Screening
-        {
-            Id = 5,
-            MovieId = 3,
-            ScreenNumber = 2,
-            Capacity = 110,
-            StartsAt = now.AddHours(6),
-            CreatedAt = now,
-            UpdatedAt = now
-        }
+                new Screening
+                {
+                    Id = 1,
+                    MovieId = 1,
+                    ScreenNumber = 1,
+                    Capacity = 100,
+                    StartsAt = now.AddHours(2),
+                    CreatedAt = now,
+                    UpdatedAt = now
+                },
+                new Screening
+                {
+                    Id = 2,
+                    MovieId = 4,
+                    ScreenNumber = 2,
+                    Capacity = 80,
+                    StartsAt = now.AddHours(3),
+                    CreatedAt = now,
+                    UpdatedAt = now
+                },
+                new Screening
+                {
+                    Id = 3,
+                    MovieId = 5,
+                    ScreenNumber = 3,
+                    Capacity = 120,
+                    StartsAt = now.AddDays(1).AddHours(2),
+                    CreatedAt = now,
+                    UpdatedAt = now
+                },
+                new Screening
+                {
+                    Id = 4,
+                    MovieId = 3,
+                    ScreenNumber = 1,
+                    Capacity = 90,
+                    StartsAt = now.AddDays(1).AddHours(5),
+                    CreatedAt = now,
+                    UpdatedAt = now
+                },
+                new Screening
+                {
+                    Id = 5,
+                    MovieId = 3,
+                    ScreenNumber = 2,
+                    Capacity = 110,
+                    StartsAt = now.AddHours(6),
+                    CreatedAt = now,
+                    UpdatedAt = now
+                }
     );
             modelBuilder.Entity<Ticket>().HasData(
-        new Ticket
-        {
-            Id = 1,
-            ScreeningId = 1,
-            CustomerId = 1,
-            NumSeats = 2,
-            CreatedAt = now,
-            UpdatedAt = now
-        },
-        new Ticket
-        {
-            Id = 2,
-            ScreeningId = 2,
-            CustomerId = 2,
-            NumSeats = 1,
-            CreatedAt = now,
-            UpdatedAt = now
-        },
-        new Ticket
-        {
-            Id = 3,
-            ScreeningId = 3,
-            CustomerId = 3,
-            NumSeats = 4,
-            CreatedAt = now,
-            UpdatedAt = now
-        },
-        new Ticket
-        {
-            Id = 4,
-            ScreeningId = 4,
-            CustomerId = 4,
-            NumSeats = 3,
-            CreatedAt = now,
-            UpdatedAt = now
-        },
-        new Ticket
-        {
-            Id = 5,
-            ScreeningId = 5,
-            CustomerId = 5,
-            NumSeats = 2,
-            CreatedAt = now,
-            UpdatedAt = now
-        }
-    );
+            new Ticket
+            {
+                Id = 1,
+                ScreeningId = 1,
+                CustomerId = 1,
+                NumSeats = 2,
+                CreatedAt = now,
+                UpdatedAt = now
+            },
+            new Ticket
+            {
+                Id = 2,
+                ScreeningId = 2,
+                CustomerId = 2,
+                NumSeats = 1,
+                CreatedAt = now,
+                UpdatedAt = now
+            },
+            new Ticket
+            {
+                Id = 3,
+                ScreeningId = 3,
+                CustomerId = 3,
+                NumSeats = 4,
+                CreatedAt = now,
+                UpdatedAt = now
+            },
+            new Ticket
+            {
+                Id = 4,
+                ScreeningId = 4,
+                CustomerId = 4,
+                NumSeats = 3,
+                CreatedAt = now,
+                UpdatedAt = now
+            },
+            new Ticket
+            {
+                Id = 5,
+                ScreeningId = 5,
+                CustomerId = 5,
+                NumSeats = 2,
+                CreatedAt = now,
+                UpdatedAt = now
+            }
+            );  
         }
 
         public DbSet<Customer> Customers { get; set; }

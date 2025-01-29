@@ -26,11 +26,8 @@ namespace api_cinema_challenge.Repository
         Task<Screening> CreateScreening(ScreeningDTO? screening, int movieId);
 
         // Tickets
-        Task<IEnumerable<Ticket>> GetTickets();
-        Task<Ticket> GetTicket(int id);
-        Task<Ticket> CreateTicket(Ticket ticket);
-        Task<Ticket> UpdateTicket(int id, Ticket ticket);
-        Task<Ticket> DeleteTicket(int id);
+        Task<IEnumerable<Ticket>> GetTickets(int customerId, int screeningId);
+        Task<Ticket> CreateTicket(int customerId, int screeningId, TicketDTO ticketDTO);
 
         // MISC
         Task<ApiResponse<T>> GeneratePayload<T>(T data);
