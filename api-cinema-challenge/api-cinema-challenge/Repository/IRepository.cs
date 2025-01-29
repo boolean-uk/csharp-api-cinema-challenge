@@ -9,8 +9,8 @@ namespace api_cinema_challenge.Repository
         // Customers
         Task<IEnumerable<Customer>> GetCustomers();
         Task<Customer> GetCustomer(int id);
-        Task<Customer> CreateCustomer(Customer customer);
-        Task<Customer> UpdateCustomer(int id, Customer customer);
+        Task<Customer> CreateCustomer(CustomerDTO customer);
+        Task<Customer> UpdateCustomer(int id, CustomerDTO customer);
         Task<Customer> DeleteCustomer(int id);
 
         // Movies
@@ -21,11 +21,9 @@ namespace api_cinema_challenge.Repository
         Task<Movie?> DeleteMovie(int id);
 
         // Screenings
-        Task<IEnumerable<Screening>> GetScreenings();
+        Task<IEnumerable<Screening>?> GetScreenings(int id);
         Task<Screening> GetScreening(int id);
-        Task<Screening> CreateScreening(Screening screening);
-        Task<Screening> UpdateScreening(int id, Screening screening);
-        Task<Screening> DeleteScreening(int id);
+        Task<Screening> CreateScreening(ScreeningDTO? screening, int movieId);
 
         // Tickets
         Task<IEnumerable<Ticket>> GetTickets();

@@ -1,4 +1,6 @@
-﻿namespace api_cinema_challenge.DTOs
+﻿using api_cinema_challenge.Models;
+
+namespace api_cinema_challenge.DTOs
 {
     public class MovieDTO
     {
@@ -9,5 +11,7 @@
         public string Description { get; set; }
 
         public int RuntimeMins { get; set; }
+
+        public List<ScreeningDTO>? Screenings { get; set; }
     }
 }

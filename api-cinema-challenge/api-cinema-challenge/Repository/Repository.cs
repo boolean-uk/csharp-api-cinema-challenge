@@ -17,27 +17,57 @@ namespace api_cinema_challenge.Repository
 
 
         // CUSTOMERS _______________________________________________________
-        public Task<IEnumerable<Customer>> GetCustomers()
+        public async Task<IEnumerable<Customer>> GetCustomers()
         {
-            throw new NotImplementedException();
+            return await _db.Customers.ToListAsync();
         }
-        public Task<Customer> GetCustomer(int id)
+        public async Task<Customer?> GetCustomer(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Customer> CreateCustomer(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<Customer> UpdateCustomer(int id, Customer customer)
-        {
-            throw new NotImplementedException();
+            return await _db.Customers.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<Customer> DeleteCustomer(int id)
+        public async Task<Customer> CreateCustomer(CustomerDTO customerDTO)
         {
-            throw new NotImplementedException();
+            Customer customer = new Customer()
+            {
+                Name = customerDTO.Name,
+                Email = customerDTO.Email,
+                Phone = customerDTO.Phone,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            await _db.AddAsync(customer);
+            await _db.SaveChangesAsync();
+            return customer;
+        }
+        public async Task<Customer?> UpdateCustomer(int id, CustomerDTO customer)
+        {
+            var customerToUpdate = await _db.Customers.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (customerToUpdate == null)
+            {
+                return null;
+            }
+            customerToUpdate.Name = customer.Name;
+            customerToUpdate.Email = customer.Email;
+            customerToUpdate.Phone = customer.Phone;
+            customerToUpdate.UpdatedAt = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
+
+            return customerToUpdate;
+        }
+
+        public async Task<Customer> DeleteCustomer(int id)
+        {
+            var customerToDelete = await _db.Customers.FirstOrDefaultAsync(m => m.Id == id);
+            if (customerToDelete == null)
+            {
+                return null;
+            }
+            _db.Customers.Remove(customerToDelete);
+            await _db.SaveChangesAsync();
+            return customerToDelete;
         }
 
         // MOVIES _______________________________________________________
@@ -62,8 +92,18 @@ namespace api_cinema_challenge.Repository
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
+
+
             await _db.AddAsync(movie);
             await _db.SaveChangesAsync();
+
+            if (movieDTO.Screenings != null)
+            {
+                foreach (var s in movieDTO.Screenings)
+                {
+                    await this.CreateScreening(s, movie.Id);
+                }
+            }
             return movie;
         }
         public async Task<Movie?> UpdateMovie(int id, MovieDTO movie)
@@ -96,26 +136,34 @@ namespace api_cinema_challenge.Repository
         }
 
         // SCREENINGS _______________________________________________________
-        public Task<IEnumerable<Screening>> GetScreenings()
+        public async Task<IEnumerable<Screening>?> GetScreenings(int movieId)
         {
-            throw new NotImplementedException();
-        }
-        public Task<Screening> GetScreening(int id)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<Screening> CreateScreening(Screening screening)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<Screening> UpdateScreening(int id, Screening screening)
-        {
-            throw new NotImplementedException();
-        }
+            var movie = await this.GetMovie(movieId);
+            if(movie == null)
+            {
+                return null;
+            }
 
-        public Task<Screening> DeleteScreening(int id)
+            return await _db.Screenings.Where(s => s.MovieId == movieId).ToListAsync();
+        }
+        public async Task<Screening?> GetScreening(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Screenings.FirstOrDefaultAsync(s => s.Id == id);
+        }
+        public async Task<Screening> CreateScreening(ScreeningDTO screeningDTO, int movieId)
+        {
+            Screening screening = new Screening()
+            {
+                ScreenNumber = screeningDTO.ScreenNumber,
+                Capacity = screeningDTO.Capacity,
+                StartsAt = screeningDTO.StartsAt,
+                MovieId = movieId,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            await _db.AddAsync(screening);
+            await _db.SaveChangesAsync();
+            return screening;
         }
 
         // TICKETS _______________________________________________________

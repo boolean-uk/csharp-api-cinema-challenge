@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace api_cinema_challenge.Models
 {
@@ -26,6 +27,10 @@ namespace api_cinema_challenge.Models
         [Required]
         [Column("UpdatedAt")]
         public DateTime UpdatedAt { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+
+        public List<Screening>? Screenings { get; set; }
 
     }
 }
