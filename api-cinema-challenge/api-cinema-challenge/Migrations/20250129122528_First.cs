@@ -36,6 +36,9 @@ namespace api_cinema_challenge.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(type: "text", nullable: false),
+                    rating = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    runtime_mins = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -55,17 +58,17 @@ namespace api_cinema_challenge.Migrations
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     starts_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    movie_id = table.Column<int>(type: "integer", nullable: false),
-                    MovieId = table.Column<int>(type: "integer", nullable: true)
+                    movie_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_screening", x => x.id);
                     table.ForeignKey(
-                        name: "FK_screening_movie_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_screening_movie_movie_id",
+                        column: x => x.movie_id,
                         principalTable: "movie",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,9 +101,9 @@ namespace api_cinema_challenge.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_screening_MovieId",
+                name: "IX_screening_movie_id",
                 table: "screening",
-                column: "MovieId");
+                column: "movie_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ticket_customer_id",

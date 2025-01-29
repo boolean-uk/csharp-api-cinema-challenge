@@ -18,20 +18,23 @@ namespace api_cinema_challenge.Data
                         new Movie
                         {
                             Title = "Inception",
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow
+                            RuntimeMins = 139,
+                            Rating = "PG-15",
+                            Description = "Leonard Dag Condradsen drømmer seg bort"                           
                         },
                         new Movie
                         {
                             Title = "The Matrix",
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow
+                            RuntimeMins = 120,
+                            Rating = "PG-13",
+                            Description = "Ken-Ivar Rivdal unnslipper simulatoren"
                         },
                         new Movie
                         {
                             Title = "Interstellar",
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow
+                            RuntimeMins = 145,
+                            Rating = "PG-12",
+                            Description = "Mattis MæcCånnohei reiser i verdensrommet"
                         }
                     );
                 }
@@ -44,16 +47,12 @@ namespace api_cinema_challenge.Data
                             Name = "John Doe",
                             Email = "john.doe@example.com",
                             PhoneNumber = "123456789",
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow
                         },
                         new Customer
                         {
                             Name = "Jane Smith",
                             Email = "jane.smith@example.com",
                             PhoneNumber = "987654321",
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow
                         }
                     );
                 }
@@ -70,21 +69,17 @@ namespace api_cinema_challenge.Data
                     db.Screening.AddRange(
                         new Screening
                         {
-                            Movie_Id = inception.Id,
+                            MovieId = inception.Id,
                             ScreenNumber = 1,
                             Capasity = 80,
                             StartsAt = DateTime.UtcNow.AddDays(1),
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow
                         },
                         new Screening
                         {
-                            Movie_Id = matrix.Id,
+                            MovieId = matrix.Id,
                             ScreenNumber = 2,
                             Capasity = 58,
                             StartsAt = DateTime.UtcNow.AddDays(2),
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow
                         }
                     );
                 }
@@ -100,11 +95,9 @@ namespace api_cinema_challenge.Data
                     db.Ticket.AddRange(
                         new Ticket
                         {
-                            Customer_id = customer1.Id,
-                            Screening_id = screening1.Id,
+                            CustomerId = customer1.Id,
+                            ScreeningId = screening1.Id,
                             NumSeats = 2,
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedAt = DateTime.UtcNow
                         }
                     );
                 }

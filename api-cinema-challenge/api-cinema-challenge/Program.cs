@@ -13,7 +13,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<CinemaContext>();
+
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
+
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddDbContext<CinemaContext>(options => {
@@ -32,6 +37,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ConfigureScreeningEndpoints();
+app.ConfigureCustomerEndpoints();
+app.ConfigureMovieEndpoints();
 
 app.SeedAsync();
 app.UseHttpsRedirection();

@@ -12,7 +12,7 @@ using api_cinema_challenge.Data;
 namespace api_cinema_challenge.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20250128140306_First")]
+    [Migration("20250129122528_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -75,6 +75,20 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Rating")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("rating");
+
+                    b.Property<int>("RuntimeMins")
+                        .HasColumnType("integer")
+                        .HasColumnName("runtime_mins");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
@@ -106,10 +120,7 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int?>("MovieId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Movie_Id")
+                    b.Property<int>("MovieId")
                         .HasColumnType("integer")
                         .HasColumnName("movie_id");
 
@@ -145,7 +156,7 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("Customer_id")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("integer")
                         .HasColumnName("customer_id");
 
@@ -153,7 +164,7 @@ namespace api_cinema_challenge.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("num_seats");
 
-                    b.Property<int>("Screening_id")
+                    b.Property<int>("ScreeningId")
                         .HasColumnType("integer")
                         .HasColumnName("screening_id");
 
@@ -163,9 +174,9 @@ namespace api_cinema_challenge.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Customer_id");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("Screening_id");
+                    b.HasIndex("ScreeningId");
 
                     b.ToTable("ticket");
                 });
@@ -174,20 +185,22 @@ namespace api_cinema_challenge.Migrations
                 {
                     b.HasOne("api_cinema_challenge.Models.Movie", null)
                         .WithMany("Screenings")
-                        .HasForeignKey("MovieId");
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("api_cinema_challenge.Models.Ticket", b =>
                 {
                     b.HasOne("api_cinema_challenge.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("Customer_id")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("api_cinema_challenge.Models.Screening", "Screening")
                         .WithMany()
-                        .HasForeignKey("Screening_id")
+                        .HasForeignKey("ScreeningId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
