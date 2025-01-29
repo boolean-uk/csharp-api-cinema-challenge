@@ -27,6 +27,9 @@ namespace api_cinema_challenge.Data
             modelBuilder.Entity<Ticket>()
                 .HasIndex(x => new { x.SeatId, x.ScreeningId })
                 .IsUnique();
+            modelBuilder.Entity<Ticket>()
+                .Property(x => x.TicketType)
+                .HasConversion<string>();
 
             modelBuilder.Entity<Seat>().HasKey(e => new {e.Id, e.ScreenId});
             modelBuilder.Entity<Seat>()

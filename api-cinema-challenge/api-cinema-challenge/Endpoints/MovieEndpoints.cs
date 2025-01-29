@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                IEnumerable<Movie> movies = await repository.GetAll();
+                IEnumerable<Movie> movies = await repository.GetAll(q => q.Include(x => x.Screenings).ThenInclude(x => x.Screen));
                 return TypedResults.Ok(new Payload { Data = mapper.Map<List<MovieView>>(movies) });
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Movie movie = await repository.Get(id);
+                Movie movie = await repository.Get(id, q => q.Include(x => x.Screenings).ThenInclude(x => x.Screen));
                 return TypedResults.Ok(mapper.Map<MovieView>(movie));
             }
             catch (IdNotFoundException ex)
@@ -126,7 +126,7 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Movie movie = await repository.Get(id);
+                Movie movie = await repository.Get(id, q => q.Include(x => x.Screenings).ThenInclude(x => x.Screen));
                 if (entity.Title != null) movie.Title = entity.Title;
                 if (entity.Description != null) movie.Description = entity.Description;
                 if (entity.Rating != null) movie.Rating = entity.Rating;
@@ -140,8 +140,8 @@ namespace api_cinema_challenge.Endpoints
                     movie.ReleaseDate = releaseDate.ToUniversalTime();
                 }
 
-
-                movie = await movieRepository.Update(movie);
+                movie.UpdatedAt = DateTime.UtcNow;
+                await movieRepository.Update(movie);
                 return TypedResults.Created($"{Path}/{movie.Id}", new Payload
                 {
                     Data = mapper.Map<MovieView>(movie)

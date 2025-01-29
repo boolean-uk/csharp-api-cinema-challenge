@@ -34,6 +34,11 @@ namespace api_cinema_challenge.Repository
         public async Task<T> Delete(U id)
         {
             T entity = await Get(id);
+            return await Delete(entity);
+        }
+
+        public async Task<T> Delete(T entity)
+        {
             _table.Remove(entity);
             await _db.SaveChangesAsync();
             return entity;

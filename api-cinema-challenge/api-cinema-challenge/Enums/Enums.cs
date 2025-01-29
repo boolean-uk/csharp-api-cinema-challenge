@@ -7,4 +7,10 @@
         Massage,
         Sofa
     }
+    public enum TicketType
+    {
+        Child = 50,
+        Adult = 120,
+        Senior = 50
+    }
 }

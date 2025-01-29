@@ -16,6 +16,7 @@ namespace api_cinema_challenge.Repository
         Task<IEnumerable<T>> AddRange(params T[] entity);
         Task<T> Update(T entity);
         Task<T> Delete(U id);
+        Task<T> Delete(T entity);
         Task Save();
         Task<T> Find(Expression<Func<T, bool>> condition, params Func<IQueryable<T>, IQueryable<T>>[] includeChains);
         Task<IEnumerable<T>> FindAll(

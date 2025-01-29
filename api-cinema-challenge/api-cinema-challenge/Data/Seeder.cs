@@ -45,15 +45,15 @@ namespace api_cinema_challenge.Data
         ];
 
         private List<Ticket> _tickets = [
-            new Ticket {Id = 1, CustomerId = 1, ScreeningId = 1, ScreenId = 1, SeatId = 1},
-            new Ticket {Id = 2, CustomerId = 2, ScreeningId = 2, ScreenId = 3, SeatId = 10},
-            new Ticket {Id = 3, CustomerId = 2, ScreeningId = 2, ScreenId = 3, SeatId = 11},
-            new Ticket {Id = 4, CustomerId = 2, ScreeningId = 2, ScreenId = 3, SeatId = 12},
-            new Ticket {Id = 5, CustomerId = 2, ScreeningId = 2, ScreenId = 3, SeatId = 13},
-            new Ticket {Id = 6, CustomerId = 3, ScreeningId = 4, ScreenId = 3, SeatId = 2},
-            new Ticket {Id = 7, CustomerId = 1, ScreeningId = 4, ScreenId = 3, SeatId = 12},
-            new Ticket {Id = 8, CustomerId = 2, ScreeningId = 4, ScreenId = 3, SeatId = 17},
-            new Ticket {Id = 9, CustomerId = 2, ScreeningId = 4, ScreenId = 3, SeatId = 18},
+            new Ticket {Id = 1, CustomerId = 1, ScreeningId = 1, ScreenId = 1, SeatId = 1, TicketType = TicketType.Child},
+            new Ticket {Id = 2, CustomerId = 2, ScreeningId = 2, ScreenId = 3, SeatId = 10, TicketType = TicketType.Adult},
+            new Ticket {Id = 3, CustomerId = 2, ScreeningId = 2, ScreenId = 3, SeatId = 11, TicketType = TicketType.Senior},
+            new Ticket {Id = 4, CustomerId = 2, ScreeningId = 2, ScreenId = 3, SeatId = 12, TicketType = TicketType.Senior},
+            new Ticket {Id = 5, CustomerId = 2, ScreeningId = 2, ScreenId = 3, SeatId = 13, TicketType = TicketType.Adult},
+            new Ticket {Id = 6, CustomerId = 3, ScreeningId = 4, ScreenId = 3, SeatId = 2, TicketType = TicketType.Adult},
+            new Ticket {Id = 7, CustomerId = 1, ScreeningId = 4, ScreenId = 3, SeatId = 12, TicketType = TicketType.Child},
+            new Ticket {Id = 8, CustomerId = 2, ScreeningId = 4, ScreenId = 3, SeatId = 17, TicketType = TicketType.Senior},
+            new Ticket {Id = 9, CustomerId = 2, ScreeningId = 4, ScreenId = 3, SeatId = 18, TicketType = TicketType.Child},
         ];
 
         public Seeder()

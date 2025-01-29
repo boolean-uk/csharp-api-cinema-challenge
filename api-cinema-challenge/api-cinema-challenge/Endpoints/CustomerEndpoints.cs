@@ -109,6 +109,8 @@ namespace api_cinema_challenge.Endpoints
                 if (entity.LastName != null) customer.LastName = entity.LastName;
                 if (entity.Email != null) customer.Email = entity.Email;
                 if (entity.Phone != null) customer.Phone = entity.Phone;
+                customer.UpdatedAt = DateTime.UtcNow;
+
                 customer = await customerRepository.Update(customer);
                 return TypedResults.Created($"{Path}/{customer.Id}", new Payload
                 {

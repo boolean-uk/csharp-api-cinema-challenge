@@ -9,4 +9,6 @@
     public record MovieView(
         int Id, string Title, string Rating, string Description, int Runtime, DateTime ReleaseDate, 
         IEnumerable<ScreeningScreen> Screenings, DateTime CreatedAt, DateTime UpdatedAt);
+    public record MovieSimple(
+        string Title, string Rating, int Runtime);
 }

@@ -16,8 +16,8 @@ namespace api_cinema_challenge.Endpoints
         {
             var group = app.MapGroup(Path);
 
-            app.MapGet($"{MovieEndpoints.Path}/{{movieId}}/{Path}", GetScreenings);
-            app.MapPost($"{MovieEndpoints.Path}/{{movieId}}/{Path}", CreateScreening);
+            group.MapGet($"{MovieEndpoints.Path}/{{movieId}}", GetScreenings);
+            group.MapPost($"{MovieEndpoints.Path}/{{movieId}}", CreateScreening);
             group.MapGet("/{id}", GetScreening);
         }
 
@@ -34,9 +34,12 @@ namespace api_cinema_challenge.Endpoints
                 Movie movie = await movieRepository.Get(movieId);
                 IEnumerable<Screening> screenings = await repository.FindAll(
                     condition: x => x.MovieId == movieId,
-                    includeChains: q => q.Include(x => x.Screen)
+                    includeChains: [
+                        q => q.Include(x => x.Screen).ThenInclude(x => x.Seats),
+                        q => q.Include(x => x.Tickets).ThenInclude(x => x.Seat)
+                    ]
                 );
-                return TypedResults.Ok(new Payload { Data = mapper.Map<List<ScreeningView>>(screenings) });
+                return TypedResults.Ok(new Payload { Data = mapper.Map<List<ScreeningViewSeatCount>>(screenings) });
             }
             catch (IdNotFoundException ex)
             {
@@ -56,7 +59,10 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 Screening screening = await repository.Get(id,
-                    q => q.Include(x => x.Screen)
+                    includeChains: [
+                        q => q.Include(x => x.Screen).ThenInclude(x => x.Seats),
+                        q => q.Include(x => x.Tickets).ThenInclude(x => x.Seat)
+                    ]
                 );
                 return TypedResults.Ok(mapper.Map<ScreeningView>(screening));
             }
@@ -84,21 +90,6 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-
-                //DateTime startingAt;
-                //string[] formats = { "yyyy-MM-dd HH:mm:ss", "dd-MM-yyyy HH:mm:ss" };
-                //if (!DateTime.TryParseExact(entity.StartingAt, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out startingAt)) 
-                //    return TypedResults.BadRequest(new Payload { Status = "failure", Data = new { Message = $"The starting at date needs to be in one of the following formats: {string.Join(", ", formats)}" } });
-                //Movie movie = await movieRepository.Get(movieId);
-                //Screen screen = await screenRepository.Get(entity.ScreenId);
-                //Screening screening = await repository.Add(new Screening
-                //{
-                //    MovieId = movie.Id,
-                //    ScreenId = screen.Id,
-                //    Screen = screen,
-                //    StartingAt = startingAt.ToUniversalTime()
-                //});
-
                 try
                 {
                     Screening screening = await CreateScreeningObject(
@@ -108,7 +99,12 @@ namespace api_cinema_challenge.Endpoints
                         movieId,
                         entity
                     );
-                    screening = await repository.Add(screening);
+                    await repository.Add(screening);
+                    screening = await repository.Get(screening.Id,
+                        includeChains: [
+                            q => q.Include(x => x.Screen).ThenInclude(x => x.Seats),
+                            q => q.Include(x => x.Tickets).ThenInclude(x => x.Seat)
+                    ]);
                     return TypedResults.Created($"{Path}/{screening.Id}", new Payload
                     {
                         Data = mapper.Map<ScreeningView>(screening)

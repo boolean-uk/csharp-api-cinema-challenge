@@ -29,7 +29,7 @@ namespace api_cinema_challenge.Endpoints
             try
             {
                 IEnumerable<Screen> screens = await repository.GetAll();
-                return TypedResults.Ok(new Payload { Data = mapper.Map<List<ScreenView>>(screens) });
+                return TypedResults.Ok(new Payload { Data = mapper.Map<List<ScreenInternal>>(screens) });
             }
             catch (Exception ex)
             {
@@ -100,7 +100,9 @@ namespace api_cinema_challenge.Endpoints
         {
             try
             {
-                Screen screen = await repository.Delete(id);
+
+                Screen screen = await repository.Get(id, q => q.Include(x => x.Seats));
+                await repository.Delete(id);
                 return TypedResults.Created($"{Path}/{screen.Id}", new Payload { Data = mapper.Map<ScreenView>(screen) });
             }
             catch (IdNotFoundException ex)
