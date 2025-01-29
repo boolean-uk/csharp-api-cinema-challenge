@@ -191,9 +191,9 @@ namespace api_cinema_challenge.Endpoints
                 }
 
                 Screening screening = await screeningRepository.Get(c => c.Id == screeningId);
-                if (customer == null)
+                if (screening == null)
                 {
-                    return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, $"No customer with id:{screeningId} was found."));
+                    return TypedResults.NotFound(new ApiResponse<string>(ApiStatus.NotFound, $"No screening with id:{screeningId} was found."));
                 }
 
                 Ticket newTicket = new Ticket
