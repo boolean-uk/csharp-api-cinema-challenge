@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
     [Table("movie_table")]
     public class Movie
     {
-        [Column("id")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Column("movie_title")]
@@ -18,7 +20,7 @@ namespace api_cinema_challenge.Models
         public string Description { get; set; }
 
         [Column("runtime_mins")]
-        public string RunTimeMins { get; set; }
+        public int RunTimeMins { get; set; }
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }

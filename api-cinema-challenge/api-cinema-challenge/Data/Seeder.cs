@@ -1,4 +1,5 @@
 ﻿using api_cinema_challenge.Models;
+using api_cinema_challenge.Data;
 
 namespace api_cinema_challenge.Data
 {
@@ -10,16 +11,16 @@ namespace api_cinema_challenge.Data
             {
                 if (!db.Customers.Any())
                 {
-                    db.Add(new Customer() { Id = 1, Name = "Nigel" });
-                    db.Add(new Customer() { Id = 2, Name = "Dave" });
-                    db.Add(new Customer() { Id = 3, Name = "Kristoffer" });
+                    db.Add(new Customer() { Name = "Nigel", Email = "Nigel@nigel.com", Phone = "410 011 22", CreatedAt = DateTime.UtcNow});
+                    db.Add(new Customer() { Name = "Dave", Email = "Dave@dave.com", Phone = "411 111 33", CreatedAt = DateTime.UtcNow });
+                    db.Add(new Customer() { Name = "Kristoffer", Email = "Kristoffer@kristoffer.com", Phone = "433 000 44", CreatedAt = DateTime.UtcNow });
                     await db.SaveChangesAsync();
                 }
                 if (!db.Movies.Any())
                 {
-                    db.Add(new Movie() { Id = 1, Name = "Cheese & Pineapple", Price = 190m });
-                    db.Add(new Movie() { Id = 2, Name = "Vegan Cheese Tastic", Price = 200m });
-                    db.Add(new Movie() { Id = 3, Name = "Nduja", Price = 210m });
+                    db.Add(new Movie() { Title = "Iron Man", Rating = "9",Description = "Superhero movie", RunTimeMins = 160, CreatedAt = DateTime.UtcNow });
+                    db.Add(new Movie() { Title = "Spider Man", Rating = "8", Description = "Superhero movie", RunTimeMins = 160, CreatedAt = DateTime.UtcNow });
+                    db.Add(new Movie() { Title = "Batman", Rating = "10", Description = "Superhero movie", RunTimeMins = 160, CreatedAt = DateTime.UtcNow });
                     await db.SaveChangesAsync();
 
                 }
@@ -27,9 +28,9 @@ namespace api_cinema_challenge.Data
 
                 if (!db.Screenings.Any())
                 {
-                    db.Add(new Screening() { Id = 1, CustomerId = 1, PizzaId = 1 });
-                    db.Add(new Screening() { Id = 2, CustomerId = 2, PizzaId = 2 });
-                    db.Add(new Screening() { Id = 3, CustomerId = 3, PizzaId = 3 });
+                    db.Add(new Screening() { MovieId = 1, ScreenNumber = 10, Capacity = 100, StartsAt = new DateTime(2025, 1, 30, 14,30,0, DateTimeKind.Utc) });
+                    db.Add(new Screening() { MovieId = 2, ScreenNumber = 11, Capacity = 110, StartsAt = new DateTime(2025, 1, 30, 15, 30, 0, DateTimeKind.Utc) });
+                    db.Add(new Screening() { MovieId = 3, ScreenNumber = 12, Capacity = 120, StartsAt = new DateTime(2025, 1, 30, 17, 30, 0, DateTimeKind.Utc) });
 
 
 

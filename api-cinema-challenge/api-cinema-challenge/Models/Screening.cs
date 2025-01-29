@@ -1,15 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api_cinema_challenge.Models
 {
     [Table("screening_table")]
     public class Screening
     {
-
-        [ForeignKey("movie_id")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("screem_number")]
+        [ForeignKey("movie_id")]
+        public int MovieId { get; set; }
+
+        [Column("screen_number")]
         public int ScreenNumber { get; set; }
 
         [Column("capacity")]
@@ -17,5 +21,15 @@ namespace api_cinema_challenge.Models
 
         [Column("starts_at")]
         public DateTime StartsAt { get; set; }
+
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; }
+
+        [Column("updated_at")]
+        public DateTime UpdatedAt { get; set; }
+
+        public Movie Movie { get; set; }
+
+
     }
 }

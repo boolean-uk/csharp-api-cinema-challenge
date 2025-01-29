@@ -1,6 +1,5 @@
 using api_cinema_challenge.Data;
 using api_cinema_challenge.Endpoints;
-using api_cinema_challenge.Repositories;
 using api_cinema_challenge.Repository;
 
 var builder = WebApplication.CreateBuilder(args);

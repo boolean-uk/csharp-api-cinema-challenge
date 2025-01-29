@@ -38,14 +38,18 @@ namespace api_cinema_challenge.Repository
         
         }
 
-        public async Task<Customer> UpdateCustomer(int customerId, string newName, string newEmail, string newPhone)
+        public async Task<Customer> UpdateCustomer(int customerId, Customer customer )
         {
-            var customer = await GetCustomerById(customerId);
+            var customerToUpdate = await GetCustomerById(customerId);
 
-            customer.Name = newName;
-            customer.Email = newEmail;
-            customer.Phone = newPhone;
-            customer.UpdatedAt = DateTime.Now;
+            customerToUpdate.Name = customer.Name;
+            customerToUpdate.Email = customer.Email;
+            customerToUpdate.Phone = customer.Phone;
+            customerToUpdate.UpdatedAt = DateTime.UtcNow;
+
+            _db.Customers.Update(customerToUpdate);
+            await _db.SaveChangesAsync();
+
 
             return customer;            
         
