@@ -1,31 +1,42 @@
 @startuml
 
 class Customer {
-id INT
+id INT PK
 name STRING
 email STRING
 phone STRING
+createdAt DateTime
+updatedAt DateTime
 }
 
 class Movie {
-id INT
+id INT PK
 title STRING
 rating STRING
 description STRING
 runtimeMins INT
-screenings List<Screening>
+screenings List<Screening> FK
+createdAt DateTime
+updatedAt DateTime
 }
 
 class Screening {
-id INT
+id INT PK
+movieId INT FK
 screenNumber INT
 capacity INT
 startsAt DateTime
+createdAt DateTime
+updatedAt DateTime
 }
 
 class Ticket {
-id INT
+id INT PK
+customerId INT FK
+screeningId INT FK
 numSeats INT
+createdAt DateTime
+updatedAt DateTime
 }
 
 
