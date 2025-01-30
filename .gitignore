@@ -368,3 +368,10 @@ FodyWeavers.xsd
 */**/bin/Release   
 */**/obj/Debug   
 */**/obj/Release
+**/**/appsettings.json
+**/**/appsettings.Development.json
+**/**/bin/Debug   
+**/**/bin/Release   
+**/**/obj/Debug   
+**/**/obj/Release
+/api-cinema-challenge/api-cinema-challenge/Migrations
