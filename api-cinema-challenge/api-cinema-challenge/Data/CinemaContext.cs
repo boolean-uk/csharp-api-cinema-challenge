@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api_cinema_challenge.Models;
+using exercise.webapi.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace api_cinema_challenge.Data
@@ -20,7 +23,28 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            Seeder seeder = new Seeder();
+            
+
+
+            modelBuilder.Entity<Customer>().HasMany(a => a.Tickets).WithOne(b => b.Customer).HasForeignKey(c => c.CustomerId);
+
+            modelBuilder.Entity<Movie>().HasMany(a => a.Screenings).WithOne(b => b.Movie).HasForeignKey(c => c.MovieId);
+
+            modelBuilder.Entity<Ticket>().HasOne(a => a.Screening).WithMany(b => b.Tickets).HasForeignKey(c => c.ScreeningId);
+
+
+            modelBuilder.Entity<Customer>().HasData(seeder.Customers);
+            modelBuilder.Entity<Movie>().HasData(seeder.Movies);
+            modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
+            modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
 
         }
+
+
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }
