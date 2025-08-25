@@ -362,9 +362,11 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+# prevents build directories and sensitive config files (like your database credentials) from being uploaded.
 */**/appsettings.json
 */**/appsettings.Development.json
 */**/bin/Debug   
 */**/bin/Release   
 */**/obj/Debug   
 */**/obj/Release
+*/Migrations
