@@ -20,6 +20,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> AddMovie(IRepository repository, MoviePost movie)
         {
             Movie entity = new Movie();
@@ -35,12 +36,15 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> GetMovies(IRepository repository)
         {
             var results = await repository.GetMovies();
             return TypedResults.Ok(results);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
         public static async Task<IResult> UpdateMovie(IRepository repository, int id, MoviePut movie)
         {
             var entity = await repository.GetMovieId(id);
@@ -57,6 +61,7 @@ namespace api_cinema_challenge.Endpoints
 
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> DeleteMovie(IRepository repository, int id)
         {
             var results = await repository.DeleteMovie(id);
@@ -66,6 +71,7 @@ namespace api_cinema_challenge.Endpoints
         // Screenings 
 
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> AddScreening(IRepository repository, ScreeningPost screening, int movieId)
         {
             Screening entity = new Screening();
@@ -80,6 +86,7 @@ namespace api_cinema_challenge.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public static async Task<IResult> GetScreenings(IRepository repository, int movieId)
         {
             List<ScreeningGet> screens = new List<ScreeningGet>();
