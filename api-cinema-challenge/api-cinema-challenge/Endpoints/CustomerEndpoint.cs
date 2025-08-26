@@ -2,6 +2,7 @@
 using api_cinema_challenge.DTOs;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,7 @@ namespace api_cinema_challenge.Endpoints
             return customerShow;
         }
 
+        [Authorize(Roles = "Admin,User")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAll(IRepository<Customer> customerRepo) {
             List<CustomerGet> response = new List<CustomerGet>();
@@ -37,7 +39,7 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Ok(response);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> Create(IRepository<Customer> customerRepo, CustomerPost cModel)
         {
@@ -53,6 +55,7 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Created($"Created object with id: {newCustomer.Id}");
         }
 
+        [Authorize(Roles = "Admin,User")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> Update(IRepository<Customer> customerRepo, int id, CustomerPost cModel)
@@ -72,6 +75,7 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.NotFound();
         }
 
+        [Authorize(Roles = "Admin,User")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> Delete(IRepository<Customer> customerRepo, int id)

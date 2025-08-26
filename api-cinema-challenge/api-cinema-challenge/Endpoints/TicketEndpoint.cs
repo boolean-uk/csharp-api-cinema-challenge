@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTOs;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api_cinema_challenge.Endpoints
@@ -21,6 +22,7 @@ namespace api_cinema_challenge.Endpoints
             return ticketGet;
         }
 
+        [Authorize("Admin,User")]
         public static async Task<IResult> GetAll(IRepository<Ticket> ticketRepo, int cId, int sId)
         {
             //List<Ticket> results = new List<Ticket>();
@@ -34,6 +36,7 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Ok(resultsShow);
         }
 
+        [Authorize(Roles = "User")]
         public static async Task<IResult> Create(IRepository<Ticket> ticketRepo, int cId, int sId, TicketPost t)
         {
             DateTime time = DateTime.UtcNow.ToUniversalTime();

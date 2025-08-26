@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace api_cinema_challenge.Data
 {
@@ -42,5 +43,14 @@ namespace api_cinema_challenge.Data
                 .HasForeignKey(s => s.MovieId);
 
         }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+
+
+        //public DbSet<Ticket> Ticket { get; set; }
+        //publi
     }
 }

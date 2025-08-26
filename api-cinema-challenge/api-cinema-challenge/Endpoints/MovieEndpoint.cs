@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTOs;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
 
@@ -25,6 +26,7 @@ namespace api_cinema_challenge.Endpoints
             return movieShow;
         }
 
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAll(IRepository<Movie> movieRepo)
         {
@@ -38,6 +40,8 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Ok(response);
         }
 
+        [Authorize(Roles = "Admin,User")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> Create(IRepository<Movie> movieRepo, MoviePost mModel)
         {
@@ -55,6 +59,8 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Created($"Created object with id: {newMovie.Id}");
         }
 
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> Update(IRepository<Movie> movieRepo, int id, MoviePost mModel)
@@ -70,16 +76,17 @@ namespace api_cinema_challenge.Endpoints
                 mTarget.RuntimeMins = mModel.RunTimeMins;
                 mTarget.UpdatedAt = time;
 
-
-
                 await movieRepo.Update(mTarget);
                 return TypedResults.Created($"Updated object with id: {id}");
             }
             return TypedResults.NotFound();
         }
 
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
         public static async Task<IResult> Delete(IRepository<Movie> movieRepo, int id)
         {
             Movie? mTarget = await movieRepo.GetById(id);

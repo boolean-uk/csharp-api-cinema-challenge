@@ -1,6 +1,7 @@
 ﻿using api_cinema_challenge.DTOs;
 using api_cinema_challenge.Models;
 using api_cinema_challenge.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_cinema_challenge.Endpoints
@@ -21,6 +22,7 @@ namespace api_cinema_challenge.Endpoints
             return screenShow;
         }
 
+        [Authorize(Roles = "Admin,User")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAll(IRepository<Screening> screenRepo, int id)
         {
@@ -34,7 +36,7 @@ namespace api_cinema_challenge.Endpoints
             }
             return TypedResults.Ok(response);
         }
-        
+
         /*
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetAll(IRepository<Movie> screenRepo, int id)
@@ -53,6 +55,7 @@ namespace api_cinema_challenge.Endpoints
             return TypedResults.Ok(response);
         }
         */
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> Create(IRepository<Screening> screenRepo, ScreeningPost sModel, int id)
         {
