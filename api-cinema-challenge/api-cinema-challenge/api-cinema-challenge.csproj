@@ -8,13 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\**" />
-    <Content Remove="Controllers\**" />
-    <EmbeddedResource Remove="Controllers\**" />
-    <None Remove="Controllers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.entityFrameworkCore" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
     <PackageReference Include="microsoft.entityframeworkcore.relational" Version="9.0.8" />
@@ -24,11 +20,8 @@
     </PackageReference>
     <PackageReference Include="newtonsoft.json" Version="13.0.3" />
     <PackageReference Include="npgsql.entityframeworkcore.postgresql" Version="9.0.4" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.7.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
