@@ -14,7 +14,9 @@ appsettings.json
 *.userprefs
 
 # Mono auto generated files
-mono_crash.*
+mono_crash.*\
+
+.idea/
 
 # Build results
 [Dd]ebug/

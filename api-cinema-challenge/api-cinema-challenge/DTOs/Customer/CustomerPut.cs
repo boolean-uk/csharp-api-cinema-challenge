@@ -1,0 +1,15 @@
+﻿using System.Text.Json.Serialization;
+
+namespace api_cinema_challenge.DTOs.Customer;
+
+public class CustomerPut
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+    
+    [JsonPropertyName("email")]
+    public string Email { get; set; }
+    
+    [JsonPropertyName("phone")]
+    public string Phone { get; set; }
+}
