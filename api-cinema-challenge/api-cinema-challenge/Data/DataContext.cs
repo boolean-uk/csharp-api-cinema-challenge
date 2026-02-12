@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using api_cinema_challenge.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 
 namespace api_cinema_challenge.Data
 {
-    public class CinemaContext : DbContext
+    public class DataContext : DbContext
     {
         private string _connectionString;
-        public CinemaContext(DbContextOptions<CinemaContext> options) : base(options)
+        public DataContext()
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
@@ -20,7 +22,16 @@ namespace api_cinema_challenge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
+
 
         }
+
+
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Screening> Screenings { get; set; }
+
+
     }
 }
